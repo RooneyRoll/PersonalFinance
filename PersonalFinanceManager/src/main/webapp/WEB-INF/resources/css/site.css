@@ -1,10 +1,88 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Mar 13, 2017, 8:17:04 PM
-    Author     : Misho
-*/
+/*Helper classes*/
+.no-select {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */      
+}
 
+.animation{
+    -webkit-transition: background-color 250ms;
+    -moz-transition: background-color 250ms;
+    -o-transition: background-color 250ms;
+    transition: background-color 250ms;
+}
+/*Helper classes end*/
+html body *{
+    box-sizing:border-box;
+}
+.background-holder{
+    text-align:center;
+    opacity: 0.4;
+    margin:100px 0px;
+    font-size:200px;
+    cursor:default;
+    width:100%;
+}
+
+body{
+    margin:0;
+    font-family: 'Roboto', sans-serif;
+    /*font-family: 'Montserrat', sans-serif;*/
+}
+.header{
+    display:inline-block;
+    width:100%;
+    background-color:#6DB33F;
+}
+.header .header-content{
+    margin-top:5px;
+    display:inline-block;
+    width:100%;
+    background-color:#34302D;
+    padding:10px 20px;
+}
+.header .header-content .header-content-left,
+.header .header-content .header-content-right{
+    display:inline-block;
+    width:50%;
+    color:#fff;
+    cursor:default;
+    vertical-align: middle;
+}
+
+.header .header-content .header-content-left .header-text{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.header .header-content .header-content-left .header-text .header-sub-text{
+    font-size:16px;
+}
+
+.header .header-content .header-content-right{
+    text-align:right;
+}
+
+.header .header-content .header-content-right .header-button{
+    display:inline-block;
+    padding:10px 15px;
+    cursor:pointer;
+    /*color:#34302D;*/
+}
+
+.header .header-content .header-content-right .header-button:hover{
+    background-color:#6DB33F;
+    /*color:#34302D;*/
+}
+
+.footer{
+    display:inline-block;
+    background-color:#5D5D5D;
+    width:100%;
+}
+
+.footer-content{
+    display:inline-block;
+    color:#fff;
+}
