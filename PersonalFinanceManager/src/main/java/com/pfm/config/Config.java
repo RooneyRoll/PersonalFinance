@@ -24,6 +24,7 @@ public class Config extends WebMvcConfigurerAdapter {
         return resolver;  
     }  
     */
+    
     @Bean
     public TilesConfigurer tilesConfigurer(){
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
