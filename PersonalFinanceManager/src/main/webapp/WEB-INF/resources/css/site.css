@@ -76,6 +76,52 @@ body{
     /*color:#34302D;*/
 }
 
+.site-content{
+    padding:20px 30px;
+}
+
+.site-content .button{
+    display:inline-block;
+    padding:10px 15px;
+    cursor:pointer;
+    color:#fff;
+    background-color:#34302D;
+}
+
+.site-content .button:hover{
+    background-color:#6DB33F;
+}
+
+/*form styles*/
+.site-content .form-container{
+    
+}
+
+.site-content .form-container .form-content{
+    
+}
+
+.site-content .form-container .form-content form{
+    
+}
+
+.site-content .form-container .form-content form .input-container{
+    
+}
+
+.site-content .form-container .form-content form .input-container{
+    
+}
+
+.site-content .form-container .form-content form .input-container .input-title-holder{
+    
+}
+
+.site-content .form-container .form-content form .input-container .input-holder{
+    
+}
+/*form styles end*/
+
 .footer{
     display:inline-block;
     background-color:#5D5D5D;
