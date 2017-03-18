@@ -5,7 +5,6 @@
  */
 package com.pfm.config;
 
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +22,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-   
-	@Autowired
+    
+    @Autowired
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
@@ -36,22 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("USER");
-        /*auth.jdbcAuthentication()
-                .dataSource(dataSource)
+        auth.jdbcAuthentication()
+                .dataSource(dataSource())
                 .usersByUsernameQuery(
-                     "select user_username,user_password from users where user_username=?")
-                 .authoritiesByUsernameQuery(
-                     "select username, user_role from user_roles where username=?");*/
-        /*auth
-        .jdbcAuthentication()
-        .dataSource()
-        .usersByUsernameQuery(getUserQuery())
-        .authoritiesByUsernameQuery(getAuthoritiesQuery());*/
-    
+                     "select user_username,user_password,user_enabled from users where user_username=?")
+                .authoritiesByUsernameQuery(
+                     "select username, user_role from user_roles where username=?");
 	}
     
-    //@Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
         .antMatchers("/*")
