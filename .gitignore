@@ -48,3 +48,8 @@ Temporary Items
 /PersonalFinanceManager/target/
 /PersonalFinanceManagerDataPostgres/target/
 /PersonalFinanceManagerData/target/
+PersonalFinanceManager/.idea
+PersonalFinanceManager/.settings
+PersonalFinanceManagerData/.settings
+PersonalFinanceManagerDataPostgres/.settings
+.project
