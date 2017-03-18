@@ -43,16 +43,6 @@ public class Config extends WebMvcConfigurerAdapter {
         TilesViewResolver viewResolver = new TilesViewResolver();
         registry.viewResolver(viewResolver);
     }
-
-   @Bean(name = "dataSource")
-    public DriverManagerDataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
-        driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/PersonalFinanceManager");
-        driverManagerDataSource.setUsername("postgres");
-        driverManagerDataSource.setPassword("masterkey");
-     return driverManagerDataSource;
- }
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

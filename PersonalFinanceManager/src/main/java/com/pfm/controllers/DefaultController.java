@@ -20,7 +20,6 @@ public class DefaultController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap map,HttpServletResponse response,HttpServletRequest request) {
         
-        map.put("peshoVariable", "Pesho likes Tosho Kykata");
         return "home";
     }
    
