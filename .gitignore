@@ -46,5 +46,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 /PersonalFinanceManager/target/
-PersonalFinanceManagerData/target
-PersonalFinanceManagerDataPostgres/target
+/PersonalFinanceManagerDataPostgres/target/
+/PersonalFinanceManagerData/target/

@@ -62,5 +62,4 @@ public class UserSet extends BaseSet implements IUserSet<Users,User,UserData> {
     public void FillEntityFromDTOData(Users entity, UserData data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
