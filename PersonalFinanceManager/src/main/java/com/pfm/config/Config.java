@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @Configuration
 @ComponentScan("com.pfm")
 @EnableWebMvc   
-//@Import({ SecurityConfig.class })
+@Import({ SecurityConfig.class })
 public class Config extends WebMvcConfigurerAdapter {
     /*@Bean  
     public UrlBasedViewResolver setupViewResolver() {  
@@ -44,7 +44,7 @@ public class Config extends WebMvcConfigurerAdapter {
         registry.viewResolver(viewResolver);
     }
 
-   /* @Bean(name = "dataSource")
+   @Bean(name = "dataSource")
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
@@ -52,7 +52,7 @@ public class Config extends WebMvcConfigurerAdapter {
         driverManagerDataSource.setUsername("postgres");
         driverManagerDataSource.setPassword("masterkey");
      return driverManagerDataSource;
- }*/
+ }
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

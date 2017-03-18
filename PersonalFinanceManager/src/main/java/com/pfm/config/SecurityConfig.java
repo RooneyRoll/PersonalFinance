@@ -19,14 +19,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
    
-   // @Autowired
-   // DataSource dataSource;
+    @Autowired
+    DataSource dataSource;
    
-   // @Autowired
-   // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("USER");
         /*auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(
@@ -38,17 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .dataSource()
         .usersByUsernameQuery(getUserQuery())
         .authoritiesByUsernameQuery(getAuthoritiesQuery());*/
-    //        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("USERasfasf");
-//	}
+    
+	}
     
     //@Override
-  //  protected void configure(HttpSecurity http) throws Exception {
-    //  http.authorizeRequests()
-      //  .antMatchers("/*").permitAll();
-        /*.access("hasRole('USER')")
+    protected void configure(HttpSecurity http) throws Exception {
+      http.authorizeRequests()
+        .antMatchers("/*")
+        .access("hasRole('USER')")
         .and()
         .formLogin()
         .loginPage("/login")
-        .permitAll();*/
-  //  }
+        .permitAll();
+    }
 }
