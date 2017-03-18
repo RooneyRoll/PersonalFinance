@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.pfm.config.core;
+import com.pfm.config.SecurityConfig;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 /**
  *
@@ -11,5 +12,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  */
 
 public class SpringSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
-    
+    public SpringSecurityInitializer() {
+        super(SecurityConfig.class);
+    }
 }
