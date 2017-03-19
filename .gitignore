@@ -54,3 +54,6 @@ PersonalFinanceManagerData/.settings
 PersonalFinanceManagerDataPostgres/.settings
 .project
 .tern-project
+PersonalFinanceManager.iml
+PersonalFinanceManagerDataPostgres.iml
+PersonalFinanceManagerData.iml
