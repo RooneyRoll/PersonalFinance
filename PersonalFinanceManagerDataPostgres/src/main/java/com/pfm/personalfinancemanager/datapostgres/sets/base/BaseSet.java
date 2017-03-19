@@ -5,6 +5,7 @@
  */
 package com.pfm.personalfinancemanager.datapostgres.sets.base;
 
+import java.util.List;
 import org.hibernate.SessionFactory;
 
 
@@ -12,7 +13,7 @@ import org.hibernate.SessionFactory;
  *
  * @author Misho
  */
-public abstract class BaseSet<T,T1> {
+public abstract class BaseSet<T,T1,T3> {
     protected SessionFactory sessionFactory;
     
     public BaseSet(SessionFactory session){
@@ -28,6 +29,6 @@ public abstract class BaseSet<T,T1> {
     }
     
     protected abstract T1 convertEntityToDto(T Entity);
-    protected abstract T1[] convertEntititiesToDtoArray(T[] EntityArray);
-    protected abstract T convertDtoToEntity(T1 Dto);
+    protected abstract List<T1> convertEntititiesToDtoArray(List<T> EntityArray);
+    protected abstract T convertDtoDataToEntity(T3 DtoData);
 }

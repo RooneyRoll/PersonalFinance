@@ -6,8 +6,10 @@
 package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.data.UserData;
 import com.pfm.data.entities.User;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,17 @@ public class RegisterController {
 
         IpfmContext context = new pfmContext();
         System.out.println("----Register");
-        User[] user =  context.getUserSet().GetAll();
+        UserData userInput = new UserData();
+        userInput.setEmail("test@gmail");
+        userInput.setEnabled(true);
+        userInput.setFirstName("test");
+        userInput.setLastName("test1");
+        userInput.setMiddleName("test123");
+        userInput.setPassword("1234567");
+        userInput.setUserName("usernametest");
+        context.getUserSet().Add(userInput);
+        List<User> users =  context.getUserSet().GetAll();
+        System.out.println(users.size());
         map.put("name", "val");
         return "register";
     }

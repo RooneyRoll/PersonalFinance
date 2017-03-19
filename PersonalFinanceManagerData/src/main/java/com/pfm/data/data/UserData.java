@@ -14,6 +14,25 @@ public class UserData {
     private String password;
     private String firstName;
     private String middleName;
+    private String lastName;
+    private String email;
+    private boolean enabled;
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getUserName() {
         return userName;
@@ -54,5 +73,5 @@ public class UserData {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    private String lastName;
+    
 }

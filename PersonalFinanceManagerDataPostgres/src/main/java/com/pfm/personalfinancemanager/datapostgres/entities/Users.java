@@ -6,11 +6,13 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -25,28 +27,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
-    , @NamedQuery(name = "Users.findByUserUsername", query = "SELECT u FROM Users u WHERE u.userUsername = :userUsername")
+    , @NamedQuery(name = "Users.findByUserUserid", query = "SELECT u FROM Users u WHERE u.userUserid = :userUserid")
     , @NamedQuery(name = "Users.findByUserPassword", query = "SELECT u FROM Users u WHERE u.userPassword = :userPassword")
+    , @NamedQuery(name = "Users.findByUserEnabled", query = "SELECT u FROM Users u WHERE u.userEnabled = :userEnabled")
     , @NamedQuery(name = "Users.findByUserEmail", query = "SELECT u FROM Users u WHERE u.userEmail = :userEmail")
     , @NamedQuery(name = "Users.findByUserFirstname", query = "SELECT u FROM Users u WHERE u.userFirstname = :userFirstname")
     , @NamedQuery(name = "Users.findByUserLastname", query = "SELECT u FROM Users u WHERE u.userLastname = :userLastname")
     , @NamedQuery(name = "Users.findByUserMiddlename", query = "SELECT u FROM Users u WHERE u.userMiddlename = :userMiddlename")
-    , @NamedQuery(name = "Users.findByUserEnabled", query = "SELECT u FROM Users u WHERE u.userEnabled = :userEnabled")})
+    , @NamedQuery(name = "Users.findByUserUsername", query = "SELECT u FROM Users u WHERE u.userUsername = :userUsername")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @Lob
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_userid")
-    private Object userUserid;
-    @Basic(optional = false)
-    @Column(name = "user_username")
-    private String userUsername;
+    private UUID userUserid;
     @Basic(optional = false)
     @Column(name = "user_password")
     private String userPassword;
     @Basic(optional = false)
+    @Column(name = "user_enabled")
+    private boolean userEnabled;
     @Column(name = "user_email")
     private String userEmail;
     @Column(name = "user_firstname")
@@ -56,38 +57,29 @@ public class Users implements Serializable {
     @Column(name = "user_middlename")
     private String userMiddlename;
     @Basic(optional = false)
-    @Column(name = "user_enabled")
-    private boolean userEnabled;
+    @Column(name = "user_username")
+    private String userUsername;
 
     public Users() {
     }
 
-    public Users(Object userUserid) {
+    public Users(UUID userUserid) {
         this.userUserid = userUserid;
     }
 
-    public Users(Object userUserid, String userUsername, String userPassword, String userEmail, boolean userEnabled) {
+    public Users(UUID userUserid, String userPassword, boolean userEnabled, String userUsername) {
         this.userUserid = userUserid;
-        this.userUsername = userUsername;
         this.userPassword = userPassword;
-        this.userEmail = userEmail;
         this.userEnabled = userEnabled;
+        this.userUsername = userUsername;
     }
 
-    public Object getUserUserid() {
+    public UUID getUserUserid() {
         return userUserid;
     }
 
-    public void setUserUserid(Object userUserid) {
+    public void setUserUserid(UUID userUserid) {
         this.userUserid = userUserid;
-    }
-
-    public String getUserUsername() {
-        return userUsername;
-    }
-
-    public void setUserUsername(String userUsername) {
-        this.userUsername = userUsername;
     }
 
     public String getUserPassword() {
@@ -96,6 +88,14 @@ public class Users implements Serializable {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public boolean getUserEnabled() {
+        return userEnabled;
+    }
+
+    public void setUserEnabled(boolean userEnabled) {
+        this.userEnabled = userEnabled;
     }
 
     public String getUserEmail() {
@@ -130,12 +130,12 @@ public class Users implements Serializable {
         this.userMiddlename = userMiddlename;
     }
 
-    public boolean getUserEnabled() {
-        return userEnabled;
+    public String getUserUsername() {
+        return userUsername;
     }
 
-    public void setUserEnabled(boolean userEnabled) {
-        this.userEnabled = userEnabled;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
     @Override

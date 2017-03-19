@@ -5,9 +5,6 @@
  */
 package com.pfm.controllers;
 
-import com.pfm.data.context.IpfmContext;
-import com.pfm.data.entities.User;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;

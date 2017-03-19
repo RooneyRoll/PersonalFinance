@@ -5,12 +5,14 @@
  */
 package com.pfm.data.sets.base;
 
+import java.util.List;
+
 /**
  *
  * @author Misho
  * @param <DTOtype>
  */
 public interface IViewable<DTOtype> {
-    public DTOtype[] GetAll();
+    public List<DTOtype> GetAll();
     public DTOtype GetById(int id);
 }
