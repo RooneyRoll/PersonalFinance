@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.pfm.personalfinancemanager.datapostgres.sets;
-
 import com.pfm.data.dto.User;
 import com.pfm.data.dtodata.UserData;
 import com.pfm.data.sets.IUserSet;
@@ -12,9 +11,7 @@ import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import org.hibernate.SessionFactory;
 
-
 /**
- *
  * @author Misho
  */
 public class UserSet extends BaseSet implements IUserSet<Users,User,UserData> {

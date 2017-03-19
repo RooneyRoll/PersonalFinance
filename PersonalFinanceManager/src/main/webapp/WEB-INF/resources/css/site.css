@@ -1,9 +1,9 @@
 /*Helper classes*/
 .no-select {
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  user-select: none;          /* Likely future */      
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */      
 }
 
 .animation{
@@ -13,9 +13,11 @@
     transition: background-color 250ms;
 }
 /*Helper classes end*/
+
 html body *{
     box-sizing:border-box;
 }
+
 .background-holder{
     text-align:center;
     opacity: 0.4;
@@ -30,11 +32,13 @@ body{
     font-family: 'Roboto', sans-serif;
     /*font-family: 'Montserrat', sans-serif;*/
 }
+
 .header{
     display:inline-block;
     width:100%;
     background-color:#6DB33F;
 }
+
 .header .header-content{
     margin-top:5px;
     display:inline-block;
@@ -42,6 +46,7 @@ body{
     background-color:#34302D;
     padding:10px 20px;
 }
+
 .header .header-content .header-content-left,
 .header .header-content .header-content-right{
     display:inline-block;
@@ -78,6 +83,9 @@ body{
 
 .site-content{
     padding:20px 30px;
+    background-color:#F1F1F1;
+    min-height:500px;
+    color:#34302D;
 }
 
 .site-content .button{
@@ -92,34 +100,98 @@ body{
     background-color:#6DB33F;
 }
 
+.site-content input[type="text"] {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 14px;
+    appearance: none;
+    box-shadow: none;
+    border-radius: none;
+}
+.site-content input[type="text"]:focus {
+    outline: none;
+}
+
 /*form styles*/
-.site-content .form-container{
-    
+
+.site-content .form-container-2{
+    display:inline-block;
+    width:50%;
 }
 
-.site-content .form-container .form-content{
-    
+.site-content .form-container-2 .form-content{
+    display:inline-block;
+    width:100%;
 }
 
-.site-content .form-container .form-content form{
-    
+.site-content .form-container-2 .form-content form{
+    display:inline-block;   
+    width:100%
 }
 
-.site-content .form-container .form-content form .input-container{
-    
+.site-content .form-container-2 .form-content form .button-container{
+    margin-top:10px;
 }
 
-.site-content .form-container .form-content form .input-container{
-    
+.site-content .form-container-2 .form-content form .input-container{
+    display:inline-block;   
+    width:100%;
+    margin-top:5px;
 }
 
-.site-content .form-container .form-content form .input-container .input-title-holder{
-    
+.site-content .form-container-2 .form-content form .input-container .input-title-holder{
+    display:inline-block;
+    width:100%;
+    margin-bottom:5px;
+    cursor:default;
 }
 
-.site-content .form-container .form-content form .input-container .input-holder{
-    
+.site-content .form-container-2 .form-content form .input-container .input-holder{
+    display:inline-block;
+    width:100%;
 }
+
+.site-content .form-container-2 .form-content form .input-container .input-holder input{
+    display:inline-block;
+    width:100%;
+}
+
+/*form styles with icon*/
+.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder{
+    background:#6DB33F;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder input{
+    width: calc(100% - 40px);
+}
+.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder .input-icon{
+    display:inline-block;
+    width:40px;
+    font-size:20px;
+    color:#fff;
+    vertical-align: middle;
+    text-align:center;
+}
+
+
+.site-content .form-container-2 .form-content input[type="text"] {
+    padding: 10px;
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
+}
+.site-content .form-container-2 .form-content input[type="text"]:focus,
+.site-content .form-container-2 .form-content input[type="text"].focus {
+    border-bottom: solid 2px #6DB33F;
+}
+/*form styles with icon end*/
+
+
+
 /*form styles end*/
 
 .footer{

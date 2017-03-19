@@ -11,39 +11,39 @@ import org.apache.log4j.Logger;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Misho
  */
-public class ExecuteTimeInterceptor extends HandlerInterceptorAdapter{
+public class ExecuteTimeInterceptor extends HandlerInterceptorAdapter {
+
     private static final Logger logger = Logger.getLogger(ExecuteTimeInterceptor.class);
 
-	//before the actual handler will be executed
-	public boolean preHandle(HttpServletRequest request,
-		HttpServletResponse response, Object handler)
-	    throws Exception {
+    //before the actual handler will be executed
+    public boolean preHandle(HttpServletRequest request,
+            HttpServletResponse response, Object handler)
+            throws Exception {
 
-		long startTime = System.currentTimeMillis();
-		request.setAttribute("startTime", startTime);
+        long startTime = System.currentTimeMillis();
+        request.setAttribute("startTime", startTime);
 
-		return true;
-	}
+        return true;
+    }
 
-	//after the handler is executed
-	public void postHandle(
-		HttpServletRequest request, HttpServletResponse response,
-		Object handler, ModelAndView modelAndView)
-		throws Exception {
-		long startTime = (Long)request.getAttribute("startTime");
-		long endTime = System.currentTimeMillis();
-		long executeTime = endTime - startTime;
-		//modified the exisitng modelAndView
-		modelAndView.addObject("executeTime",executeTime);
-                    System.out.println(executeTime+"------------------------------------------");
-		//log it
-		if(logger.isDebugEnabled()){
-		   logger.debug("[" + handler + "] executeTime : " + executeTime + "ms");
-		}
-	}
+    //after the handler is executed
+    public void postHandle(
+            HttpServletRequest request, HttpServletResponse response,
+            Object handler, ModelAndView modelAndView)
+            throws Exception {
+        long startTime = (Long) request.getAttribute("startTime");
+        long endTime = System.currentTimeMillis();
+        long executeTime = endTime - startTime;
+        //modified the exisitng modelAndView
+        modelAndView.addObject("executeTime", executeTime);
+        System.out.println(executeTime + "------------------------------------------");
+        //log it
+        if (logger.isDebugEnabled()) {
+            logger.debug("[" + handler + "] executeTime : " + executeTime + "ms");
+        }
+    }
 }

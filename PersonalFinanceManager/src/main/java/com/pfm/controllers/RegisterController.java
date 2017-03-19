@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class RegisterController {
-            @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String index(ModelMap map,HttpServletRequest request,HttpServletResponse response) {
-        
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+
         map.put("name", "val");
         return "register";
     }

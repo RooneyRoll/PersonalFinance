@@ -11,11 +11,6 @@
             <artifactId>jaxen</artifactId>
             <version>1.1.1</version>
         </dependency>
-                <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>9.3-1102-jdbc41</version>
-        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

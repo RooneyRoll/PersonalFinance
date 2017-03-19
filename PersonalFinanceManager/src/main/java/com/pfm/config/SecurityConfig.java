@@ -18,11 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  *
  * @author Misho
  */
-
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-    
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
@@ -30,27 +29,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/PersonalFinanceManager");
         driverManagerDataSource.setUsername("postgres");
         driverManagerDataSource.setPassword("masterkey");
-     return driverManagerDataSource;
- }
-   
+        return driverManagerDataSource;
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource())
                 .usersByUsernameQuery(
-                     "select user_username,user_password,user_enabled from users where user_username=?")
+                        "select user_username,user_password,user_enabled from users where user_username=?")
                 .authoritiesByUsernameQuery(
-                     "select username, user_role from user_roles where username=?");
-	}
-    
+                        "select username, user_role from user_roles where username=?");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests()
-        .antMatchers("/*")
-        .access("hasRole('USER')")
-        .and()
-        .formLogin()
-        .loginPage("/login")
-        .permitAll();
+        http.authorizeRequests()
+                .antMatchers("/*")
+                .access("hasRole('USER')")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll();
     }
 }
