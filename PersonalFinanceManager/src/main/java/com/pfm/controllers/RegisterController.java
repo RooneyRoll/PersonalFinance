@@ -5,6 +5,9 @@
  */
 package com.pfm.controllers;
 
+import com.pfm.data.context.IpfmContext;
+import com.pfm.data.entities.User;
+import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
  * @author Misho
  */
 @Controller
@@ -22,6 +24,9 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
 
+        IpfmContext context = new pfmContext();
+        System.out.println("----Register");
+        User[] user =  context.getUserSet().GetAll();
         map.put("name", "val");
         return "register";
     }

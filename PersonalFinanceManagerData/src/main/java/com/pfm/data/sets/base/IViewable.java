@@ -8,12 +8,9 @@ package com.pfm.data.sets.base;
 /**
  *
  * @author Misho
- * @param <EntityType>
  * @param <DTOtype>
  */
-public interface IViewable<EntityType,DTOtype> {
+public interface IViewable<DTOtype> {
     public DTOtype[] GetAll();
     public DTOtype GetById(int id);
-    public DTOtype ConvertEntityToDTO(EntityType entity);
-    public DTOtype[] ConvertArrayEntitiesToDTO(EntityType[] entities);
 }

@@ -5,15 +5,15 @@
  */
 package com.pfm.data.sets;
 
+import com.pfm.data.entities.User;
+import com.pfm.data.data.UserData;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 
 /**
  *
  * @author Misho
- * @param <EntityType>
- * @param <DTOtype>
  */
-public interface IUserSet<EntityType,DTOtype,DataType> extends IViewable<EntityType,DTOtype>,IManagable<DataType,EntityType>{
+public interface IUserSet extends IViewable<User>,IManagable<UserData>{
     
 }

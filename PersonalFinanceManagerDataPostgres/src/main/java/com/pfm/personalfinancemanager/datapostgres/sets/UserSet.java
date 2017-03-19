@@ -4,21 +4,20 @@
  * and open the template in the editor.
  */
 package com.pfm.personalfinancemanager.datapostgres.sets;
-import com.pfm.data.dto.User;
-import com.pfm.data.dtodata.UserData;
+import com.pfm.data.entities.User;
+import com.pfm.data.data.UserData;
 import com.pfm.data.sets.IUserSet;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import org.hibernate.SessionFactory;
 
 /**
  * @author Misho
  */
-public class UserSet extends BaseSet implements IUserSet<Users,User,UserData> {
+public class UserSet extends BaseSet implements IUserSet {
 
     public UserSet(SessionFactory factory) {
         super(factory);
-    } 
+    }
 
     @Override
     public User[] GetAll() {
@@ -27,16 +26,6 @@ public class UserSet extends BaseSet implements IUserSet<Users,User,UserData> {
 
     @Override
     public User GetById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public User ConvertEntityToDTO(Users entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public User[] ConvertArrayEntitiesToDTO(Users[] entities) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -52,11 +41,6 @@ public class UserSet extends BaseSet implements IUserSet<Users,User,UserData> {
 
     @Override
     public void Delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void FillEntityFromDTOData(Users entity, UserData data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
