@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @Configuration
 @ComponentScan("com.pfm")
 @EnableWebMvc
-//@Import({ SecurityConfig.class })
+@Import({ SecurityConfig.class })
 public class Config extends WebMvcConfigurerAdapter {
 
     /*@Bean  

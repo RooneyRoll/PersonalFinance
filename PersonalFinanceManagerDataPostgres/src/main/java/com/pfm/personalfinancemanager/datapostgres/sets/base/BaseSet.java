@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
  *
  * @author Misho
  */
-public class BaseSet {
+public abstract class BaseSet<T,T1> {
     protected SessionFactory sessionFactory;
     
     public BaseSet(SessionFactory session){
@@ -26,4 +26,8 @@ public class BaseSet {
     public void setSessionFactory(SessionFactory factory) {
         this.sessionFactory = factory;
     }
+    
+    protected abstract T1 convertEntityToDto(T Entity);
+    protected abstract T1[] convertEntititiesToDtoArray(T[] EntityArray);
+    protected abstract T convertDtoToEntity(T1 Dto);
 }

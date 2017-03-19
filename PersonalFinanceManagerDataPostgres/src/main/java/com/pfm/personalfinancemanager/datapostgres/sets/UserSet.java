@@ -13,10 +13,25 @@ import org.hibernate.SessionFactory;
 /**
  * @author Misho
  */
-public class UserSet extends BaseSet implements IUserSet {
+public class UserSet extends BaseSet<User,User> implements IUserSet {
 
     public UserSet(SessionFactory factory) {
         super(factory);
+    }
+
+    @Override
+    protected User convertEntityToDto(User Entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected User[] convertEntititiesToDtoArray(User[] EntityArray) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected User convertDtoToEntity(User Dto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -43,4 +58,6 @@ public class UserSet extends BaseSet implements IUserSet {
     public void Delete(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
 }

@@ -9,7 +9,6 @@ import com.pfm.data.context.IpfmContext;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.config.ConfigurationHelper;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserSet;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /**
