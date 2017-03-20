@@ -7,6 +7,7 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.entities.User;
 import com.pfm.data.data.UserData;
+import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
@@ -79,7 +80,7 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         List<Users> resultList = q.list();
         List<User> userObjects = convertEntititiesToDtoArray(resultList);
         session.close();
-        return userObjects;  
+        return userObjects;
     }
 
     @Override
@@ -87,15 +88,22 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param data
+     * @throws UserRegisterException
+     */
     @Override
-    public void Add(UserData data) {
+    public void Add(UserData data) throws UserRegisterException{
         Session session = this.getSessionFactory().openSession();
+        if(this.userExists(data.getUserName(), session))
+            throw new UserRegisterException("User already registered");
         session.beginTransaction();
         Users userEntity = convertDtoDataToEntity(data);
         Serializable uuid = session.save(userEntity);
         session.getTransaction().commit();
         session.close();
-        System.out.println(uuid+" ======== returned id");
+        System.out.println(uuid + " ======== returned id");
     }
 
     @Override
@@ -106,6 +114,15 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     @Override
     public void Delete(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean userExists(String username, Session session) {
+        Query q = session.createQuery("From Users u where u.userUsername = :username",Users.class)
+                .setParameter("username", username);
+        boolean exists = false;
+        if(q.getSingleResult() != null)
+            exists = true;
+        return exists;
     }
 
 }

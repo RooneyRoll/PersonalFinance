@@ -5,12 +5,14 @@
  */
 package com.pfm.data.sets.base;
 
+import com.pfm.data.exceptions.BasicException;
+
 /**
  *
  * @author Misho
  */
 public interface IManagable<DataType> {
-    public void Add(DataType data);
+    public void Add(DataType data) throws BasicException;
     public void Edit(int id, DataType data);
     public void Delete(int id);
 }
