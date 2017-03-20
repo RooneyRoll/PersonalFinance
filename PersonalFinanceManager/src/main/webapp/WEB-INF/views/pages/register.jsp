@@ -1,7 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="form-container-2">
     <div class="form-content">
-        <form>
+        <form th:action="@{/register}" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
@@ -11,7 +12,7 @@
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                    </div><input class="input-style-4" type="text" name="Username" placeholder="Потребителско име" id="user-name"/>
+                    </div><input class="input-style-4" type="text" name="UserName" placeholder="Потребителско име" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
@@ -75,12 +76,12 @@
                 </div>
             </div>
             <div class="buttons-container">
-                <div class="button animation">
+                <button type="submit" class="button animation">
                     Регисиация
-                </div>
-                <div class="button animation">
+                </button>
+                <button type="reset" class="button animation">
                     Изчисване на форма
-                </div>
+                </button>
             </div>
         </form>
     </div>

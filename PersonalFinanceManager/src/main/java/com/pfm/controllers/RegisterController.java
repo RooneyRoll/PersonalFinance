@@ -9,6 +9,7 @@ import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.UserData;
 import com.pfm.data.entities.User;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.io.Serializable;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,9 +26,31 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-
-      
-        map.put("name", "val");
+        
+        //map.put("name", "val");
         return "register";
+    }
+    
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        String username = request.getParameter("UserName");
+        String password = request.getParameter("Password");
+        String firstname = request.getParameter("FirstName");
+        String middlename = request.getParameter("MiddleName");
+        String lastname = request.getParameter("LastName");
+        String email = request.getParameter("Email");
+        UserData userObject = new UserData();
+        userObject.setEmail(email);
+        userObject.setEnabled(true);
+        userObject.setFirstName(firstname);
+        userObject.setLastName(lastname);
+        userObject.setMiddleName(middlename);
+        userObject.setPassword(password);
+        userObject.setUserName(username);
+        IpfmContext context = new pfmContext();
+        context.getUserSet().Add(userObject);
+        //System.out.println(id);
+        //map.put("name", "val");
+        return "result";
     }
 }
