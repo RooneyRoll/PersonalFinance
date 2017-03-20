@@ -92,7 +92,7 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         Users userEntity = convertDtoDataToEntity(data);
-        Serializable uuid =session.save(userEntity);
+        Serializable uuid = session.save(userEntity);
         session.getTransaction().commit();
         session.close();
         System.out.println(uuid+" ======== returned id");
