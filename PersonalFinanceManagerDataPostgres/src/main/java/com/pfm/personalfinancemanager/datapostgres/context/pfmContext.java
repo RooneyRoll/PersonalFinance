@@ -18,8 +18,18 @@ import org.hibernate.SessionFactory;
 public class pfmContext implements IpfmContext{
     private SessionFactory manager;
     private IUserSet UserSet;
-    
-    public pfmContext(){
+
+    private static pfmContext instance;
+
+    public static IpfmContext getInstance(){
+        if(instance == null){
+            instance = new pfmContext();
+        }
+
+        return instance;
+    }
+
+    private pfmContext(){
         this.manager = ConfigurationHelper.getSessionFactory();
         this.UserSet = new UserSet(this.manager);
     }
