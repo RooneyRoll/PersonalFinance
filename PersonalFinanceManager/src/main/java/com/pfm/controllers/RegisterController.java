@@ -26,19 +26,7 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
 
-        IpfmContext context = new pfmContext();
-        System.out.println("----Register");
-        UserData userInput = new UserData();
-        userInput.setEmail("test@gmail");
-        userInput.setEnabled(true);
-        userInput.setFirstName("test");
-        userInput.setLastName("test1");
-        userInput.setMiddleName("test123");
-        userInput.setPassword("1234567");
-        userInput.setUserName("usernametest");
-        context.getUserSet().Add(userInput);
-        List<User> users =  context.getUserSet().GetAll();
-        System.out.println(users.size());
+      
         map.put("name", "val");
         return "register";
     }

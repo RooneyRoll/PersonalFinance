@@ -1,84 +1,85 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="form-container-2">
     <div class="form-content">
         <form>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Username
+                        Потребителско име
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                    </div><input class="input-style-4" type="text" name="Username" placeholder="Username" id="user-name"/>
+                    </div><input class="input-style-4" type="text" name="Username" placeholder="Потребителско име" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Password
+                        Парола
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                    </div><input type="text" name="Password" placeholder="Password" id="user-name"/>
+                    </div><input type="password" name="Password" placeholder="Парола" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        email
+                        е-mail
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </div><input type="text" name="Email" placeholder="Email" id="user-name"/>
+                    </div><input type="text" name="Email" placeholder="e-mail" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        First Name
+                        Име
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="FirstName" placeholder="First Name" id="user-name"/>
+                    </div><input type="text" name="FirstName" placeholder="Име" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Middle Name
+                        Презиме
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="MiddleName" placeholder="Middle Name" id="user-name"/>
+                    </div><input type="text" name="MiddleName" placeholder="Презиме" id="user-name"/>
                 </div>
             </div>
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Last Name
+                        Фамилия
                     </span>
                 </div>
                 <div class="input-holder">
                     <div class="input-icon">
                         <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="LastName" placeholder="LastName" id="user-name"/>
+                    </div><input type="text" name="LastName" placeholder="Фамилия" id="user-name"/>
                 </div>
             </div>
-            <div class="button-container">
+            <div class="buttons-container">
                 <div class="button animation">
-                    register
+                    Регисиация
                 </div>
                 <div class="button animation">
-                    clear
+                    Изчисване на форма
                 </div>
             </div>
         </form>

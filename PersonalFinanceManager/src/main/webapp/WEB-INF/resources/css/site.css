@@ -86,6 +86,7 @@ body{
     background-color:#F1F1F1;
     min-height:500px;
     color:#34302D;
+    font-size:16px;
 }
 
 .site-content .button{
@@ -94,6 +95,9 @@ body{
     cursor:pointer;
     color:#fff;
     background-color:#34302D;
+    border:none;
+    font-size:inherit;
+    font-family:inherit;
 }
 
 .site-content .button:hover{
@@ -131,7 +135,7 @@ body{
     width:100%
 }
 
-.site-content .form-container-2 .form-content form .button-container{
+.site-content .form-container-2 .form-content form .buttons-container{
     margin-top:10px;
 }
 
@@ -178,20 +182,21 @@ body{
 }
 
 
-.site-content .form-container-2 .form-content input[type="text"] {
+.site-content .form-container-2 .form-content input[type="text"],
+.site-content .form-container-2 .form-content input[type="password"]{
     padding: 10px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
 }
+
 .site-content .form-container-2 .form-content input[type="text"]:focus,
-.site-content .form-container-2 .form-content input[type="text"].focus {
+.site-content .form-container-2 .form-content input[type="text"].focus,
+.site-content .form-container-2 .form-content input[type="password"]:focus,
+.site-content .form-container-2 .form-content input[type="password"].focus{
     border-bottom: solid 2px #6DB33F;
 }
 /*form styles with icon end*/
-
-
-
 /*form styles end*/
 
 .footer{
