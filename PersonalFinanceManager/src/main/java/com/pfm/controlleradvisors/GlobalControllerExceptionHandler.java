@@ -23,14 +23,12 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFound(NoHandlerFoundException ex) {
-        
         return "404";
     }
     
-    @ExceptionHandler(value = UserRegisterException.class)
-    public String handleRegister(ModelMap map, UserRegisterException ex) {
-        System.err.println("-------------------------------------");
-        map.put("errorMessage", ex.getMessage());
+    @ExceptionHandler(UserRegisterException.class)
+    public String handleRegister(UserRegisterException ex) {
+        
         return "result";
     }
 }
