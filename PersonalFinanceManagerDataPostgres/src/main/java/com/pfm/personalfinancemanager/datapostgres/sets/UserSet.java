@@ -103,7 +103,6 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         Serializable uuid = session.save(userEntity);
         session.getTransaction().commit();
         session.close();
-        System.out.println(uuid + " ======== returned id");
     }
 
     @Override
@@ -120,7 +119,7 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         Query q = session.createQuery("From Users u where u.userUsername = :username",Users.class)
                 .setParameter("username", username);
         boolean exists = false;
-        if(q.getSingleResult() != null)
+        if(q.getResultList().size() > 0)
             exists = true;
         return exists;
     }
