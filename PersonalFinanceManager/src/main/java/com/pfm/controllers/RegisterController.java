@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -46,13 +46,12 @@ public class RegisterController {
             userObject.setMiddleName(middlename);
             userObject.setPassword(password);
             userObject.setUserName(username);
-            IpfmContext context = new pfmContext();
-            context.getUserSet()
-                    .Add(userObject);
+            IpfmContext context = pfmContext.getInstance();
+        	context.getUserSet()
+                .Add(userObject);
         }else{
             //throw new 
         }
-
         map.put("message", "Успешна регистрация на потребител: " + username);
         return "result";
     }

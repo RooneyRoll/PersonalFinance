@@ -19,7 +19,7 @@
 </script>
 <div class="form-container size-2">
     <div class="form-content">
-        <form name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
+        <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 

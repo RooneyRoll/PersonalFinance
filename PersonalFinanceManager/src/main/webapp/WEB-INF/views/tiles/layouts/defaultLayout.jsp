@@ -15,6 +15,9 @@
     <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
     <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
     <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
+    <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
+    <script src="<c:url value='/resources/js/validations.js' />"></script>
+
     <script>
         $(document).ready(function(){
            

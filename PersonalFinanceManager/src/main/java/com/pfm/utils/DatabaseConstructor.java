@@ -14,6 +14,6 @@ import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
  */
 public class DatabaseConstructor {
     public static IpfmContext getNewContext(){
-        return new pfmContext();
+        return pfmContext.getInstance();
     }
 }
