@@ -45,7 +45,7 @@ public class RegisterController {
         userObject.setMiddleName(middlename);
         userObject.setPassword(password);
         userObject.setUserName(username);
-        IpfmContext context = new pfmContext();
+        IpfmContext context = pfmContext.getInstance();
         context.getUserSet()
                 .Add(userObject);
         map.put("message", "Успешна регистрация на потребител: " + username);
