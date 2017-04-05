@@ -13,6 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> 
     <link type="text/css" href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"/>
     <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
+    <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
+    <script src="<c:url value='/resources/js/validations.js' />"></script>
     <script>
         $(document).ready(function(){
            
