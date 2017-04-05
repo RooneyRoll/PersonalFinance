@@ -7,10 +7,8 @@ package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.UserData;
-import com.pfm.data.entities.User;
+import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import java.io.Serializable;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -26,13 +24,13 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-        
+
         //map.put("name", "val");
         return "register";
     }
-    
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+    public String register(ModelMap map, HttpServletRequest request, HttpServletResponse response) throws UserRegisterException {
         String username = request.getParameter("UserName");
         String password = request.getParameter("Password");
         String firstname = request.getParameter("FirstName");
@@ -48,9 +46,9 @@ public class RegisterController {
         userObject.setPassword(password);
         userObject.setUserName(username);
         IpfmContext context = new pfmContext();
-        context.getUserSet().Add(userObject);
-        //System.out.println(id);
-        //map.put("name", "val");
+        context.getUserSet()
+                .Add(userObject);
+        map.put("message", "Успешна регистрация на потребител: " + username);
         return "result";
     }
 }
