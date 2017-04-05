@@ -94,15 +94,17 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
      * @throws UserRegisterException
      */
     @Override
-    public void Add(UserData data) throws UserRegisterException{
+    public Serializable Add(UserData data) throws UserRegisterException {
         Session session = this.getSessionFactory().openSession();
-        if(this.userExists(data.getUserName(), session))
+        if (this.userExists(data.getUserName(), session)) {
             throw new UserRegisterException("User already registered");
+        }
         session.beginTransaction();
         Users userEntity = convertDtoDataToEntity(data);
-        Serializable uuid = session.save(userEntity);
+        Serializable id = session.save(userEntity);
         session.getTransaction().commit();
         session.close();
+        return id;
     }
 
     @Override
@@ -116,11 +118,12 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     }
 
     private boolean userExists(String username, Session session) {
-        Query q = session.createQuery("From Users u where u.userUsername = :username",Users.class)
+        Query q = session.createQuery("From Users u where u.userUsername = :username", Users.class)
                 .setParameter("username", username);
         boolean exists = false;
-        if(q.getResultList().size() > 0)
+        if (q.getResultList().size() > 0) {
             exists = true;
+        }
         return exists;
     }
 

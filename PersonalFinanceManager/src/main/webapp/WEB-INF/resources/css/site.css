@@ -12,6 +12,31 @@
     -o-transition: background-color 250ms;
     transition: background-color 250ms;
 }
+
+html body .site-content#site-content .size-2{
+    width:calc(50% - 10px);
+    vertical-align:top;
+    box-sizing:border-box;
+}
+
+.size-2:first-of-type{
+    margin-right:10px;
+}
+
+.size-2 + .size-2{
+    margin-left:10px;
+}
+
+html body .site-content#site-content .size-3{
+    width:33.3%;
+    vertical-align:top;
+    box-sizing:border-box;
+}
+
+.required-field-text{
+    color:#c0392b;
+    font-weight:bold;
+}
 /*Helper classes end*/
 
 html body *{
@@ -69,16 +94,21 @@ body{
     text-align:right;
 }
 
-.header .header-content .header-content-right .header-button{
+.header .header-content .header-content-right .header-right-buttons{
+    width:100%;
+    display:inline-block
+}
+
+.header .header-content .header-content-right .header-right-buttons .header-button{
     display:inline-block;
     padding:10px 15px;
     cursor:pointer;
-    /*color:#34302D;*/
+    color:#fff;
+    text-decoration: none;
 }
 
-.header .header-content .header-content-right .header-button:hover{
+.header .header-content .header-content-right .header-right-buttons .header-button:hover{
     background-color:#6DB33F;
-    /*color:#34302D;*/
 }
 
 .site-content{
@@ -117,62 +147,97 @@ body{
 .site-content input[type="text"]:focus {
     outline: none;
 }
-
-/*form styles*/
-
-.site-content .form-container-2{
+/*error styles*/
+.site-content .error-container{
     display:inline-block;
     width:50%;
 }
 
-.site-content .form-container-2 .form-content{
+.site-content .error-container .error-content{
+    display:inline-block;
+    width:100%;
+    cursor:default;
+}
+
+.site-content .error-container .error-content .error-title{
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    font-size:20px;
+    border-bottom:2px solid #f1c40f;
+    padding-bottom:5px;
+}
+
+.site-content .error-container .error-content .error-title .error-title-icon{
+    color:#f1c40f;
+}
+
+.site-content .error-container .error-content .error-title .error-title-text{
+    color:#000;
+}
+
+.site-content .error-container .error-content .error-text-holder{
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    padding-top:5px;
+}
+/*error styles end*/
+/*form styles*/
+
+.site-content .form-container{
+    display:inline-block;
+    width:50%;
+}
+
+.site-content .form-container .form-content{
     display:inline-block;
     width:100%;
 }
 
-.site-content .form-container-2 .form-content form{
+.site-content .form-container .form-content form{
     display:inline-block;   
     width:100%
 }
 
-.site-content .form-container-2 .form-content form .buttons-container{
-    margin-top:10px;
+.site-content .form-container .form-content form .buttons-container{
+    /*margin-top:10px;*/
 }
 
-.site-content .form-container-2 .form-content form .input-container{
+.site-content .form-container .form-content form .input-container{
     display:inline-block;   
     width:100%;
-    margin-top:5px;
+    margin-bottom:10px;
 }
 
-.site-content .form-container-2 .form-content form .input-container .input-title-holder{
+.site-content .form-container.form-content form .input-container .input-title-holder{
     display:inline-block;
     width:100%;
     margin-bottom:5px;
     cursor:default;
 }
 
-.site-content .form-container-2 .form-content form .input-container .input-holder{
+.site-content .form-container .form-content form .input-container .input-holder{
     display:inline-block;
     width:100%;
 }
 
-.site-content .form-container-2 .form-content form .input-container .input-holder input{
+.site-content .form-container .form-content form .input-container .input-holder input{
     display:inline-block;
     width:100%;
 }
 
 /*form styles with icon*/
-.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder{
+.site-content .form-container .form-content form .input-container.with-icon .input-holder{
     background:#6DB33F;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
 }
 
-.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder input{
+.site-content .form-container .form-content form .input-container.with-icon .input-holder input{
     width: calc(100% - 40px);
 }
-.site-content .form-container-2 .form-content form .input-container.with-icon .input-holder .input-icon{
+.site-content .form-container .form-content form .input-container.with-icon .input-holder .input-icon{
     display:inline-block;
     width:40px;
     font-size:20px;
@@ -182,18 +247,18 @@ body{
 }
 
 
-.site-content .form-container-2 .form-content input[type="text"],
-.site-content .form-container-2 .form-content input[type="password"]{
+.site-content .form-container .form-content input[type="text"],
+.site-content .form-container .form-content input[type="password"]{
     padding: 10px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
 }
 
-.site-content .form-container-2 .form-content input[type="text"]:focus,
-.site-content .form-container-2 .form-content input[type="text"].focus,
-.site-content .form-container-2 .form-content input[type="password"]:focus,
-.site-content .form-container-2 .form-content input[type="password"].focus{
+.site-content .form-container .form-content input[type="text"]:focus,
+.site-content .form-container .form-content input[type="text"].focus,
+.site-content .form-container .form-content input[type="password"]:focus,
+.site-content .form-container .form-content input[type="password"].focus{
     border-bottom: solid 2px #6DB33F;
 }
 /*form styles with icon end*/
@@ -243,3 +308,14 @@ body{
     font-size:20px;
 }
 /*error pages end*/
+/*plugins css overwrite*/
+.checkbox-green,
+.checkbox-green.checked{
+    background-color:#6DB33F;
+}
+
+.checkbox-green:hover,
+.checkbox-green.checked:hover{
+    background-color:#79BA4F;
+}
+/*plugins css overwrite end*/

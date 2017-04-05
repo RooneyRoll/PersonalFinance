@@ -5,6 +5,8 @@
  */
 package com.pfm.controllers;
 
+import com.pfm.data.context.IpfmContext;
+import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,8 @@ public class DefaultController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) {
-
+IpfmContext context = new pfmContext();
+            System.out.println(context.getUserRoleSet().GetAll().size());
         return "home";
     }
 

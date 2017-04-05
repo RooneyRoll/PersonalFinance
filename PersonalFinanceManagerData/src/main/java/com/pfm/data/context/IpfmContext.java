@@ -5,6 +5,7 @@
  */
 package com.pfm.data.context;
 
+import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 
 /**
@@ -13,4 +14,5 @@ import com.pfm.data.sets.IUserSet;
  */
 public interface IpfmContext {
     public IUserSet getUserSet();
+    public IUserRoleSet getUserRoleSet();
 }

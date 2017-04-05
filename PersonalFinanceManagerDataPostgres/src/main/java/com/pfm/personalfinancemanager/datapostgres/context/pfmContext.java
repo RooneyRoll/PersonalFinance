@@ -6,8 +6,10 @@
 package com.pfm.personalfinancemanager.datapostgres.context;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.config.ConfigurationHelper;
+import com.pfm.personalfinancemanager.datapostgres.sets.UserRoleSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserSet;
 import org.hibernate.SessionFactory;
 
@@ -18,14 +20,21 @@ import org.hibernate.SessionFactory;
 public class pfmContext implements IpfmContext{
     private SessionFactory manager;
     private IUserSet UserSet;
+    private IUserRoleSet UserRoleSet;
     
     public pfmContext(){
         this.manager = ConfigurationHelper.getSessionFactory();
         this.UserSet = new UserSet(this.manager);
+        this.UserRoleSet = new UserRoleSet(this.manager);
     }
     
     public IUserSet getUserSet() {
         return this.UserSet;
+    }
+
+    @Override
+    public IUserRoleSet getUserRoleSet() {
+        return this.UserRoleSet;
     }
     
 }

@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="form-container-2">
+<div class="form-container">
     <div class="form-content">
         <form th:action="@{/register}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

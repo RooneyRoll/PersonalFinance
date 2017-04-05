@@ -37,17 +37,22 @@ public class RegisterController {
         String middlename = request.getParameter("MiddleName");
         String lastname = request.getParameter("LastName");
         String email = request.getParameter("Email");
-        UserData userObject = new UserData();
-        userObject.setEmail(email);
-        userObject.setEnabled(true);
-        userObject.setFirstName(firstname);
-        userObject.setLastName(lastname);
-        userObject.setMiddleName(middlename);
-        userObject.setPassword(password);
-        userObject.setUserName(username);
-        IpfmContext context = new pfmContext();
-        context.getUserSet()
-                .Add(userObject);
+        if (email != "" && lastname != "" && middlename != "" && firstname != "" && password != "" && username != "") {
+            UserData userObject = new UserData();
+            userObject.setEmail(email);
+            userObject.setEnabled(true);
+            userObject.setFirstName(firstname);
+            userObject.setLastName(lastname);
+            userObject.setMiddleName(middlename);
+            userObject.setPassword(password);
+            userObject.setUserName(username);
+            IpfmContext context = new pfmContext();
+            context.getUserSet()
+                    .Add(userObject);
+        }else{
+            //throw new 
+        }
+
         map.put("message", "Успешна регистрация на потребител: " + username);
         return "result";
     }

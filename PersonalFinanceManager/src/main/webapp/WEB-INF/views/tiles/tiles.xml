@@ -18,6 +18,7 @@
     </definition>  
     <definition name="login" extends="base-definition">  
        <put-attribute name="title" value="login" />  
+       <put-attribute name="loginError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />
        <put-attribute name="body" value="/WEB-INF/views/pages/user/login.jsp" />  
     </definition>
     <definition name="register" extends="base-definition">  
