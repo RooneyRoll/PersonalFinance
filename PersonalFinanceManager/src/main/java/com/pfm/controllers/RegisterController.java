@@ -1,10 +1,9 @@
-﻿/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.pfm.controllers;
-
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.UserData;
 import com.pfm.data.exceptions.UserRegisterException;

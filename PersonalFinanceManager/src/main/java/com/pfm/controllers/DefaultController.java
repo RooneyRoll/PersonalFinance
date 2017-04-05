@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.pfm.controllers;
-
 import com.pfm.data.context.IpfmContext;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ public class DefaultController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) {
-IpfmContext context = new pfmContext();
+    IpfmContext context = pfmContext.getInstance();
             System.out.println(context.getUserRoleSet().GetAll().size());
         return "home";
     }
