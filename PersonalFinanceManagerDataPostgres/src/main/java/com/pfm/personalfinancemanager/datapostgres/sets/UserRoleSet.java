@@ -63,7 +63,13 @@ public class UserRoleSet extends BaseSet<UserRoles, UserRole, UserRoleData> impl
 
     @Override
     public Serializable Add(UserRoleData data) throws UserRegisterException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        UserRoles useRoleEntity = convertDtoDataToEntity(data);
+        Serializable id = session.save(useRoleEntity);
+        session.getTransaction().commit();
+        session.close();
+        return id;
     }
 
     @Override

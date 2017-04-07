@@ -142,7 +142,7 @@ body{
     font-size: 14px;
     appearance: none;
     box-shadow: none;
-    border-radius: none;
+    border-radius: 0;
 }
 .site-content input[type="text"]:focus {
     outline: none;
@@ -183,6 +183,44 @@ body{
     padding-top:5px;
 }
 /*error styles end*/
+/*message styles*/
+
+.site-content .message-container{
+    display:inline-block;
+    width:100%;
+}
+
+.site-content .message-container .message-content{
+    display:inline-block;
+    width:100%;
+    cursor:default;
+}
+
+.site-content .message-container .message-content .message-title{
+    display:inline-block;
+    width:100%;
+    text-align:left;
+    font-size:20px;
+    border-bottom:2px solid #6DB33F;
+    padding-bottom:5px;
+}
+
+.site-content .message-container .message-content .message-title .message-title-icon{
+    color:#6DB33F;
+}
+
+.site-content .message-container .message-content .message-title .message-title-text{
+    color:#000;
+}
+
+.site-content .message-container .message-content .message-text-holder{
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    padding-top:5px;
+}
+
+/*message styles end*/
 /*form styles*/
 
 .site-content .form-container{
@@ -260,6 +298,11 @@ body{
 .site-content .form-container .form-content input[type="password"]:focus,
 .site-content .form-container .form-content input[type="password"].focus{
     border-bottom: solid 2px #6DB33F;
+}
+
+.site-content .form-container .form-content input.error[type="text"],
+.site-content .form-container .form-content input.error[type="password"]{
+    border-bottom: solid 2px #e74c3c;
 }
 /*form styles with icon end*/
 /*form styles end*/

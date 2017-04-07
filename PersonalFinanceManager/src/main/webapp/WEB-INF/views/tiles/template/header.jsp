@@ -26,10 +26,22 @@
                     </a>
                 </c:if>
                 <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a href = "logout" class="header-button animation">
+                    <a href="javascript:formSubmit()" class="header-button animation">
                         Изход
                     </a>
                 </c:if>
+            </div>
+            <div style="display:none;font-size:0">
+                <c:url value="logout" var="logoutUrl" />
+                <form action="${logoutUrl}" method="post" id="logoutForm">
+                    <input type="hidden" name="${_csrf.parameterName}"
+                           value="${_csrf.token}" />
+                </form>
+                <script>
+                    function formSubmit() {
+                        document.getElementById("logoutForm").submit();
+                    }
+                </script>
             </div>
         </div>
     </div>

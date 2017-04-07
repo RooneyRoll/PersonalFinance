@@ -9,11 +9,15 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -33,6 +37,8 @@ public class UserRoles implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @SequenceGenerator(name = "my_seq", sequenceName = "user_role_gen_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     @Column(name = "user_role_id")
     private Integer userRoleId;
     @Basic(optional = false)
@@ -102,5 +108,5 @@ public class UserRoles implements Serializable {
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.UserRoles[ userRoleId=" + userRoleId + " ]";
     }
-    
+
 }

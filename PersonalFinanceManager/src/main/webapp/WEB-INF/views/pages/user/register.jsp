@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="form-container">
+<div class="form-container size-2">
     <div class="form-content">
         <form id="register-form" th:action="@{/register}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -85,4 +85,4 @@
             </div>
         </form>
     </div>
-</div>
+</div><c:if test="${errorMessage != null}"><tiles:insertAttribute name="registerError" /></c:if>

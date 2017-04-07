@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
         driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/PersonalFinanceManager");
         driverManagerDataSource.setUsername("postgres");
-        driverManagerDataSource.setPassword("nikolai");
+        driverManagerDataSource.setPassword("masterkey");
         return driverManagerDataSource;
     }
 
@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/regstat").permitAll()
                 .antMatchers("/*").access("hasRole('ROLE_USER')")
                 .and()
                 .formLogin()
@@ -64,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .and()
                 .rememberMe().tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(1209600);
-        
+                .tokenValiditySeconds(3600);
+
     }
 
     @Bean
