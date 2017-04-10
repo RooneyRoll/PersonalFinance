@@ -96,6 +96,8 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     @Override
     public Serializable Add(UserData data) throws UserRegisterException {
         Session session = this.getSessionFactory().openSession();
+        try{
+        
         if (this.userExists(data.getUserName(), session)) {
             throw new UserRegisterException("User already registered");
         }
@@ -105,6 +107,10 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         session.getTransaction().commit();
         session.close();
         return id;
+        }finally{
+            session.close();
+        }
+        
     }
 
     @Override

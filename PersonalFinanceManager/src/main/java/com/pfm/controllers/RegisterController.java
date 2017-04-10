@@ -11,12 +11,12 @@ import com.pfm.data.data.UserRoleData;
 import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,7 +41,6 @@ public class RegisterController {
         }else{
             return "redirect:/login";
         }
-        
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -67,7 +66,7 @@ public class RegisterController {
                 userRoleObject.setUserName(username);
                 userRoleObject.setUserRole("ROLE_USER");
                 IpfmContext context = pfmContext.getInstance();
-                context.getUserSet()
+                Serializable id =  context.getUserSet()
                         .Add(userObject);
                 context.getUserRoleSet()
                         .Add(userRoleObject);

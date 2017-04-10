@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package com.pfm.controllers;
-import com.pfm.data.context.IpfmContext;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import com.pfm.datagrid.DataGridBuilder;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class DefaultController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) {
-    IpfmContext context = pfmContext.getInstance();
-            System.out.println(context.getUserRoleSet().GetAll().size());
+    public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) throws ClassNotFoundException {
+        Map<String,String> fields = new HashMap<String,String>();
+        fields.put("userEmail","string");
+        fields.put("userFirstname","string");
+        fields.put("userLastname","string");
+        fields.put("userMiddlename","string");
+        fields.put("userUsername","string");
+        DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
+        String gridHtml = grid.buildHtmlForGrid();
+        map.put("grid", gridHtml);
         return "home";
     }
 

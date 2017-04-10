@@ -63,8 +63,8 @@ public class Users implements Serializable {
     @Basic(optional = false)
     @Column(name = "user_username")
     private String userUsername;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "username")
-    private List<UserRoles> userRolesList;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "username")
+    //private List<UserRoles> userRolesList;
 
     public Users() {
     }
@@ -144,14 +144,14 @@ public class Users implements Serializable {
         this.userUsername = userUsername;
     }
 
-    @XmlTransient
-    public List<UserRoles> getUserRolesList() {
-        return userRolesList;
-    }
+    //@XmlTransient
+    //public List<UserRoles> getUserRolesList() {
+    //    return userRolesList;
+    //}
 
-    public void setUserRolesList(List<UserRoles> userRolesList) {
-        this.userRolesList = userRolesList;
-    }
+    //public void setUserRolesList(List<UserRoles> userRolesList) {
+    //    this.userRolesList = userRolesList;
+    //}
 
     @Override
     public int hashCode() {
