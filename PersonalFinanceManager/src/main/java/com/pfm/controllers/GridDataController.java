@@ -7,7 +7,7 @@ package com.pfm.controllers;
 
 import com.google.gson.Gson;
 import com.pfm.datagrid.DataGridResponseObject;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
+import com.pfm.requestObjects.ColumnFilterRequestObject;
 import com.pfm.requestObjects.ColumnRequestObject;
 import com.pfm.requestObjects.GridParamObject;
 import java.io.Serializable;
@@ -54,11 +54,7 @@ public class GridDataController {
             resp.setData(resultList);
             resp.setDraw(params.getDraw());
             resp.setRecordsFiltered(itemsCount);
-            resp.setRecordsTotal(300);
-            //for (Serializable entity : resultList) {
-            //    Class<?> entityClass = Class.forName(entity.getClass().getName());
-            //    System.out.println(entityClass.getName());
-            //}
+            resp.setRecordsTotal(itemsCount);
             String json = gson.toJson(resp);
             return json;
         } catch (Throwable ex) {
@@ -71,8 +67,26 @@ public class GridDataController {
         return new ArrayList<T>();
     }
 
+    private String determineParamQueryString(Integer fieldKey, GridParamObject params, String searchVal) {
+        ColumnFilterRequestObject currentFilter = params.getFilter().get(fieldKey);
+        switch (currentFilter.getValue()) {
+            case "eq":
+
+                break;
+            case "co":
+                searchVal = "%"+searchVal + "%";
+                break;
+            case "en":
+                searchVal = "%"+searchVal;
+                break;
+            case "st":
+                searchVal = searchVal + "%";  
+                break;
+        }
+        return searchVal;
+    }
+
     private String buildWhereStatement(GridParamObject params, char firstLetter) {
-        //where c.fileName in :fileName
         Integer iterate = 0;
         String statement = "";
         for (ColumnRequestObject column : params.getColumns()) {
@@ -90,21 +104,23 @@ public class GridDataController {
     }
 
     private Query buildQuery(Session session, GridParamObject params) {
-        int currentPage = params.getStart() / params.getLength();
         String source = params.getSource();
         List<ColumnRequestObject> columns = params.getColumns();
-        String order = source.charAt(0)+"."+columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
+        String order = source.charAt(0) + "." + columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
         String where = this.buildWhereStatement(params, source.charAt(0));
-        if(!"".equals(where)){
-            where = "where "+where;
+        if (!"".equals(where)) {
+            where = "where " + where;
         }
         Query q = session.createQuery("From " + source + " " + source.charAt(0) + " " + where + " order by " + order);
+        Integer i = 0;
         for (ColumnRequestObject column : params.getColumns()) {
             String field = column.getData();
             String searchVal = column.getSearch().getValue();
             if (!"".equals(searchVal)) {
-                q.setParameter(field, searchVal+"%");
+                String param = determineParamQueryString(i, params, searchVal);
+                q.setParameter(field, param);
             }
+            i++;
         }
         q.setMaxResults(params.getLength());
         q.setFirstResult(params.getStart());

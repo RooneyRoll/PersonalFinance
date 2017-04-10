@@ -6,7 +6,6 @@
 package com.pfm.requestObjects;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -20,6 +19,16 @@ public class GridParamObject {
     public Integer start;
     public String source;
     public List<ColumnOrderRequestObject> order;
+    public List<ColumnFilterRequestObject> filter;
+
+    public List<ColumnFilterRequestObject> getFilter() {
+        return filter;
+    }
+
+    public void setFilter(List<ColumnFilterRequestObject> filter) {
+        this.filter = filter;
+    }
+    
 
     public Integer getStart() {
         return start;

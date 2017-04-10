@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class DataGridResponseObject<T> {
     public Integer draw;
-    public Integer recordsTotal;
+    public Long recordsTotal;
     public Long recordsFiltered;
     public List<T> data;
 
@@ -33,11 +33,11 @@ public class DataGridResponseObject<T> {
         this.draw = draw;
     }
 
-    public Integer getRecordsTotal() {
+    public Long getRecordsTotal() {
         return recordsTotal;
     }
 
-    public void setRecordsTotal(Integer recordsTotal) {
+    public void setRecordsTotal(Long recordsTotal) {
         this.recordsTotal = recordsTotal;
     }
 
