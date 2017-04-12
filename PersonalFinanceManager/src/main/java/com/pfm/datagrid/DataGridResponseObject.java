@@ -10,6 +10,7 @@ import java.util.List;
 /**
  *
  * @author Misho
+ * @param <T> Data type for grid items
  */
 public class DataGridResponseObject<T> {
     public Integer draw;
