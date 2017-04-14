@@ -3,46 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.controllers;
+package com.pfm.personalfinancemanagergrid.classes;
 
 import com.google.gson.Gson;
-import com.pfm.datagrid.DataGridResponseObject;
-import com.pfm.requestObjects.ColumnFilterRequestObject;
-import com.pfm.requestObjects.ColumnRequestObject;
-//import com.pfm.requestObjects.GridParamObject;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Table;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import com.pfm.personalfinancemanagergrid.classes.DataGridDataManager;
-import com.pfm.personalfinancemanagergrid.classes.GridParamObject;
 
 /**
  *
  * @author Misho
  */
-@RestController
-public class GridDataController {
-
-    @RequestMapping(value = "/gridData", method = RequestMethod.POST, produces = "application/json")
-    public String gridData(HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestBody GridParamObject params) {
-            DataGridDataManager manager = new DataGridDataManager(params);
-            String result = manager.getData();
-            return result;
-        /*try {
-
+public class DataGridDataManager {
+    private GridParamObject params;
+    
+    public DataGridDataManager(GridParamObject params){
+        this.params = params;
+    }
+    
+    public String getData(){
+        try {
             Class<?> cls = Class.forName(params.getSource());
             Table table = cls.getAnnotation(javax.persistence.Table.class);
             SessionFactory factory = new Configuration().configure().buildSessionFactory();
@@ -65,10 +50,10 @@ public class GridDataController {
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
-        }*/
+        }
     }
-
-    /*private String determineParamQueryString(Integer fieldKey, GridParamObject params, String searchVal) {
+    
+    private String determineParamQueryString(Integer fieldKey, GridParamObject params, String searchVal) {
         ColumnFilterRequestObject currentFilter = params.getFilter().get(fieldKey);
         switch (currentFilter.getValue()) {
             case "eq":
@@ -127,8 +112,4 @@ public class GridDataController {
         q.setFirstResult(params.getStart());
         return q;
     }
-
-    private Object getSessionFactory() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }*/
 }

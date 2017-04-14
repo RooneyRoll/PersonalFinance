@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package com.pfm.controllers;
-import com.pfm.datagrid.DataGridBuilder;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
+import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +30,7 @@ public class DefaultController {
         fields.put("userLastname","string");
         fields.put("userMiddlename","string");
         fields.put("userUsername","date");
+        
         DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
         String gridHtml = grid.buildHtmlForGrid();
         map.put("grid", gridHtml);
