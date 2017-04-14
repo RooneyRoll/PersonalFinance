@@ -29,7 +29,7 @@ public class DefaultController {
         fields.put("userFirstname","string");
         fields.put("userLastname","string");
         fields.put("userMiddlename","string");
-        fields.put("userUsername","string");
+        fields.put("userUsername","date");
         DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
         String gridHtml = grid.buildHtmlForGrid();
         map.put("grid", gridHtml);

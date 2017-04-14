@@ -24,12 +24,32 @@ table.dataTable .select2-container--default .select2-selection--single{
     width:100%;
 }
 .filter-input input{
+    width:100%;
     height:30px;
     border:1px solid #aaa;
     padding:0px 10px;
     border-left:0;
     border-right:0;
     border-bottom:0;
+}
+
+table.dataTable thead .filter-input .flatpickr input{
+    width:calc(100% - 60px);
+    display:inline-block;
+}
+table.dataTable thead .filter-input .flatpickr a{
+    display:inline-block;
+    box-sizing:border-box;
+    padding:6px;
+    width:30px;
+    border-top:1px solid #aaa;
+    border-left:1px solid #aaa;
+}
+table.dataTable thead .filter-input .flatpickr .toggle-button{
+    color:#6DB33F;
+}
+table.dataTable thead .filter-input .flatpickr .remove-button{
+    color:#e74c3c;
 }
 table.dataTable.no-footer {
     border-left:1px solid #aaa;

@@ -8,12 +8,15 @@
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
         <title><tiles:getAsString name="title" /></title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> </link>
         <link href="resources/js/icheck-1.x/skins/all.css" rel="stylesheet" ></link> 
         <link href="resources/js/icheck-1.x/skins/line/green.css" rel="stylesheet" ></link> 
         <link type="text/css" href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"/>
         <link href="resources/js/DataTables-1.10.13/media/css/jquery.dataTables.css" rel="stylesheet" ></link> 
         <link href="resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css" rel="stylesheet" ></link> 
+
+        <link  href="<c:url value='/resources/js/flatpickr/flatpickr.min.css' />" rel="stylesheet" type="text/css"></link>
+        <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link> 
         <link href="resources/js/select2-4.0.3/dist/css/select2.min.css" rel="stylesheet" ></link> 
         <link href="resources/css/gridCustomCss/grid.css" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
@@ -23,11 +26,22 @@
         <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.js' />"></script>
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
+        <script src="<c:url value='/resources/js/flatpickr/flatpickr.min.js' />"></script>
+        <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
         <script src="<c:url value='/resources/js/validations.js' />"></script>
 
         <script>
-            $(document).ready(function () {
-            });
+            /*$(document).ready(function () {
+                $("#username").flatpickr(
+                        {
+                            "locale": "bg",
+                            "mode": "single",
+                            "enableTime": true
+                        }
+                );
+
+
+            });*/
         </script>
     </head>
     <body>
