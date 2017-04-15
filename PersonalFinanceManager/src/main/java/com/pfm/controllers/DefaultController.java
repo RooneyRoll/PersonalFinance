@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.pfm.controllers;
+import com.pfm.personalfinancemanager.datapostgres.entities.PersistentLogins;
+import com.pfm.personalfinancemanager.datapostgres.entities.UserRoles;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
 import java.util.HashMap;
@@ -24,14 +26,12 @@ public class DefaultController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) throws ClassNotFoundException {
-        Map<String,String> fields = new HashMap<String,String>();
-        fields.put("userEmail","string");
-        fields.put("userFirstname","string");
-        fields.put("userLastname","string");
-        fields.put("userMiddlename","string");
-        fields.put("userUsername","date");
-        
-        DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
+        Map<String,String> fields = new HashMap<String,String>();;
+        fields.put("username","string");
+        fields.put("series","string");
+        fields.put("token","string");
+        fields.put("lastUsed","date");
+        DataGridBuilder grid = new DataGridBuilder(PersistentLogins.class,fields);
         String gridHtml = grid.buildHtmlForGrid();
         map.put("grid", gridHtml);
         return "home";

@@ -24,85 +24,50 @@ public class DataGridBuilder {
     private Map<String, String> allowedFields = new HashMap<String, String>();
     private String table;
     private String jsonFieldsVariable;
+    private String columnFilters;
     private String gridHtml = "";
-
-    public Map<String, String> getAllowedFields() {
-        return allowedFields;
-    }
-
-    public void setAllowedFields(Map<String, String> allowedFields) {
-        this.allowedFields = allowedFields;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public List<String> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<String> columns) {
-        this.columns = columns;
-    }
-
-    public void addColumn(String column) {
-        this.getColumns().add(column);
-    }
-
-    public Class getEntity() {
-        return entity;
-    }
-
-    public void setEntity(Class entity) {
-        this.entity = entity;
-    }
 
     public String getGridHtml() {
         return gridHtml;
     }
 
-    public void setGridHtml(String gridHtml) {
-        this.gridHtml = gridHtml;
-    }
-
     public void appendToGridHtml(String html) {
         String oldHtml = this.getGridHtml();
-        this.setGridHtml(oldHtml + html);
+        this.gridHtml = (oldHtml + html);
     }
 
     private void getEntityAnnotations() throws ClassNotFoundException {
-        Class<?> cls = Class.forName(getEntity().getName());
+        Class<?> cls = Class.forName(entity.getName());
         Table table = cls.getAnnotation(javax.persistence.Table.class);
-        this.setTable(table.name());
+        this.table = table.name();
         Field[] fields = cls.getDeclaredFields();
         this.jsonFieldsVariable = "[";
+        this.columnFilters = "[";
         Integer iteration = 0;
         for (Field field : fields) {
             Column column = field.getAnnotation(javax.persistence.Column.class);
-            if (column != null && this.getAllowedFields().containsKey(field.getName())) {
-                this.addColumn(field.getName());
+            if (column != null && allowedFields.containsKey(field.getName())) {
+                this.columns.add(field.getName());
                 if (iteration != 0) {
                     this.jsonFieldsVariable += ",";
+                    this.columnFilters += ",";
                 }
-                this.jsonFieldsVariable += "{\"name\":\"" + field.getName() + "\"," + "\"type\":\"" + this.getAllowedFields().get(field.getName()) + "\"}";
+                this.columnFilters += "{'value':'','type':'" + this.allowedFields.get(field.getName()) + "'}";
+                this.jsonFieldsVariable += "{\"name\":\"" + field.getName() + "\"," + "\"type\":\"" + this.allowedFields.get(field.getName()) + "\"}";
                 iteration++;
             }
         }
         this.jsonFieldsVariable += "]";
-        System.out.println(this.jsonFieldsVariable);
+        this.columnFilters += "]";
+        System.out.println(columnFilters);
     }
 
     public String buildHtmlForGrid() {
-        this.appendToGridHtml("<table id='grid-" + this.getTable() + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
+        this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
-        int columnsLength = this.getColumns().size();
+        int columnsLength = this.columns.size();
         int iteration = 0;
-        for (String column : this.getColumns()) {
+        for (String column : columns) {
             this.appendToGridHtml("<th>" + column + "</th>");
             columnsDeclaration += "{'mData':'" + column + "'}";
             if (iteration < columnsLength) {
@@ -131,8 +96,8 @@ public class DataGridBuilder {
                 + "         }\n"
                 + "         if(type == 'date'){\n"
                 + "		options = '<option value=\"eq\" selected>Равно на</option>'+\n"
-                + "		'<option value=\"st\">Преди</option>'+\n"
-                + "		'<option value=\"en\">След</option>';\n"
+                + "		'<option value=\"lt\">Преди</option>'+\n"
+                + "		'<option value=\"gt\">След</option>';\n"
                 + "         }\n"
                 + "         return '<div class=\"filter-holder\">'+\n"
                 + "		//'<div class=\"filter-title\">'+title+'</div>'+\n"
@@ -141,12 +106,12 @@ public class DataGridBuilder {
                 + "		options+\n"
                 + "		'</select>'+\n"
                 + "		'</div><div class=\"filter-input\">'+\n"
-                + "		'<input data-column=\"'+column+'\" type=\"text\" placeholder=\"Търсене по '+title+'\" />'+\n"
+                + "		'<input data-column=\"'+column+'\" type=\"text\" placeholder=\"&#xf002;&nbsp Търсене по '+title+'\"  />'+\n"
                 + "		'</div></div>';\n"
                 + "     }"
                 + "     var token = $('meta[name=\"_csrf\"]').attr('content'); \n"
                 + "     var header = $('meta[name=\"_csrf_header\"]').attr('content');\n"
-                + "     var table = $('#grid-" + this.getTable() + "').DataTable({\n"
+                + "     var table = $('#grid-" + table + "').DataTable({\n"
                 + "         'processing': true,\n"
                 + "         'responsive': true,\n"
                 + "         'serverSide': true,\n"
@@ -184,21 +149,28 @@ public class DataGridBuilder {
                 + "                 xhr.setRequestHeader('X-CSRF-TOKEN', token);\n"
                 + "             },\n"
                 + "             data : function ( d ) {\n"
-                + "                 d['filter']=[];"
-                + "                 $('.filter-holder').each(function(key,val){\n"
-                + "                     var filterVal = $(this).find('option:selected').val();\n"
-                + "                     var filterType = $(this).find('option:selected').parent().attr('data-type');"
-                + "                     var filterObject ={'value':filterVal,'type':filterType};"
-                + "                     d['filter'][key] = filterObject;\n"
-                + "                 });                  "
-                + "                 d['source'] = '" + this.getEntity().getName() + "'\n;"
+                + "                 var columns = (d['columns']);\n"
+                + "                 var filters = " + this.columnFilters + " \n"
+                + "                 $(columns).each(function(key,value){\n"
+                + "                     if($('.filter-holder').length > 0){\n"
+                + "                         $('.filter-holder').each(function(key,val){\n"
+                + "                             var filterVal = $(this).find('option:selected').val();\n"
+                + "                             var filterType = $(this).find('option:selected').parent().attr('data-type');\n"
+                + "                             var filterObject ={'value':filterVal,'type':filterType};\n"
+                + "                             d['columns'][key]['filter'] = filterObject;\n"
+                + "                         });\n"
+                + "                     }else{\n"
+                + "                         d['columns'][key]['filter'] = filters[key];\n"
+                + "                     }\n"
+                + "                 });\n"
+                + "                 d['source'] = '" + entity.getName() + "'\n;"
                 + "                 return JSON.stringify(d);\n"
                 + "             }\n"
                 + "         },"
                 + "         'fnInitComplete': function(oSettings, json) {\n"
-                + "         $('#grid-" + this.getTable() + " thead').append('<tr class=\"grid-filters\"></tr>');\n"
-                + "         $('#grid-" + this.getTable() + " th').each( function (key,val) {\n"
-                + "             var title = $('#grid-" + this.getTable() + " th').eq( $(this).index()).text();\n"
+                + "         $('#grid-" + table + " thead').append('<tr class=\"grid-filters\"></tr>');\n"
+                + "         $('#grid-" + table + " th').each( function (key,val) {\n"
+                + "             var title = $('#grid-" + table + " th').eq( $(this).index()).text();\n"
                 + "             var jsonFields = " + this.jsonFieldsVariable + ";\n"
                 + "             var currentField = jsonFields[key];\n"
                 + "             var filter = buildFilterByType(currentField.type,key,title);\n"
@@ -267,9 +239,9 @@ public class DataGridBuilder {
     }
 
     public DataGridBuilder(Class entityClass, Map<String, String> fields) throws ClassNotFoundException {
-       
-        this.setEntity(entityClass);
-        this.setAllowedFields(fields);
+
+        this.entity = entityClass;
+        this.allowedFields = fields;
         this.getEntityAnnotations();
     }
 }

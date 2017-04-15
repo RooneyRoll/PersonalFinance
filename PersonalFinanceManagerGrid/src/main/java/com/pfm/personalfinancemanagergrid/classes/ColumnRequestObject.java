@@ -14,7 +14,16 @@ public class ColumnRequestObject {
     public String name;
     public String searchable;
     public String orderable;
+    public ColumnFilterRequestObject filter;
     public ColumnSearchRequestObject search;
+
+    public ColumnFilterRequestObject getFilter() {
+        return filter;
+    }
+
+    public void setFilter(ColumnFilterRequestObject filter) {
+        this.filter = filter;
+    }
 
     public String getData() {
         return data;

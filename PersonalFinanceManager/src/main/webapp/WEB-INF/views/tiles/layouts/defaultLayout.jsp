@@ -9,7 +9,7 @@
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
         <title><tiles:getAsString name="title" /></title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> </link>
-        <link href="resources/js/icheck-1.x/skins/line/green.css" rel="stylesheet" ></link> 
+        <link href="<c:url value='/resources/js/icheck-1.x/skins/line/green.css'/>" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"  type="text/css" />
         <link href="<c:url value='/resources/js/DataTables-1.10.13/media/css/jquery.dataTables.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css' />" rel="stylesheet" ></link> 
@@ -21,12 +21,12 @@
         <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
         <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
         <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
+        <script src="<c:url value='/resources/js/validations.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.js' />"></script>
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
-        <script src="<c:url value='/resources/js/validations.js' />"></script>
     </head>
     <body>
         <header id="header">

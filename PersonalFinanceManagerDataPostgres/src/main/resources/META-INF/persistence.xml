@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.Users</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.UserRoles</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.PersistentLogins</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/PersonalFinanceManager"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
