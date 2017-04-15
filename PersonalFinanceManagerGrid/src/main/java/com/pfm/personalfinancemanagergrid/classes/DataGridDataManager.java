@@ -63,44 +63,58 @@ public class DataGridDataManager {
         }
     }
 
-    private String determineParamQueryString(ColumnRequestObject column, String searchVal) throws ParseException {
+    private String determineParamCompareSign(ColumnRequestObject column) {
         ColumnFilterRequestObject currentFilter = column.getFilter();
-        switch (currentFilter.getType()) {
+        String sign = "";
+        switch (currentFilter.type) {
             case "string":
+                sign = "like";
+                break;
+            case "date":
                 switch (currentFilter.getValue()) {
+                    case "eq":
+                        sign = "=";
+                        break;
+                    case "lt":
+                        sign = "<";
+                        break;
+                    case "gt":
+                        sign = ">";
+                        break;
+                }
+                break;
+
+        }
+        return sign;
+    }
+
+    private <T> T determineQueryParamString(ColumnRequestObject column, String searchVal) throws InstantiationException, IllegalAccessException, ParseException {
+        ColumnFilterRequestObject currentFilter = column.getFilter();
+        if ("string".equals(currentFilter.getType())) {
+            String val = (String) searchVal;
+            switch (currentFilter.getValue()) {
                     case "eq":
                         break;
                     case "co":
-                        searchVal = "%" + searchVal + "%";
+                        val = "%" + val + "%";
                         break;
                     case "en":
-                        searchVal = "%" + searchVal;
+                        val = "%" + val;
                         break;
                     case "st":
-                        searchVal = searchVal + "%";
+                        val = val + "%";
                         break;
-                }
-                break;
-            case "date":
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date date = formatter.parse(searchVal);
-                switch (currentFilter.getValue()) {
-                    case "eq":
-                        searchVal = "=";
-                        break;
-                    case "lt":
-                        searchVal = ">";
-                        break;
-                    case "gt":
-                        searchVal =  "<";
-                        break;
-                }
-                break;
-            case "int":
-
-                break;
+            }
+            return (T)val;
         }
-        return searchVal;
+        if ("date".equals(currentFilter.getType())) {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(searchVal);
+            String textDate = formatter.format(date);
+            date = formatter.parse(textDate);
+            return (T)date;
+        }
+        return null;
     }
 
     private String buildWhereStatement(GridParamObject params, char firstLetter) {
@@ -113,11 +127,12 @@ public class DataGridDataManager {
                 if (iterate > 0) {
                     statement += " and ";
                 }
+                String sign = determineParamCompareSign(column);
                 if (!"date".equals(column.getFilter().type)) {
-                    statement += firstLetter + "." + field + " like :" + field;
+                    statement += firstLetter + "." + field + " " + sign + " :" + field;
                 }
-                if("date".equals(column.getFilter().type)){
-                    statement += firstLetter + "." + field + " < :" + field;
+                if ("date".equals(column.getFilter().type)) {
+                    statement += firstLetter + "." + field + " " + sign + " :" + field;
                 }
                 iterate++;
             }
@@ -125,7 +140,7 @@ public class DataGridDataManager {
         return statement;
     }
 
-    private Query buildQuery(Session session, GridParamObject params) throws ParseException {
+    private Query buildQuery(Session session, GridParamObject params) throws ParseException, InstantiationException, IllegalAccessException {
         String source = params.getSource();
         List<ColumnRequestObject> columns = params.getColumns();
         String order = source.charAt(0) + "." + columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
@@ -140,18 +155,15 @@ public class DataGridDataManager {
             String searchVal = column.getSearch().getValue();
             if ("string".equals(type)) {
                 if (!"".equals(searchVal)) {
-                    String param = determineParamQueryString(column, searchVal);
+                    String param = determineQueryParamString(column, searchVal);
                     q.setParameter(field, param);
                 }
             }
             if ("date".equals(type)) {
                 if (!"".equals(searchVal)) {
-                    //String param = determineParamQueryString(column, searchVal);
-                    //System.out.println(param);
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date date = formatter.parse(searchVal);
-                    System.out.println(date);
-                    q.setParameter(field, date);
+                    Date param = determineQueryParamString(column, searchVal);
+                    System.out.println(param);
+                    q.setParameter(field, param);
                 }
             }
         }
