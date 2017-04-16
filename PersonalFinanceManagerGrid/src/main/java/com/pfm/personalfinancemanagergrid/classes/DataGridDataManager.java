@@ -12,9 +12,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Table;
+import javax.persistence.TemporalType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -43,7 +45,6 @@ public class DataGridDataManager {
             Query query = session.createQuery("select count(*) from " + params.getSource() + " " + firstLetter);
             Long itemsCount = (Long) query.uniqueResult();
             Query q = this.buildQuery(session, params);
-            System.out.println("----" + q.getQueryString());
             List<Serializable> resultList = q.list();
             session.close();
             factory.close();
@@ -93,26 +94,25 @@ public class DataGridDataManager {
         if ("string".equals(currentFilter.getType())) {
             String val = (String) searchVal;
             switch (currentFilter.getValue()) {
-                    case "eq":
-                        break;
-                    case "co":
-                        val = "%" + val + "%";
-                        break;
-                    case "en":
-                        val = "%" + val;
-                        break;
-                    case "st":
-                        val = val + "%";
-                        break;
+                case "eq":
+                    break;
+                case "co":
+                    val = "%" + val + "%";
+                    break;
+                case "en":
+                    val = "%" + val;
+                    break;
+                case "st":
+                    val = val + "%";
+                    break;
             }
-            return (T)val;
+            return (T) val;
         }
         if ("date".equals(currentFilter.getType())) {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
             Date date = formatter.parse(searchVal);
-            String textDate = formatter.format(date);
-            date = formatter.parse(textDate);
-            return (T)date;
+            java.sql.Date dateResult = new java.sql.Date(date.getTime());
+            return (T) dateResult;
         }
         return null;
     }
@@ -132,7 +132,14 @@ public class DataGridDataManager {
                     statement += firstLetter + "." + field + " " + sign + " :" + field;
                 }
                 if ("date".equals(column.getFilter().type)) {
-                    statement += firstLetter + "." + field + " " + sign + " :" + field;
+                    if ("=".equals(sign)) {
+                        statement += "(DAY(" + firstLetter + "." + field + ")" + sign + ":" + field + "_day)";
+                        statement += "and(MONTH(" + firstLetter + "." + field + ")" + sign + ":" + field + "_month)";
+                        statement += "and(YEAR(" + firstLetter + "." + field + ")" + sign + ":" + field + "_year)";
+                    }
+                    if ("<".equals(sign) || ">".equals(sign)) {
+                        statement += firstLetter + "." + field + " " + sign + " :" + field;
+                    }
                 }
                 iterate++;
             }
@@ -153,6 +160,7 @@ public class DataGridDataManager {
             String field = column.getData();
             String type = column.getFilter().getType();
             String searchVal = column.getSearch().getValue();
+            String filterVal = column.getFilter().getValue();
             if ("string".equals(type)) {
                 if (!"".equals(searchVal)) {
                     String param = determineQueryParamString(column, searchVal);
@@ -162,8 +170,19 @@ public class DataGridDataManager {
             if ("date".equals(type)) {
                 if (!"".equals(searchVal)) {
                     Date param = determineQueryParamString(column, searchVal);
-                    System.out.println(param);
-                    q.setParameter(field, param);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(param);
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    if ("eq".equals(filterVal)) {
+                        q.setParameter(field + "_day", day);
+                        q.setParameter(field + "_month", month + 1);
+                        q.setParameter(field + "_year", year);
+                    } else if ("gt".equals(filterVal) || "lt".equals(filterVal)) {
+                        q.setParameter(field, param);
+                    }
+
                 }
             }
         }
