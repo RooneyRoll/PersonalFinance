@@ -5,15 +5,11 @@
  */
 package com.pfm.personalfinancemanager.datapostgres.sets;
 
-import com.pfm.data.entities.User;
-import com.pfm.data.data.UserData;
 import com.pfm.data.data.UserRoleData;
 import com.pfm.data.entities.UserRole;
 import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.IUserRoleSet;
-import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.UserRoles;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;

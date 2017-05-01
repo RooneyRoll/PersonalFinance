@@ -5,8 +5,6 @@
  */
 package com.pfm.controllers;
 import com.pfm.personalfinancemanager.datapostgres.entities.PersistentLogins;
-import com.pfm.personalfinancemanager.datapostgres.entities.UserRoles;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
 import java.util.HashMap;
 import java.util.Map;
