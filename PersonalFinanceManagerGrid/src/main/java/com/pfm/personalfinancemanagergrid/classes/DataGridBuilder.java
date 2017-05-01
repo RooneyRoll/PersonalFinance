@@ -59,7 +59,6 @@ public class DataGridBuilder {
         }
         this.jsonFieldsVariable += "]";
         this.columnFilters += "]";
-        System.out.println(columnFilters);
     }
 
     public String buildHtmlForGrid() {
@@ -81,16 +80,13 @@ public class DataGridBuilder {
                 + "     function buildFilterByType(type,column,title){\n"
                 + "         var options = '';\n"
                 + "         if(type == 'string'){\n"
-                + "		'<option  value=\"eq\">Равно на</option>'+\n"
-                + "		options = '<option selected value=\"co\">Съдържа</option>'+\n"
+                + "		options ='<option  value=\"eq\">Равно на</option>'+\n"
+                + "		'<option selected value=\"co\">Съдържа</option>'+\n"
                 + "		'<option value=\"st\">Започва с</option>'+\n"
                 + "		'<option value=\"en\">Завършва с</option>'\n"
                 + "         }\n"
                 + "         if(type == 'int'){\n"
                 + "		options = '<option value=\"eq\" >Равно на</option>'+\n"
-                + "		'<option selected value =\"co\">Съдържа</option>'+\n"
-                + "		'<option value=\"st\">Започва с</option>'+\n"
-                + "		'<option value=\"en\">Завършва с</option>'+\n"
                 + "		'<option value=\"lt\">По-малко от</option>'+\n"
                 + "		'<option value=\"gt\">По-голямо от</option>'\n"
                 + "         }\n"

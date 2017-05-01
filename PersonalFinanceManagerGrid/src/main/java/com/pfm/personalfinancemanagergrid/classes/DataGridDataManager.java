@@ -11,12 +11,10 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Table;
-import javax.persistence.TemporalType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -84,7 +82,24 @@ public class DataGridDataManager {
                         break;
                 }
                 break;
-
+            case "int":
+                switch (currentFilter.getValue()) {
+                    case "st":
+                    case "en":
+                    case "co":
+                        sign = "like";
+                        break;
+                    case "eq":
+                        sign = "=";
+                        break;
+                    case "lt":
+                        sign = "<";
+                        break;
+                    case "gt":
+                        sign = ">";
+                        break;
+                }
+                break;
         }
         return sign;
     }
@@ -108,6 +123,25 @@ public class DataGridDataManager {
             }
             return (T) val;
         }
+        if ("int".equals(currentFilter.getType())) {
+            String val = (String) searchVal;
+            switch (currentFilter.getValue()) {
+                //case "co":
+                //    val = "%" + val + "%";
+                //    break;
+                //case "en":
+                //    val = "%" + val;
+                //    break;
+                //case "st":
+                //    val = val + "%";
+                //    break;
+                case "lt":
+                case "gt":
+                case "eq":;
+                    break;
+            }
+            return (T) val;
+        }
         if ("date".equals(currentFilter.getType())) {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
             Date date = formatter.parse(searchVal);
@@ -123,12 +157,16 @@ public class DataGridDataManager {
         for (ColumnRequestObject column : params.getColumns()) {
             String field = column.getData();
             String searchVal = column.getSearch().getValue();
+            String filterValue = column.getFilter().getValue();
             if (!"".equals(searchVal)) {
                 if (iterate > 0) {
                     statement += " and ";
                 }
                 String sign = determineParamCompareSign(column);
-                if (!"date".equals(column.getFilter().type)) {
+                if ("string".equals(column.getFilter().type)) {
+                    statement += firstLetter + "." + field + " " + sign + " :" + field;
+                }
+                if ("int".equals(column.getFilter().type)) {
                     statement += firstLetter + "." + field + " " + sign + " :" + field;
                 }
                 if ("date".equals(column.getFilter().type)) {
@@ -161,6 +199,13 @@ public class DataGridDataManager {
             String type = column.getFilter().getType();
             String searchVal = column.getSearch().getValue();
             String filterVal = column.getFilter().getValue();
+            if ("int".equals(type)) {
+                if (!"".equals(searchVal)) {
+                    String param = determineQueryParamString(column, searchVal);
+                    int paramInt = Integer.parseInt(param);
+                    q.setParameter(field, paramInt);
+                }
+            }
             if ("string".equals(type)) {
                 if (!"".equals(searchVal)) {
                     String param = determineQueryParamString(column, searchVal);

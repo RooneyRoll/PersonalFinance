@@ -29,7 +29,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-
+        
         return "register";
     }
 

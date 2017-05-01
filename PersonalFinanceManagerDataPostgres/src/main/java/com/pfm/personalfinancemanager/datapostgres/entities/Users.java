@@ -75,7 +75,7 @@ public class Users implements Serializable {
         this.userUsername = userUsername;
     }
 
-    public Object getUserUserid() {
+    public UUID getUserUserid() {
         return userUserid;
     }
 

@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <div class="form-container size-2">
     <div class="form-content">
         <form id="register-form" th:action="@{/register}" method="post">

@@ -5,12 +5,14 @@
  */
 package com.pfm.data.entities;
 
+import java.util.UUID;
+
 /**
  *
  * @author Misho
  */
 public class User {
-    private String id;
+    private UUID id;
     private String userName;
     private String password;
     private String firstName;
@@ -35,11 +37,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
