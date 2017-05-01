@@ -39,10 +39,6 @@ html body .site-content#site-content .size-3{
 }
 /*Helper classes end*/
 
-html body *{
-    box-sizing:border-box;
-}
-
 .background-holder{
     text-align:center;
     opacity: 0.4;
@@ -52,8 +48,10 @@ html body *{
     width:100%;
 }
 
-body{
+html body *,
+html body{
     margin:0;
+    box-sizing:border-box;
     font-family: 'Roboto', sans-serif;
     /*font-family: 'Montserrat', sans-serif;*/
 }
@@ -361,4 +359,194 @@ body{
 .checkbox-green.checked:hover{
     background-color:#79BA4F;
 }
+
+#main-menu {
+    max-width: 100%;
+}
+
+.main-menu-btn {
+    position: relative;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    text-indent: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* hamburger icon */
+.main-menu-btn-icon, .main-menu-btn-icon:before, .main-menu-btn-icon:after {
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    height: 2px;
+    width: 24px;
+    background: #fff;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+
+.button-poll-submit {
+    background-color: #355C84;
+    border: medium none;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.button-poll-submit:hover {
+    -webkit-transition: background-color 0.5s ease-out;
+    -moz-transition: background-color 0.5s ease-out;
+    -o-transition: background-color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
+    background-color: #334D68;
+}
+
+.main-menu-btn-icon:before {
+    content: '';
+    top: -7px;
+    left: 0;
+}
+
+.main-menu-btn-icon:after {
+    content: '';
+    top: 7px;
+    left: 0;
+}
+
+/* x icon */
+#main-menu-state:checked ~ .main-menu-btn .main-menu-btn-icon {
+    height: 0;
+    background: transparent;
+}
+
+#main-menu-state:checked ~ .main-menu-btn .main-menu-btn-icon:before {
+    top: 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+#main-menu-state:checked ~ .main-menu-btn .main-menu-btn-icon:after {
+    top: 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* hide menu state checkbox offscreen (so it stays visible to screen readers) */
+#main-menu-state {
+    position: absolute;
+    top: -99999px;
+}
+
+/* hide the menu in mobile view */
+#main-menu-state:not(:checked) ~ #main-menu {
+    display: none;
+}
+
+#main-menu-state:checked ~ #main-menu {
+    display: block;
+}
+
+.sm-mint a,
+.sm-mint a:hover, 
+.sm-mint a:focus, 
+.sm-mint a:active{
+    font-family: inherit;
+}
+
+.main-menu-btn {
+    margin: 5px;
+}
+
+.sm-mint{
+    border:none;
+}
+
+.sm-mint a,
+.sm-mint a:hover, 
+.sm-mint a:focus,
+.sm-mint a:active,
+.sm-mint a.highlighted, .sm-mint ul{
+    border-radius:0;
+}
+
+.sm-mint a{
+    border-left:1px solid #34302D;
+}
+
+.sm-mint a:hover,
+.sm-mint a.highlighted,
+.sm-mint ul a:hover, 
+.sm-mint ul a:focus,
+.sm-mint ul a:active, 
+.sm-mint ul a.highlighted,
+.sm-mint a.current{
+    background:#6DB33F;
+    color:#fff;
+    font-weight: normal;
+}
+
+.sm-mint ul{
+    background-color:#fff;
+    box-shadow:none;
+    padding:0;
+    border-bottom:1px solid #6DB33F
+}
+
+.sm-mint ul li{
+    border-top: 1px solid #6DB33F
+}
+
+.sm-mint a.highlighted span.sub-arrow {
+    border-color: #fff transparent transparent
+}
+
+@media (min-width: 769px) {
+    /* hide the button in desktop view */
+    .main-menu-btn {
+        position: absolute;
+        top: -99999px;
+        display:none;
+    }
+
+    #main-nav {
+        line-height: 0;
+        text-align: right;
+    }
+
+    /* always show the menu in desktop view */
+    #main-menu-state:not(:checked) ~ #main-menu {
+        display: inline-block;
+    }
+
+    .sm-mint a,
+    .sm-mint a:focus,
+    .sm-mint a:active{
+        color:#fff
+    }
+    #main-menu-state:checked ~ #main-menu {
+        display: inline-block;
+    }
+}
+
+@media (max-width:768px){
+    .header .header-content .header-content-left,
+    .header .header-content .header-content-right{
+        display:block;
+        width:100%;
+    }
+}
 /*plugins css overwrite end*/
+/* mobile styles */
+@media (max-width:768px){
+    html body #site-content.site-content .form-container {
+        width:100%;
+    }
+    html body #site-content.site-content .form-container .input-container{
+        width:100%;
+    }
+}
+/*mobile styles end*/

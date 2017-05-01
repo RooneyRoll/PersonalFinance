@@ -110,7 +110,6 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         }finally{
             session.close();
         }
-        
     }
 
     @Override
@@ -132,5 +131,4 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         }
         return exists;
     }
-
 }

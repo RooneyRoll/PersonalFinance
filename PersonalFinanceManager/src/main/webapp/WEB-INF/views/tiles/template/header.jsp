@@ -6,8 +6,7 @@
             <!--<a href="home">-->
             <div class="header-logo">
                 <img/>
-            </div>
-            <div class="header-text no-select">
+            </div><div class="header-text no-select">
                 <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
                 Personal Finance Manager
                 <div class="header-sub-text no-select">
@@ -17,19 +16,19 @@
             <!--</a>-->
         </div><div class="header-content-right ">
             <div class="header-right-buttons">
-                <c:if test="${pageContext.request.userPrincipal.name == null}">
-                    <a href = "register" class="header-button animation">
-                        Регистрация
-                    </a>
-                    <a href = "login" class="header-button animation">
-                        Вход
-                    </a>
-                </c:if>
-                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a href="javascript:formSubmit()" class="header-button animation">
-                        Изход
-                    </a>
-                </c:if>
+                <div class="horizontal-menu" id="main-nav">
+                    <input id="main-menu-state" type="checkbox" />
+                    <label class="main-menu-btn" for="main-menu-state">
+                        <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
+                        <c:if test="${pageContext.request.userPrincipal.name == null}">
+                            <li><a href="register">Регистрация</a></li>
+                            <li><a href="login">Вход</a></li>
+                        </c:if>
+                        <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            <li><a href="javascript:formSubmit()">Изход</a></li>
+                        </c:if>
+                    </ul>
+                </div>
             </div>
             <div style="display:none;font-size:0">
                 <c:url value="logout" var="logoutUrl" />

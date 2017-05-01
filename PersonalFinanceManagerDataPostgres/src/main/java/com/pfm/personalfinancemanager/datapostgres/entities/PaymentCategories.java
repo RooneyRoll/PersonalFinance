@@ -6,22 +6,16 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,36 +32,37 @@ public class PaymentCategories implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Basic(optional = false)
+    @Lob
     @Column(name = "pcat_id")
-    private UUID pcatId;
+    private Object pcatId;
     @Basic(optional = false)
     @Column(name = "pcat_name")
     private String pcatName;
     @Basic(optional = false)
     @Column(name = "pcat_active")
     private boolean pcatActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pCategory")
-    private List<Payments> paymentsList;
+    @Column(name = "pcat_user")
+    private UUID pcatUser;
 
     public PaymentCategories() {
     }
 
-    public PaymentCategories(UUID pcatId) {
+    public PaymentCategories(Object pcatId) {
         this.pcatId = pcatId;
     }
 
-    public PaymentCategories(UUID pcatId, String pcatName, boolean pcatActive) {
+    public PaymentCategories(Object pcatId, String pcatName, boolean pcatActive) {
         this.pcatId = pcatId;
         this.pcatName = pcatName;
         this.pcatActive = pcatActive;
     }
 
-    public UUID getPcatId() {
+    public Object getPcatId() {
         return pcatId;
     }
 
-    public void setPcatId(UUID pcatId) {
+    public void setPcatId(Object pcatId) {
         this.pcatId = pcatId;
     }
 
@@ -87,13 +82,12 @@ public class PaymentCategories implements Serializable {
         this.pcatActive = pcatActive;
     }
 
-    @XmlTransient
-    public List<Payments> getPaymentsList() {
-        return paymentsList;
+    public UUID getPcatUser() {
+        return pcatUser;
     }
 
-    public void setPaymentsList(List<Payments> paymentsList) {
-        this.paymentsList = paymentsList;
+    public void setPcatUser(UUID pcatUser) {
+        this.pcatUser = pcatUser;
     }
 
     @Override

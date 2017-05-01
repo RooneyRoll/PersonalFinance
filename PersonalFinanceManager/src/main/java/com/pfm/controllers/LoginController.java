@@ -7,6 +7,7 @@ package com.pfm.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -15,20 +16,28 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Misho
  */
 @Controller
 public class LoginController {
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String index(ModelMap map, HttpServletRequest request,
+    public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) {
-        if(error != null){
-            map.put("errorMessage","Непознато име и/или парола. Моля уверете се, че сте въвели правилно своите данни за вход в системата.");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            /* The user is logged in :) */
+            return new ModelAndView("redirect:/");
         }
-        return "login";
+
+        if (error != null) {
+            map.put("errorMessage", "Непознато име и/или парола. Моля уверете се, че сте въвели правилно своите данни за вход в системата.");
+        }
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
