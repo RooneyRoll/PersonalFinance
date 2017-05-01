@@ -6,95 +6,111 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.List;
+import java.util.UUID;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Admin
+ * @author Misho
  */
 @Entity
 @Table(name = "payment_categories")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PaymentCategorys.findAll", query = "SELECT u FROM PaymentCategorys u")
-    , @NamedQuery(name = "PaymentCategorys.findById", query = "SELECT u FROM PaymentCategorys u WHERE u.id = :id")
-    , @NamedQuery(name = "PaymentCategorys.findByCategoryName", query = "SELECT u FROM PaymentCategorys u WHERE u.name = :categoryName")})
+    @NamedQuery(name = "PaymentCategories.findAll", query = "SELECT p FROM PaymentCategories p")
+    , @NamedQuery(name = "PaymentCategories.findByPcatName", query = "SELECT p FROM PaymentCategories p WHERE p.pcatName = :pcatName")
+    , @NamedQuery(name = "PaymentCategories.findByPcatActive", query = "SELECT p FROM PaymentCategories p WHERE p.pcatActive = :pcatActive")})
 public class PaymentCategories implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "pcat_id")
+    private UUID pcatId;
     @Basic(optional = false)
-    @SequenceGenerator(name = "my_seq", sequenceName = "payment_categories_gen_id", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "pcat_name")
+    private String pcatName;
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Basic(optional = false)
-    @Column(name = "active")
-    private boolean active;
+    @Column(name = "pcat_active")
+    private boolean pcatActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pCategory")
+    private List<Payments> paymentsList;
 
     public PaymentCategories() {
     }
 
-    public PaymentCategories(Integer id, String name, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.active = active;
+    public PaymentCategories(UUID pcatId) {
+        this.pcatId = pcatId;
     }
 
-    public Integer getId() {
-        return id;
+    public PaymentCategories(UUID pcatId, String pcatName, boolean pcatActive) {
+        this.pcatId = pcatId;
+        this.pcatName = pcatName;
+        this.pcatActive = pcatActive;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public UUID getPcatId() {
+        return pcatId;
     }
 
-    public String getName() {
-        return name;
+    public void setPcatId(UUID pcatId) {
+        this.pcatId = pcatId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getPcatName() {
+        return pcatName;
+    }
+
+    public void setPcatName(String pcatName) {
+        this.pcatName = pcatName;
+    }
+
+    public boolean getPcatActive() {
+        return pcatActive;
+    }
+
+    public void setPcatActive(boolean pcatActive) {
+        this.pcatActive = pcatActive;
+    }
+
+    @XmlTransient
+    public List<Payments> getPaymentsList() {
+        return paymentsList;
+    }
+
+    public void setPaymentsList(List<Payments> paymentsList) {
+        this.paymentsList = paymentsList;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        hash = 83 * hash + Objects.hashCode(this.name);
+        int hash = 0;
+        hash += (pcatId != null ? pcatId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof PaymentCategories)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PaymentCategories other = (PaymentCategories) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
+        PaymentCategories other = (PaymentCategories) object;
+        if ((this.pcatId == null && other.pcatId != null) || (this.pcatId != null && !this.pcatId.equals(other.pcatId))) {
             return false;
         }
         return true;
@@ -102,7 +118,7 @@ public class PaymentCategories implements Serializable {
 
     @Override
     public String toString() {
-        return "PaymentCategorys{" + "id=" + id + ", name=" + name + '}';
+        return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories[ pcatId=" + pcatId + " ]";
     }
-
+    
 }

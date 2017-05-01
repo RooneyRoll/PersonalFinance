@@ -9,9 +9,9 @@ package com.pfm.data.data;
  *
  * @author Misho
  */
-public class PaymentCategoryData {
+public class PaymentTypeData{
     private String name;
-    private boolean active;
+    private String description;
 
     public String getName() {
         return name;
@@ -21,12 +21,13 @@ public class PaymentCategoryData {
         this.name = name;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getDescription() {
+        return description;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
+
+   
 }

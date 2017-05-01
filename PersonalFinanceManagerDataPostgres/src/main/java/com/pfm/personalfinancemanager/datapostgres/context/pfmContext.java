@@ -6,6 +6,8 @@
 package com.pfm.personalfinancemanager.datapostgres.context;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.sets.IPaymentCategorySet;
+import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.config.ConfigurationHelper;
@@ -21,6 +23,8 @@ public class pfmContext implements IpfmContext{
     private SessionFactory manager;
     private IUserSet UserSet;
     private IUserRoleSet UserRoleSet;
+    private IPaymentCategorySet PaymentCategorySet;
+    private IPaymentTypeSet PaymentTypeSet; 
     private static pfmContext instance;
 
     public static IpfmContext getInstance(){
@@ -37,6 +41,7 @@ public class pfmContext implements IpfmContext{
         this.UserRoleSet = new UserRoleSet(this.manager);
     }
     
+    @Override
     public IUserSet getUserSet() {
         return this.UserSet;
     }
@@ -46,4 +51,13 @@ public class pfmContext implements IpfmContext{
         return this.UserRoleSet;
     }
     
+    @Override
+    public IPaymentCategorySet getPaymentCategorySet() {
+        return this.PaymentCategorySet;
+    }
+    
+    @Override
+    public IPaymentTypeSet getPaymentTypeSet() {
+        return this.PaymentTypeSet;
+    }
 }

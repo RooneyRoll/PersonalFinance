@@ -34,7 +34,7 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         userObject.setPassword(Entity.getUserPassword());
         userObject.setMiddleName(Entity.getUserMiddlename());
         userObject.setLastName(Entity.getUserLastname());
-        userObject.setId(Entity.getUserUserid().toString());
+        userObject.setId(Entity.getUserUserid());
         userObject.setFirstName(Entity.getUserFirstname());
         userObject.setEnabled(Entity.getUserEnabled());
         userObject.setEmail(Entity.getUserEmail());
@@ -50,7 +50,7 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
             userObject.setPassword(next.getUserPassword());
             userObject.setMiddleName(next.getUserMiddlename());
             userObject.setLastName(next.getUserLastname());
-            userObject.setId(next.getUserUserid().toString());
+            userObject.setId(next.getUserUserid());
             userObject.setFirstName(next.getUserFirstname());
             userObject.setEnabled(next.getUserEnabled());
             userObject.setEmail(next.getUserEmail());

@@ -5,6 +5,9 @@
     <class>com.pfm.personalfinancemanager.datapostgres.entities.Users</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.UserRoles</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.PersistentLogins</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.Payments</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/PersonalFinanceManager"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
