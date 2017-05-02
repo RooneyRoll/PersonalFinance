@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
         $('#remember-me').each(function () {
@@ -18,6 +18,7 @@
     });
 </script>
 <div class="form-container size-2">
+    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="loginError" /></c:if>
     <div class="form-content">
         <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
             <div class="input-container with-icon">
@@ -60,4 +61,4 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </div>
-</div><c:if test="${errorMessage != null}"><tiles:insertAttribute name="loginError" /></c:if>
+</div>

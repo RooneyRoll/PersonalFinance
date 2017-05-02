@@ -151,16 +151,17 @@ html body{
     outline: none;
 }
 /*error styles*/
-.site-content .error-container{
-    display:inline-block;
-    width:50%;
-}
 
 .site-content .error-container .error-content{
     display:inline-block;
     width:100%;
     cursor:default;
     padding:10px;
+}
+
+.size-2 .error-container .error-content,
+.size-3 .error-container .error-content{
+    padding:10px 0;
 }
 
 .site-content .error-container .error-content .error-title{
