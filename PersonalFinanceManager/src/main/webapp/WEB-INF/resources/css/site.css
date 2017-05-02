@@ -14,23 +14,17 @@
 }
 
 html body .site-content#site-content .size-2{
-    width:calc(50% - 10px);
+    width:50%;
     vertical-align:top;
     box-sizing:border-box;
-}
-
-.size-2:first-of-type{
-    margin-right:10px;
-}
-
-.size-2 + .size-2{
-    margin-left:10px;
+    padding:0 10px;
 }
 
 html body .site-content#site-content .size-3{
     width:33.3%;
     vertical-align:top;
     box-sizing:border-box;
+    padding:0 10px;
 }
 
 .required-field-text{
@@ -110,11 +104,22 @@ html body{
 }
 
 .site-content{
-    padding:20px 30px;
+    padding:15px 20px;
     background-color:#F1F1F1;
-    min-height:500px;
+    min-height:370px;
     color:#34302D;
     font-size:16px;
+}
+
+.navigation-title{
+    display:inline-block;
+    width:100%;
+    background-color:#999;
+    padding:10px 30px;
+    color:#fff;
+}
+
+.navigation-title .navigation-title-text{
 }
 
 .site-content .button{
@@ -155,14 +160,14 @@ html body{
     display:inline-block;
     width:100%;
     cursor:default;
+    padding:10px;
 }
 
 .site-content .error-container .error-content .error-title{
     display:inline-block;
     width:100%;
-    text-align:center;
+    text-align:left;
     font-size:20px;
-    border-bottom:2px solid #f1c40f;
     padding-bottom:5px;
 }
 
@@ -177,8 +182,9 @@ html body{
 .site-content .error-container .error-content .error-text-holder{
     display:inline-block;
     width:100%;
-    text-align:center;
+    text-align:left;
     padding-top:5px;
+    border-bottom:2px solid #f1c40f;
 }
 /*error styles end*/
 /*message styles*/
@@ -221,59 +227,59 @@ html body{
 /*message styles end*/
 /*form styles*/
 
-.site-content .form-container{
-    display:inline-block;
-    width:50%;
-}
-
-.site-content .form-container .form-content{
+.site-content .content-container .form-container{
     display:inline-block;
     width:100%;
 }
 
-.site-content .form-container .form-content form{
+.site-content .content-container .form-container .form-content{
+    display:inline-block;
+    width:100%;
+}
+
+.site-content .content-container .form-container .form-content form{
     display:inline-block;   
     width:100%
 }
 
-.site-content .form-container .form-content form .buttons-container{
+.site-content .content-container .form-container .form-content form .buttons-container{
     /*margin-top:10px;*/
 }
 
-.site-content .form-container .form-content form .input-container{
+.site-content .content-container .form-container .form-content form .input-container{
     display:inline-block;   
     width:100%;
     margin-bottom:10px;
 }
 
-.site-content .form-container.form-content form .input-container .input-title-holder{
+.site-content .content-container .form-container.form-content form .input-container .input-title-holder{
     display:inline-block;
     width:100%;
     margin-bottom:5px;
     cursor:default;
 }
 
-.site-content .form-container .form-content form .input-container .input-holder{
+.site-content .content-container .form-container .form-content form .input-container .input-holder{
     display:inline-block;
     width:100%;
 }
 
-.site-content .form-container .form-content form .input-container .input-holder input{
+.site-content .content-container .form-container .form-content form .input-container .input-holder input{
     display:inline-block;
     width:100%;
 }
 
 /*form styles with icon*/
-.site-content .form-container .form-content form .input-container.with-icon .input-holder{
+.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder{
     background:#6DB33F;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
 }
 
-.site-content .form-container .form-content form .input-container.with-icon .input-holder input{
+.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder input{
     width: calc(100% - 40px);
 }
-.site-content .form-container .form-content form .input-container.with-icon .input-holder .input-icon{
+.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder .input-icon{
     display:inline-block;
     width:40px;
     font-size:20px;
@@ -283,23 +289,23 @@ html body{
 }
 
 
-.site-content .form-container .form-content input[type="text"],
-.site-content .form-container .form-content input[type="password"]{
+.site-content .content-container .form-container .form-content input[type="text"],
+.site-content .content-container .form-container .form-content input[type="password"]{
     padding: 10px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
 }
 
-.site-content .form-container .form-content input[type="text"]:focus,
-.site-content .form-container .form-content input[type="text"].focus,
-.site-content .form-container .form-content input[type="password"]:focus,
-.site-content .form-container .form-content input[type="password"].focus{
+.site-content .content-container .form-container .form-content input[type="text"]:focus,
+.site-content .content-container .form-container .form-content input[type="text"].focus,
+.site-content .content-container .form-container .form-content input[type="password"]:focus,
+.site-content .content-container .form-container .form-content input[type="password"].focus{
     border-bottom: solid 2px #6DB33F;
 }
 
-.site-content .form-container .form-content input.error[type="text"],
-.site-content .form-container .form-content input.error[type="password"]{
+.site-content .content-container .form-container .form-content input.error[type="text"],
+.site-content .content-container .form-container .form-content input.error[type="password"]{
     border-bottom: solid 2px #e74c3c;
 }
 /*form styles with icon end*/
@@ -542,10 +548,24 @@ html body{
 /*plugins css overwrite end*/
 /* mobile styles */
 @media (max-width:768px){
-    html body #site-content.site-content .form-container {
+    html body #site-content.site-content .content-container .form-container {
         width:100%;
     }
-    html body #site-content.site-content .form-container .input-container{
+    
+    html body #site-content.site-content .content-container .form-container .buttons-container {
+        width:100%;
+    }
+    
+    html body #site-content.site-content .content-container .form-container .buttons-container button {
+        width:100%;
+        display:inline-block;
+    }
+    
+    html body #site-content.site-content .content-container .form-container .buttons-container button:not(:last-child){
+        margin-bottom:10px;
+    }
+    
+    html body #site-content.site-content .content-container .form-container .input-container{
         width:100%;
     }
 }

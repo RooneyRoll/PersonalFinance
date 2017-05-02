@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%><div class="error-container size-2">
+<%@page contentType="text/html" pageEncoding="UTF-8"%><div class="error-container">
     <div class="error-content no-select">
         <div class="error-title">
             <span class="error-title-icon">

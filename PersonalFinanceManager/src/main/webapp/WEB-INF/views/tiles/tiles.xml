@@ -12,25 +12,30 @@
     </definition>  
   
     <!-- Home Page -->
-    <definition name="home" extends="base-definition">  
+    <definition name="home" extends="base-definition">
+        <put-attribute name="navigation" value="Начало"  cascade="true"/>  
         <put-attribute name="title" value="Personal finance manager" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/home/home.jsp" />  
     </definition>  
     <definition name="login" extends="base-definition">  
+        <put-attribute name="navigation" value="Вход"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />  
         <put-attribute name="loginError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />
         <put-attribute name="body" value="/WEB-INF/views/pages/user/login.jsp" />  
     </definition>
-    <definition name="registerResult" extends="base-definition">  
+    <definition name="registerResult" extends="base-definition">
+        <put-attribute name="navigation" value="Регистрация"  cascade="true"/>  
         <put-attribute name="title" value="Personal finance manager" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/messages/user/user-register-result.jsp" />  
     </definition>  
     <definition name="register" extends="base-definition">  
+        <put-attribute name="navigation" value="Регистрация"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />  
         <put-attribute name="registerError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />
         <put-attribute name="body" value="/WEB-INF/views/pages/user/register.jsp" />  
     </definition>
-    <definition name="404" extends="base-definition">  
+    <definition name="404" extends="base-definition">
+        <put-attribute name="navigation" value="Грешка"  cascade="true"/>   
         <put-attribute name="title" value="register result" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/errors/404.jsp" />  
     </definition>  

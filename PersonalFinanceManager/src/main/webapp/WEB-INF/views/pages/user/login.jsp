@@ -44,7 +44,7 @@
                     </div><input type="password" name="password" placeholder="Парола" id="password"/>
                 </div>
             </div>
-            <div class="input-container size-2">
+            <div class="input-container">
                 <div class="input-title-holder no-select">
                     <span> 
                     </span>

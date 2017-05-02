@@ -69,7 +69,9 @@
         </header>
 
         <section id="site-content" class="site-content">
-            <tiles:insertAttribute name="body" />
+            <div class="content-container">
+                <tiles:insertAttribute name="body" />
+            </div>
         </section>
 
         <footer id="footer">
