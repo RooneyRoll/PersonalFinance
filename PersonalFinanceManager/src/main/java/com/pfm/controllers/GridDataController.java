@@ -21,7 +21,7 @@ import com.pfm.personalfinancemanagergrid.classes.GridParamObject;
 @RestController
 public class GridDataController {
 
-    @RequestMapping(value = "/gridData", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/gridData", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String gridData(HttpServletRequest request,
             HttpServletResponse response,
             @RequestBody GridParamObject params) {

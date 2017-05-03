@@ -7,7 +7,11 @@ package com.pfm.controllers;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.User;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
+import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -26,14 +30,14 @@ public class DefaultController {
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) throws ClassNotFoundException {
         //IpfmContext context = pfmContext.getInstance();
         //List<User> users =  context.getUserSet().GetAll();
-        //Map<String,String> fields = new HashMap<String,String>();;
-        //fields.put("userUserid","string");
-        //fields.put("userEmail","string");
-        //fields.put("userEnabled","string");
-        //fields.put("userFirstname","date");
-        //DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
-        //String gridHtml = grid.buildHtmlForGrid();
-        //map.put("grid", gridHtml);
+        Map<String,String> fields = new HashMap<String,String>();;
+        fields.put("userUserid","string");
+        fields.put("userEmail","string");
+        fields.put("userEnabled","string");
+        fields.put("userFirstname","string");
+        DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
+        String gridHtml = grid.buildHtmlForGrid();
+        map.put("grid", gridHtml);
         return "home";
     }
 
