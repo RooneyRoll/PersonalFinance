@@ -12,7 +12,17 @@ package com.pfm.data.data;
 public class PaymentCategoryData {
     private String name;
     private boolean active;
+    private String description;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
     public String getName() {
         return name;
     }

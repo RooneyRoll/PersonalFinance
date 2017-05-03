@@ -14,6 +14,7 @@ import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -80,7 +81,7 @@ public class UserRoleSet extends BaseSet<UserRoles, UserRole, UserRoleData> impl
     }
 
     @Override
-    public UserRole GetById(int id) {
+    public UserRole GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

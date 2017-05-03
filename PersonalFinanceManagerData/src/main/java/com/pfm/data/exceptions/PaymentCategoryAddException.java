@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.data.sets.base;
-
-import java.util.List;
+package com.pfm.data.exceptions;
 
 /**
  *
  * @author Misho
- * @param <DTOtype>
  */
-public interface IViewable<DTOtype,IDType> {
-    public List<DTOtype> GetAll();
-    public DTOtype GetById(IDType id);
+public class PaymentCategoryAddException extends BasicException {
+    public PaymentCategoryAddException(String message) {
+        super(message);
+    }
 }

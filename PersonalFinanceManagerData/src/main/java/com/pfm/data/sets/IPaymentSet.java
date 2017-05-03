@@ -10,11 +10,12 @@ import com.pfm.data.entities.Payment;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
  * @author Misho
  */
-public interface IPaymentSet extends IViewable<Payment>,IManagable<PaymentData,Serializable>  {
+public interface IPaymentSet extends IViewable<Payment,UUID>,IManagable<PaymentData,Serializable>  {
     
 }

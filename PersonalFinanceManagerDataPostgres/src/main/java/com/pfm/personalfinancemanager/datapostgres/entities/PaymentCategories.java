@@ -10,6 +10,8 @@ import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -27,42 +29,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PaymentCategories.findAll", query = "SELECT p FROM PaymentCategories p")
     , @NamedQuery(name = "PaymentCategories.findByPcatName", query = "SELECT p FROM PaymentCategories p WHERE p.pcatName = :pcatName")
-    , @NamedQuery(name = "PaymentCategories.findByPcatActive", query = "SELECT p FROM PaymentCategories p WHERE p.pcatActive = :pcatActive")})
+    , @NamedQuery(name = "PaymentCategories.findByPcatActive", query = "SELECT p FROM PaymentCategories p WHERE p.pcatActive = :pcatActive")
+    , @NamedQuery(name = "PaymentCategories.findByPcatDescription", query = "SELECT p FROM PaymentCategories p WHERE p.pcatDescription = :pcatDescription")})
 public class PaymentCategories implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @Lob
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pcat_id")
-    private Object pcatId;
+    private UUID pcatId;
     @Basic(optional = false)
     @Column(name = "pcat_name")
     private String pcatName;
     @Basic(optional = false)
     @Column(name = "pcat_active")
     private boolean pcatActive;
-    @Column(name = "pcat_user")
-    private UUID pcatUser;
+    @Column(name = "pcat_description")
+    private String pcatDescription;
 
     public PaymentCategories() {
     }
 
-    public PaymentCategories(Object pcatId) {
+    public PaymentCategories(UUID pcatId) {
         this.pcatId = pcatId;
     }
 
-    public PaymentCategories(Object pcatId, String pcatName, boolean pcatActive) {
+    public PaymentCategories(UUID pcatId, String pcatName, boolean pcatActive) {
         this.pcatId = pcatId;
         this.pcatName = pcatName;
         this.pcatActive = pcatActive;
     }
 
-    public Object getPcatId() {
+    public UUID getPcatId() {
         return pcatId;
     }
 
-    public void setPcatId(Object pcatId) {
+    public void setPcatId(UUID pcatId) {
         this.pcatId = pcatId;
     }
 
@@ -82,12 +84,12 @@ public class PaymentCategories implements Serializable {
         this.pcatActive = pcatActive;
     }
 
-    public UUID getPcatUser() {
-        return pcatUser;
+    public String getPcatDescription() {
+        return pcatDescription;
     }
 
-    public void setPcatUser(UUID pcatUser) {
-        this.pcatUser = pcatUser;
+    public void setPcatDescription(String pcatDescription) {
+        this.pcatDescription = pcatDescription;
     }
 
     @Override

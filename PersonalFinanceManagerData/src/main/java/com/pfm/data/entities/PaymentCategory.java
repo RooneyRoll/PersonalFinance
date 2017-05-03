@@ -15,6 +15,15 @@ public class PaymentCategory {
     private UUID id;
     private String name;
     private boolean active;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public UUID getId() {
         return id;

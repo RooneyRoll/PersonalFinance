@@ -14,6 +14,7 @@ import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -84,8 +85,15 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     }
 
     @Override
-    public User GetById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User GetById(UUID id) {
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From Users WHERE userUserid = :id");
+        q.setParameter("id", id);
+        List<Users> resultList = q.list();
+        List<User> userObject = convertEntititiesToDtoArray(resultList);
+        session.close();
+        return userObject.get(0);
     }
 
     /**

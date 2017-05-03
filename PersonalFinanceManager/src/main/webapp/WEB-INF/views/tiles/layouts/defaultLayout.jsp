@@ -9,7 +9,8 @@
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
         <title><tiles:getAsString name="title" /></title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> </link>
-        <link href="<c:url value='/resources/js/icheck-1.x/skins/line/green.css'/>" rel="stylesheet" ></link> 
+        <link href="<c:url value='/resources/js/icheck-1.x/skins/line/green.css'/>" rel="stylesheet" ></link>
+        <link href="<c:url value='/resources/js/icheck-1.x/skins/line/grey.css'/>" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"  type="text/css" />
         <link href="<c:url value='/resources/js/DataTables-1.10.13/media/css/jquery.dataTables.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css' />" rel="stylesheet" ></link> 
@@ -37,7 +38,8 @@
                     markCurrentItem: true,
                     showTimeout: 0,
                     subMenusSubOffsetX: 0,
-                    subMenusSubOffsetY: -1
+                    subMenusSubOffsetY: -1,
+                    mainMenuSubOffsetX: 1
                 });
 
                 var $mainMenuState = $('#main-menu-state');

@@ -13,6 +13,7 @@ import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import org.hibernate.SessionFactory;
 
 /**
@@ -46,7 +47,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
 
     @Override
-    public PaymentType GetById(int id) {
+    public PaymentType GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

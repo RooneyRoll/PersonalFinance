@@ -13,6 +13,13 @@
     transition: background-color 250ms;
 }
 
+html body .site-content#site-content .size-1{
+    width:100%;
+    vertical-align:top;
+    box-sizing:border-box;
+    padding:0 10px;
+}
+
 html body .site-content#site-content .size-2{
     width:50%;
     vertical-align:top;
@@ -137,7 +144,8 @@ html body{
     background-color:#6DB33F;
 }
 
-.site-content input[type="text"] {
+.site-content input[type="text"],
+.site-content textarea{
     display: block;
     margin: 0;
     width: 100%;
@@ -147,7 +155,8 @@ html body{
     box-shadow: none;
     border-radius: 0;
 }
-.site-content input[type="text"]:focus {
+.site-content input[type="text"]:focus,
+.site-content textarea{
     outline: none;
 }
 /*error styles*/
@@ -263,6 +272,7 @@ html body{
 .site-content .content-container .form-container .form-content form .input-container .input-holder{
     display:inline-block;
     width:100%;
+    overflow:hidden;
 }
 
 .site-content .content-container .form-container .form-content form .input-container .input-holder input{
@@ -291,22 +301,32 @@ html body{
 
 
 .site-content .content-container .form-container .form-content input[type="text"],
-.site-content .content-container .form-container .form-content input[type="password"]{
+.site-content .content-container .form-container .form-content input[type="password"],
+.site-content .content-container .form-container .form-content textarea{
     padding: 10px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
 }
 
+.site-content .content-container .form-container .form-content textarea{
+    resize:vertical;
+    max-height:200px;
+    min-height:100px;
+}
+
 .site-content .content-container .form-container .form-content input[type="text"]:focus,
 .site-content .content-container .form-container .form-content input[type="text"].focus,
 .site-content .content-container .form-container .form-content input[type="password"]:focus,
-.site-content .content-container .form-container .form-content input[type="password"].focus{
+.site-content .content-container .form-container .form-content input[type="password"].focus,
+.site-content .content-container .form-container .form-content textarea:focus,
+.site-content .content-container .form-container .form-content textarea.focus{
     border-bottom: solid 2px #6DB33F;
 }
 
 .site-content .content-container .form-container .form-content input.error[type="text"],
-.site-content .content-container .form-container .form-content input.error[type="password"]{
+.site-content .content-container .form-container .form-content input.error[type="password"],
+.site-content .content-container .form-container .form-content textarea.error{
     border-bottom: solid 2px #e74c3c;
 }
 /*form styles with icon end*/
@@ -365,6 +385,28 @@ html body{
 .checkbox-green:hover,
 .checkbox-green.checked:hover{
     background-color:#79BA4F;
+}
+
+
+.visibility-check {
+    width:50%;
+    margin-top:5px;
+    display:inline-block;
+}
+
+.visibility-check {
+    background: #34302D;
+    border-radius: 0;
+}
+
+.label-check-visible.checked,
+.label-check-visible.hover {
+    background: #6DB33F;
+}
+
+.label-check-not-visible.checked,
+.label-check-not-visible.hover {
+    background: #c0392b;
 }
 
 #main-menu {

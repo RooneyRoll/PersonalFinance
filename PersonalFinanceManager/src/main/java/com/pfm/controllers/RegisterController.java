@@ -86,7 +86,6 @@ public class RegisterController {
                 throw new ValidationException("Register error: required fields not filled.");
             }
         } catch (ValidationException e) {
-
             map.put("errorMessage", "Моля въведете всички задължителни полета.");
             return "register";
         }

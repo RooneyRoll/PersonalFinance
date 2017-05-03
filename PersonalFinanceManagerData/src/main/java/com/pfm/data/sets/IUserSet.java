@@ -11,12 +11,13 @@ import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
  * @author Misho
  */
-public interface IUserSet extends IViewable<User>,IManagable<UserData,Serializable>{
+public interface IUserSet extends IViewable<User,UUID>,IManagable<UserData,Serializable>{
     @Override
     public Serializable Add(UserData data) throws UserRegisterException;
 }

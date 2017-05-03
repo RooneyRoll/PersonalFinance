@@ -24,10 +24,17 @@
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
                             <li><a class="animation" href="register">Регистрация</a></li>
                             <li><a class="animation" href="login">Вход</a></li>
-                        </c:if>
-                        <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            </c:if>
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            <li><a class="animation" href="javascript:formSubmit()">Плащания</a>
+                                <ul>
+                                    <li>
+                                        <a class="animation" href="javascript:formSubmit()">Категории</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li><a class="animation" href="javascript:formSubmit()">Изход</a></li>
-                        </c:if>
+                            </c:if>
                     </ul>
                 </div>
             </div>

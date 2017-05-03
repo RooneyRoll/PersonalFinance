@@ -5,63 +5,94 @@
  */
 package com.pfm.personalfinancemanager.datapostgres.sets;
 
-import com.pfm.data.data.PaymentData;
-import com.pfm.data.entities.Payment;
-import com.pfm.data.exceptions.BasicException;
-import com.pfm.data.sets.IPaymentSet;
-import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
+import com.pfm.data.data.PaymentCategoryData;
+import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.exceptions.PaymentCategoryAddException;
+import com.pfm.data.sets.IPaymentCategorySet;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /**
  *
  * @author Misho
  */
-public class PaymentCategorySet extends BaseSet<Payments, Payment, PaymentData> implements IPaymentSet   {
+public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCategory, PaymentCategoryData> implements IPaymentCategorySet   {
 
     public PaymentCategorySet(SessionFactory factory) {
         super(factory);
     }
-    
+
     @Override
-    protected Payment convertEntityToDto(Payments Entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected PaymentCategory convertEntityToDto(PaymentCategories Entity) {
+        PaymentCategory category = new PaymentCategory();
+            category.setActive(Entity.getPcatActive());
+            category.setDescription(Entity.getPcatDescription());
+            category.setId(Entity.getPcatId());
+            category.setName(Entity.getPcatName());
+            return category;
     }
 
     @Override
-    protected List<Payment> convertEntititiesToDtoArray(List<Payments> EntityArray) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected List<PaymentCategory> convertEntititiesToDtoArray(List<PaymentCategories> EntityArray) {
+        List<PaymentCategory> paymentCategoryList = new ArrayList<PaymentCategory>();
+        for (PaymentCategories next : EntityArray) {
+            PaymentCategory category = new PaymentCategory();
+            category.setActive(next.getPcatActive());
+            category.setDescription(next.getPcatDescription());
+            category.setId(next.getPcatId());
+            category.setName(next.getPcatName());
+            paymentCategoryList.add(category);
+        }
+        return paymentCategoryList;
     }
 
     @Override
-    protected Payments convertDtoDataToEntity(PaymentData DtoData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected PaymentCategories convertDtoDataToEntity(PaymentCategoryData DtoData) {
+        PaymentCategories paymentEntity = new PaymentCategories();
+        paymentEntity.setPcatActive(DtoData.isActive());
+        paymentEntity.setPcatDescription(DtoData.getDescription());;
+        paymentEntity.setPcatName(DtoData.getName());
+        return paymentEntity;
     }
 
     @Override
-    public List<Payment> GetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Payment GetById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Serializable Add(PaymentData data) throws BasicException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void Edit(int id, PaymentData data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Serializable Add(PaymentCategoryData data) throws PaymentCategoryAddException {
+        Session session = this.getSessionFactory().openSession();
+        try{
+        session.beginTransaction();
+        PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
+        Serializable id = session.save(paymentCategoryEntity);
+        session.getTransaction().commit();
+        session.close();
+        return id;
+        }finally{
+            session.close();
+        }
     }
 
     @Override
     public void Delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Edit(int id, PaymentCategoryData data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<PaymentCategory> GetAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PaymentCategory GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
