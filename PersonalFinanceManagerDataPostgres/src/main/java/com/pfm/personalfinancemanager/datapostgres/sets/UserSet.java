@@ -117,9 +117,8 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     public Serializable Add(UserData data) throws UserRegisterException {
         Session session = this.getSessionFactory().openSession();
         try{
-        
         if (this.userExists(data.getUserName(), session)) {
-            throw new UserRegisterException("User already registered");
+            throw new UserRegisterException("User already with name "+data.getUserName()+" has been already registered.");
         }
         session.beginTransaction();
         Users userEntity = convertDtoDataToEntity(data);

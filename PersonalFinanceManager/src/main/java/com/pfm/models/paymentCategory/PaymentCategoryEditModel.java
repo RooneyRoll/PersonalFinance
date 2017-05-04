@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.requestObjects.paymentCategory;
+package com.pfm.models.paymentCategory;
 
 /**
  *
  * @author mihail
  */
-public class PaymentCategoryEditRequestObject {
+public class PaymentCategoryEditModel {
     
 }

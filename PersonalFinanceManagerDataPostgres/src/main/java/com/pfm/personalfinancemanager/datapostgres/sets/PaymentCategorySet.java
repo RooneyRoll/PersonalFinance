@@ -8,8 +8,10 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
+import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,12 +19,13 @@ import java.util.List;
 import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 /**
  *
  * @author Misho
  */
-public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCategory, PaymentCategoryData> implements IPaymentCategorySet   {
+public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCategory, PaymentCategoryData> implements IPaymentCategorySet {
 
     public PaymentCategorySet(SessionFactory factory) {
         super(factory);
@@ -31,12 +34,12 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     @Override
     protected PaymentCategory convertEntityToDto(PaymentCategories Entity) {
         PaymentCategory category = new PaymentCategory();
-            category.setActive(Entity.getPcatActive());
-            category.setDescription(Entity.getPcatDescription());
-            category.setId(Entity.getPcatId());
-            category.setName(Entity.getPcatName());
-            category.setUserId(Entity.getPcatUser());
-            return category;
+        category.setActive(Entity.getPcatActive());
+        category.setDescription(Entity.getPcatDescription());
+        category.setId(Entity.getPcatId());
+        category.setName(Entity.getPcatName());
+        category.setUserId(Entity.getPcatUser());
+        return category;
     }
 
     @Override
@@ -67,14 +70,17 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     @Override
     public Serializable Add(PaymentCategoryData data) throws PaymentCategoryAddException {
         Session session = this.getSessionFactory().openSession();
-        try{
-        session.beginTransaction();
-        PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
-        Serializable id = session.save(paymentCategoryEntity);
-        session.getTransaction().commit();
-        session.close();
-        return id;
-        }finally{
+        try {
+            if (this.categoryExists(data.getName(),data.getUserId(), session)) {
+                throw new PaymentCategoryAddException("Payment category with name \"" + data.getName() + "\" already exists.");
+            }
+            session.beginTransaction();
+            PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
+            Serializable id = session.save(paymentCategoryEntity);
+            session.getTransaction().commit();
+            session.close();
+            return id;
+        } finally {
             session.close();
         }
     }
@@ -98,5 +104,16 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     public PaymentCategory GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    private boolean categoryExists(String categoryName, UUID userId, Session session) {
+        Query q = session.createQuery("From PaymentCategories pc where pc.pcatName = :categoryName and pc.pcatUser = :userId", PaymentCategories.class)
+                .setParameter("categoryName", categoryName)
+                .setParameter("userId", userId);
+
+        boolean exists = false;
+        if (q.getResultList().size() > 0) {
+            exists = true;
+        }
+        return exists;
+    }
 }

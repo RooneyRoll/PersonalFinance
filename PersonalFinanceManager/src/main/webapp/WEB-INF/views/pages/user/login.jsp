@@ -3,6 +3,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
+        $("#login-form").validate({
+            rules: {
+                username: "required",
+                password: "required"
+            },
+            messages: {
+                username: "Моля, въведете потребителско име",
+                password: "Моля, въведете парола"
+            },
+            errorPlacement: function (error, element) {
+
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("error");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("error");
+            }
+        });
+
         $('#remember-me').each(function () {
             var self = $(this),
                     label = self.next(),
@@ -19,8 +39,8 @@
 </script>
 <div class="form-container size-2">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="loginError" /></c:if>
-    <div class="form-content">
-        <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
+        <div class="form-content">
+            <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
             <div class="input-container with-icon">
                 <div class="input-title-holder no-select">
                     <span> 

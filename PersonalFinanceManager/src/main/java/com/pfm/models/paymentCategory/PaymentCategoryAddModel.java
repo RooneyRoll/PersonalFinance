@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.requestObjects.paymentCategory;
+package com.pfm.models.paymentCategory;
 
 import com.pfm.exceptions.ValidationException;
 
@@ -11,7 +11,7 @@ import com.pfm.exceptions.ValidationException;
  *
  * @author mihail
  */
-public class PaymentCategoryAddRequestObject {
+public class PaymentCategoryAddModel {
     public String categoryName;
     public String categoryDescription;
 

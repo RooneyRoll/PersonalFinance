@@ -36,10 +36,10 @@ class GlobalControllerExceptionHandler {
     }
     
     @ExceptionHandler(PaymentCategoryAddException.class)
-    public ModelAndView handlePaymentAdd(PaymentCategoryAddException ex) {
+    public ModelAndView handlePaymentCategoryAdd(PaymentCategoryAddException ex) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("errorMessage", "Потребителското име вече е заето.");
-        mav.setViewName("register");
+        mav.addObject("errorMessage", "Вече съществува категория с това име.");
+        mav.setViewName("categories-add");
         return mav;
     }
 }

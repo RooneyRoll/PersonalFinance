@@ -9,8 +9,9 @@ import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
+import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import com.pfm.requestObjects.paymentCategory.PaymentCategoryAddRequestObject;
+import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,32 +51,38 @@ public class PaymentCategoriesController {
     @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @RequestBody PaymentCategoryAddRequestObject params) throws PaymentCategoryAddException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
-        PaymentCategoryData categoryDataObject = new PaymentCategoryData();
-        categoryDataObject.setActive(true);
-        categoryDataObject.setDescription(params.getCategoryDescription());
-        categoryDataObject.setName(params.getCategoryName());
-        categoryDataObject.setUserId(user.getId());
-        Serializable id = context.getPaymentCategorySet()
-                .Add(categoryDataObject);
-        String buttonSubmitted = request.getParameter("submit-button");
-        ModelAndView view = null;
-        switch (buttonSubmitted) {
-            case "1":
-                view = new ModelAndView("redirect:/categories");
-                break;
-            case "2":
-                view = new ModelAndView("categories/edit/" + id);
-                break;
-            case "3":
-                view = new ModelAndView("categories/add");
-                break;
+            @ModelAttribute PaymentCategoryAddModel params) throws PaymentCategoryAddException {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            IpfmContext context = pfmContext.getInstance();
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
+            PaymentCategoryData categoryDataObject = new PaymentCategoryData();
+            categoryDataObject.setActive(true);
+            categoryDataObject.setDescription(params.getCategoryDescription());
+            categoryDataObject.setName(params.getCategoryName());
+            categoryDataObject.setUserId(user.getId());
+            Serializable id = context.getPaymentCategorySet()
+                    .Add(categoryDataObject);
+            String buttonSubmitted = request.getParameter("submit-button");
+            ModelAndView view = null;
+            switch (buttonSubmitted) {
+                case "1":
+                    view = new ModelAndView("redirect:/categories");
+                    break;
+                case "2":
+                    view = new ModelAndView("redirect:/categories/edit/" + id);
+                    break;
+                case "3":
+                    view = new ModelAndView("redirect:/categories/add");
+                    break;
+            }
+            return view;
+        }catch(ValidationException e){
+            ModelAndView view = new ModelAndView("categories-add");
+            view.addObject("errorMessage","Моля въведете всички задължителни полета.");
+            return view;
         }
-        return view;
     }
 }

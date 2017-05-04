@@ -3,7 +3,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
-        $('.site-content .form-container input[type="checkbox"],.site-content .form-container input[type="radio"]').each(function (key, val) {
+        $("#payment-category-add-form").validate({
+        rules: {
+            categoryName: "required",
+        },
+        messages: {
+            categoryName: "Моля, въведете име на категория",
+        },
+        errorPlacement: function (error, element) {
+
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass("error");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass("error");
+        }
+    });
+        
+        /*$('.site-content .form-container input[type="checkbox"],.site-content .form-container input[type="radio"]').each(function (key, val) {
             var self = $(this)
             var label = self.next();
             var label_text = label.text();
@@ -20,18 +38,18 @@
                 radioClass: 'iradio_line-grey visibility-check ' + visible,
                 insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
             });
-        });
+        });*/
     });
 </script>
 <div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="registerError" /></c:if>
+    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
         <div class="form-content">
-            <form id="register-form" method="post">
+            <form id="payment-category-add-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input-container size-1">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Име на категория
+                        Име на категория<span class="required-tip">&nbsp;*</span>
                     </span>
                 </div>
                 <div class="input-holder">

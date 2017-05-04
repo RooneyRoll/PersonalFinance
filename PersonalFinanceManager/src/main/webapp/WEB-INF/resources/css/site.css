@@ -262,11 +262,17 @@ html body{
     margin-bottom:10px;
 }
 
-.site-content .content-container .form-container.form-content form .input-container .input-title-holder{
+.site-content .content-container .form-container .form-content form .input-container .input-title-holder{
     display:inline-block;
     width:100%;
     margin-bottom:5px;
     cursor:default;
+}
+
+.site-content .content-container .form-container .form-content form .input-container .input-title-holder span.required-tip {
+    color: #E74C3C;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .site-content .content-container .form-container .form-content form .input-container .input-holder{
