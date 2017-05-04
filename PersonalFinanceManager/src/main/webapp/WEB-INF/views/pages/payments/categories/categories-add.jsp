@@ -35,7 +35,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="category-name" placeholder="Име" id="password"/>
+                    <input type="text" name="categoryName" placeholder="Име" id="password"/>
                 </div>
             </div><!--<div class="input-container size-2">
                 <div class="input-title-holder no-select">
@@ -56,7 +56,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="category-description"></textarea>
+                    <textarea resize="false" placeholder="Описание" name="categoryDescription"></textarea>
                 </div>
             </div>
             <div class="buttons-container size-1">
