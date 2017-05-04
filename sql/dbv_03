@@ -1,20 +1,4 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
-
--- Started on 2017-05-04 09:21:06
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
+﻿
 
 --
 -- TOC entry 1 (class 3079 OID 12387)
@@ -67,12 +51,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
 --
 -- TOC entry 192 (class 1259 OID 65919)
 -- Name: payment_categories; Type: TABLE; Schema: public; Owner: postgres
@@ -87,13 +65,6 @@ CREATE TABLE payment_categories (
 );
 
 
-ALTER TABLE payment_categories OWNER TO postgres;
-
---
--- TOC entry 191 (class 1259 OID 65911)
--- Name: payment_types; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE payment_types (
     ptype_id uuid NOT NULL,
     ptype_name text NOT NULL,
@@ -101,7 +72,6 @@ CREATE TABLE payment_types (
 );
 
 
-ALTER TABLE payment_types OWNER TO postgres;
 
 --
 -- TOC entry 193 (class 1259 OID 65932)
@@ -183,203 +153,6 @@ CREATE TABLE users (
 
 
 ALTER TABLE users OWNER TO postgres;
-
---
--- TOC entry 2220 (class 2613 OID 16426)
--- Name: 16426; Type: BLOB; Schema: -; Owner: postgres
---
-
-SELECT pg_catalog.lo_create('16426');
-
-
-ALTER LARGE OBJECT 16426 OWNER TO postgres;
-
---
--- TOC entry 2218 (class 0 OID 65919)
--- Dependencies: 192
--- Data for Name: payment_categories; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY payment_categories (pcat_id, pcat_name, pcat_user, pcat_active, pcat_description) FROM stdin;
-\.
-
-
---
--- TOC entry 2217 (class 0 OID 65911)
--- Dependencies: 191
--- Data for Name: payment_types; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY payment_types (ptype_id, ptype_name, ptype_description) FROM stdin;
-\.
-
-
---
--- TOC entry 2219 (class 0 OID 65932)
--- Dependencies: 193
--- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY payments (p_id, p_category, p_amount, p_date, p_description, p_type, p_active) FROM stdin;
-\.
-
-
---
--- TOC entry 2215 (class 0 OID 41340)
--- Dependencies: 189
--- Data for Name: persistent_logins; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY persistent_logins (username, series, token, last_used) FROM stdin;
-testuser	OMXL3Dk8S1I8Oquz7GrYmw==	fem68YJvffB4exQWu877yA==	2017-04-18 21:12:13.082
-misho	duuUv++SjXZSJ9rJqXk2wQ==	yBBle56KKUA0XN7Ku9ZWKw==	2017-05-04 00:08:33.856
-\.
-
-
---
--- TOC entry 2231 (class 0 OID 0)
--- Dependencies: 190
--- Name: user_role_gen_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('user_role_gen_id', 48, true);
-
-
---
--- TOC entry 2213 (class 0 OID 32943)
--- Dependencies: 187
--- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY user_roles (user_role_id, username, user_role) FROM stdin;
-4	misho	ROLE_USER
--44	stefan	ROLE_USER
--43	123	ROLE_USER
--42	111111111111	ROLE_USER
--41	2222222	ROLE_USER
--40	111111111111111111	ROLE_USER
--39	22222222222222222222222	ROLE_USER
--38	asasgasga sas gasg	ROLE_USER
-11	misho1	ROLE_USER
-12	121251251251	ROLE_USER
-13	125125125125	ROLE_USER
-14	124124124124	ROLE_USER
-15	jjjjjjjjjjjj	ROLE_USER
-16	lora	ROLE_USER
-17	asfasfasfasf	ROLE_USER
-18	aaaaaaaaaaaaaaaaaaaaaa	ROLE_USER
-19	ggggggggggg	ROLE_USER
-20	kkkkkkkkkkkkkkk	ROLE_USER
-21	aaaaaaaaaaaaaaaa	ROLE_USER
-22	jjjjjjjjjjjjjj	ROLE_USER
-23	aaaaaaaaaaaaaaaaa	ROLE_USER
-24	124124	ROLE_USER
-25	kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk	ROLE_USER
-26	125125125125125	ROLE_USER
-27	11111111111111	ROLE_USER
-28	asgasgasga	ROLE_USER
-29	12126126	ROLE_USER
-30	kkkkkkkkkkkk	ROLE_USER
-31	stefan1	ROLE_USER
-32	masgasgasg	ROLE_USER
-33	testuser	ROLE_USER
-34	misho123	ROLE_USER
-35	gasg	ROLE_USER
-36	testUser	ROLE_USER
-37	misho124	ROLE_USER
-38	agasgasg	ROLE_USER
-39	asasg	ROLE_USER
-40	agasgag	ROLE_USER
-41	misho125125125	ROLE_USER
-42	123555	ROLE_USER
-43	asga gsa 	ROLE_USER
-44	sas gas ga	ROLE_USER
-45	1111111111111111111	ROLE_USER
-46	gggggggggggggg	ROLE_USER
-47	Sssssssssssssssssssssssssssss	ROLE_USER
-48	mishoa	ROLE_USER
-\.
-
-
---
--- TOC entry 2214 (class 0 OID 41296)
--- Dependencies: 188
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY users (user_userid, user_email, user_enabled, user_firstname, user_lastname, user_middlename, user_password, user_username) FROM stdin;
-5839c09e-33a4-4844-af7e-a48184c20330	rooney123777@gmail.com	t	Mihail	Petrov	Ivanov	12345	misho
-02bc83c4-6c70-4528-a5b4-37ff60a57988	12345@abv.bg	t	123	123	123	12345	stefan
-e3ebfd70-59f8-4f2d-b824-5dd4babb34f6	123@s	t	123	123	123	123	123
-c3ea0a4e-493f-4421-80fb-774a11d4162b	111111111111111@a	t	11111111111111111	1111111111111	11111111111111111	11111111111111111	111111111111
-12efc579-0463-4338-9571-0ae255726257	2222222222222@a	t	2222222222222222	222222222222222222	222222222222222	2222222222222222	2222222
-bb386286-2ec4-4c53-ba69-7970ab36d676	1111111111111@a	t	1111111111111111111	12414124	214124	11111111111111111111	111111111111111111
-c8bbef00-3250-42c6-a2c2-d98f8b3efc80	2222222222222222@a	t	22222222222222222	222222222	222222222222	222222222222222	22222222222222222222222
-ce6e803d-26c6-47a7-970b-da7ab933aa9c	sssssssssssss@a	t	ssssssssssssss	sssssssssss	ssssssssssssssss	assssssssssss	asasgasga sas gasg
-1be45b69-15ab-4dc7-bba8-85769bb20e38	124214124@a	t	12412412	124124124	4124124	124124	124124124
-5999fcc0-68bf-4e7e-afc3-7ef69b99781d	123@as	t	123	123	123	123	123asfasfas
-1f6b622e-ec0e-4b2c-befd-101034b95f85	123@ab	t	123125	251115125125	5125125	12345	misho1
-44967b4c-a182-46c5-953a-8e2cc98b381c	251251251@a	t	1251251251	12512512	5125125	25125125125	121251251251
-a9eb46ab-d5dd-4665-8092-627a3c14b314	51251@a	t	12512	125152	125125125	25125125	125125125125
-c40ae475-e3dc-44c9-9d58-2605b14a062f	1241241@a	t	4124124	124124124	124124124	2412412	124124124124
-f9173a9d-9d89-49f9-8299-ba3242cf930f	jjjjjjjjjjjjjjj@a	t	jjjjjjjjjjjjjjjjjjjjj	jjjjjjjjjjj	jjjjjjjjjjjjjjjj	jjjjjjjjjjjjjjjjjjj	jjjjjjjjjjjj
-483a336c-7557-49d2-98f6-ed38d1b88f4a	lora@gmail.com	t	ÐÐ¾ÑÐ°	ÐÐµÑÑÐ¾Ð²Ð°	ÐÐ²Ð°Ð½Ð¾Ð²Ð°	12345	lora
-edab0a75-2737-42f9-a653-0fe5f71f2c17	123@a	t	123asgasg	124124124	124124124124	123	asfasfasfasf
-306e48b4-e7eb-4b7a-93c7-3f981c2fd723	aaaaaaaaaaaaaaaaaaaa@a	t	aaaaaaaaaaaaaa	aaaaaaaaaaa	aaaaaaaaaaaaaa	aaaaaaaaaaaaaaa	aaaaaaaaaaaaaaaaaaaaaa
-afb0c411-da1b-4f0b-b7c9-7c6d82e0ac55	gggggggggggg@a	t	ggggggggggggg	gggggggggg	ggggggggggg	ggggggggggggg	ggggggggggg
-9c431837-c967-47a2-bb17-639bbcd5c777	kkkkkkkkkkkkk@a	t	kkkkkkkkkkkkkk	kkkkkkk	kkkkkkkkkkkkkk	kkkkkkkkkkkkkkkk	kkkkkkkkkkkkkkk
-2c032d3f-acef-4cbf-8dff-848a9e968120	ggggggggggggg@a	t	gggggggggg	aaaaaaagggggg	gggggggggggg	gggggggggggggggg	aaaaaaaaaaaaaaaa
-c0196e91-d5c4-4a07-bc5a-71a9549efa5e	jjjjjjjjjjjjj@a	t	jjjjjjjjjjjj	jjjjjjjjjjjj	jjjjjjjjjjjj	jjjjj	jjjjjjjjjjjjjj
-c7d502ca-b3d2-4dae-893f-47137dee6666	aaaaaaaaaaaaaaaa@a	t	aaaaaaaaaaaaaaaaa	aaaaaaaaaaaaaaaaa	aaaaaaaaaaaaaaaaa	aaaaaaaaaaaaaaaa	aaaaaaaaaaaaaaaaa
-dbfb37d7-48b8-467e-9726-7638de48924c	124@a	t	4124	124124124	12412	1241241@	124124
-cc60ae55-e4a7-4f53-a258-0ca30781b256	kkkkkkkkkkk@a	t	kkkkkkkkkkkkkkkkk	kkkkkkkkk	kkkkkkkkkkkkkkk	kkkkkkkkkk	kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-8fc38cf4-8484-49ad-b077-4bb4023e9d69	111111111111@a	t	2512111111	1111111111111111111111	1251	11111111111111	125125125125125
-46c834fd-25a7-43db-8e45-dd9a4dfc863f	111111111111111111111111@a	t	1111111111111	11111111111111111111	1111111111111	1111111111111	11111111111111
-3f146a12-d57f-407c-b011-527172173291	asgas@a	t	asgasg	sgasgasg	asgasg	gasgasg	asgasgasga
-2bd0c2b9-b167-4252-88d0-46b3a3843c11	13613@a	t	12612361236	sdhsfjdjgk	126126	548568568	12126126
-eada5520-650b-4af3-87cf-5199acc5cbed	kkkkkkkkkkkkkkk@a	t	kkkkkkkkkkkk	kkkkkkkkkkkkkk	kkkkkkkkkkkkk	kkkkkkkkkkk	kkkkkkkkkkkk
-9ed62e03-8b53-4d3b-a7a4-808620330720	1234@abv.bg	t	Ð¡ÑÐµÑÐ°Ð½	ÐÐ²Ð°Ð½Ð¾Ð²	ÐÐµÐ¾ÑÐ³Ð¸ÐµÐ²	12345	stefan1
-75341b2b-0bd8-471a-b81d-c58ebc9019aa	asgas@a	t	Ð°ÑÐ³Ð°ÑÐ³Ð°ÑÐ³Ð°ÑÐ³	ÐºÐ¹	Ð´ÑÐ°Ð¹	123	masgasgasg
-af0902b8-2831-4b4c-b7c2-2f8b5436e38e	12345@abv.bg	t	ÐÐ¸ÑÐ°Ð¸Ð»	ÐÐµÑÑÐ¾Ð²	ÐÐ²Ð°Ð½Ð¾Ð²	12345	testuser
-afa655fc-f6d9-43af-a64d-1c0654f020d3	123@a	t	123	123	123	123	misho123
-09a32f6e-bf05-440f-be99-dc7e9bf0cb15	asg@a	t	sag	asg	asgas	asg	gasg
-4b335390-82e4-4e40-b8de-1660c2011033	123@abv	t	ÐÐ¸ÑÐ¾	ÐÐ²Ð°Ð½Ð¾Ð²	ÐÐµÑÑÐ¾Ð²	123	testUser
-c67e2a80-cedb-4656-b4e2-4adedb57bf71	4124@a	t	ÐÐ¸ÑÐ¾	124124	124124	124124	misho124
-94a1e134-2a44-4904-b156-fbe94ad502e5	sgas@a	t	ÐÐ°ÑÑÐ°ÑÑÐ°ÑÑÐ°ÑÑ	ÐÐ°ÑÑÐ°ÑÑÐ°ÑÑÐ°ÑÑ	ÐÐ°ÑÑÐ°ÑÑÐ°ÑÑÐ°ÑÑ	asgasga	agasgasg
-6b530fc2-598a-4c36-8b9f-e3f2f77129de	jk@az	t	ÑÐ°ÑÑÐ°ÑÐ°Ñ ÑÐ°Ñ ÑÐ°Ñ Ñ	 ÑÐ°Ñ ÑÐ°Ñ ÑÐ°Ñ	Ð°Ñ Ð°ÑÑ 	asgasg	asasg
-5daaf133-8f49-40f0-8260-c8b02df50da3	gasga@a	t	ÐÑÐ³Ð°ÑÐ³Ð°	Ð¾	Ð¸Ð¸Ð¸Ð¸Ð¸Ð¸	agasggas	agasgag
-bf7da0c0-cbed-45a3-9e0f-ea9e109fef1d	15125@a	t	ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ	ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ	Ð°Ð³Ð°ÑÐ³ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ	124	misho125125125
-545255f5-cd9f-4d5d-bc22-8d7edad50e7a	512512@a	t	ÑÐ°Ð³Ð°ÑÐ³Ð°ÑÐ³	Ð°ÑÐ³Ð°ÑÐ³Ð°	ÑÐ³Ð°ÑÐ°ÑÐ³	123	123555
-2be866b3-c33c-40b9-939f-462d5c90de16	asfas@a	t	Ð°ÑÑÐ°ÑÑÐ°ÑÑ	Ð°ÑÑÐ°ÑÑÐ°ÑÑ	Ð°ÑÑÐ°ÑÑÐ°ÑÑ	1525125	asga gsa 
-897806b6-4c35-4936-8b69-a3cb0f85be46	asf@a	t	gas as g	 asgas g 	сссссссссссссссссссссссссссссссссссссссссссс	as ga 	sas gas ga
-85479cc4-f0c1-4dcb-a4b9-4015fb41bc2c	1111111111111111111@s	t	Ð³Ð°ÑÐ³Ð°ÑÐ³Ð°ÑÐ³	Ð³Ð°ÑÐ³Ð°ÑÐ³Ð°ÑÐ³	Ð³Ð°ÑÐ³Ð°ÑÐ³Ð°ÑÐ³	11111111111111111	1111111111111111111
-cbb761ff-ad47-4465-89f5-8c0ae76b6e07	ggggggggggg@a	t	гггггггггг	ггггггггггггггггггг	ггггггггггггггг	gggggggggggggggggggggg	gggggggggggggg
-78d2ef49-f8d3-40d0-9f2b-1a90e62404ed	ssssssssssssssssssss@a	t	Михааа	Михааа	Михааа	ssssssssssssssssssssssssss	Sssssssssssssssssssssssssssss
-6a52ae86-d873-4600-a582-55526b8955a8	12345@a	t	1245	124142	1245	1234	mishoa
-\.
-
-
---
--- TOC entry 2221 (class 0 OID 0)
--- Data for Name: BLOBS; Type: BLOBS; Schema: -; Owner: 
---
-
-SET search_path = pg_catalog;
-
-BEGIN;
-
-SELECT pg_catalog.lo_open('16426', 131072);
-SELECT pg_catalog.lowrite(0, '\x736166');
-SELECT pg_catalog.lo_close(0);
-
-COMMIT;
-
-SET search_path = public, pg_catalog;
-
---
--- TOC entry 2089 (class 2606 OID 65926)
--- Name: payment_categories payment_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY payment_categories
     ADD CONSTRAINT payment_category_pkey PRIMARY KEY (pcat_id);

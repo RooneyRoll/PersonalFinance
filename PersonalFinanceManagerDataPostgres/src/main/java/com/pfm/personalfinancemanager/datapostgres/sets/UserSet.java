@@ -96,6 +96,18 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         return userObject.get(0);
     }
 
+    @Override
+    public User GetByUserName(String userName) {
+         Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From Users WHERE userUsername = :username");
+        q.setParameter("username", userName);
+        List<Users> resultList = q.list();
+        List<User> userObject = convertEntititiesToDtoArray(resultList);
+        session.close();
+        return userObject.get(0);
+    }
+    
     /**
      *
      * @param data

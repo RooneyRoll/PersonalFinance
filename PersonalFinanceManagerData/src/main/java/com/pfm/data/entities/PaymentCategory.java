@@ -16,7 +16,17 @@ public class PaymentCategory {
     private String name;
     private boolean active;
     private String description;
+    private UUID userId;
 
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    
     public String getDescription() {
         return description;
     }

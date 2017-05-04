@@ -61,30 +61,32 @@ public class RegisterController {
             String middlename = request.getParameter("middlename");
             String lastname = request.getParameter("lastname");
             String email = request.getParameter("email");
-            if (email != "" && lastname != "" && middlename != "" && firstname != "" && password != "" && username != "") {
-                UserData userObject = new UserData();
-                userObject.setEmail(email);
-                userObject.setEnabled(true);
-                userObject.setFirstName(firstname);
-                userObject.setLastName(lastname);
-                userObject.setMiddleName(middlename);
-                userObject.setPassword(password);
-                userObject.setUserName(username);
-                UserRoleData userRoleObject = new UserRoleData();
-                userRoleObject.setUserName(username);
-                userRoleObject.setUserRole("ROLE_USER");
-                IpfmContext context = pfmContext.getInstance();
-                Serializable id = context.getUserSet()
-                        .Add(userObject);
-                context.getUserRoleSet()
-                        .Add(userRoleObject);
-                redirectAttributes.addFlashAttribute("success", true);
-                redirectAttributes.addFlashAttribute("messageTitle", "Поздравления " + firstname + "!");
-                redirectAttributes.addFlashAttribute("messageText", "Вие се регистрирахте успешно. Можете да влезете във вашия профил.");
-                return "redirect:/regstat";
-            } else {
+            if ("".equals(email) || "".equals(lastname) ||
+                    "".equals(middlename) || "".equals(firstname) ||
+                    "".equals(password) || "".equals(username)) 
                 throw new ValidationException("Register error: required fields not filled.");
-            }
+            
+            UserData userObject = new UserData();
+            userObject.setEmail(email);
+            userObject.setEnabled(true);
+            userObject.setFirstName(firstname);
+            userObject.setLastName(lastname);
+            userObject.setMiddleName(middlename);
+            userObject.setPassword(password);
+            userObject.setUserName(username);
+            UserRoleData userRoleObject = new UserRoleData();
+            userRoleObject.setUserName(username);
+            userRoleObject.setUserRole("ROLE_USER");
+            IpfmContext context = pfmContext.getInstance();
+            Serializable id = context.getUserSet()
+                    .Add(userObject);
+            context.getUserRoleSet()
+                    .Add(userRoleObject);
+            redirectAttributes.addFlashAttribute("success", true);
+            redirectAttributes.addFlashAttribute("messageTitle", "Поздравления " + firstname + "!");
+            redirectAttributes.addFlashAttribute("messageText", "Вие се регистрирахте успешно. Можете да влезете във вашия профил.");
+            return "redirect:/regstat";
+            
         } catch (ValidationException e) {
             map.put("errorMessage", "Моля въведете всички задължителни полета.");
             return "register";

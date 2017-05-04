@@ -35,6 +35,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             category.setDescription(Entity.getPcatDescription());
             category.setId(Entity.getPcatId());
             category.setName(Entity.getPcatName());
+            category.setUserId(Entity.getPcatUser());
             return category;
     }
 
@@ -47,6 +48,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             category.setDescription(next.getPcatDescription());
             category.setId(next.getPcatId());
             category.setName(next.getPcatName());
+            category.setUserId(next.getPcatUser());
             paymentCategoryList.add(category);
         }
         return paymentCategoryList;
@@ -58,6 +60,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         paymentEntity.setPcatActive(DtoData.isActive());
         paymentEntity.setPcatDescription(DtoData.getDescription());;
         paymentEntity.setPcatName(DtoData.getName());
+        paymentEntity.setPcatUser(DtoData.getUserId());
         return paymentEntity;
     }
 

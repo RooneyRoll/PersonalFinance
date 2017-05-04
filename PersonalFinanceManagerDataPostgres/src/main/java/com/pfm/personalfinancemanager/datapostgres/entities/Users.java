@@ -6,7 +6,7 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Users.findByUserPassword", query = "SELECT u FROM Users u WHERE u.userPassword = :userPassword")
     , @NamedQuery(name = "Users.findByUserUsername", query = "SELECT u FROM Users u WHERE u.userUsername = :userUsername")})
 public class Users implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatUser")
+    private List<PaymentCategories> paymentCategoriesList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -171,5 +175,14 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.Users[ userUserid=" + userUserid + " ]";
+    }
+
+    @XmlTransient
+    public List<PaymentCategories> getPaymentCategoriesList() {
+        return paymentCategoriesList;
+    }
+
+    public void setPaymentCategoriesList(List<PaymentCategories> paymentCategoriesList) {
+        this.paymentCategoriesList = paymentCategoriesList;
     }
 }

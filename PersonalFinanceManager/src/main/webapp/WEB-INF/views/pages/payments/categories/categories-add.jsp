@@ -59,10 +59,10 @@
                     <textarea resize="false" placeholder="Описание" name="category-description"></textarea>
                 </div>
             </div>
-            <div class="buttons-container size-2">
-                <button type="submit" class="button animation">Запази</button>
-                <button type="submit" class="button animation">Запази и редактирай</button>
-                <button type="submit" class="button animation">Запази и Нов</button>
+            <div class="buttons-container size-1">
+                <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
+                <button name="submit-button" type="submit" value="2" class="button animation">Запази и редактирай</button>
+                <button name="submit-button" type="submit" value="3" class="button animation">Запази и Нов</button>
                 <button type="reset" class="button animation">Изчистване на форма</button>
             </div>
         </form>

@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
         driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/PersonalFinanceManager");
         driverManagerDataSource.setUsername("postgres");
-        driverManagerDataSource.setPassword("masterkey");
+        driverManagerDataSource.setPassword("_mk123_");
         return driverManagerDataSource;
     }
 

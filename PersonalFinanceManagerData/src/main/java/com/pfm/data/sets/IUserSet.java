@@ -20,4 +20,6 @@ import java.util.UUID;
 public interface IUserSet extends IViewable<User,UUID>,IManagable<UserData,Serializable>{
     @Override
     public Serializable Add(UserData data) throws UserRegisterException;
+    
+    public User GetByUserName(String userName);
 }

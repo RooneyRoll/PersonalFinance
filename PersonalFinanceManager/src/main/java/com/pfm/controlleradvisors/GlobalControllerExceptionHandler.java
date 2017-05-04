@@ -5,6 +5,7 @@
  */
 package com.pfm.controlleradvisors;
 
+import com.pfm.data.exceptions.PaymentCategoryAddException;
 import com.pfm.data.exceptions.UserRegisterException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +29,14 @@ class GlobalControllerExceptionHandler {
     
     @ExceptionHandler(UserRegisterException.class)
     public ModelAndView handleRegister(UserRegisterException ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", "Потребителското име вече е заето.");
+        mav.setViewName("register");
+        return mav;
+    }
+    
+    @ExceptionHandler(PaymentCategoryAddException.class)
+    public ModelAndView handlePaymentAdd(PaymentCategoryAddException ex) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage", "Потребителското име вече е заето.");
         mav.setViewName("register");

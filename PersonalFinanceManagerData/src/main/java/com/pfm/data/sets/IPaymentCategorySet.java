@@ -8,7 +8,6 @@ package com.pfm.data.sets;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
-import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.io.Serializable;

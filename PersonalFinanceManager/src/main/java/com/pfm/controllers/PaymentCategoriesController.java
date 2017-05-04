@@ -7,11 +7,14 @@ package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentCategoryData;
+import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,17 +49,32 @@ public class PaymentCategoriesController {
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = request.getParameter("category-name");
         String description = request.getParameter("category-description");
-
+        String buttonSubmitted = request.getParameter("submit-button");
+        IpfmContext context = pfmContext.getInstance();
+        User user = context.getUserSet().GetByUserName(auth.getName());
+        System.out.println(user.getId());
         PaymentCategoryData categoryDataObject = new PaymentCategoryData();
         categoryDataObject.setActive(true);
         categoryDataObject.setDescription(name);
         categoryDataObject.setName(description);
-        IpfmContext context = pfmContext.getInstance();
+        categoryDataObject.setUserId(user.getId());
         Serializable id = context.getPaymentCategorySet()
                 .Add(categoryDataObject);
-
-        return new ModelAndView("categories-add");
+        ModelAndView view = null;
+        switch(buttonSubmitted){
+            case "1":
+                view = new ModelAndView("redirect:/categories");
+                break;
+            case "2":
+                view = new ModelAndView("categories/edit/"+id);
+                break;
+            case "3":
+                view = new ModelAndView("categories/add");
+                break;
+        }
+        return view;
     }
 }
