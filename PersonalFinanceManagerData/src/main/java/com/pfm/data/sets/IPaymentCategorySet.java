@@ -8,6 +8,7 @@ package com.pfm.data.sets;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
+import com.pfm.data.exceptions.PaymentCategoryEditException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.io.Serializable;
@@ -17,8 +18,11 @@ import java.util.UUID;
  *
  * @author Misho
  */
-public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, IManagable<PaymentCategoryData, Serializable> {
+public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, IManagable<PaymentCategoryData, UUID> {
 
     @Override
-    public Serializable Add(PaymentCategoryData data) throws PaymentCategoryAddException;
+    public UUID Add(PaymentCategoryData data) throws PaymentCategoryAddException;
+    
+    @Override
+    public void Edit(UUID id,PaymentCategoryData data) throws PaymentCategoryEditException;
 }

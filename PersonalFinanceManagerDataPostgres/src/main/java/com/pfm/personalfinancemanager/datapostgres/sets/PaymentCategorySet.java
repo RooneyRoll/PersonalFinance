@@ -8,10 +8,9 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategoryAddException;
-import com.pfm.data.exceptions.UserRegisterException;
+import com.pfm.data.exceptions.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     }
 
     @Override
-    public Serializable Add(PaymentCategoryData data) throws PaymentCategoryAddException {
+    public UUID Add(PaymentCategoryData data) throws PaymentCategoryAddException {
         Session session = this.getSessionFactory().openSession();
         try {
             if (this.categoryExists(data.getName(),data.getUserId(), session)) {
@@ -79,20 +78,34 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             Serializable id = session.save(paymentCategoryEntity);
             session.getTransaction().commit();
             session.close();
-            return id;
+   
+            return UUID.fromString(id.toString());
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void Delete(int id) {
+    public void Delete(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Edit(int id, PaymentCategoryData data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void Edit(UUID id, PaymentCategoryData data) throws PaymentCategoryEditException {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            //if (this.categoryExists(data.getName(),data.getUserId(), session)) {
+            //    throw new PaymentCategoryEditException("Payment category with name \"" + data.getName() + "\" already exists.");
+           // }
+            session.beginTransaction();
+            PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
+            paymentCategoryEntity.setPcatId(id);
+            session.update(paymentCategoryEntity);
+            session.getTransaction().commit();
+            session.close();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
@@ -102,7 +115,14 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
 
     @Override
     public PaymentCategory GetById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From PaymentCategories WHERE pcatId = :id");
+        q.setParameter("id", id);
+        List<PaymentCategories> resultList = q.list();
+        List<PaymentCategory> paymentCategoryObjects = convertEntititiesToDtoArray(resultList);
+        session.close();
+        return paymentCategoryObjects.get(0);
     }
 
     private boolean categoryExists(String categoryName, UUID userId, Session session) {

@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
-        $("#payment-category-add-form").validate({
+        $("#payment-category-edit-form").validate({
             rules: {
                 categoryName: "required",
             },
@@ -20,21 +20,52 @@
                 $(element).removeClass("error");
             }
         });
+        $('.site-content .form-container input[type="checkbox"],.site-content .form-container input[type="radio"]').each(function (key, val) {
+            var self = $(this)
+            var label = self.next();
+            var label_text = label.text();
+            var visible = "label-check-not-visible";
+            if (label.hasClass("visible"))
+                visible = "label-check-visible";
+
+            label.remove();
+            $(this).on("ifChanged", function (event) {
+                $(this).change();
+            });
+            var check = self.iCheck({
+                checkboxClass: 'icheckbox_line-grey visibility-check',
+                radioClass: 'iradio_line-grey visibility-check ' + visible,
+                insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
+            });
+        });
     });
 </script>
 <div class="form-container">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
         <div class="form-content">
-            <form id="payment-category-add-form" method="post">
+            <form id="payment-category-edit-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-1">
+            <div class="input-container size-2">
                 <div class="input-title-holder no-select">
                     <span> 
                         Име на категория<span class="required-tip">&nbsp;*</span>
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="categoryName" placeholder="Име" id="password"/>
+                    <input type="text" name="categoryName" placeholder="Име" id="password" value="${category.getName()}"/>
+                </div>
+            </div><div class="input-container size-2">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Активност
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <input  type="radio" <c:if test="${category.isActive()}">checked="checked"</c:if>
+                            name="categoryActive" value="1"/><label
+                        class="visible">Категорията е активна</label><input type="radio" <c:if test="${category.isActive() == false}">checked="checked"</c:if>
+                           name="categoryActive" value="2"/><label>
+                        Категорията не е активна</label>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -43,7 +74,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="categoryDescription"></textarea>
+                    <textarea resize="false" placeholder="Описание" name="categoryDescription">${category.getDescription()}</textarea>
                 </div>
             </div>
             <div class="buttons-container size-1">

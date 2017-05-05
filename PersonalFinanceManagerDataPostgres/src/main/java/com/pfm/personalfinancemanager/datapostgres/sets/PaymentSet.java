@@ -57,12 +57,12 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     }
 
     @Override
-    public void Edit(int id, PaymentData data) {
+    public void Edit(Serializable id, PaymentData data) throws BasicException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Delete(int id) {
+    public void Delete(Serializable id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -57,12 +57,12 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
 
     @Override
-    public void Edit(int id, PaymentTypeData data) {
+    public void Edit(Serializable id, PaymentTypeData data) throws BasicException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Delete(int id) {
+    public void Delete(Serializable id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

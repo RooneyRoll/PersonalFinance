@@ -7,6 +7,7 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.data.UserRoleData;
 import com.pfm.data.entities.UserRole;
+import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.UserRoles;
@@ -86,12 +87,12 @@ public class UserRoleSet extends BaseSet<UserRoles, UserRole, UserRoleData> impl
     }
 
     @Override
-    public void Edit(int id, UserRoleData data) {
+    public void Edit(Serializable id, UserRoleData data) throws BasicException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Delete(int id) {
+    public void Delete(Serializable id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

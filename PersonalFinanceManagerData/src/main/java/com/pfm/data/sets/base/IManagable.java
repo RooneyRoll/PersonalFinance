@@ -13,6 +13,6 @@ import com.pfm.data.exceptions.BasicException;
  */
 public interface IManagable<DataType,T> {
     public T Add(DataType data) throws BasicException;
-    public void Edit(int id, DataType data);
-    public void Delete(int id);
+    public void Edit(T id, DataType data) throws BasicException;
+    public void Delete(T id);
 }

@@ -32,6 +32,4 @@ public class PaymentCategoryAddModel {
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
     }
-    
-    
 }

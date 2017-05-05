@@ -7,6 +7,7 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.entities.User;
 import com.pfm.data.data.UserData;
+import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
@@ -131,16 +132,6 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         }
     }
 
-    @Override
-    public void Edit(int id, UserData data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void Delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private boolean userExists(String username, Session session) {
         Query q = session.createQuery("From Users u where u.userUsername = :username", Users.class)
                 .setParameter("username", username);
@@ -149,5 +140,15 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
             exists = true;
         }
         return exists;
+    }
+
+    @Override
+    public void Edit(Serializable id, UserData data) throws BasicException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Delete(Serializable id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
