@@ -7,18 +7,19 @@ package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentTypeData;
-import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
-import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.exceptions.ValidationException;
-import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
 import com.pfm.models.paymentType.PaymentTypeAddModel;
 import com.pfm.models.paymentType.PaymentTypeEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
+import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,9 +43,16 @@ public class PaymentTypesController {
     @RequestMapping(value = "/types", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) {
-
-        return new ModelAndView("types-manage");
+            @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
+            Map<String,String> fields = new HashMap<String,String>();;
+            fields.put("ptypeName","string");
+            fields.put("ptypeActive","string");
+            fields.put("ptypeDescription","string");
+            DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class,fields);
+            String gridHtml = grid.buildHtmlForGrid();
+            ModelAndView view = new ModelAndView("types-manage");
+            view.addObject("grid", gridHtml);
+        return view;
     }
 
     @RequestMapping(value = "/types/add", method = RequestMethod.GET)

@@ -15,7 +15,11 @@ import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,9 +44,16 @@ public class PaymentCategoriesController {
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) {
-
-        return new ModelAndView("categories-manage");
+            @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
+            Map<String,String> fields = new HashMap<String,String>();;
+            fields.put("pcatName","string");
+            fields.put("pcatActive","string");
+            fields.put("pcatDescription","string");
+            DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class,fields);
+            String gridHtml = grid.buildHtmlForGrid();
+            ModelAndView view = new ModelAndView("categories-manage");
+            view.addObject("grid", gridHtml);
+        return view;
     }
 
     @RequestMapping(value = "/categories/add", method = RequestMethod.GET)

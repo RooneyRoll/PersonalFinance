@@ -28,16 +28,7 @@ public class DefaultController {
 
     @RequestMapping(value ={ "/","/home"}, method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) throws ClassNotFoundException {
-        IpfmContext context = pfmContext.getInstance();
-        //Map<String,String> fields = new HashMap<String,String>();;
-        //fields.put("userUserid","string");
-        //fields.put("userEmail","string");
-        //fields.put("userEnabled","string");
-        //fields.put("userFirstname","string");
         
-        //DataGridBuilder grid = new DataGridBuilder(Users.class,fields);
-        //String gridHtml = grid.buildHtmlForGrid();
-        //map.put("grid", gridHtml);
         return "home";
     }
 
