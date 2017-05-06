@@ -6,16 +6,19 @@
 package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
-import com.pfm.data.data.PaymentCategoryData;
+import com.pfm.data.data.PaymentTypeData;
 import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
+import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
+import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.exceptions.ValidationException;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
-import java.io.Serializable;
+import com.pfm.models.paymentType.PaymentTypeAddModel;
+import com.pfm.models.paymentType.PaymentTypeEditModel;
+import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,112 +38,111 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Misho
  */
 @Controller
-public class PaymentCategoriesController {
-
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+public class PaymentTypesController {
+    @RequestMapping(value = "/types", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) {
 
-        return new ModelAndView("categories-manage");
+        return new ModelAndView("types-manage");
     }
 
-    @RequestMapping(value = "/categories/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/types/add", method = RequestMethod.GET)
     public ModelAndView addIndex(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
 
-        return new ModelAndView("categories-add");
+        return new ModelAndView("types-add");
     }
 
-    @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/types/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @ModelAttribute PaymentCategoryAddModel params) throws PaymentCategoryAddException {
+            @ModelAttribute PaymentTypeAddModel params) throws PaymentTypeAddException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
-            PaymentCategoryData categoryDataObject = new PaymentCategoryData();
-            categoryDataObject.setActive(true);
-            categoryDataObject.setDescription(params.getCategoryDescription());
-            categoryDataObject.setName(params.getCategoryName());
-            categoryDataObject.setUserId(user.getId());
-            Serializable id = context.getPaymentCategorySet()
-                    .Add(categoryDataObject);
+            PaymentTypeData PaymentTypeObject = new PaymentTypeData();
+            PaymentTypeObject.setActive(true);
+            PaymentTypeObject.setDescription(params.getTypeDescription());
+            PaymentTypeObject.setName(params.getTypeName());
+            PaymentTypeObject.setUserId(user.getId());
+            UUID id = context.getPaymentTypeSet()
+                    .Add(PaymentTypeObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {
                 case "1":
-                    view = new ModelAndView("redirect:/categories");
+                    view = new ModelAndView("redirect:/types");
                     break;
                 case "2":
-                    view = new ModelAndView("redirect:/categories/edit/" + id);
+                    view = new ModelAndView("redirect:/types/edit/" + id);
                     break;
                 case "3":
-                    view = new ModelAndView("redirect:/categories/add");
+                    view = new ModelAndView("redirect:/types/add");
                     break;
             }
             return view;
         } catch (ValidationException e) {
-            ModelAndView view = new ModelAndView("categories-add");
+            ModelAndView view = new ModelAndView("types-add");
             view.addObject("errorMessage", "Моля въведете всички задължителни полета.");
             return view;
         }
     }
 
-    @RequestMapping(value = "/categories/edit/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/types/edit/{typeId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
-            @PathVariable("categoryId") UUID categoryId,
+            @PathVariable("typeId") UUID typeId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
+            @RequestParam(value = "error", required = false) String error) throws PaymentTypeEditException {
         IpfmContext context = pfmContext.getInstance();
-        PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
-        ModelAndView view = new ModelAndView("categories-edit");
-        PaymentCategoryEditModel model = new PaymentCategoryEditModel();
-        model.setCategoryActive(category.isActive() ? "1" : "2");
-        model.setCategoryDescription(category.getDescription());
-        model.setCategoryName(category.getName());
-        view.addObject("category", category);
+        PaymentType type = context.getPaymentTypeSet().GetById(typeId);
+        ModelAndView view = new ModelAndView("types-edit");
+        PaymentTypeEditModel model = new PaymentTypeEditModel();
+        model.setTypeActive(type.isActive() ? "1" : "2");
+        model.setTypeDescription(type.getDescription());
+        model.setTypeName(type.getName());
+        view.addObject("type", type);
         return view;
     }
     
-    @RequestMapping(value = "/categories/edit/{categoryId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/types/edit/{typeId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @PathVariable("categoryId") UUID categoryId,
-            @ModelAttribute PaymentCategoryEditModel params) throws PaymentCategoryEditException{
+            @PathVariable("typeId") UUID typeId,
+            @ModelAttribute PaymentTypeEditModel params) throws PaymentTypeEditException{
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
-            PaymentCategoryData categoryDataObject = new PaymentCategoryData();
-            categoryDataObject.setActive("1".equals(params.getCategoryActive()) ? true : false);
-            categoryDataObject.setDescription(params.getCategoryDescription());
-            categoryDataObject.setName(params.getCategoryName());
-            categoryDataObject.setUserId(user.getId());
-            context.getPaymentCategorySet()
-                    .Edit(categoryId,categoryDataObject);
+            PaymentTypeData paymentTypeDataObject = new PaymentTypeData();
+            paymentTypeDataObject.setActive("1".equals(params.getTypeActive()));
+            paymentTypeDataObject.setDescription(params.getTypeDescription());
+            paymentTypeDataObject.setName(params.getTypeName());
+            paymentTypeDataObject.setUserId(user.getId());
+            context.getPaymentTypeSet()
+                    .Edit(typeId,paymentTypeDataObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {
                 case "1":
-                    view = new ModelAndView("redirect:/categories");
+                    view = new ModelAndView("redirect:/types");
                     break;
                 case "2":
-                    view = new ModelAndView("redirect:/categories/edit/" + categoryId);
+                    view = new ModelAndView("redirect:/types/edit/" + typeId);
                     break;
                 case "3":
-                    view = new ModelAndView("redirect:/categories/add");
+                    view = new ModelAndView("redirect:/types/add");
                     break;
             }
             return view;
         } catch (ValidationException e) {
-            ModelAndView view = new ModelAndView("categories-add");
+            ModelAndView view = new ModelAndView("types-add");
             view.addObject("errorMessage", "Моля въведете всички задължителни полета.");
             return view;
         }

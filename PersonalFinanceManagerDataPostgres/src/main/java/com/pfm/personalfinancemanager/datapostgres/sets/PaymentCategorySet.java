@@ -7,8 +7,8 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
-import com.pfm.data.exceptions.PaymentCategoryAddException;
-import com.pfm.data.exceptions.PaymentCategoryEditException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
@@ -70,7 +70,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     public UUID Add(PaymentCategoryData data) throws PaymentCategoryAddException {
         Session session = this.getSessionFactory().openSession();
         try {
-            if (this.categoryExists(data.getName(),data.getUserId(), session)) {
+            if (this.categoryExistsForAdd(data.getName(),data.getUserId(), session)) {
                 throw new PaymentCategoryAddException("Payment category with name \"" + data.getName() + "\" already exists.");
             }
             session.beginTransaction();
@@ -94,9 +94,9 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     public void Edit(UUID id, PaymentCategoryData data) throws PaymentCategoryEditException {
         Session session = this.getSessionFactory().openSession();
         try {
-            //if (this.categoryExists(data.getName(),data.getUserId(), session)) {
-            //    throw new PaymentCategoryEditException("Payment category with name \"" + data.getName() + "\" already exists.");
-           // }
+            if (this.categoryExistsForEdit(data.getName(),data.getUserId(),id, session)) {
+                throw new PaymentCategoryEditException("Payment category with name \"" + data.getName() + "\" already exists.");
+            }
             session.beginTransaction();
             PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
             paymentCategoryEntity.setPcatId(id);
@@ -125,7 +125,20 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         return paymentCategoryObjects.get(0);
     }
 
-    private boolean categoryExists(String categoryName, UUID userId, Session session) {
+    private boolean categoryExistsForEdit(String categoryName, UUID userId,UUID categoryId, Session session) {
+        Query q = session.createQuery("From PaymentCategories pc where pc.pcatName = :categoryName and pc.pcatUser = :userId and pc.pcatId!=:categoryId", PaymentCategories.class)
+                .setParameter("categoryName", categoryName)
+                .setParameter("userId", userId)
+                .setParameter("categoryId",categoryId);
+
+        boolean exists = false;
+        if (q.getResultList().size() > 0) {
+            exists = true;
+        }
+        return exists;
+    }
+    
+    private boolean categoryExistsForAdd(String categoryName, UUID userId, Session session) {
         Query q = session.createQuery("From PaymentCategories pc where pc.pcatName = :categoryName and pc.pcatUser = :userId", PaymentCategories.class)
                 .setParameter("categoryName", categoryName)
                 .setParameter("userId", userId);

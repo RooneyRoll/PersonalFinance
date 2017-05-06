@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/categories/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/types/**").access("hasRole('ROLE_USER')")
                 .and()
                 .formLogin()
                 .successHandler(savedRequestAwareAuthenticationSuccessHandler())

@@ -25,6 +25,7 @@
                         <spring:url var = "login" value='/login' />
                         <spring:url var = "categories" value='/categories' />
                         <spring:url var = "categories-add" value='/categories/add' />
+                        <spring:url var = "types" value='/types' />
                         <spring:url var = "payments" value='/payments' />
                         <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
@@ -37,6 +38,9 @@
                                 <ul>
                                     <li>
                                         <a class="animation" href="${categories}">Категории</a>
+                                    </li>
+                                    <li>
+                                        <a class="animation" href="${types}">Типове плащания</a>
                                     </li>
                                 </ul>
                             </li>

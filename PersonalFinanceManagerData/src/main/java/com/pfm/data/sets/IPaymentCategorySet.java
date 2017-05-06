@@ -7,11 +7,10 @@ package com.pfm.data.sets;
 
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
-import com.pfm.data.exceptions.PaymentCategoryAddException;
-import com.pfm.data.exceptions.PaymentCategoryEditException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
-import java.io.Serializable;
 import java.util.UUID;
 
 /**

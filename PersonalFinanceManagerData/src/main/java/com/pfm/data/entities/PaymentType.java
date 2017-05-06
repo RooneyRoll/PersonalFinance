@@ -14,7 +14,9 @@ import java.util.UUID;
 public class PaymentType {
     private UUID id;
     private String name;
+    private boolean active;
     private String description;
+    private UUID userId;
 
     public UUID getId() {
         return id;
@@ -32,6 +34,14 @@ public class PaymentType {
         this.name = name;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -39,5 +49,12 @@ public class PaymentType {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 }

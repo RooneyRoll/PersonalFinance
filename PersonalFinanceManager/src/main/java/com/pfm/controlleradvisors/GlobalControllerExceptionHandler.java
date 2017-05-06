@@ -5,7 +5,10 @@
  */
 package com.pfm.controlleradvisors;
 
-import com.pfm.data.exceptions.PaymentCategoryAddException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
+import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
+import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.exceptions.UserRegisterException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,6 +43,30 @@ class GlobalControllerExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage", "Вече съществува категория с това име.");
         mav.setViewName("categories-add");
+        return mav;
+    }
+    
+    @ExceptionHandler(PaymentCategoryEditException.class)
+    public ModelAndView PaymentCategoryEditException(PaymentCategoryEditException ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", "Вече съществува категория с това име.");
+        mav.setViewName("categories-add");
+        return mav;
+    }
+    
+    @ExceptionHandler(PaymentTypeAddException.class)
+    public ModelAndView handlePaymentTypeAdd(PaymentTypeAddException ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", "Вече съществува тип на плащания с това име.");
+        mav.setViewName("types-add");
+        return mav;
+    }
+    
+    @ExceptionHandler(PaymentTypeEditException.class)
+    public ModelAndView PaymentTypeEditException(PaymentTypeEditException ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", "Вече съществува тип на плащания с това име.");
+        mav.setViewName("types-add");
         return mav;
     }
 }

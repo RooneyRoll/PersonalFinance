@@ -6,10 +6,8 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,10 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +31,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "PaymentTypes.findByPtypeDescription", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeDescription = :ptypeDescription")})
 public class PaymentTypes implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "ptype_active")
+    private boolean ptypeActive;
+    @Column(name = "ptype_user")
+    private UUID ptypeUser;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,9 +46,6 @@ public class PaymentTypes implements Serializable {
     private String ptypeName;
     @Column(name = "ptype_description")
     private String ptypeDescription;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pType")
-    private List<Payments> paymentsList;
-
     public PaymentTypes() {
     }
 
@@ -84,15 +82,6 @@ public class PaymentTypes implements Serializable {
         this.ptypeDescription = ptypeDescription;
     }
 
-    @XmlTransient
-    public List<Payments> getPaymentsList() {
-        return paymentsList;
-    }
-
-    public void setPaymentsList(List<Payments> paymentsList) {
-        this.paymentsList = paymentsList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -116,6 +105,22 @@ public class PaymentTypes implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes[ ptypeId=" + ptypeId + " ]";
+    }
+
+    public boolean getPtypeActive() {
+        return ptypeActive;
+    }
+
+    public void setPtypeActive(boolean ptypeActive) {
+        this.ptypeActive = ptypeActive;
+    }
+
+    public UUID getPtypeUser() {
+        return ptypeUser;
+    }
+
+    public void setPtypeUser(UUID ptypeUser) {
+        this.ptypeUser = ptypeUser;
     }
     
 }
