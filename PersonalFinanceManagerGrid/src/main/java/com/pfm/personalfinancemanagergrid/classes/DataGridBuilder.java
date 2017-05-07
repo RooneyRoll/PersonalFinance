@@ -20,13 +20,14 @@ import javax.persistence.Table;
 public class DataGridBuilder {
 
     private Class entity;
-    private List<String> columns = new ArrayList<String>();
-    private Map<String, String> allowedFields = new HashMap<String, String>();
     private String table;
     private String jsonFieldsVariable;
     private String columnFilters;
     private String gridHtml = "";
+    private List<columnSettingsObject> columnsSettings = new ArrayList<columnSettingsObject>();
 
+    
+    
     public String getGridHtml() {
         return gridHtml;
     }
@@ -36,39 +37,14 @@ public class DataGridBuilder {
         this.gridHtml = (oldHtml + html);
     }
 
-    private void getEntityAnnotations() throws ClassNotFoundException {
-        Class<?> cls = Class.forName(entity.getName());
-        Table table = cls.getAnnotation(javax.persistence.Table.class);
-        this.table = table.name();
-        Field[] fields = cls.getDeclaredFields();
-        this.jsonFieldsVariable = "[";
-        this.columnFilters = "[";
-        Integer iteration = 0;
-        for (Field field : fields) {
-            Column column = field.getAnnotation(javax.persistence.Column.class);
-            if (column != null && allowedFields.containsKey(field.getName())) {
-                this.columns.add(field.getName());
-                if (iteration != 0) {
-                    this.jsonFieldsVariable += ",";
-                    this.columnFilters += ",";
-                }
-                this.columnFilters += "{'value':'','type':'" + this.allowedFields.get(field.getName()) + "'}";
-                this.jsonFieldsVariable += "{\"name\":\"" + field.getName() + "\"," + "\"type\":\"" + this.allowedFields.get(field.getName()) + "\"}";
-                iteration++;
-            }
-        }
-        this.jsonFieldsVariable += "]";
-        this.columnFilters += "]";
-    }
-
     public String buildHtmlForGrid() {
         this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
-        int columnsLength = this.columns.size();
+        int columnsLength = this.columnsSettings.size();
         int iteration = 0;
-        for (String column : columns) {
-            this.appendToGridHtml("<th>" + column + "</th>");
-            columnsDeclaration += "{'mData':'" + column + "'}";
+        for (columnSettingsObject column : columnsSettings) {
+            this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
+            columnsDeclaration += "{'mData':'" + column.getEntityFieldName() + "'}";
             if (iteration < columnsLength) {
                 columnsDeclaration += ",";
             }
@@ -235,10 +211,72 @@ public class DataGridBuilder {
         return this.getGridHtml();
     }
 
-    public DataGridBuilder(Class entityClass, Map<String, String> fields) throws ClassNotFoundException {
+    private columnSettingsObject getColumnSettingsByColumnEntityName(String columnName){
+        for (columnSettingsObject columnSettings : columnsSettings) {
+            if(columnName.equals(columnSettings.getEntityFieldName()))
+                return columnSettings;
+        }
+        return null;
+    }
+    
+    private boolean isColumnAllowed(String columnName){
+        columnSettingsObject column = getColumnSettingsByColumnEntityName(columnName);
+        if(column != null)
+            return column.isAllowedField();
+        return false;
+    }
+    
+    private void buildFieldsJson(Field[] fields){
+        this.jsonFieldsVariable = "[";
+        Integer iteration = 0;
+        for (Field field : fields) {
+            Column column = field.getAnnotation(javax.persistence.Column.class);
+            String fieldName = field.getName();
+            columnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
+            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())){
+                if (iteration != 0) {
+                    this.jsonFieldsVariable += ",";
+                }
+                this.jsonFieldsVariable += "{\"name\":\"" + columnSettings.getEntityFieldName() + "\"," + "\"type\":\"" + columnSettings.getFieldType() + "\"}";
+                iteration++;
+            }
+        }
+        this.jsonFieldsVariable += "]";
+    }
+    
+    private void buildColumnFiltersJson(Field[] fields){
+        this.columnFilters = "[";
+        Integer iteration = 0;
+        for (Field field : fields) {
+            Column column = field.getAnnotation(javax.persistence.Column.class);
+            String fieldName = field.getName();
+            System.out.println(fieldName);
+            columnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
+            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
+                if (iteration != 0) {
+                    this.columnFilters += ",";
+                }
+                this.columnFilters += "{'value':'','type':'" + columnSettings.getEntityFieldName() + "'}";
+                iteration++;
+            }
+        }
+        this.columnFilters += "]";
+    }
+    
+    private Field[] getEntityAnnotations() throws ClassNotFoundException {
+        Class<?> cls = Class.forName(entity.getName());
+        Table table = cls.getAnnotation(javax.persistence.Table.class);
+        this.table = table.name();
+        Field[] fields = cls.getDeclaredFields();
+        return fields;
+    }
+    
+    public DataGridBuilder(Class entityClass, List<columnSettingsObject> columnSettings) throws ClassNotFoundException {
 
         this.entity = entityClass;
-        this.allowedFields = fields;
-        this.getEntityAnnotations();
+        this.columnsSettings = columnSettings;
+        Field[] fields = this.getEntityAnnotations();
+        this.buildColumnFiltersJson(fields);
+        this.buildFieldsJson(fields);
     }
 }

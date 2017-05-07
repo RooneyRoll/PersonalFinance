@@ -18,7 +18,10 @@ import com.pfm.models.paymentType.PaymentTypeEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
+import com.pfm.personalfinancemanagergrid.classes.columnSettingsObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -44,11 +47,11 @@ public class PaymentTypesController {
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-            Map<String,String> fields = new HashMap<String,String>();;
-            fields.put("ptypeName","string");
-            fields.put("ptypeActive","string");
-            fields.put("ptypeDescription","string");
-            DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class,fields);
+            List<columnSettingsObject> columnsList = new ArrayList<columnSettingsObject>();
+            columnsList.add(new columnSettingsObject("ptypeName", "Име", "string", true));
+            columnsList.add(new columnSettingsObject("ptypeActive","Активност","string", true));
+            columnsList.add(new columnSettingsObject("ptypeDescription", "Описание", "string", true));
+            DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class,columnsList);
             String gridHtml = grid.buildHtmlForGrid();
             ModelAndView view = new ModelAndView("types-manage");
             view.addObject("grid", gridHtml);

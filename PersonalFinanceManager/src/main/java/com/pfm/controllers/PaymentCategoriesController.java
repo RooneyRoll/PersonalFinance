@@ -45,14 +45,8 @@ public class PaymentCategoriesController {
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-            Map<String,String> fields = new HashMap<String,String>();;
-            fields.put("pcatName","string");
-            fields.put("pcatActive","string");
-            fields.put("pcatDescription","string");
-            DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class,fields);
-            String gridHtml = grid.buildHtmlForGrid();
+            Map<String,String> fields = new HashMap<String,String>();
             ModelAndView view = new ModelAndView("categories-manage");
-            view.addObject("grid", gridHtml);
         return view;
     }
 
