@@ -7,9 +7,7 @@ package com.pfm.personalfinancemanagergrid.classes;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
@@ -24,10 +22,9 @@ public class DataGridBuilder {
     private String jsonFieldsVariable;
     private String columnFilters;
     private String gridHtml = "";
-    private List<columnSettingsObject> columnsSettings = new ArrayList<columnSettingsObject>();
+    private TableSettingsObject tableSettings;
+    private List<ColumnSettingsObject> columnsSettings = new ArrayList<ColumnSettingsObject>();
 
-    
-    
     public String getGridHtml() {
         return gridHtml;
     }
@@ -42,13 +39,15 @@ public class DataGridBuilder {
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
         int iteration = 0;
-        for (columnSettingsObject column : columnsSettings) {
-            this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
-            columnsDeclaration += "{'mData':'" + column.getEntityFieldName() + "'}";
-            if (iteration < columnsLength) {
-                columnsDeclaration += ",";
+        for (ColumnSettingsObject column : columnsSettings) {
+            if (column.isAllowedField()) {
+                this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
+                columnsDeclaration += "{'mData':'" + column.getEntityFieldName() + "'}";
+                if (iteration < columnsLength) {
+                    columnsDeclaration += ",";
+                }
+                iteration++;
             }
-            iteration++;
         }
         this.appendToGridHtml("</tr></thead></table>");
         this.appendToGridHtml("<script type='text/javascript'>\n"
@@ -211,29 +210,31 @@ public class DataGridBuilder {
         return this.getGridHtml();
     }
 
-    private columnSettingsObject getColumnSettingsByColumnEntityName(String columnName){
-        for (columnSettingsObject columnSettings : columnsSettings) {
-            if(columnName.equals(columnSettings.getEntityFieldName()))
+    private ColumnSettingsObject getColumnSettingsByColumnEntityName(String columnName) {
+        for (ColumnSettingsObject columnSettings : columnsSettings) {
+            if (columnName.equals(columnSettings.getEntityFieldName())) {
                 return columnSettings;
+            }
         }
         return null;
     }
-    
-    private boolean isColumnAllowed(String columnName){
-        columnSettingsObject column = getColumnSettingsByColumnEntityName(columnName);
-        if(column != null)
+
+    private boolean isColumnAllowed(String columnName) {
+        ColumnSettingsObject column = getColumnSettingsByColumnEntityName(columnName);
+        if (column != null) {
             return column.isAllowedField();
+        }
         return false;
     }
-    
-    private void buildFieldsJson(Field[] fields){
+
+    private void buildFieldsJson(Field[] fields) {
         this.jsonFieldsVariable = "[";
         Integer iteration = 0;
         for (Field field : fields) {
             Column column = field.getAnnotation(javax.persistence.Column.class);
             String fieldName = field.getName();
-            columnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
-            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())){
+            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
+            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
                 if (iteration != 0) {
                     this.jsonFieldsVariable += ",";
                 }
@@ -243,15 +244,15 @@ public class DataGridBuilder {
         }
         this.jsonFieldsVariable += "]";
     }
-    
-    private void buildColumnFiltersJson(Field[] fields){
+
+    private void buildColumnFiltersJson(Field[] fields) {
         this.columnFilters = "[";
         Integer iteration = 0;
         for (Field field : fields) {
             Column column = field.getAnnotation(javax.persistence.Column.class);
             String fieldName = field.getName();
             System.out.println(fieldName);
-            columnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
+            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
             if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
                 if (iteration != 0) {
                     this.columnFilters += ",";
@@ -262,7 +263,7 @@ public class DataGridBuilder {
         }
         this.columnFilters += "]";
     }
-    
+
     private Field[] getEntityAnnotations() throws ClassNotFoundException {
         Class<?> cls = Class.forName(entity.getName());
         Table table = cls.getAnnotation(javax.persistence.Table.class);
@@ -270,11 +271,11 @@ public class DataGridBuilder {
         Field[] fields = cls.getDeclaredFields();
         return fields;
     }
-    
-    public DataGridBuilder(Class entityClass, List<columnSettingsObject> columnSettings) throws ClassNotFoundException {
 
+    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings) throws ClassNotFoundException {
         this.entity = entityClass;
         this.columnsSettings = columnSettings;
+        this.tableSettings = tableSettings;
         Field[] fields = this.getEntityAnnotations();
         this.buildColumnFiltersJson(fields);
         this.buildFieldsJson(fields);

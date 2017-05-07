@@ -18,7 +18,9 @@ import com.pfm.models.paymentType.PaymentTypeEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
-import com.pfm.personalfinancemanagergrid.classes.columnSettingsObject;
+import com.pfm.personalfinancemanagergrid.classes.ColumnSettingsObject;
+import com.pfm.personalfinancemanagergrid.classes.TableSettingsObject;
+import com.pfm.personalfinancemanagergrid.classes.TableWhereObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,18 +45,27 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class PaymentTypesController {
+
     @RequestMapping(value = "/types", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-            List<columnSettingsObject> columnsList = new ArrayList<columnSettingsObject>();
-            columnsList.add(new columnSettingsObject("ptypeName", "Име", "string", true));
-            columnsList.add(new columnSettingsObject("ptypeActive","Активност","string", true));
-            columnsList.add(new columnSettingsObject("ptypeDescription", "Описание", "string", true));
-            DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class,columnsList);
-            String gridHtml = grid.buildHtmlForGrid();
-            ModelAndView view = new ModelAndView("types-manage");
-            view.addObject("grid", gridHtml);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
+        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true));
+        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", true));
+        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true));
+        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
+        whereList.add(new TableWhereObject("ptypeUser", "eq" ,user.getId().toString()));
+        TableSettingsObject tableSettings = new TableSettingsObject(whereList);
+        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList,tableSettings);
+        String gridHtml = grid.buildHtmlForGrid();
+        ModelAndView view = new ModelAndView("types-manage");
+        view.addObject("grid", gridHtml);
         return view;
     }
 
@@ -119,12 +130,12 @@ public class PaymentTypesController {
         view.addObject("type", type);
         return view;
     }
-    
+
     @RequestMapping(value = "/types/edit/{typeId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("typeId") UUID typeId,
-            @ModelAttribute PaymentTypeEditModel params) throws PaymentTypeEditException{
+            @ModelAttribute PaymentTypeEditModel params) throws PaymentTypeEditException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
@@ -137,7 +148,7 @@ public class PaymentTypesController {
             paymentTypeDataObject.setName(params.getTypeName());
             paymentTypeDataObject.setUserId(user.getId());
             context.getPaymentTypeSet()
-                    .Edit(typeId,paymentTypeDataObject);
+                    .Edit(typeId, paymentTypeDataObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {
