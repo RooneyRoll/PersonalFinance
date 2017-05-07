@@ -9,14 +9,14 @@ package com.pfm.personalfinancemanagergrid.classes;
  *
  * @author Misho
  */
-public class columnSettingsObject {
+public class ColumnSettingsObject {
 
     private String entityFieldName;
     private String tableFieldName;
     private boolean allowedField;
     private String fieldType;
 
-    public columnSettingsObject(String entityFieldName,String tableFieldName,String fieldType,boolean allowed) {
+    public ColumnSettingsObject(String entityFieldName,String tableFieldName,String fieldType,boolean allowed) {
         this.allowedField = allowed;
         this.fieldType = fieldType;
         this.tableFieldName = tableFieldName;
