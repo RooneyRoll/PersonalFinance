@@ -16,7 +16,6 @@ import javax.persistence.Table;
  * @author Misho
  */
 public class DataGridBuilder {
-
     private Class entity;
     private String table;
     private String jsonFieldsVariable;

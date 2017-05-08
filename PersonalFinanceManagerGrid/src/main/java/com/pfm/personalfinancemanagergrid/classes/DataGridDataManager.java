@@ -41,11 +41,11 @@ public class DataGridDataManager {
             Table table = cls.getAnnotation(javax.persistence.Table.class);
 
             char firstLetter = params.getSource().charAt(0);
-            Query query = session.createQuery("select count(*) from " + params.getSource() + " " + firstLetter);
-            
-            Query q = this.buildQuery(session, params);
+            Query query = this.buildQuery(session, params, false);
+            Query q = this.buildQuery(session, params, true);
+            List<Serializable> allResults = query.list();
             List<Serializable> resultList = q.list();
-            Integer itemsCount = resultList.size();
+            Integer itemsCount = allResults.size();
             session.close();
             factory.close();
             Gson gson = new Gson();
@@ -62,6 +62,50 @@ public class DataGridDataManager {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+
+    private Query buildQuery(Session session, GridParamObject params, boolean maxResults) throws ParseException, InstantiationException, IllegalAccessException {
+        String source = params.getSource();
+        List<ColumnRequestObject> columns = params.getColumns();
+        String order = source.charAt(0) + "." + columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
+        String where = this.buildWhereStatement(params, source.charAt(0));
+        if (!"".equals(where)) {
+            where = "where " + where;
+        }
+        Query q = session.createQuery("From " + source + " " + source.charAt(0) + " " + where + " order by " + order);
+        for (TableWhereRequestObject whereObj : params.getTableSettings().getWhereObjects()) {
+            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumn(), whereObj.getWhereVal(), whereObj.getWhereType());
+        }
+        for (ColumnRequestObject column : params.getColumns()) {
+            String columnName = column.getData();
+            String compareType = column.getFilter().getValue();
+            String columnType = column.getFilter().getType();
+            String searchVal = column.getSearch().getValue();
+            replaceQueryParameters(q, columnType, columnName, searchVal, compareType);
+        }
+        if (maxResults) {
+            q.setMaxResults(params.getLength());
+            q.setFirstResult(params.getStart());
+        }
+        return q;
+    }
+
+    private String buildWhereStatement(GridParamObject params, char firstLetter) {
+        Integer iterate = 0;
+        String statement = "";
+        for (TableWhereRequestObject where : params.getTableSettings().getWhereObjects()) {
+            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumn(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
+            iterate++;
+        }
+        for (ColumnRequestObject column : params.getColumns()) {
+            String columnName = column.getData();
+            String columnType = column.getFilter().type;
+            String whereCompareType = column.getFilter().getType();
+            String whereValue = column.getSearch().getValue();
+            statement = buildWhereStatementPart(statement, iterate, firstLetter, columnName, whereCompareType, columnType, whereValue);
+            iterate++;
+        }
+        return statement;
     }
 
     private String determineParamCompareSign(String whereType, String columnType) {
@@ -108,50 +152,7 @@ public class DataGridDataManager {
         return sign;
     }
 
-    private <T> T determineQueryParamString(String columnType, String compareType, String searchVal) throws ParseException {
-        System.out.println(compareType);
-        if ("uuid".equals(columnType)) {
-            UUID val = UUID.fromString(searchVal);
-            return (T) val;
-        }
-        if ("string".equals(columnType)) {
-            String val = (String) searchVal;
-            switch (compareType) {
-                case "eq":
-                    break;
-                case "co":
-                    val = "%" + val + "%";
-                    break;
-                case "en":
-                    val = "%" + val;
-                    break;
-                case "st":
-                    val = val + "%";
-                    break;
-            }
-            return (T) val;
-        }
-        if ("int".equals(columnType)) {
-            String val = (String) searchVal;
-            switch (compareType) {
-                case "lt":
-                case "gt":
-                case "eq":
-                    break;
-            }
-            return (T) val;
-        }
-        if ("date".equals(columnType)) {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
-            Date date = formatter.parse(searchVal);
-            java.sql.Date dateResult = new java.sql.Date(date.getTime());
-            return (T) dateResult;
-        }
-        return null;
-    }
-
     private String buildWhereStatementPart(String statement, Integer iteration, char firstLetter, String column, String compareType, String columnType, String whereVal) {
-        System.out.println(whereVal);
         if (!"".equals(whereVal)) {
             if (iteration > 0) {
                 statement += " and ";
@@ -176,24 +177,6 @@ public class DataGridDataManager {
                     statement += firstLetter + "." + column + " " + sign + " :" + column;
                 }
             }
-        }
-        return statement;
-    }
-
-    private String buildWhereStatement(GridParamObject params, char firstLetter) {
-        Integer iterate = 0;
-        String statement = "";
-        for (TableWhereRequestObject where : params.getTableSettings().getWhereObjects()) {
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumn(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
-            iterate++;
-        }
-        for (ColumnRequestObject column : params.getColumns()) {
-            String columnName = column.getData();
-            String columnType = column.getFilter().type;
-            String whereCompareType = column.getFilter().getType();
-            String whereValue = column.getSearch().getValue();
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, columnName, whereCompareType, columnType, whereValue);
-            iterate++;
         }
         return statement;
     }
@@ -235,27 +218,44 @@ public class DataGridDataManager {
         }
     }
 
-    private Query buildQuery(Session session, GridParamObject params) throws ParseException, InstantiationException, IllegalAccessException {
-        String source = params.getSource();
-        List<ColumnRequestObject> columns = params.getColumns();
-        String order = source.charAt(0) + "." + columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
-        String where = this.buildWhereStatement(params, source.charAt(0));
-        if (!"".equals(where)) {
-            where = "where " + where;
+    private <T> T determineQueryParamString(String columnType, String compareType, String searchVal) throws ParseException {
+        if ("uuid".equals(columnType)) {
+            UUID val = UUID.fromString(searchVal);
+            return (T) val;
         }
-        Query q = session.createQuery("From " + source + " " + source.charAt(0) + " " + where + " order by " + order);
-        for (TableWhereRequestObject whereObj : params.getTableSettings().getWhereObjects()) {
-            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumn(), whereObj.getWhereVal(), whereObj.getWhereType());
+        if ("string".equals(columnType)) {
+            String val = (String) searchVal;
+            switch (compareType) {
+                case "eq":
+                    break;
+                case "co":
+                    val = "%" + val + "%";
+                    break;
+                case "en":
+                    val = "%" + val;
+                    break;
+                case "st":
+                    val = val + "%";
+                    break;
+            }
+            return (T) val;
         }
-        for (ColumnRequestObject column : params.getColumns()) {
-            String columnName = column.getData();
-            String compareType = column.getFilter().getValue();
-            String columnType = column.getFilter().getType();
-            String searchVal = column.getSearch().getValue();
-            replaceQueryParameters(q, columnType, columnName, searchVal, compareType);
+        if ("int".equals(columnType)) {
+            String val = (String) searchVal;
+            switch (compareType) {
+                case "lt":
+                case "gt":
+                case "eq":
+                    break;
+            }
+            return (T) val;
         }
-        q.setMaxResults(params.getLength());
-        q.setFirstResult(params.getStart());
-        return q;
+        if ("date".equals(columnType)) {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+            Date date = formatter.parse(searchVal);
+            java.sql.Date dateResult = new java.sql.Date(date.getTime());
+            return (T) dateResult;
+        }
+        return null;
     }
 }
