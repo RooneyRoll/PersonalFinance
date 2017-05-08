@@ -60,7 +60,7 @@ public class PaymentTypesController {
         columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", true));
         columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true));
         List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        whereList.add(new TableWhereObject("ptypeUser", "eq" ,user.getId().toString()));
+        whereList.add(new TableWhereObject("ptypeUser", "eq" ,user.getId().toString(),"uuid"));
         TableSettingsObject tableSettings = new TableSettingsObject(whereList);
         DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList,tableSettings);
         String gridHtml = grid.buildHtmlForGrid();

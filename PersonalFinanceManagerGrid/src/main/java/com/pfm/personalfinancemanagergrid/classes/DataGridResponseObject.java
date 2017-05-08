@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class DataGridResponseObject<T> {
     public Integer draw;
-    public Long recordsTotal;
-    public Long recordsFiltered;
+    public Integer recordsTotal;
+    public Integer recordsFiltered;
     public List<T> data;
 
-    public Long getRecordsFiltered() {
+    public Integer getRecordsFiltered() {
         return recordsFiltered;
     }
 
-    public void setRecordsFiltered(Long recordsFiltered) {
+    public void setRecordsFiltered(Integer recordsFiltered) {
         this.recordsFiltered = recordsFiltered;
     }
 
@@ -34,11 +34,11 @@ public class DataGridResponseObject<T> {
         this.draw = draw;
     }
 
-    public Long getRecordsTotal() {
+    public Integer getRecordsTotal() {
         return recordsTotal;
     }
 
-    public void setRecordsTotal(Long recordsTotal) {
+    public void setRecordsTotal(Integer recordsTotal) {
         this.recordsTotal = recordsTotal;
     }
 

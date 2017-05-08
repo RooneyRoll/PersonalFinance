@@ -16,9 +16,15 @@ import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
+import com.pfm.personalfinancemanagergrid.classes.ColumnSettingsObject;
 import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
+import com.pfm.personalfinancemanagergrid.classes.TableSettingsObject;
+import com.pfm.personalfinancemanagergrid.classes.TableWhereObject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -40,24 +46,38 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class PaymentCategoriesController {
-
+    
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-            Map<String,String> fields = new HashMap<String,String>();
-            ModelAndView view = new ModelAndView("categories-manage");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
+        columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true));
+        columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true));
+        columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true));
+        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
+        whereList.add(new TableWhereObject("pcatUser", "eq", user.getId().toString(), "uuid"));
+        TableSettingsObject tableSettings = new TableSettingsObject(whereList);
+        DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings);
+        String gridHtml = grid.buildHtmlForGrid();
+        ModelAndView view = new ModelAndView("categories-manage");
+        view.addObject("grid", gridHtml);
         return view;
     }
-
+    
     @RequestMapping(value = "/categories/add", method = RequestMethod.GET)
     public ModelAndView addIndex(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
-
+        
         return new ModelAndView("categories-add");
     }
-
+    
     @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
@@ -95,7 +115,7 @@ public class PaymentCategoriesController {
             return view;
         }
     }
-
+    
     @RequestMapping(value = "/categories/edit/{categoryId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
@@ -116,7 +136,7 @@ public class PaymentCategoriesController {
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("categoryId") UUID categoryId,
-            @ModelAttribute PaymentCategoryEditModel params) throws PaymentCategoryEditException{
+            @ModelAttribute PaymentCategoryEditModel params) throws PaymentCategoryEditException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
@@ -129,7 +149,7 @@ public class PaymentCategoriesController {
             categoryDataObject.setName(params.getCategoryName());
             categoryDataObject.setUserId(user.getId());
             context.getPaymentCategorySet()
-                    .Edit(categoryId,categoryDataObject);
+                    .Edit(categoryId, categoryDataObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {

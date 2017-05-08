@@ -19,7 +19,16 @@ public class GridParamObject {
     public Integer start;
     public String source;
     public List<ColumnOrderRequestObject> order;
+    public TableSettingsRequestObject tableSettings; 
 
+    public TableSettingsRequestObject getTableSettings() {
+        return tableSettings;
+    }
+
+    public void setTableSettings(TableSettingsRequestObject tableSettings) {
+        this.tableSettings = tableSettings;
+    }
+    
     public Integer getStart() {
         return start;
     }
@@ -75,5 +84,4 @@ public class GridParamObject {
     public void setSearch(ColumnSearchRequestObject search) {
         this.search = search;
     }
-    
 }

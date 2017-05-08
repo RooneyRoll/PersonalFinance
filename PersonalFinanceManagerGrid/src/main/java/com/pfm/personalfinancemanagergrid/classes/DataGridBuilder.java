@@ -22,6 +22,7 @@ public class DataGridBuilder {
     private String jsonFieldsVariable;
     private String columnFilters;
     private String gridHtml = "";
+    private String initialWhereJson;
     private TableSettingsObject tableSettings;
     private List<ColumnSettingsObject> columnsSettings = new ArrayList<ColumnSettingsObject>();
 
@@ -117,6 +118,11 @@ public class DataGridBuilder {
                 + "             'method':'post',\n"
                 + "             'contentType': 'application/json',\n"
                 + "             beforeSend: function (xhr,settings){\n"
+                + "                 var where = " + this.initialWhereJson + "\n"
+                + "                 settings.data = JSON.parse(settings.data);"
+                + "                 var tableSettings = {'where':where};"
+                + "                 settings.data.tableSettings = tableSettings; \n;"
+                + "                 settings.data = JSON.stringify(settings.data); \n "
                 + "                 xhr.setRequestHeader('X-CSRF-TOKEN', token);\n"
                 + "             },\n"
                 + "             data : function ( d ) {\n"
@@ -166,12 +172,12 @@ public class DataGridBuilder {
                 + "                     '<i class=\"fa fa-times\" aria-hidden=\"true\"></i>'+\n"
                 + "                 '</a>');"
                 + "                 $(filterInput.parent()).flatpickr({\n"
-                + "                            \"locale\": \"bg\",\n"
-                + "                            \"mode\": \"single\","
-                + "                             \"enableTime\":true,\n"
-                + "                            \"enableTime\": true\n,"
-                + "                            \"wrap\":true\n,"
-                + "                             \"dateFormat\": 'Y-m-d h:m:S K'"
+                + "                     'locale': 'bg',\n"
+                + "                     'mode': 'single',"
+                + "                     'enableTime':true,\n"
+                + "                     'enableTime': true\n,"
+                + "                     'wrap':true\n,"
+                + "                     'dateFormat': 'Y-m-d h:m:S K'"
                 + "                 });\n"
                 + "             }\n"
                 + "         })\n"
@@ -227,6 +233,22 @@ public class DataGridBuilder {
         return false;
     }
 
+    private void buildInitialWhereObject() {
+        this.initialWhereJson = "[";
+        Integer iteration = 0;
+        for (TableWhereObject where : tableSettings.getWhereObjects()) {
+            if (iteration != 0) {
+                this.initialWhereJson += ",";
+            }
+            this.initialWhereJson += "{'column':'" + where.getColumnEntityName() + "',"
+                    + "" + "'whereType':'" + where.getWhereType() + "',"
+                    + "'columnType':'" + where.getColumnType() + "',"
+                    + "'whereVal':'" + where.getWhereVal() + "'}";
+            iteration++;
+        }
+        this.initialWhereJson += "]";
+    }
+
     private void buildFieldsJson(Field[] fields) {
         this.jsonFieldsVariable = "[";
         Integer iteration = 0;
@@ -251,7 +273,6 @@ public class DataGridBuilder {
         for (Field field : fields) {
             Column column = field.getAnnotation(javax.persistence.Column.class);
             String fieldName = field.getName();
-            System.out.println(fieldName);
             ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
             if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
                 if (iteration != 0) {
@@ -279,5 +300,6 @@ public class DataGridBuilder {
         Field[] fields = this.getEntityAnnotations();
         this.buildColumnFiltersJson(fields);
         this.buildFieldsJson(fields);
+        this.buildInitialWhereObject();
     }
 }

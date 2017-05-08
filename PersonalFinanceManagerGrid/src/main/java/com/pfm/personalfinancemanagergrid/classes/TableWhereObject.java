@@ -15,10 +15,11 @@ public class TableWhereObject {
     private String whereType;
     private String whereVal;
 
-    public TableWhereObject(String columnEntityName, String whereType, String whereVal){
+    public TableWhereObject(String columnEntityName, String whereType, String whereVal, String columnType){
         this.columnEntityName =columnEntityName;
         this.whereType = whereType;
         this.whereVal = whereVal;
+        this.columnType = columnType;
     }
 
     public String getColumnType() {
