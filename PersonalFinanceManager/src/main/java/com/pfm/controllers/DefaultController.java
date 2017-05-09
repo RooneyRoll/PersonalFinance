@@ -8,7 +8,7 @@ import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.User;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
-import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
+import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

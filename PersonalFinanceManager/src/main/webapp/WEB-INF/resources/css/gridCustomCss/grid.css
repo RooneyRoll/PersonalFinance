@@ -4,8 +4,8 @@ table.dataTable .select2-container--default .select2-selection--single{
     border-right:0;
     border-bottom:0;
 }
-.select2-container--default .select2-selection--single{
-    border-radius:0;
+table.dataTable .select2-container{
+    min-width:100%;
 }
 .filter-holder{
     display:inline-block;
@@ -90,3 +90,20 @@ table.dataTable thead .sorting{
 .dataTables_filter {
     display: none;
 } 
+table.dataTable thead th.options{
+   padding: 0 20px; 
+}
+table.dataTable .grid-option{
+  display:inline-block;  
+  font-size:20px;
+  
+}
+table.dataTable .grid-option a{
+    color: #34302D;
+}
+table.dataTable .grid-option a:hover{
+    color: #6DB33F;
+}
+table.dataTable .grid-option:not(:last-child){
+    margin-right:5px;
+}

@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.personalfinancemanagergrid.classes;
+package com.pfm.personalfinancemanagergrid.mainClasses;
 
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
+import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
+import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +21,15 @@ import javax.persistence.Table;
  * @author Misho
  */
 public class DataGridBuilder {
+
     private Class entity;
+    private String gridHtml = "";
     private String table;
     private String jsonFieldsVariable;
     private String columnFilters;
-    private String gridHtml = "";
     private String initialWhereJson;
     private TableSettingsObject tableSettings;
+    private ColumnOptionsObject columnOptions;
     private List<ColumnSettingsObject> columnsSettings = new ArrayList<ColumnSettingsObject>();
 
     public String getGridHtml() {
@@ -38,7 +45,7 @@ public class DataGridBuilder {
         this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
-        int iteration = 0;
+        int iteration = 1;
         for (ColumnSettingsObject column : columnsSettings) {
             if (column.isAllowedField()) {
                 this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
@@ -48,6 +55,15 @@ public class DataGridBuilder {
                 }
                 iteration++;
             }
+
+        }
+        if (this.columnOptions != null) {
+            this.appendToGridHtml("<th class='options'>" + this.columnOptions.getTableFieldName() + "</th>");
+            String columnOptionsString = "";
+            for (ColumnOption option : this.columnOptions.getOptions()) {
+                columnOptionsString += "<div data-source=\""+option.getObjectIdSource()+"\" class=\"grid-option\"><span><a href=\""+option.getOptionHref()+"\">"+option.getOptionContent()+"</a></span></div>";
+            }
+            columnsDeclaration += ",{'mData':null,'bSortable':false,'bSearchable':false,'defaultContent':'"+columnOptionsString+"'}";
         }
         this.appendToGridHtml("</tr></thead></table>");
         this.appendToGridHtml("<script type='text/javascript'>\n"
@@ -110,6 +126,15 @@ public class DataGridBuilder {
                 + "                 'sLast':     'Последна'\n"
                 + "             }"
                 + "         },"
+                + "         'rowCallback': function( row, data, index ) {\n"
+                + "             var source = $(row).find('.grid-option').attr('data-source');"
+                + "             var id = data[source];"
+                + "             $(row).find('.grid-option a').each(function(key,val){"
+                + "                 var link = $(val).attr('href');"
+                + "                 link = link.replace('{'+source+'}', id);"
+                + "                 $(this).attr('href',link);"
+                + "             });"
+                + "         },"
                 + "         'ajax': {\n"
                 + "             'url': 'gridData',\n"
                 + "             'type': 'POST',\n"
@@ -126,13 +151,13 @@ public class DataGridBuilder {
                 + "             },\n"
                 + "             data : function ( d ) {\n"
                 + "                 var columns = (d['columns']);\n"
-                + "                 var filters = " + this.columnFilters + " \n"
+                + "                 var filters = " + this.columnFilters + ";\n"
                 + "                 $(columns).each(function(key,value){\n"
                 + "                     if($('.filter-holder').length > 0){\n"
                 + "                         $('.filter-holder').each(function(key,val){\n"
                 + "                             var filterVal = $(this).find('option:selected').val();\n"
                 + "                             var filterType = $(this).find('option:selected').parent().attr('data-type');\n"
-                + "                             var filterObject ={'value':filterVal,'type':filterType};\n"
+                + "                             var filterObject = {'value':filterVal,'type':filterType};\n"
                 + "                             d['columns'][key]['filter'] = filterObject;\n"
                 + "                         });\n"
                 + "                     }else{\n"
@@ -145,7 +170,7 @@ public class DataGridBuilder {
                 + "         },"
                 + "         'fnInitComplete': function(oSettings, json) {\n"
                 + "         $('#grid-" + table + " thead').append('<tr class=\"grid-filters\"></tr>');\n"
-                + "         $('#grid-" + table + " th').each( function (key,val) {\n"
+                + "         $('#grid-" + table + " th:not(.options)').each( function (key,val) {\n"
                 + "             var title = $('#grid-" + table + " th').eq( $(this).index()).text();\n"
                 + "             var jsonFields = " + this.jsonFieldsVariable + ";\n"
                 + "             var currentField = jsonFields[key];\n"
@@ -181,7 +206,7 @@ public class DataGridBuilder {
                 + "             }\n"
                 + "         })\n"
                 + "         $('.dataTable thead th').unbind('click.DT');"
-                + "         $('.dataTable thead th').click(function(e) {\n"
+                + "         $('.dataTable thead th:not(.options)').click(function(e) {\n"
                 + "             var clicked = $(e.target);"
                 + "             if (!($(e.target).is('th' ))){ \n"
                 + "             } else { \n"
@@ -292,10 +317,11 @@ public class DataGridBuilder {
         return fields;
     }
 
-    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings) throws ClassNotFoundException {
+    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings, ColumnOptionsObject columnOptions) throws ClassNotFoundException {
         this.entity = entityClass;
         this.columnsSettings = columnSettings;
         this.tableSettings = tableSettings;
+        this.columnOptions = columnOptions;
         Field[] fields = this.getEntityAnnotations();
         this.buildColumnFiltersJson(fields);
         this.buildFieldsJson(fields);

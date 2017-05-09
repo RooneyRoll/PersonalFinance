@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.personalfinancemanagergrid.classes;
+package com.pfm.personalfinancemanagergrid.mainClasses;
 
+import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
+import com.pfm.personalfinancemanagergrid.classes.requestObjects.GridParamObject;
+import com.pfm.personalfinancemanagergrid.classes.requestObjects.TableWhereRequestObject;
+import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -39,7 +43,6 @@ public class DataGridDataManager {
         try {
             Class<?> cls = Class.forName(params.getSource());
             Table table = cls.getAnnotation(javax.persistence.Table.class);
-
             char firstLetter = params.getSource().charAt(0);
             Query query = this.buildQuery(session, params, false);
             Query q = this.buildQuery(session, params, true);
@@ -77,11 +80,13 @@ public class DataGridDataManager {
             replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumn(), whereObj.getWhereVal(), whereObj.getWhereType());
         }
         for (ColumnRequestObject column : params.getColumns()) {
-            String columnName = column.getData();
-            String compareType = column.getFilter().getValue();
-            String columnType = column.getFilter().getType();
-            String searchVal = column.getSearch().getValue();
-            replaceQueryParameters(q, columnType, columnName, searchVal, compareType);
+            if (!isOptionsColumn(column)) {
+                String columnName = column.getData();
+                String compareType = column.getFilter().getValue();
+                String columnType = column.getFilter().getType();
+                String searchVal = column.getSearch().getValue();
+                replaceQueryParameters(q, columnType, columnName, searchVal, compareType);
+            }
         }
         if (maxResults) {
             q.setMaxResults(params.getLength());
@@ -98,12 +103,14 @@ public class DataGridDataManager {
             iterate++;
         }
         for (ColumnRequestObject column : params.getColumns()) {
-            String columnName = column.getData();
-            String columnType = column.getFilter().type;
-            String whereCompareType = column.getFilter().getType();
-            String whereValue = column.getSearch().getValue();
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, columnName, whereCompareType, columnType, whereValue);
-            iterate++;
+            if (!isOptionsColumn(column)) {
+                String columnName = column.getData();
+                String columnType = column.getFilter().type;
+                String whereCompareType = column.getFilter().getType();
+                String whereValue = column.getSearch().getValue();
+                statement = buildWhereStatementPart(statement, iterate, firstLetter, columnName, whereCompareType, columnType, whereValue);
+                iterate++;
+            }
         }
         return statement;
     }
@@ -257,5 +264,12 @@ public class DataGridDataManager {
             return (T) dateResult;
         }
         return null;
+    }
+
+    public boolean isOptionsColumn(ColumnRequestObject column) {
+        if (column.getData() == null){
+            return true;
+        }
+        return false;
     }
 }

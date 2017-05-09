@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.personalfinancemanagergrid.classes;
+package com.pfm.personalfinancemanagergrid.settingsObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,11 @@ import java.util.List;
  */
 public class TableSettingsObject {
     private List<TableWhereObject> whereObjects = new ArrayList<TableWhereObject>();
+    private ColumnOptionsObject options;
 
-    public TableSettingsObject(List<TableWhereObject> whereObjects){
+    public TableSettingsObject(List<TableWhereObject> whereObjects,ColumnOptionsObject options ){
         this.whereObjects = whereObjects;
+        this.options = options;
     }
     
     public List<TableWhereObject> getWhereObjects() {
@@ -26,6 +28,12 @@ public class TableSettingsObject {
     public void setWhereObjects(List<TableWhereObject> whereObjects) {
         this.whereObjects = whereObjects;
     }
-    
-    
+
+    public ColumnOptionsObject getOptions() {
+        return options;
+    }
+
+    public void setOptions(ColumnOptionsObject options) {
+        this.options = options;
+    }
 }

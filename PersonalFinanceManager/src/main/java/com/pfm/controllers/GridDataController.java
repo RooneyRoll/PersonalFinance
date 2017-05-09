@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.pfm.personalfinancemanagergrid.classes.DataGridDataManager;
-import com.pfm.personalfinancemanagergrid.classes.GridParamObject;
+import com.pfm.personalfinancemanagergrid.mainClasses.DataGridDataManager;
+import com.pfm.personalfinancemanagergrid.classes.requestObjects.GridParamObject;
 
 /**
  *

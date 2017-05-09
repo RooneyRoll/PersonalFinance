@@ -17,10 +17,10 @@ import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
-import com.pfm.personalfinancemanagergrid.classes.ColumnSettingsObject;
-import com.pfm.personalfinancemanagergrid.classes.DataGridBuilder;
-import com.pfm.personalfinancemanagergrid.classes.TableSettingsObject;
-import com.pfm.personalfinancemanagergrid.classes.TableWhereObject;
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
+import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
+import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
+import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class PaymentCategoriesController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        /*IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -64,9 +64,9 @@ public class PaymentCategoriesController {
         whereList.add(new TableWhereObject("pcatUser", "eq", user.getId().toString(), "uuid"));
         TableSettingsObject tableSettings = new TableSettingsObject(whereList);
         DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings);
-        String gridHtml = grid.buildHtmlForGrid();
+        String gridHtml = grid.buildHtmlForGrid();*/
         ModelAndView view = new ModelAndView("categories-manage");
-        view.addObject("grid", gridHtml);
+       // view.addObject("grid", gridHtml);
         return view;
     }
     
