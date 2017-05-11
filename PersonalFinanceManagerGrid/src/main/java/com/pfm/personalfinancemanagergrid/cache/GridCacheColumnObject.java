@@ -5,15 +5,19 @@
  */
 package com.pfm.personalfinancemanagergrid.cache;
 
+import java.util.List;
+
 /**
  *
  * @author mihail
  */
 public class GridCacheColumnObject {
-    String type;
-    String visibleName;
-    String columnName;
-    boolean allowed;
+    public String type;
+    public String visibleName;
+    public String columnName; 
+    public boolean allowed;
+    public boolean OptionsColumn;
+    private List<GridCacheColumnOption> options;
 
     public String getType() {
         return type;
@@ -46,6 +50,21 @@ public class GridCacheColumnObject {
     public void setAllowed(boolean allowed) {
         this.allowed = allowed;
     }
-    
+
+    public boolean isOptionsColumn() {
+        return OptionsColumn;
+    }
+
+    public void setOptionsColumn(boolean OptionsColumn) {
+        this.OptionsColumn = OptionsColumn;
+    }
+
+    public List<GridCacheColumnOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<GridCacheColumnOption> options) {
+        this.options = options;
+    }
     
 }

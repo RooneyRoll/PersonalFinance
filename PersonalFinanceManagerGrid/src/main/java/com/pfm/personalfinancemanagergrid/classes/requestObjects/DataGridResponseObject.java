@@ -10,13 +10,12 @@ import java.util.List;
 /**
  *
  * @author Misho
- * @param <T> Data type for grid items
  */
 public class DataGridResponseObject<T> {
     public Integer draw;
     public Integer recordsTotal;
     public Integer recordsFiltered;
-    public List<T> data;
+    public List<List<String>> data;
 
     public Integer getRecordsFiltered() {
         return recordsFiltered;
@@ -42,11 +41,11 @@ public class DataGridResponseObject<T> {
         this.recordsTotal = recordsTotal;
     }
 
-    public List<T> getData() {
+    public List<List<String>> getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<List<String>> data) {
         this.data = data;
     }
 }

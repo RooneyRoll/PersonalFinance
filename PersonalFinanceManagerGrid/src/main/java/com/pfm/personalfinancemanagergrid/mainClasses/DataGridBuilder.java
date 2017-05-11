@@ -7,6 +7,8 @@ package com.pfm.personalfinancemanagergrid.mainClasses;
 
 import com.google.gson.Gson;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnObject;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnOption;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnOptionsObject;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
@@ -17,9 +19,9 @@ import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Table;
-import org.jgroups.util.UUID;
 
 /**
  *
@@ -59,7 +61,7 @@ public class DataGridBuilder {
         for (ColumnSettingsObject column : columnsSettings) {
             if (column.isAllowedField()) {
                 this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
-                columnsDeclaration += "{'mData':'" + column.getEntityFieldName() + "'}";
+                columnsDeclaration += "{'mData':'" + iteration + "'}";
                 if (iteration < columnsLength) {
                     columnsDeclaration += ",";
                 }
@@ -67,10 +69,11 @@ public class DataGridBuilder {
             }
 
         }
-        if (this.columnOptions != null) {
-            this.appendToGridHtml("<th class='options'>" + this.columnOptions.getTableFieldName() + "</th>");
+        if (cache.getOptionsColumn() != null) {
+            this.appendToGridHtml("<th class='options'>" + cache.getOptionsColumn().getTableFieldName() + "</th>");
             String columnOptionsString = "";
-            for (ColumnOption option : this.columnOptions.getOptions()) {
+            for (GridCacheColumnOption option : cache.getOptionsColumn().getOptions()) {
+                
                 columnOptionsString += "<div data-source=\""+option.getObjectIdSource()+"\" class=\"grid-option\"><span><a href=\""+option.getOptionHref()+"\">"+option.getOptionContent()+"</a></span></div>";
             }
             columnsDeclaration += ",{'mData':null,'bSortable':false,'bSearchable':false,'defaultContent':'"+columnOptionsString+"'}";
@@ -116,7 +119,7 @@ public class DataGridBuilder {
                 + "         'lengthMenu': [ 5, 10, 15, 20, 25 ],\n"
                 + "         'searching': true,\n"
                 + "         'bLengthChange': false,\n"
-                + "         'aoColumns': [\n"
+                + "         'columnDefs': [\n"
                 + columnsDeclaration + "\n"
                 + "          ],\n"
                 + "         'language':{\n"
@@ -295,7 +298,7 @@ public class DataGridBuilder {
                 if (iteration != 0) {
                     this.jsonFieldsVariable += ",";
                 }
-                this.jsonFieldsVariable += "{\"name\":\"" + columnSettings.getEntityFieldName() + "\"," + "\"type\":\"" + columnSettings.getFieldType() + "\"}";
+                this.jsonFieldsVariable += "{\"name\":\"" + iteration + "\"," + "\"type\":\"" + columnSettings.getFieldType() + "\"}";
                 iteration++;
             }
         }
@@ -313,7 +316,7 @@ public class DataGridBuilder {
                 if (iteration != 0) {
                     this.columnFilters += ",";
                 }
-                this.columnFilters += "{'value':'','type':'" + columnSettings.getEntityFieldName() + "'}";
+                this.columnFilters += "{'value':'','type':'" + iteration + "'}";
                 iteration++;
             }
         }
@@ -343,6 +346,22 @@ public class DataGridBuilder {
                 cacheColumn.setVisibleName(columnSettings.getTableFieldName());
                 cacheObject.getColumns().add(cacheColumn);
             }
+        }
+        if(this.columnOptions != null){
+            GridCacheColumnObject cacheColumn = new GridCacheColumnObject();
+            cacheColumn.setVisibleName(this.columnOptions.getTableFieldName());
+            cacheColumn.setOptionsColumn(true);
+            List<GridCacheColumnOption> optionList = new ArrayList<GridCacheColumnOption>();
+            for (ColumnOption option : this.columnOptions.getOptions()) {
+                GridCacheColumnOption cacheOption = new GridCacheColumnOption();
+                cacheOption.setObjectIdSource(option.getObjectIdSource());
+                cacheOption.setOptionContent(option.getOptionContent());
+                cacheOption.setOptionHref(option.getOptionHref());
+                optionList.add(cacheOption);
+                cacheColumn.setOptions(optionList);
+            }
+            cacheColumn.setOptions(optionList);
+            
         }
         return cacheObject;
     }
