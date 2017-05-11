@@ -5,6 +5,7 @@
  */
 package com.pfm.controllers;
 
+import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentTypeData;
 import com.pfm.data.entities.PaymentType;
@@ -66,7 +67,8 @@ public class PaymentTypesController {
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","ptypeId","types/edit/{ptypeId}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
-        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList, tableSettings, columnOptions);
+        GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
+        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList, tableSettings, columnOptions,cacheProvider);
         String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("types-manage");
         view.addObject("grid", gridHtml);

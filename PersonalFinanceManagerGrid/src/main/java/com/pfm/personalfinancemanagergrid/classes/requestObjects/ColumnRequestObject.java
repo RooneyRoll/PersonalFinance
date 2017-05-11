@@ -10,8 +10,6 @@ package com.pfm.personalfinancemanagergrid.classes.requestObjects;
  * @author Misho
  */
 public class ColumnRequestObject {
-    public String data;
-    public String name;
     public String searchable;
     public String orderable;
     public ColumnFilterRequestObject filter;
@@ -23,22 +21,6 @@ public class ColumnRequestObject {
 
     public void setFilter(ColumnFilterRequestObject filter) {
         this.filter = filter;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSearchable() {

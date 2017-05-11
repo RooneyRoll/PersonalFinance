@@ -6,6 +6,7 @@
 package com.pfm.controllers;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.User;
+import com.pfm.filemanager.FileManager;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
@@ -28,7 +29,6 @@ public class DefaultController {
 
     @RequestMapping(value ={ "/","/home"}, method = RequestMethod.GET)
     public String index(ModelMap map, HttpServletResponse response, HttpServletRequest request) throws ClassNotFoundException {
-        
         return "home";
     }
 

@@ -5,6 +5,7 @@
  */
 package com.pfm.controllers;
 
+import com.pfm.cache.GridCacheProvider;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class GridDataController {
     public String gridData(HttpServletRequest request,
             HttpServletResponse response,
             @RequestBody GridParamObject params) {
-            DataGridDataManager manager = new DataGridDataManager(params);
+            DataGridDataManager manager = new DataGridDataManager(params,new GridCacheProvider(request.getServletContext()));
             String result = manager.getData();
             return result;
     }

@@ -20,7 +20,16 @@ public class GridParamObject {
     public String source;
     public List<ColumnOrderRequestObject> order;
     public TableSettingsRequestObject tableSettings; 
+    public String cid;
 
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+    
     public TableSettingsRequestObject getTableSettings() {
         return tableSettings;
     }

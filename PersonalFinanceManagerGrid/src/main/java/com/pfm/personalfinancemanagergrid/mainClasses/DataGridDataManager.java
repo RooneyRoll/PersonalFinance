@@ -5,25 +5,12 @@
  */
 package com.pfm.personalfinancemanagergrid.mainClasses;
 
-import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.GridParamObject;
-import com.pfm.personalfinancemanagergrid.classes.requestObjects.TableWhereRequestObject;
-import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
-import com.google.gson.Gson;
-
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import javax.persistence.Table;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheObject;
+import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 /**
  *
@@ -32,33 +19,40 @@ import org.hibernate.query.Query;
 public class DataGridDataManager {
 
     private GridParamObject params;
+    private ICacheProvider cacheProvider;
+    private GridCacheObject cache;
 
-    public DataGridDataManager(GridParamObject params) {
+    public DataGridDataManager(GridParamObject params,ICacheProvider provider) {
         this.params = params;
+        this.cacheProvider = provider;
+        String cacheKey = params.getCid();
+        cache = provider.getCache(cacheKey);
+        System.out.println(cache.getEntity());
     }
 
     public String getData() {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
         try {
-            Class<?> cls = Class.forName(params.getSource());
-            Table table = cls.getAnnotation(javax.persistence.Table.class);
-            char firstLetter = params.getSource().charAt(0);
-            Query query = this.buildQuery(session, params, false);
-            Query q = this.buildQuery(session, params, true);
-            List<Serializable> allResults = query.list();
-            List<Serializable> resultList = q.list();
-            Integer itemsCount = allResults.size();
-            session.close();
-            factory.close();
-            Gson gson = new Gson();
-            DataGridResponseObject<Serializable> resp = new DataGridResponseObject<Serializable>();
-            resp.setData(resultList);
-            resp.setDraw(params.getDraw());
-            resp.setRecordsFiltered(itemsCount);
-            resp.setRecordsTotal(itemsCount);
-            String json = gson.toJson(resp);
-            return json;
+            
+            //Class<?> cls = Class.forName(params.getSource());
+            //Table table = cls.getAnnotation(javax.persistence.Table.class);
+            //char firstLetter = params.getSource().charAt(0);
+            //Query query = this.buildQuery(session, params, false);
+            //Query q = this.buildQuery(session, params, true);
+            //List<Serializable> allResults = query.list();
+            //List<Serializable> resultList = q.list();
+            //Integer itemsCount = allResults.size();
+            //session.close();
+            //factory.close();
+            //Gson gson = new Gson();
+            //DataGridResponseObject<Serializable> resp = new DataGridResponseObject<Serializable>();
+            //resp.setData(resultList);
+            //resp.setDraw(params.getDraw());
+            //resp.setRecordsFiltered(itemsCount);
+            //resp.setRecordsTotal(itemsCount);
+            //String json = gson.toJson(resp);
+            return "";
         } catch (Exception ex) {
             session.close();
             factory.close();
@@ -67,7 +61,7 @@ public class DataGridDataManager {
         }
     }
 
-    private Query buildQuery(Session session, GridParamObject params, boolean maxResults) throws ParseException, InstantiationException, IllegalAccessException {
+    /*private Query buildQuery(Session session, GridParamObject params, boolean maxResults) throws ParseException, InstantiationException, IllegalAccessException {
         String source = params.getSource();
         List<ColumnRequestObject> columns = params.getColumns();
         String order = source.charAt(0) + "." + columns.get(params.getOrder().get(0).getColumn()).getData() + " " + params.getOrder().get(0).getDir();
@@ -271,5 +265,5 @@ public class DataGridDataManager {
             return true;
         }
         return false;
-    }
+    }*/
 }

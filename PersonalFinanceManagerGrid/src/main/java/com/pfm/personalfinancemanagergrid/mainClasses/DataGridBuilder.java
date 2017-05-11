@@ -5,6 +5,10 @@
  */
 package com.pfm.personalfinancemanagergrid.mainClasses;
 
+import com.google.gson.Gson;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnObject;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheObject;
+import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
@@ -15,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Table;
+import org.jgroups.util.UUID;
 
 /**
  *
@@ -30,6 +35,7 @@ public class DataGridBuilder {
     private String initialWhereJson;
     private TableSettingsObject tableSettings;
     private ColumnOptionsObject columnOptions;
+    private ICacheProvider cacheProvider;
     private List<ColumnSettingsObject> columnsSettings = new ArrayList<ColumnSettingsObject>();
 
     public String getGridHtml() {
@@ -41,7 +47,11 @@ public class DataGridBuilder {
         this.gridHtml = (oldHtml + html);
     }
 
-    public String buildHtmlForGrid() {
+    public String buildHtmlForGrid() throws ClassNotFoundException {
+        GridCacheObject cache = this.buildCacheObject(this.entity);
+        UUID id = UUID.randomUUID();
+        
+        cacheProvider.setCache(id.toString(), cache);
         this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
@@ -146,7 +156,8 @@ public class DataGridBuilder {
                 + "                 settings.data = JSON.parse(settings.data);"
                 + "                 var tableSettings = {'where':where};"
                 + "                 settings.data.tableSettings = tableSettings; \n;"
-                + "                 settings.data = JSON.stringify(settings.data); \n "
+                + "                 settings.data.cid = \""+id+"\";\n" 
+                + "                 settings.data = JSON.stringify(settings.data); \n "                
                 + "                 xhr.setRequestHeader('X-CSRF-TOKEN', token);\n"
                 + "             },\n"
                 + "             data : function ( d ) {\n"
@@ -316,13 +327,49 @@ public class DataGridBuilder {
         Field[] fields = cls.getDeclaredFields();
         return fields;
     }
-
-    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings, ColumnOptionsObject columnOptions) throws ClassNotFoundException {
+    
+    public GridCacheObject buildCacheObject(Class entity) throws ClassNotFoundException{
+        GridCacheObject cacheObject = new GridCacheObject();
+        cacheObject.setEntity(entity.getName());
+        Field[] fields = getEntityAnnotations();
+        for (Field field : fields) {
+            String fieldName = field.getName();
+            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
+            if((columnSettings != null) && (columnSettings.isAllowedField())){
+                GridCacheColumnObject cacheColumn = new GridCacheColumnObject();
+                cacheColumn.setAllowed(true);
+                cacheColumn.setColumnName(fieldName);
+                cacheColumn.setType(determineFieldType(field));
+                cacheColumn.setVisibleName(columnSettings.getTableFieldName());
+                cacheObject.getColumns().add(cacheColumn);
+            }
+        }
+        return cacheObject;
+    }
+    
+    public String determineFieldType(Field field){
+        String type = "string";
+        switch(field.getType().toString()){
+            case "UUID":
+                type = "uuid";
+                break;
+            case "Date":
+                type = "date";
+                break;
+            case "Integer":
+                type = "int";
+            break;
+        }
+        return type;
+    }
+    
+    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings, ColumnOptionsObject columnOptions,ICacheProvider cacheProvider) throws ClassNotFoundException {
         this.entity = entityClass;
         this.columnsSettings = columnSettings;
         this.tableSettings = tableSettings;
         this.columnOptions = columnOptions;
-        Field[] fields = this.getEntityAnnotations();
+        this.cacheProvider = cacheProvider;
+        Field[] fields = this.getEntityAnnotations();        
         this.buildColumnFiltersJson(fields);
         this.buildFieldsJson(fields);
         this.buildInitialWhereObject();
