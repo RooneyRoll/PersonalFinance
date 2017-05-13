@@ -68,7 +68,13 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public List<PaymentType> GetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From PaymentTypes");
+        List<PaymentTypes> resultList = q.list();
+        List<PaymentType> paymentResults = convertEntititiesToDtoArray(resultList);
+        session.close();
+        return paymentResults;
     }
 
     @Override
@@ -125,8 +131,21 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<PaymentType> GetAllActiveTypesForUser(UUID userId) {
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
+                .setParameter("typeActive", true)
+                .setParameter("userId", userId);
+        List<PaymentTypes> resultList = q.list();
+        List<PaymentType> paymentResults = convertEntititiesToDtoArray(resultList);
+        session.close();
+        return paymentResults;
+    }
+    
     private boolean typeExistsForAdd(String typeName, UUID userId, Session session) {
-        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName = :typeName and pt.ptypeUser = :userId", PaymentTypes.class)
+        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName=:typeName and pt.ptypeUser=:userId", PaymentTypes.class)
                 .setParameter("typeName", typeName)
                 .setParameter("userId", userId);
 
@@ -138,7 +157,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
     
     private boolean typeExistsForEdit(String typeName, UUID userId, UUID typeId, Session session) {
-        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName = :typeName and pt.ptypeUser = :userId and pt.ptypeId! = :typeId", PaymentTypes.class)
+        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName=:typeName and pt.ptypeUser=:userId and pt.ptypeId!=:typeId", PaymentTypes.class)
                 .setParameter("typeName", typeName)
                 .setParameter("userId", userId)
                 .setParameter("typeId", typeId);

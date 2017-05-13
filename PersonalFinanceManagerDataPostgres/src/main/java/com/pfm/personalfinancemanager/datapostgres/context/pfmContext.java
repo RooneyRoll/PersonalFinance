@@ -69,4 +69,9 @@ public class pfmContext implements IpfmContext {
     public IPaymentTypeSet getPaymentTypeSet() {
         return this.PaymentTypeSet;
     }
+
+    @Override
+    public IPaymentSet getPaymentSet() {
+        return this.PaymentSet;
+    }
 }

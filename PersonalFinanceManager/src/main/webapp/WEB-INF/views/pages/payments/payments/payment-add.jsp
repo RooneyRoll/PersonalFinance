@@ -3,12 +3,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
-        $("#payment-category-add-form").validate({
+        $("#payment-type-add-form").validate({
             rules: {
-                categoryName: "required",
+                paymentAmount: {"required":true,"number":true}
             },
             messages: {
-                categoryName: "Моля, въведете име на категория",
+                paymentAmount: "Моля въведете сума.",
             },
             errorPlacement: function (error, element) {
 
@@ -20,30 +20,58 @@
                 $(element).removeClass("error");
             }
         });
+        $("#categories-select").select2();
+        $("#types-select").select2();
     });
 </script>
 <div class="form-container">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
         <div class="form-content">
-            <form id="payment-category-add-form" method="post">
+            <form id="payment-type-add-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input-container size-1">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Име на категория<span class="required-tip">&nbsp;*</span>
+                        Сума<span class="required-tip">&nbsp;*</span>
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="categoryName" placeholder="Име"/>
+                    <input type="text" name="paymentAmount" placeholder="Сума"/>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Описание на категория
+                        Описание на плащане
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="categoryDescription"></textarea>
+                    <textarea resize="false" placeholder="Описание" name="paymentDescription"></textarea>
+                </div>
+            </div><div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Категория на плащане<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <select id="categories-select" name="paymentCategory">
+                        <c:forEach items="${categories}" var="element">
+                              <option value="${element.getId()}">${element.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div><div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Тип на плащане<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <select id="types-select" name="paymentType">
+                        <c:forEach items="${types}" var="element">
+                              <option value="${element.getId()}">${element.getName()}</option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
             <div class="buttons-container size-1">

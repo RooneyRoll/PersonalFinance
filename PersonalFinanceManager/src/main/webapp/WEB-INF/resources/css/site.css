@@ -127,6 +127,7 @@ html body{
 }
 
 .navigation-title .navigation-title-text{
+    
 }
 
 .site-content .button{
@@ -134,6 +135,7 @@ html body{
     padding:10px 15px;
     cursor:pointer;
     color:#fff;
+    text-decoration: none;
     background-color:#34302D;
     border:none;
     font-size:inherit;
@@ -383,6 +385,11 @@ html body{
 }
 /*error pages end*/
 /*plugins css overwrite*/
+
+.site-content .select2{
+    min-width:300px;
+}
+
 .checkbox-green,
 .checkbox-green.checked{
     background-color:#6DB33F;
@@ -597,6 +604,10 @@ html body{
 /*plugins css overwrite end*/
 /* mobile styles */
 @media (max-width:768px){
+    .site-content .select2{
+        min-width:100%;
+    }
+    
     html body #site-content.site-content .content-container .form-container {
         width:100%;
     }

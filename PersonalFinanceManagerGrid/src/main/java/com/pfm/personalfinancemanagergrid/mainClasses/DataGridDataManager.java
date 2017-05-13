@@ -13,7 +13,6 @@ import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
-import com.pfm.personalfinancemanagergrid.classes.requestObjects.TableWhereRequestObject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -52,9 +51,9 @@ public class DataGridDataManager {
         Session session = factory.openSession();
         try {
 
-            Class<?> cls = Class.forName(params.getSource());
+            Class<?> cls = Class.forName(cache.getEntity());
             Table table = cls.getAnnotation(javax.persistence.Table.class);
-            char firstLetter = params.getSource().charAt(0);
+            char firstLetter = cache.getEntity().charAt(0);
             Query query = this.buildQuery(session, params, false);
             Query q = this.buildQuery(session, params, true);
             List<Serializable> allResults = query.list();
@@ -98,7 +97,7 @@ public class DataGridDataManager {
     }
 
     private Query buildQuery(Session session, GridParamObject params, boolean maxResults) throws ParseException, InstantiationException, IllegalAccessException {
-        String source = params.getSource();
+        String source = cache.getEntity();
         List<ColumnRequestObject> columns = params.getColumns();
         String order = source.charAt(0) + "." + cache.getColumns().get(params.getOrder().get(0).getColumn()).getColumnName() + " " + params.getOrder().get(0).getDir();
         String where = this.buildWhereStatement(params, source.charAt(0));
@@ -137,7 +136,6 @@ public class DataGridDataManager {
             statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
             iterate++;
         }
-        System.out.println("query = "+statement);
         Integer iter = 0;
         if (iter < params.getColumns().size()) {
             for (ColumnRequestObject column : params.getColumns()) {
@@ -225,12 +223,11 @@ public class DataGridDataManager {
                 }
             }
         }
-        //System.out.println("where = "+statement);
+        System.out.println("where = "+statement);
         return statement;
     }
 
     private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType) throws ParseException {
-        System.out.println("columnName = "+columnName + " type = "+paramType+" searchVal = "+searchVal);
         if ("uuid".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 UUID param = determineQueryParamString(paramType, compareType, searchVal);

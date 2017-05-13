@@ -5,6 +5,7 @@
  */
 package com.pfm.controllers;
 
+import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
@@ -16,9 +17,10 @@ import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
-import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
+import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.io.Serializable;
@@ -52,21 +54,27 @@ public class PaymentCategoriesController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        /*IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
         List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true));
-        columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true));
-        columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true));
         List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
+        List<ColumnOption> options = new ArrayList<ColumnOption>();
+        columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true,false));
+        columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true,false));
+        columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true,true));
+        columnsList.add(new ColumnSettingsObject("pcatId", "id", "uuid", false,false));
         whereList.add(new TableWhereObject("pcatUser", "eq", user.getId().toString(), "uuid"));
-        TableSettingsObject tableSettings = new TableSettingsObject(whereList);
-        DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings);
-        String gridHtml = grid.buildHtmlForGrid();*/
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","categories/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","categories/edit/{3}"));
+        ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
+        TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
+        GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
+        DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings, columnOptions,cacheProvider);
+        String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("categories-manage");
-       // view.addObject("grid", gridHtml);
+        view.addObject("grid", gridHtml);
         return view;
     }
     
@@ -124,10 +132,6 @@ public class PaymentCategoriesController {
         IpfmContext context = pfmContext.getInstance();
         PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
         ModelAndView view = new ModelAndView("categories-edit");
-        PaymentCategoryEditModel model = new PaymentCategoryEditModel();
-        model.setCategoryActive(category.isActive() ? "1" : "2");
-        model.setCategoryDescription(category.getDescription());
-        model.setCategoryName(category.getName());
         view.addObject("category", category);
         return view;
     }
