@@ -305,7 +305,6 @@ public class DataGridBuilder {
         }
         return false;
     }
-
     private void buildFieldsJson(GridCacheObject cache) {
         this.jsonFieldsVariable = "[";
         Integer iteration = 0;
@@ -413,6 +412,5 @@ public class DataGridBuilder {
         this.columnOptions = columnOptions;
         this.cacheProvider = cacheProvider;
         Field[] fields = this.getEntityAnnotations();
-
     }
 }

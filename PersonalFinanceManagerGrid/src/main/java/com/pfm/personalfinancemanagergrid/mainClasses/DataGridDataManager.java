@@ -77,7 +77,7 @@ public class DataGridDataManager {
                     }
                 }
                 resultArray.add(innerResult);
-            }
+            }            
             Integer itemsCount = allResults.size();
             session.close();
             factory.close();
@@ -137,6 +137,7 @@ public class DataGridDataManager {
             statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
             iterate++;
         }
+        System.out.println("query = "+statement);
         Integer iter = 0;
         if (iter < params.getColumns().size()) {
             for (ColumnRequestObject column : params.getColumns()) {
@@ -224,10 +225,12 @@ public class DataGridDataManager {
                 }
             }
         }
+        //System.out.println("where = "+statement);
         return statement;
     }
 
     private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType) throws ParseException {
+        System.out.println("columnName = "+columnName + " type = "+paramType+" searchVal = "+searchVal);
         if ("uuid".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 UUID param = determineQueryParamString(paramType, compareType, searchVal);
@@ -268,6 +271,7 @@ public class DataGridDataManager {
 
     private <T> T determineQueryParamString(String columnType, String compareType, String searchVal) throws ParseException {
         if ("uuid".equals(columnType)) {
+            
             UUID val = UUID.fromString(searchVal);
             return (T) val;
         }
