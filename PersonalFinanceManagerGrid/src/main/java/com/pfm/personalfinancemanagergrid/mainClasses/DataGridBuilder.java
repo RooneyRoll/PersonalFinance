@@ -5,11 +5,10 @@
  */
 package com.pfm.personalfinancemanagergrid.mainClasses;
 
-import com.google.gson.Gson;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnObject;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnOption;
-import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnOptionsObject;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheObject;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
@@ -52,35 +51,57 @@ public class DataGridBuilder {
     public String buildHtmlForGrid() throws ClassNotFoundException {
         GridCacheObject cache = this.buildCacheObject(this.entity);
         UUID id = UUID.randomUUID();
-        
         cacheProvider.setCache(id.toString(), cache);
+        buildFieldsJson(cache);
         this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
-        int iteration = 1;
-        for (ColumnSettingsObject column : columnsSettings) {
-            if (column.isAllowedField()) {
-                this.appendToGridHtml("<th>" + column.getTableFieldName() + "</th>");
-                columnsDeclaration += "{'mData':'" + iteration + "'}";
-                if (iteration < columnsLength) {
-                    columnsDeclaration += ",";
+        int iteration = 0;
+        for (GridCacheColumnObject column : cache.getColumns()) {
+            if (column.isOptionsColumn()) {
+                this.appendToGridHtml("<th class='options'>" + column.getVisibleName() + "</th>");
+                String columnOptionsString = "";
+                for (GridCacheColumnOption option : column.getOptions()) {
+                    columnOptionsString += "<div data-source=\"" + option.getObjectIdSource() + "\" class=\"grid-option\"><span><a href=\"" + option.getOptionHref() + "\">" + option.getOptionContent() + "</a></span></div>";
                 }
-                iteration++;
+                columnsDeclaration += "{'data':null,'targets':-1, 'bSortable':false,'bSearchable':false,'defaultContent':'" + columnOptionsString + "'}";
+            } else {
+                this.appendToGridHtml("<th>" + column.getVisibleName() + "</th>");
+                String visible = "true";
+                String sortable = "true";
+                if (!column.isAllowed()) {
+                    visible = "false";
+                    sortable = "false";
+                }
+                columnsDeclaration += "{'data':'" + iteration + "','visible':" + visible + ",'sortable':" + sortable + "}";
             }
-
-        }
-        if (cache.getOptionsColumn() != null) {
-            this.appendToGridHtml("<th class='options'>" + cache.getOptionsColumn().getTableFieldName() + "</th>");
-            String columnOptionsString = "";
-            for (GridCacheColumnOption option : cache.getOptionsColumn().getOptions()) {
-                
-                columnOptionsString += "<div data-source=\""+option.getObjectIdSource()+"\" class=\"grid-option\"><span><a href=\""+option.getOptionHref()+"\">"+option.getOptionContent()+"</a></span></div>";
+            if (iteration < columnsLength) {
+                columnsDeclaration += ",";
             }
-            columnsDeclaration += ",{'mData':null,'bSortable':false,'bSearchable':false,'defaultContent':'"+columnOptionsString+"'}";
+            iteration++;
+            System.out.println(columnsDeclaration);
         }
         this.appendToGridHtml("</tr></thead></table>");
         this.appendToGridHtml("<script type='text/javascript'>\n"
-                + "$(document).ready(function(){"
+                + "$(document).ready(function(){\n"
+                + "         function getCurrentField(key,jsonFields){"
+                + "             var result = null;"
+                + "             $(jsonFields).each(function(keyF,val){\n"
+                + "                 if(key == val.col && val.search){\n"
+                + "                     result = val;\n"
+                + "                 }"
+                + "             })\n"
+                + "             return result;\n"
+                + "         }\n"
+                + "         function getCurrentFieldByNum(pos,jsonFields){"
+                + "             var result = null;"
+                + "             $(jsonFields).each(function(keyF,val){\n"
+                + "                 if(pos == val.num && val.search){\n"
+                + "                     result = val;\n"
+                + "                 }"
+                + "             })\n"
+                + "             return result;\n"
+                + "         }\n"
                 + "     function buildFilterByType(type,column,title){\n"
                 + "         var options = '';\n"
                 + "         if(type == 'string'){\n"
@@ -119,7 +140,7 @@ public class DataGridBuilder {
                 + "         'lengthMenu': [ 5, 10, 15, 20, 25 ],\n"
                 + "         'searching': true,\n"
                 + "         'bLengthChange': false,\n"
-                + "         'columnDefs': [\n"
+                + "         'columns': [\n"
                 + columnsDeclaration + "\n"
                 + "          ],\n"
                 + "         'language':{\n"
@@ -159,24 +180,35 @@ public class DataGridBuilder {
                 + "                 settings.data = JSON.parse(settings.data);"
                 + "                 var tableSettings = {'where':where};"
                 + "                 settings.data.tableSettings = tableSettings; \n;"
-                + "                 settings.data.cid = \""+id+"\";\n" 
-                + "                 settings.data = JSON.stringify(settings.data); \n "                
+                + "                 settings.data.cid = \"" + id + "\";\n"
+                + "                 settings.data = JSON.stringify(settings.data); \n "
                 + "                 xhr.setRequestHeader('X-CSRF-TOKEN', token);\n"
                 + "             },\n"
                 + "             data : function ( d ) {\n"
                 + "                 var columns = (d['columns']);\n"
                 + "                 var filters = " + this.columnFilters + ";\n"
                 + "                 $(columns).each(function(key,value){\n"
+                + "                     if($('.filter-holder').length <= 0){"
+                + "                         var jsonFields = " + this.jsonFieldsVariable + ";\n"
+                + "                         var currentField = getCurrentField(key,jsonFields);\n"
+                + "                         if(currentField != null){"
+                + "                             var filterObject = {'value':'','type':currentField.col};"
+                + "                             d['columns'][currentField.col]['filter'] = filterObject;\n"
+                + "                         }"
+                + "                     }"
                 + "                     if($('.filter-holder').length > 0){\n"
+                + "                         var jsonFields = " + this.jsonFieldsVariable + ";\n"
                 + "                         $('.filter-holder').each(function(key,val){\n"
-                + "                             var filterVal = $(this).find('option:selected').val();\n"
-                + "                             var filterType = $(this).find('option:selected').parent().attr('data-type');\n"
-                + "                             var filterObject = {'value':filterVal,'type':filterType};\n"
-                + "                             d['columns'][key]['filter'] = filterObject;\n"
+                + "                             var colNum = $(this).find('.filter-input input').attr('data-column');"
+                + "                             var currentField = getCurrentField(colNum,jsonFields)\n"
+                + "                             if(currentField != null){"
+                + "                                 var filterVal = $(this).find('option:selected').val();\n"
+                + "                                 var filterType = $(this).find('option:selected').parent().attr('data-type');\n"
+                + "                                 var filterObject = {'value':filterVal,'type':currentField.col};\n"
+                + "                                 d['columns'][currentField.col]['filter'] = filterObject;\n"
+                + "                             }"
                 + "                         });\n"
-                + "                     }else{\n"
-                + "                         d['columns'][key]['filter'] = filters[key];\n"
-                + "                     }\n"
+                + "                     }"
                 + "                 });\n"
                 + "                 d['source'] = '" + entity.getName() + "'\n;"
                 + "                 return JSON.stringify(d);\n"
@@ -187,11 +219,13 @@ public class DataGridBuilder {
                 + "         $('#grid-" + table + " th:not(.options)').each( function (key,val) {\n"
                 + "             var title = $('#grid-" + table + " th').eq( $(this).index()).text();\n"
                 + "             var jsonFields = " + this.jsonFieldsVariable + ";\n"
-                + "             var currentField = jsonFields[key];\n"
-                + "             var filter = buildFilterByType(currentField.type,key,title);\n"
-                + "             $(this).append(filter);"
+                + "             var currentField = getCurrentFieldByNum(key,jsonFields);"
+                + "             if(currentField != null && currentField.search == true){\n"
+                + "                 var filter = buildFilterByType(currentField.type,currentField.col,title);\n"
+                + "                 $(this).append(filter);\n"
+                + "             }\n"
                 + "         });"
-                + "         $('.filter-holder input').on( \"keyup change\", function () {"
+                + "         $('.filter-holder input').on( \"keyup change\", function () {\n"
                 + "             table \n"
                 + "                 .column($(this).attr(\"data-column\"))\n"
                 + "                 .search($(this).val())\n"
@@ -224,7 +258,7 @@ public class DataGridBuilder {
                 + "             var clicked = $(e.target);"
                 + "             if (!($(e.target).is('th' ))){ \n"
                 + "             } else { \n"
-                + "                 var columnIndex = clicked.index();\n"
+                + "                 var columnIndex = $(this).find('.filter-input input').attr('data-column');\n"
                 + "                 var orderType = 'desc';\n"
                 + "                 var sortedBy = clicked.attr('aria-sort');\n"
                 + "                 if(typeof sortedBy == 'undefined' || sortedBy == 'ascending'){\n"
@@ -232,6 +266,7 @@ public class DataGridBuilder {
                 + "                 }else{\n"
                 + "                     orderType = 'asc';\n"
                 + "                 }\n"
+                + "                 console.log(orderType);"
                 + "                 table\n"
                 + "                     .order( [ columnIndex, orderType ] )\n"
                 + "                     .draw();"
@@ -271,56 +306,26 @@ public class DataGridBuilder {
         return false;
     }
 
-    private void buildInitialWhereObject() {
-        this.initialWhereJson = "[";
-        Integer iteration = 0;
-        for (TableWhereObject where : tableSettings.getWhereObjects()) {
-            if (iteration != 0) {
-                this.initialWhereJson += ",";
-            }
-            this.initialWhereJson += "{'column':'" + where.getColumnEntityName() + "',"
-                    + "" + "'whereType':'" + where.getWhereType() + "',"
-                    + "'columnType':'" + where.getColumnType() + "',"
-                    + "'whereVal':'" + where.getWhereVal() + "'}";
-            iteration++;
-        }
-        this.initialWhereJson += "]";
-    }
-
-    private void buildFieldsJson(Field[] fields) {
+    private void buildFieldsJson(GridCacheObject cache) {
         this.jsonFieldsVariable = "[";
         Integer iteration = 0;
-        for (Field field : fields) {
-            Column column = field.getAnnotation(javax.persistence.Column.class);
-            String fieldName = field.getName();
-            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
-            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
-                if (iteration != 0) {
+        Integer num = 0;
+        boolean added = false;
+        for (GridCacheColumnObject column : cache.getColumns()) {
+
+            String search = "false";
+            if (column.isSearchableColumn() && column.isAllowed()) {
+                if (iteration != 0 && added) {
                     this.jsonFieldsVariable += ",";
                 }
-                this.jsonFieldsVariable += "{\"name\":\"" + iteration + "\"," + "\"type\":\"" + columnSettings.getFieldType() + "\"}";
-                iteration++;
+                search = "true";
+                this.jsonFieldsVariable += "{\"col\":\"" + iteration + "\"," + "\"type\":\"" + column.getType() + "\",\"search\":" + search + ",'filterValue':'','num':'" + num + "'}";
+                added = true;
+                num++;
             }
+            iteration++;
         }
         this.jsonFieldsVariable += "]";
-    }
-
-    private void buildColumnFiltersJson(Field[] fields) {
-        this.columnFilters = "[";
-        Integer iteration = 0;
-        for (Field field : fields) {
-            Column column = field.getAnnotation(javax.persistence.Column.class);
-            String fieldName = field.getName();
-            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
-            if ((column != null) && (columnSettings != null) && (columnSettings.isAllowedField())) {
-                if (iteration != 0) {
-                    this.columnFilters += ",";
-                }
-                this.columnFilters += "{'value':'','type':'" + iteration + "'}";
-                iteration++;
-            }
-        }
-        this.columnFilters += "]";
     }
 
     private Field[] getEntityAnnotations() throws ClassNotFoundException {
@@ -330,24 +335,23 @@ public class DataGridBuilder {
         Field[] fields = cls.getDeclaredFields();
         return fields;
     }
-    
-    public GridCacheObject buildCacheObject(Class entity) throws ClassNotFoundException{
+
+    public GridCacheObject buildCacheObject(Class entity) throws ClassNotFoundException {
         GridCacheObject cacheObject = new GridCacheObject();
         cacheObject.setEntity(entity.getName());
-        Field[] fields = getEntityAnnotations();
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            ColumnSettingsObject columnSettings = getColumnSettingsByColumnEntityName(fieldName);
-            if((columnSettings != null) && (columnSettings.isAllowedField())){
+        Field field = null;
+        for (ColumnSettingsObject columnSettings : columnsSettings) {
+            if ((columnSettings != null)) {
                 GridCacheColumnObject cacheColumn = new GridCacheColumnObject();
-                cacheColumn.setAllowed(true);
-                cacheColumn.setColumnName(fieldName);
-                cacheColumn.setType(determineFieldType(field));
+                cacheColumn.setAllowed(columnSettings.isAllowedField());
+                cacheColumn.setColumnName(columnSettings.getEntityFieldName());
+                cacheColumn.setType(determineFieldType(columnSettings.getEntityFieldName()));
                 cacheColumn.setVisibleName(columnSettings.getTableFieldName());
+                cacheColumn.setSearchableColumn(columnSettings.isSearchableField());
                 cacheObject.getColumns().add(cacheColumn);
             }
         }
-        if(this.columnOptions != null){
+        if (this.columnOptions != null) {
             GridCacheColumnObject cacheColumn = new GridCacheColumnObject();
             cacheColumn.setVisibleName(this.columnOptions.getTableFieldName());
             cacheColumn.setOptionsColumn(true);
@@ -361,14 +365,34 @@ public class DataGridBuilder {
                 cacheColumn.setOptions(optionList);
             }
             cacheColumn.setOptions(optionList);
-            
+            cacheObject.getColumns().add(cacheColumn);
         }
+        List<GridCacheTableWhereObject> whereList = new ArrayList<GridCacheTableWhereObject>();
+        for (TableWhereObject whereObject : tableSettings.getWhereObjects()) {
+            String columnName = whereObject.getColumnEntityName();
+            String columnType = determineFieldType(columnName);
+            String whereType = whereObject.getWhereType();
+            String whereValue = whereObject.getWhereVal();
+            GridCacheTableWhereObject cacheWhere = new GridCacheTableWhereObject();
+            cacheWhere.setColumnName(columnName);
+            cacheWhere.setColumnType(columnType);
+            cacheWhere.setWhereType(whereType);
+            cacheWhere.setWhereVal(whereValue);
+            whereList.add(cacheWhere);
+        }
+        cacheObject.setWheres(whereList);
         return cacheObject;
     }
-    
-    public String determineFieldType(Field field){
+
+    public String determineFieldType(String fieldName) {
+        Field reflField = null;
+        try {
+            reflField = entity.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            System.out.println("field with name " + fieldName + " could not be found in entity " + table);
+        }
         String type = "string";
-        switch(field.getType().toString()){
+        switch (reflField.getType().getSimpleName()) {
             case "UUID":
                 type = "uuid";
                 break;
@@ -377,20 +401,18 @@ public class DataGridBuilder {
                 break;
             case "Integer":
                 type = "int";
-            break;
+                break;
         }
         return type;
     }
-    
-    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings, ColumnOptionsObject columnOptions,ICacheProvider cacheProvider) throws ClassNotFoundException {
+
+    public DataGridBuilder(Class entityClass, List<ColumnSettingsObject> columnSettings, TableSettingsObject tableSettings, ColumnOptionsObject columnOptions, ICacheProvider cacheProvider) throws ClassNotFoundException {
         this.entity = entityClass;
         this.columnsSettings = columnSettings;
         this.tableSettings = tableSettings;
         this.columnOptions = columnOptions;
         this.cacheProvider = cacheProvider;
-        Field[] fields = this.getEntityAnnotations();        
-        this.buildColumnFiltersJson(fields);
-        this.buildFieldsJson(fields);
-        this.buildInitialWhereObject();
+        Field[] fields = this.getEntityAnnotations();
+
     }
 }

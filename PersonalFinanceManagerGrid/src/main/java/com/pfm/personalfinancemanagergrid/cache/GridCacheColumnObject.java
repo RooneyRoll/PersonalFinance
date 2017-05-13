@@ -17,6 +17,7 @@ public class GridCacheColumnObject {
     public String columnName; 
     public boolean allowed;
     public boolean OptionsColumn;
+    public boolean searchableColumn;
     private List<GridCacheColumnOption> options;
 
     public String getType() {
@@ -65,6 +66,14 @@ public class GridCacheColumnObject {
 
     public void setOptions(List<GridCacheColumnOption> options) {
         this.options = options;
+    }
+
+    public boolean isSearchableColumn() {
+        return searchableColumn;
+    }
+
+    public void setSearchableColumn(boolean searchableColumn) {
+        this.searchableColumn = searchableColumn;
     }
     
 }

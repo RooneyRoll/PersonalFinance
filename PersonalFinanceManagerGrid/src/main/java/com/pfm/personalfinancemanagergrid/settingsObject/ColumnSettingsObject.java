@@ -13,14 +13,16 @@ public class ColumnSettingsObject {
 
     private String entityFieldName;
     private String tableFieldName;
-    private boolean allowedField;
     private String fieldType;
+    private boolean allowedField;
+    private boolean searchableField;
 
-    public ColumnSettingsObject(String entityFieldName,String tableFieldName,String fieldType,boolean allowed) {
+    public ColumnSettingsObject(String entityFieldName,String tableFieldName,String fieldType,boolean allowed,boolean searchable) {
         this.allowedField = allowed;
         this.fieldType = fieldType;
         this.tableFieldName = tableFieldName;
         this.entityFieldName = entityFieldName;
+        this.searchableField = searchable;
     }
 
     public boolean isAllowedField() {
@@ -55,4 +57,11 @@ public class ColumnSettingsObject {
         this.tableFieldName = tableFieldName;
     }
 
+    public boolean isSearchableField() {
+        return searchableField;
+    }
+
+    public void setSearchableField(boolean searchableField) {
+        this.searchableField = searchableField;
+    }
 }

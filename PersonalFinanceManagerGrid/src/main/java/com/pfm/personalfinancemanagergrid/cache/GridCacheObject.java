@@ -16,7 +16,7 @@ import java.util.Map;
 public class GridCacheObject {
     private String entity;
     private List<GridCacheColumnObject> columns = new ArrayList<GridCacheColumnObject>();
-    private GridCacheColumnOptionsObject optionsColumn;
+    private List<GridCacheTableWhereObject> wheres = new ArrayList<GridCacheTableWhereObject>();
 
     public String getEntity() {
         return entity;
@@ -34,12 +34,12 @@ public class GridCacheObject {
         this.columns = columns;
     }
 
-    public GridCacheColumnOptionsObject getOptionsColumn() {
-        return optionsColumn;
+    public List<GridCacheTableWhereObject> getWheres() {
+        return wheres;
     }
 
-    public void setOptionsColumn(GridCacheColumnOptionsObject optionsColumn) {
-        this.optionsColumn = optionsColumn;
+    public void setWheres(List<GridCacheTableWhereObject> wheres) {
+        this.wheres = wheres;
     }
     
     public GridCacheColumnObject getColumnCacheByColumnName(String columnName){
@@ -51,7 +51,7 @@ public class GridCacheObject {
         return null;
     }
     
-    public GridCacheColumnObject getOptionsColumn(String columnName){
+    public GridCacheColumnObject getOptionsColumn(){
         for (GridCacheColumnObject column : columns) {
             if(column.isOptionsColumn()){
                 return column;

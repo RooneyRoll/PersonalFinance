@@ -59,12 +59,13 @@ public class PaymentTypesController {
         List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
         List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
         List<ColumnOption> options = new ArrayList<ColumnOption>();
-        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true));
-        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", true));
-        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true));
+        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true,true));
+        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", false,false));
+        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true,true));
+        columnsList.add(new ColumnSettingsObject("ptypeId", "id", "uuid", true,false));
         whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","ptypeId","types/view/{ptypeId}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","ptypeId","types/edit/{ptypeId}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","types/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","types/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
         GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());

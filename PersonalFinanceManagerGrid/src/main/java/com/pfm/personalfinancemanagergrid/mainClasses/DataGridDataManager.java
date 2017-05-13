@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheColumnObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.GridParamObject;
 import com.pfm.personalfinancemanagergrid.cache.GridCacheObject;
+import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
@@ -59,14 +60,20 @@ public class DataGridDataManager {
             List<Serializable> allResults = query.list();
             List<Serializable> resultList = q.list();
             List<List<String>> resultArray = new ArrayList<List<String>>();
+
             for (Serializable serializable : resultList) {
+                Field[] fields = cls.getDeclaredFields();
                 List<String> innerResult = new ArrayList<String>();
-                for (Field field : cls.getDeclaredFields()) {
-                    GridCacheColumnObject column = cache.getColumnCacheByColumnName(field.getName());
-                    if (column != null && !column.isOptionsColumn()) {
-                        field.setAccessible(true);
-                        String value = field.get(serializable).toString();
-                        innerResult.add(value);
+                for (GridCacheColumnObject column : cache.getColumns()) {
+                    if (!column.isOptionsColumn()) {
+                        for (Field field : fields) {
+                            field.setAccessible(true);
+                            if (!field.getName().equals(column.getColumnName())) {
+                                continue;
+                            }
+                            String value = field.get(serializable).toString();
+                            innerResult.add(value);
+                        }
                     }
                 }
                 resultArray.add(innerResult);
@@ -93,20 +100,20 @@ public class DataGridDataManager {
     private Query buildQuery(Session session, GridParamObject params, boolean maxResults) throws ParseException, InstantiationException, IllegalAccessException {
         String source = params.getSource();
         List<ColumnRequestObject> columns = params.getColumns();
-        String order = source.charAt(0) + "." + cache.getColumns().get(0).getColumnName() + " " + params.getOrder().get(0).getDir();
+        String order = source.charAt(0) + "." + cache.getColumns().get(params.getOrder().get(0).getColumn()).getColumnName() + " " + params.getOrder().get(0).getDir();
         String where = this.buildWhereStatement(params, source.charAt(0));
         if (!"".equals(where)) {
             where = "where " + where;
         }
         Query q = session.createQuery("From " + source + " " + source.charAt(0) + " " + where + " order by " + order);
-        for (TableWhereRequestObject whereObj : params.getTableSettings().getWhereObjects()) {
-            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumn(), whereObj.getWhereVal(), whereObj.getWhereType());
+        for (GridCacheTableWhereObject whereObj : cache.getWheres()) {
+            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumnName(), whereObj.getWhereVal(), whereObj.getWhereType());
         }
         Integer iter = 0;
         if (iter < params.getColumns().size()) {
             for (ColumnRequestObject column : params.getColumns()) {
                 GridCacheColumnObject cachedColumn = cache.getColumns().get(iter);
-                if (cachedColumn.isAllowed()) {
+                if (!cachedColumn.isOptionsColumn() && cachedColumn.isSearchableColumn()) {
                     String columnName = cachedColumn.getColumnName();
                     String compareType = column.getFilter().getValue();
                     String columnType = cachedColumn.getType();
@@ -126,15 +133,15 @@ public class DataGridDataManager {
     private String buildWhereStatement(GridParamObject params, char firstLetter) {
         Integer iterate = 0;
         String statement = "";
-        for (TableWhereRequestObject where : params.getTableSettings().getWhereObjects()) {
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumn(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
+        for (GridCacheTableWhereObject where : cache.getWheres()) {
+            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
             iterate++;
         }
         Integer iter = 0;
         if (iter < params.getColumns().size()) {
             for (ColumnRequestObject column : params.getColumns()) {
                 GridCacheColumnObject cachedColumn = cache.getColumns().get(iter);
-                if (cachedColumn.isAllowed()) {
+                if (!cachedColumn.isOptionsColumn() && cachedColumn.isSearchableColumn()) {
                     String columnName = cachedColumn.getColumnName();
                     String columnType = cachedColumn.getType();
                     String whereCompareType = column.getFilter().getValue();
@@ -222,8 +229,10 @@ public class DataGridDataManager {
 
     private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType) throws ParseException {
         if ("uuid".equals(paramType)) {
-            UUID param = determineQueryParamString(paramType, compareType, searchVal);
-            q.setParameter(columnName, param);
+            if (!"".equals(searchVal)) {
+                UUID param = determineQueryParamString(paramType, compareType, searchVal);
+                q.setParameter(columnName, param);
+            }
         }
         if ("int".equals(paramType)) {
             if (!"".equals(searchVal)) {

@@ -15,12 +15,11 @@ public class GridParamObject {
     public List<ColumnRequestObject> columns;
     public Integer draw;
     public Integer length;
-    public ColumnSearchRequestObject search;
     public Integer start;
     public String source;
-    public List<ColumnOrderRequestObject> order;
-    public TableSettingsRequestObject tableSettings; 
     public String cid;
+    public ColumnSearchRequestObject search;
+    public List<ColumnOrderRequestObject> order;
 
     public String getCid() {
         return cid;
@@ -28,14 +27,6 @@ public class GridParamObject {
 
     public void setCid(String cid) {
         this.cid = cid;
-    }
-    
-    public TableSettingsRequestObject getTableSettings() {
-        return tableSettings;
-    }
-
-    public void setTableSettings(TableSettingsRequestObject tableSettings) {
-        this.tableSettings = tableSettings;
     }
     
     public Integer getStart() {
