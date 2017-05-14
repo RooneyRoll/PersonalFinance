@@ -6,6 +6,7 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
@@ -39,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Users.findByUserPassword", query = "SELECT u FROM Users u WHERE u.userPassword = :userPassword")
     , @NamedQuery(name = "Users.findByUserUsername", query = "SELECT u FROM Users u WHERE u.userUsername = :userUsername")})
 public class Users implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatUser")
+    private Collection<PaymentCategories> paymentCategoriesCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -172,5 +176,14 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.Users[ userUserid=" + userUserid + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PaymentCategories> getPaymentCategoriesCollection() {
+        return paymentCategoriesCollection;
+    }
+
+    public void setPaymentCategoriesCollection(Collection<PaymentCategories> paymentCategoriesCollection) {
+        this.paymentCategoriesCollection = paymentCategoriesCollection;
     }
 }

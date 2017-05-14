@@ -6,12 +6,14 @@
 package com.pfm.personalfinancemanager.datapostgres.context;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.sets.ICategoryDetailSet;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.data.sets.IPaymentSet;
 import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.config.ConfigurationHelper;
+import com.pfm.personalfinancemanager.datapostgres.sets.CategoryDetailSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentTypeSet;
@@ -31,6 +33,7 @@ public class pfmContext implements IpfmContext {
     private IPaymentCategorySet PaymentCategorySet;
     private IPaymentTypeSet PaymentTypeSet;
     private IPaymentSet PaymentSet;
+    private ICategoryDetailSet categoryDetailSet;
     private static pfmContext instance;
 
     public static IpfmContext getInstance() {
@@ -48,6 +51,8 @@ public class pfmContext implements IpfmContext {
         this.PaymentCategorySet = new PaymentCategorySet(this.manager);
         this.PaymentTypeSet = new PaymentTypeSet(this.manager);
         this.PaymentSet = new PaymentSet(this.manager);
+        this.categoryDetailSet = new CategoryDetailSet(this.manager);
+        
     }
 
     @Override
@@ -68,5 +73,10 @@ public class pfmContext implements IpfmContext {
     @Override
     public IPaymentTypeSet getPaymentTypeSet() {
         return this.PaymentTypeSet;
+    }
+
+    @Override
+    public ICategoryDetailSet getCategoryDetailSet() {
+        return this.categoryDetailSet;//To change body of generated methods, choose Tools | Templates.
     }
 }
