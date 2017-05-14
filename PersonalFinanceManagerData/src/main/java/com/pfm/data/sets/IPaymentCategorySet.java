@@ -11,6 +11,7 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,4 +25,6 @@ public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, I
     
     @Override
     public void Edit(UUID id,PaymentCategoryData data) throws PaymentCategoryEditException;
+    
+    public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) ; 
 }

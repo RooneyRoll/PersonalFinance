@@ -53,26 +53,26 @@ public class PaymentTypesController {
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
-        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        List<ColumnOption> options = new ArrayList<ColumnOption>();
-        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true,true));
-        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", false,false));
-        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true,true));
-        columnsList.add(new ColumnSettingsObject("ptypeId", "id", "uuid", true,false));
-        whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","types/view/{3}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","types/edit/{3}"));
-        ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
-        TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
-        GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
-        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList, tableSettings, columnOptions,cacheProvider);
-        String gridHtml = grid.buildHtmlForGrid();
+//        User user = context
+//                .getUserSet()
+//                .GetByUserName(auth.getName());
+//        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
+//        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
+//        List<ColumnOption> options = new ArrayList<ColumnOption>();
+//        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true,true));
+//        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", false,false));
+//        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true,true));
+//        columnsList.add(new ColumnSettingsObject("ptypeId", "id", "uuid", true,false));
+//        whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
+//        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","types/view/{3}"));
+//        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","types/edit/{3}"));
+//        ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
+//        TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
+//        GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
+//        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList, tableSettings, columnOptions,cacheProvider);
+//        String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("types-manage");
-        view.addObject("grid", gridHtml);
+//        view.addObject("grid", gridHtml);
         return view;
     }
 

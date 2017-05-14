@@ -5,6 +5,7 @@
  */
 package com.pfm.data.context;
 
+import com.pfm.data.sets.ICategoryDetailSet;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.data.sets.IPaymentCategorySet;
@@ -19,4 +20,5 @@ public interface IpfmContext {
     public IUserRoleSet getUserRoleSet();
     public IPaymentCategorySet getPaymentCategorySet();
     public IPaymentTypeSet getPaymentTypeSet();
+    public ICategoryDetailSet getCategoryDetailSet();
 }
