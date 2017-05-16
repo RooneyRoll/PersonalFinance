@@ -1,0 +1,20 @@
+CREATE TABLE public.category_budget
+(
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    category_id uuid NOT NULL,
+    amount double precision NOT NULL,
+    from_date timestamp without time zone,
+    to_date timestamp without time zone,
+    CONSTRAINT category_budget_pkey PRIMARY KEY (id),
+    CONSTRAINT category_budget_category_id_fkey FOREIGN KEY (category_id)
+        REFERENCES public.payment_categories (pcat_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.category_budget
+    OWNER to postgres;
