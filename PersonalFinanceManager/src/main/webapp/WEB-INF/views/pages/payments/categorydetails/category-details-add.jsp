@@ -3,23 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
-        $("#payment-category-add-form").validate({
-            rules: {
-                categoryName: "required",
-            },
-            messages: {
-                categoryName: "Моля, въведете име на категория",
-            },
-            errorPlacement: function (error, element) {
 
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass("error");
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass("error");
-            }
-        });
+
+        $('select').select2({minimumResultsForSearch: -1});
     });
 </script>
 <div class="form-container">
@@ -34,18 +20,59 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="categoryName" placeholder="Име" id="password"/>
+                    <select id="category-select" name="categoryId">
+                        <c:forEach items="${categoriesMap}" var="element">
+                           
+                            <option value="${element.getId()}">${element.getName()}</option>
+                            
+                        </c:forEach>
+                    </select>
+                    <!--
+                                        <select>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                    
+                                        </select>-->
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
                     <span> 
-                        Описание на категория
+                        Лимит на категорията
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="categoryDescription"></textarea>
+                    <!--<textarea resize="false" placeholder="Лимит" name="amount"></textarea>-->
+                    <input type="number" name="amount"  />
                 </div>
             </div>
+
+            <div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        От:
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <input type="date" name="fromDate"  />
+                </div>
+            </div>
+
+            <div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        До:
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <input type="date" name="toDate"  />
+                </div>
+            </div>
+
             <div class="buttons-container size-1">
                 <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
                 <button name="submit-button" type="submit" value="2" class="button animation">Запази и редактирай</button>
