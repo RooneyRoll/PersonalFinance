@@ -12,6 +12,7 @@ import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,4 +26,6 @@ public interface IPaymentTypeSet extends IViewable<PaymentType, UUID>, IManagabl
 
     @Override
     public void Edit(UUID id, PaymentTypeData data) throws PaymentTypeEditException;
+    
+    public List<PaymentType> GetAllActiveTypesForUser(UUID userId);
 }

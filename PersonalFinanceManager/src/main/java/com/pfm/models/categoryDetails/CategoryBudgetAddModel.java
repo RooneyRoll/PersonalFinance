@@ -12,21 +12,12 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CategoryDetailEditModel {
-        
-    private double amount;
-    private Date fromDate;
-    private Date toDate;
+public class CategoryBudgetAddModel {
+    
+    private String amount;
+    private String fromDate;
+    private String toDate;
     private UUID categoryId;
-    private String isActive;
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
 
     public UUID getCategoryId() {
         return categoryId;
@@ -36,28 +27,30 @@ public class CategoryDetailEditModel {
         this.categoryId = categoryId;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
-    public Date getFromDate() {
+    public String getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(String fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public String getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(String toDate) {
         this.toDate = toDate;
     }
+
+
     
 }

@@ -10,6 +10,7 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
+import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
@@ -76,6 +77,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             PaymentCategories paymentCategoryEntity = convertDtoDataToEntity(data);
             Serializable id = session.save(paymentCategoryEntity);
             session.getTransaction().commit();
+            session.close();
 
             return UUID.fromString(id.toString());
         }
@@ -88,7 +90,8 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
 
     @Override
     public void Edit(UUID id, PaymentCategoryData data) throws PaymentCategoryEditException {
-        try (Session session = this.getSessionFactory().openSession()) {
+        Session session = this.getSessionFactory().openSession();
+        try {
             if (this.categoryExistsForEdit(data.getName(), data.getUserId(), id, session)) {
                 throw new PaymentCategoryEditException("Payment category with name \"" + data.getName() + "\" already exists.");
             }
@@ -97,13 +100,22 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             paymentCategoryEntity.setPcatId(id);
             session.update(paymentCategoryEntity);
             session.getTransaction().commit();
-
+            session.close();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<PaymentCategory> GetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<PaymentCategory> userObjects;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentCategories");
+            List<PaymentCategories> resultList = q.list();
+            userObjects = convertEntititiesToDtoArray(resultList);
+        }
+        return userObjects;
     }
 
     @Override
@@ -119,6 +131,20 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         return paymentCategoryObjects.get(0);
     }
 
+    @Override
+    public List<PaymentCategory> GetAllActiveCategoriesForUser(UUID userId) {
+        List<PaymentCategory> categoriesResult;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentCategories pc where pc.pcatUser = :userId and pc.pcatActive = :pcatActive", PaymentCategories.class)
+                    .setParameter("userId", userId)
+                    .setParameter("pcatActive", true);
+            List<PaymentCategories> resultList = q.list();
+            categoriesResult = convertEntititiesToDtoArray(resultList);
+        }
+        return categoriesResult;
+    }
+
     private boolean categoryExistsForEdit(String categoryName, UUID userId, UUID categoryId, Session session) {
         Query q = session.createQuery("From PaymentCategories pc where pc.pcatName = :categoryName and pc.pcatUser = :userId and pc.pcatId!=:categoryId", PaymentCategories.class)
                 .setParameter("categoryName", categoryName)
@@ -129,6 +155,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         if (q.getResultList().size() > 0) {
             exists = true;
         }
+       
         return exists;
     }
 
@@ -141,6 +168,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         if (q.getResultList().size() > 0) {
             exists = true;
         }
+       
         return exists;
     }
 
@@ -159,20 +187,23 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         return paymentCategoryObjects;
     }
 
+    @Override
     public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) {
 
-        List<PaymentCategory> paymentCategoryObjects;
+        List<PaymentCategory> paymentCategoryObjects = this.GetAllActiveCategoriesForUser(userId);
+        List<PaymentCategory> categoriesWithoutDetails = new ArrayList<>();
         try (Session session = this.getSessionFactory().openSession()) {
-           
-            Query q = session.createNativeQuery(" select mas.* from payment_categories mas left join category_details det on mas.pcat_id = det.category_id where mas.pcat_user = ?1 and mas.pcat_active =?2 and det.id is null")
-                    .setParameter(1, userId)
-                    .setParameter(2, isActive);
-            List<PaymentCategories> resultList = q.list();
+            for (PaymentCategory category : paymentCategoryObjects) {
+                Query q = session.createQuery("From CategoryBudgets cd where cd.categoryId = :categoryId", CategoryBudgets.class)
+                        .setParameter("categoryId", category.getId());
+                List<PaymentCategories> resultList = q.list();
+                if (resultList.isEmpty()) {
+                    categoriesWithoutDetails.add(category);
+                }
 
-            paymentCategoryObjects = convertEntititiesToDtoArray(resultList);
+            }
 
         }
-        return paymentCategoryObjects;
+        return categoriesWithoutDetails;
     }
-
 }

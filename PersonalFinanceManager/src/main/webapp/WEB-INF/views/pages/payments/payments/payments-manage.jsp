@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 ${grid}
-<spring:url var = "add" value='/types/add' />
+<spring:url var = "add" value='/payments/add' />
 <div class="buttons-container">
-    <a class="animation button" href="${add}">Нов тип</a>
+    <a class="animation button" href="${add}">Ново плащане</a>
 </div>

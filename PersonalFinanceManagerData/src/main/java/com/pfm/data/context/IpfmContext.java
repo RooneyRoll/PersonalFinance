@@ -5,20 +5,28 @@
  */
 package com.pfm.data.context;
 
-import com.pfm.data.sets.ICategoryDetailSet;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.data.sets.IPaymentCategorySet;
+import com.pfm.data.sets.IPaymentSet;
 import com.pfm.data.sets.IPaymentTypeSet;
+import com.pfm.data.sets.ICategoryBudgetSet;
 
 /**
  *
  * @author Misho
  */
 public interface IpfmContext {
+
     public IUserSet getUserSet();
+
     public IUserRoleSet getUserRoleSet();
+
     public IPaymentCategorySet getPaymentCategorySet();
+
     public IPaymentTypeSet getPaymentTypeSet();
-    public ICategoryDetailSet getCategoryDetailSet();
+
+    public IPaymentSet getPaymentSet();
+
+    public ICategoryBudgetSet getCategoryDetailSet();
 }

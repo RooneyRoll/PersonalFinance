@@ -5,8 +5,8 @@
  */
 package com.pfm.data.sets;
 
-import com.pfm.data.data.CategoryDetailData;
-import com.pfm.data.entities.CategoryDetail;
+import com.pfm.data.data.CategoryBudgetData;
+import com.pfm.data.entities.CategoryBudget;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.util.UUID;
@@ -15,12 +15,12 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public interface ICategoryDetailSet extends IViewable<CategoryDetail, UUID>, IManagable<CategoryDetailData, UUID> {
+public interface ICategoryBudgetSet extends IViewable<CategoryBudget, UUID>, IManagable<CategoryBudgetData, UUID> {
 
     @Override
-    public UUID Add(CategoryDetailData data);
+    public UUID Add(CategoryBudgetData data);
     
     @Override
-    public void Edit(UUID id,CategoryDetailData data) ;
+    public void Edit(UUID id,CategoryBudgetData data);
     
 }

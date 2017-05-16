@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.data.entities;
+package com.pfm.data.data;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,19 +12,18 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CategoryDetail {
-     private UUID id;
+public class CategoryBudgetData {
     private double amount;
     private Date fromDate;
-    private Date toDate;
+    private Date toDate ;
     private UUID categoryId;
 
-    public UUID getId() {
-        return id;
+    public UUID getCategoryid() {
+        return categoryId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setCategoryid(UUID categoryid) {
+        this.categoryId = categoryid;
     }
 
     public double getAmount() {
@@ -50,13 +49,5 @@ public class CategoryDetail {
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
-
-    public UUID getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
-    }
-
+    
 }

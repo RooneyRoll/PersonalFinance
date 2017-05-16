@@ -7,13 +7,13 @@ package com.pfm.controllers;
 
 import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
-import com.pfm.data.data.CategoryDetailData;
-import com.pfm.data.entities.CategoryDetail;
+import com.pfm.data.data.CategoryBudgetData;
+import com.pfm.data.entities.CategoryBudget;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
-import com.pfm.models.categoryDetails.CategoryDetailAddModel;
-import com.pfm.models.categoryDetails.CategoryDetailEditModel;
+import com.pfm.models.categoryDetails.CategoryBudgetAddModel;
+import com.pfm.models.categoryDetails.CategoryBudgetEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
@@ -47,9 +47,9 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Admin
  */
 @Controller
-public class PaymentCategoryDetailsController {
+public class PaymentCategoryBudgetController {
 
-    @RequestMapping(value = "/categoryDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoryBudget", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
@@ -79,7 +79,7 @@ public class PaymentCategoryDetailsController {
         return view;
     }
 
-    @RequestMapping(value = "/categoryDetails/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoryBudget/add", method = RequestMethod.GET)
     public ModelAndView addIndex(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
@@ -96,26 +96,26 @@ public class PaymentCategoryDetailsController {
         for (PaymentCategory category : categories) {
             categoriesMap.put(category.getName(), category.getId());
         }
-        ModelAndView view = new ModelAndView("categories-add");
+        ModelAndView view = new ModelAndView("category-details-add");
         List<String> list = Arrays.asList("one", "two", "three");
-        view.addObject("foods", list);
+        view.addObject("categoriesMap", categories);
         return view;
 
 //        return new ModelAndView("categories-add");
     }
 
-    @RequestMapping(value = "/categoryDetails/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/categoryBudget/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @ModelAttribute CategoryDetailAddModel params) throws PaymentCategoryAddException {
+            @ModelAttribute CategoryBudgetAddModel params) throws PaymentCategoryAddException {
 //        try {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
 //            User user = context
 //                    .getUserSet()
 //                    .GetByUserName(auth.getName());
-        CategoryDetailData categoryData = new CategoryDetailData();
-        categoryData.setAmount(params.getAmount());
+        CategoryBudgetData categoryData = new CategoryBudgetData();
+        categoryData.setAmount(Double.valueOf(params.getAmount()));
         categoryData.setCategoryid(params.getCategoryId());
         if (params.getFromDate() == null) {
 
@@ -130,13 +130,13 @@ public class PaymentCategoryDetailsController {
         ModelAndView view = null;
         switch (buttonSubmitted) {
             case "1":
-                view = new ModelAndView("redirect:/categoryDetails");
+                view = new ModelAndView("redirect:/categoryBudget");
                 break;
             case "2":
-                view = new ModelAndView("redirect:/categoryDetails/edit/" + id);
+                view = new ModelAndView("redirect:/categoryBudget/edit/" + id);
                 break;
             case "3":
-                view = new ModelAndView("redirect:/categoryDetails/add");
+                view = new ModelAndView("redirect:/categoryBudget/add");
                 break;
         }
         return view;
@@ -147,36 +147,36 @@ public class PaymentCategoryDetailsController {
 //        }
     }
 
-    @RequestMapping(value = "/categoryDetails/edit/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoryBudget/edit/{categoryId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) {
         IpfmContext context = pfmContext.getInstance();
-        CategoryDetail categoryDetail = context.getCategoryDetailSet().GetById(categoryId);
+        CategoryBudget categoryDetail = context.getCategoryDetailSet().GetById(categoryId);
         ModelAndView view = new ModelAndView("categories-edit");
-        CategoryDetailEditModel model = new CategoryDetailEditModel();
-        model.setIsActive("1");
+        CategoryBudgetEditModel model = new CategoryBudgetEditModel();
+//        model.setIsActive("1");
         model.setAmount(categoryDetail.getAmount());
         model.setFromDate(categoryDetail.getFromDate());
         model.setToDate(categoryDetail.getToDate());
         model.setCategoryId(categoryDetail.getCategoryId());
-        view.addObject("categoryDetail", categoryDetail);
+        view.addObject("categoryBudget", categoryDetail);
         return view;
     }
 
-    @RequestMapping(value = "/categoryDetails/edit/{categoryId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/categoryBudget/edit/{categoryId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("categoryId") UUID categoryDetailId,
-            @ModelAttribute CategoryDetailEditModel params) {
+            @ModelAttribute CategoryBudgetEditModel params) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        CategoryDetailData categoryDetailDataObject = new CategoryDetailData();
+        CategoryBudgetData categoryDetailDataObject = new CategoryBudgetData();
 //            categoryDataObject.setActive("1".equals(params.getCategoryActive()) ? true : false);
         categoryDetailDataObject.setAmount(params.getAmount());
         categoryDetailDataObject.setFromDate(params.getFromDate());
@@ -188,13 +188,13 @@ public class PaymentCategoryDetailsController {
         ModelAndView view = null;
         switch (buttonSubmitted) {
             case "1":
-                view = new ModelAndView("redirect:/categoryDetails");
+                view = new ModelAndView("redirect:/categoryBudget");
                 break;
             case "2":
-                view = new ModelAndView("redirect:/categoryDetails/edit/" + categoryDetailId);
+                view = new ModelAndView("redirect:/categoryBudget/edit/" + categoryDetailId);
                 break;
             case "3":
-                view = new ModelAndView("redirect:/categoryDetails/add");
+                view = new ModelAndView("redirect:/categoryBudget/add");
                 break;
         }
         return view;

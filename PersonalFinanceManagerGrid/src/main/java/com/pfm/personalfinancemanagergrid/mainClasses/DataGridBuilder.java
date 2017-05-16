@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
@@ -68,18 +67,22 @@ public class DataGridBuilder {
             } else {
                 this.appendToGridHtml("<th>" + column.getVisibleName() + "</th>");
                 String visible = "true";
-                String sortable = "true";
+                String sortable = "";
+                if (column.isSearchableColumn()) {
+                    sortable = "true";
+                } else {
+                    sortable = "false";
+                }
                 if (!column.isAllowed()) {
                     visible = "false";
                     sortable = "false";
                 }
-                columnsDeclaration += "{'data':'" + iteration + "','visible':" + visible + ",'sortable':" + sortable + "}";
+                columnsDeclaration += "{'data':'" + iteration + "','visible':" + visible + ",'orderable':" + sortable + "}";
             }
             if (iteration < columnsLength) {
                 columnsDeclaration += ",";
             }
             iteration++;
-            System.out.println(columnsDeclaration);
         }
         this.appendToGridHtml("</tr></thead></table>");
         this.appendToGridHtml("<script type='text/javascript'>\n"
@@ -176,18 +179,19 @@ public class DataGridBuilder {
                 + "             'method':'post',\n"
                 + "             'contentType': 'application/json',\n"
                 + "             beforeSend: function (xhr,settings){\n"
-                + "                 var where = " + this.initialWhereJson + "\n"
                 + "                 settings.data = JSON.parse(settings.data);"
-                + "                 var tableSettings = {'where':where};"
-                + "                 settings.data.tableSettings = tableSettings; \n;"
                 + "                 settings.data.cid = \"" + id + "\";\n"
-                + "                 settings.data = JSON.stringify(settings.data); \n "
+                + "                 settings.data = JSON.stringify(settings.data); "
                 + "                 xhr.setRequestHeader('X-CSRF-TOKEN', token);\n"
                 + "             },\n"
                 + "             data : function ( d ) {\n"
                 + "                 var columns = (d['columns']);\n"
                 + "                 var filters = " + this.columnFilters + ";\n"
+                + "                 delete d.search;"
                 + "                 $(columns).each(function(key,value){\n"
+                + "                     delete d['columns'][key]['name'];\n"
+                + "                     delete d['columns'][key]['searchable'];\n"
+                + "                     delete d['columns'][key]['orderable'];\n"
                 + "                     if($('.filter-holder').length <= 0){"
                 + "                         var jsonFields = " + this.jsonFieldsVariable + ";\n"
                 + "                         var currentField = getCurrentField(key,jsonFields);\n"
@@ -210,7 +214,6 @@ public class DataGridBuilder {
                 + "                         });\n"
                 + "                     }"
                 + "                 });\n"
-                + "                 d['source'] = '" + entity.getName() + "'\n;"
                 + "                 return JSON.stringify(d);\n"
                 + "             }\n"
                 + "         },"
@@ -219,7 +222,9 @@ public class DataGridBuilder {
                 + "         $('#grid-" + table + " th:not(.options)').each( function (key,val) {\n"
                 + "             var title = $('#grid-" + table + " th').eq( $(this).index()).text();\n"
                 + "             var jsonFields = " + this.jsonFieldsVariable + ";\n"
+                + "console.log(jsonFields);"
                 + "             var currentField = getCurrentFieldByNum(key,jsonFields);"
+                + "console.log(currentField);"
                 + "             if(currentField != null && currentField.search == true){\n"
                 + "                 var filter = buildFilterByType(currentField.type,currentField.col,title);\n"
                 + "                 $(this).append(filter);\n"
@@ -305,6 +310,7 @@ public class DataGridBuilder {
         }
         return false;
     }
+
     private void buildFieldsJson(GridCacheObject cache) {
         this.jsonFieldsVariable = "[";
         Integer iteration = 0;
@@ -313,13 +319,16 @@ public class DataGridBuilder {
         for (GridCacheColumnObject column : cache.getColumns()) {
 
             String search = "false";
-            if (column.isSearchableColumn() && column.isAllowed()) {
-                if (iteration != 0 && added) {
-                    this.jsonFieldsVariable += ",";
+            if (column.isAllowed()) {
+                if (column.isSearchableColumn()) {
+                    if (iteration != 0 && added) {
+                        this.jsonFieldsVariable += ",";
+                    }
+                    search = "true";
+                    this.jsonFieldsVariable += "{\"col\":\"" + iteration + "\"," + "\"type\":\"" + column.getType() + "\",\"search\":" + search + ",'filterValue':'','num':'" + num + "'}";
+                    added = true;
+
                 }
-                search = "true";
-                this.jsonFieldsVariable += "{\"col\":\"" + iteration + "\"," + "\"type\":\"" + column.getType() + "\",\"search\":" + search + ",'filterValue':'','num':'" + num + "'}";
-                added = true;
                 num++;
             }
             iteration++;
@@ -399,6 +408,7 @@ public class DataGridBuilder {
                 type = "date";
                 break;
             case "Integer":
+            case "double":
                 type = "int";
                 break;
         }

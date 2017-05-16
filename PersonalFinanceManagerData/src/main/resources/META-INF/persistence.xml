@@ -6,7 +6,7 @@
     <class>com.pfm.data.entities.UserRoles</class>
     <class>com.pfm.data.context.PaymentCategories</class>
     <class>com.pfm.data.context.Users</class>
-    <class>com.pfm.data.entities.CategoryDetail</class>
+    <class>com.pfm.data.entities.CategoryDetails</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/PersonalFinanceManager"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

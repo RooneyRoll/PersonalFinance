@@ -6,20 +6,20 @@
 package com.pfm.personalfinancemanager.datapostgres.context;
 
 import com.pfm.data.context.IpfmContext;
-import com.pfm.data.sets.ICategoryDetailSet;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.data.sets.IPaymentSet;
 import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.data.sets.IUserRoleSet;
 import com.pfm.data.sets.IUserSet;
 import com.pfm.personalfinancemanager.datapostgres.config.ConfigurationHelper;
-import com.pfm.personalfinancemanager.datapostgres.sets.CategoryDetailSet;
+import com.pfm.personalfinancemanager.datapostgres.sets.CategoryBudgetSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.PaymentTypeSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserRoleSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserSet;
 import org.hibernate.SessionFactory;
+import com.pfm.data.sets.ICategoryBudgetSet;
 
 /**
  *
@@ -33,7 +33,7 @@ public class pfmContext implements IpfmContext {
     private IPaymentCategorySet PaymentCategorySet;
     private IPaymentTypeSet PaymentTypeSet;
     private IPaymentSet PaymentSet;
-    private ICategoryDetailSet categoryDetailSet;
+    private ICategoryBudgetSet categoryBudgetSet;
     private static pfmContext instance;
 
     public static IpfmContext getInstance() {
@@ -51,8 +51,7 @@ public class pfmContext implements IpfmContext {
         this.PaymentCategorySet = new PaymentCategorySet(this.manager);
         this.PaymentTypeSet = new PaymentTypeSet(this.manager);
         this.PaymentSet = new PaymentSet(this.manager);
-        this.categoryDetailSet = new CategoryDetailSet(this.manager);
-        
+        this.categoryBudgetSet = new CategoryBudgetSet(this.manager);
     }
 
     @Override
@@ -76,7 +75,12 @@ public class pfmContext implements IpfmContext {
     }
 
     @Override
-    public ICategoryDetailSet getCategoryDetailSet() {
-        return this.categoryDetailSet;//To change body of generated methods, choose Tools | Templates.
+    public IPaymentSet getPaymentSet() {
+        return this.PaymentSet;
+    }
+
+    @Override
+    public ICategoryBudgetSet getCategoryDetailSet() {
+        return this.categoryBudgetSet;//To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -16,6 +16,6 @@ import java.util.UUID;
  *
  * @author Misho
  */
-public interface IPaymentSet extends IViewable<Payment,UUID>,IManagable<PaymentData,Serializable>  {
+public interface IPaymentSet extends IViewable<Payment,UUID>,IManagable<PaymentData,UUID>  {
     
 }

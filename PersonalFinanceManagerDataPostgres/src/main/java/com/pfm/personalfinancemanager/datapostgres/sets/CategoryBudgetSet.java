@@ -5,12 +5,9 @@
  */
 package com.pfm.personalfinancemanager.datapostgres.sets;
 
-import com.pfm.data.data.CategoryDetailData;
-import com.pfm.data.entities.CategoryDetail;
-import com.pfm.data.entities.PaymentCategory;
-import com.pfm.data.sets.ICategoryDetailSet;
+import com.pfm.data.data.CategoryBudgetData;
+import com.pfm.data.entities.CategoryBudget;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryDetails;
-import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,21 +15,22 @@ import java.util.List;
 import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import com.pfm.data.sets.ICategoryBudgetSet;
+import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 
 /**
  *
  * @author Admin
  */
-public class CategoryDetailSet extends BaseSet<CategoryDetails, CategoryDetail, CategoryDetailData> implements ICategoryDetailSet {
+public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, CategoryBudgetData> implements ICategoryBudgetSet {
 
-    public CategoryDetailSet(SessionFactory session) {
+    public CategoryBudgetSet(SessionFactory session) {
         super(session);
     }
 
     @Override
-    protected CategoryDetail convertEntityToDto(CategoryDetails Entity) {
-        CategoryDetail detail = new CategoryDetail();
+    protected CategoryBudget convertEntityToDto(CategoryBudgets Entity) {
+        CategoryBudget detail = new CategoryBudget();
         detail.setAmount(Entity.getAmount());
         detail.setFromDate(Entity.getFromDate());
         detail.setToDate(Entity.getFromDate());
@@ -42,17 +40,17 @@ public class CategoryDetailSet extends BaseSet<CategoryDetails, CategoryDetail, 
     }
 
     @Override
-    protected List<CategoryDetail> convertEntititiesToDtoArray(List<CategoryDetails> EntityArray) {
-        List<CategoryDetail> detailsList = new ArrayList<>();
-        for (CategoryDetails detail : EntityArray) {
+    protected List<CategoryBudget> convertEntititiesToDtoArray(List<CategoryBudgets> EntityArray) {
+        List<CategoryBudget> detailsList = new ArrayList<>();
+        for (CategoryBudgets detail : EntityArray) {
             detailsList.add(convertEntityToDto(detail));
         }
         return detailsList;
     }
 
     @Override
-    protected CategoryDetails convertDtoDataToEntity(CategoryDetailData DtoData) {
-        CategoryDetails details = new CategoryDetails();
+    protected CategoryBudgets convertDtoDataToEntity(CategoryBudgetData DtoData) {
+        CategoryBudgets details = new CategoryBudgets();
         details.setAmount(DtoData.getAmount());
         details.setFromDate(DtoData.getFromDate());
         details.setToDate(DtoData.getToDate());
@@ -61,21 +59,26 @@ public class CategoryDetailSet extends BaseSet<CategoryDetails, CategoryDetail, 
     }
 
     @Override
-    public UUID Add(CategoryDetailData data) {
-
+    public UUID Add(CategoryBudgetData data) {
+        Serializable id = null  ;
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
-            CategoryDetails categotyDetails = convertDtoDataToEntity(data);
-            Serializable id = session.save(categotyDetails);
+
+            CategoryBudgets categotyDetails = convertDtoDataToEntity(data);
+          
+                System.out.println(categotyDetails);
+                id = session.save(categotyDetails);
+                session.getTransaction().commit();
+
             return UUID.fromString(id.toString());
         }
     }
 
     @Override
-    public void Edit(UUID id, CategoryDetailData data) {
+    public void Edit(UUID id, CategoryBudgetData data) {
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
-            CategoryDetails categotyDetails = convertDtoDataToEntity(data);
+            CategoryBudgets categotyDetails = convertDtoDataToEntity(data);
 //            session.
 //            Serializable id = session.save(categotyDetails);
 //            return UUID.fromString(id.toString());
@@ -84,12 +87,12 @@ public class CategoryDetailSet extends BaseSet<CategoryDetails, CategoryDetail, 
     }
 
     @Override
-    public List<CategoryDetail> GetAll() {
+    public List<CategoryBudget> GetAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public CategoryDetail GetById(UUID id) {
+    public CategoryBudget GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -97,7 +100,5 @@ public class CategoryDetailSet extends BaseSet<CategoryDetails, CategoryDetail, 
     public void Delete(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
 
 }
