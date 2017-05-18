@@ -27,4 +27,5 @@ public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, I
     public void Edit(UUID id,PaymentCategoryData data) throws PaymentCategoryEditException;
 
     public List<PaymentCategory> GetAllActiveCategoriesForUser(UUID userId);
+public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) ; 
 }

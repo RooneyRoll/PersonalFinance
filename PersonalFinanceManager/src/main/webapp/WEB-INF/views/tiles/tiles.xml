@@ -85,6 +85,18 @@
         <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/payments/payments/payment-edit.jsp" />  
     </definition>
+
+    <definition name="category-details-manage" extends="base-definition">  
+        <put-attribute name="navigation" value="Детайли за категория"  cascade="true"/> 
+
+        <put-attribute name="body" value="/WEB-INF/views/pages/payments/categorydetails/category-details-manage.jsp" />  
+    </definition>
+    
+    <definition name="category-details-add" extends="base-definition">  
+        <put-attribute name="navigation" value="Добавяне на детайли за категория"  cascade="true"/> 
+
+        <put-attribute name="body" value="/WEB-INF/views/pages/payments/categorydetails/category-details-add.jsp" />  
+    </definition>
     <definition name="404" extends="base-definition">
         <put-attribute name="navigation" value="Грешка"  cascade="true"/>   
         <put-attribute name="title" value="register result" />  

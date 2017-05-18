@@ -10,6 +10,7 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
+import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
@@ -163,5 +164,40 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             exists = true;
         }
         return exists;
+    }
+
+    public List<PaymentCategory> getActiveCategoriesByUserIdAndActive(UUID userId, boolean isActive) {
+
+        List<PaymentCategory> paymentCategoryObjects;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Query q = session.createQuery("From PaymentCategories pc where pc.pcatUser = :userId and pc.pcatActive = :isActive", PaymentCategories.class)
+                    .setParameter("userId", userId)
+                    .setParameter("isActive", isActive);
+            List<PaymentCategories> resultList = q.list();
+
+            paymentCategoryObjects = convertEntititiesToDtoArray(resultList);
+
+        }
+        return paymentCategoryObjects;
+    }
+
+    @Override
+    public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) {
+
+        List<PaymentCategory> paymentCategoryObjects = this.GetAllActiveCategoriesForUser(userId);
+        List<PaymentCategory> categoriesWithoutDetails = new ArrayList<>();
+        try (Session session = this.getSessionFactory().openSession()) {
+            for (PaymentCategory category : paymentCategoryObjects) {
+                Query q = session.createQuery("From CategoryBudgets cd where cd.categoryId = :categoryId", CategoryBudgets.class)
+                        .setParameter("categoryId", category.getId());
+                List<PaymentCategories> resultList = q.list();
+                if (resultList.isEmpty()) {
+                    categoriesWithoutDetails.add(category);
+                }
+
+            }
+
+        }
+        return categoriesWithoutDetails;
     }
 }

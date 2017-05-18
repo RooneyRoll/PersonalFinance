@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.Type;
 
 /**
  *
@@ -38,6 +39,7 @@ public class PaymentCategories implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pcat_id")
+    @Type(type="pg-uuid")
     private UUID pcatId;
     @Basic(optional = false)
     @Column(name = "pcat_name")
@@ -48,6 +50,7 @@ public class PaymentCategories implements Serializable {
     @Column(name = "pcat_description")
     private String pcatDescription;
     @Column(name = "pcat_user")
+    @Type(type="pg-uuid")
     private UUID pcatUser;
     
     public PaymentCategories() {
