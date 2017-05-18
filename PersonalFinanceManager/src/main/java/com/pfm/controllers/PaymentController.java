@@ -64,7 +64,7 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         columnsList.add(new ColumnSettingsObject("pDescription", "Описание на плащане", "string", true,true));
         columnsList.add(new ColumnSettingsObject("pId", "", "string", false,false));
         //whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","payments/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","payments/edit/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","payments/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);

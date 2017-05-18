@@ -7,10 +7,8 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.data.PaymentData;
 import com.pfm.data.entities.Payment;
-import com.pfm.data.entities.PaymentType;
 import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.sets.IPaymentSet;
-import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
@@ -40,7 +38,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDate(Entity.getPDate());
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
-        paymentObject.setpType(Entity.getPType());
+        paymentObject.setType(Entity.getPType());
         return paymentObject;
     }
 
@@ -55,7 +53,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             paymentObject.setDate(next.getPDate());
             paymentObject.setDescription(next.getPDescription());
             paymentObject.setId(next.getPId());
-            paymentObject.setpType(next.getPType());
+            paymentObject.setType(next.getPType());
             PaymentList.add(paymentObject);
         }
         return PaymentList;
@@ -80,42 +78,37 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
 
     @Override
     public Payment GetById(UUID id) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From Payments WHERE pId = :id");
-        q.setParameter("id", id);
-        List<Payments> resultList = q.list();
-        List<Payment> paymentTypes = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<Payment> paymentTypes;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Payments WHERE pId = :id");
+            q.setParameter("id", id);
+            List<Payments> resultList = q.list();
+            paymentTypes = convertEntititiesToDtoArray(resultList);
+        }
         return paymentTypes.get(0);
     }
 
     @Override
     public UUID Add(PaymentData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             Payments PaymentTypeEntity = convertDtoDataToEntity(data);
             Serializable id = session.save(PaymentTypeEntity);
             session.getTransaction().commit();
             session.close();
             return UUID.fromString(id.toString());
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public void Edit(UUID id, PaymentData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             Payments paymentEntity = convertDtoDataToEntity(data);
             paymentEntity.setPId(id);
             session.update(paymentEntity);
             session.getTransaction().commit();
-            session.close();
-        } finally {
             session.close();
         }
     }

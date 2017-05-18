@@ -68,31 +68,32 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public List<PaymentType> GetAll() {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From PaymentTypes");
-        List<PaymentTypes> resultList = q.list();
-        List<PaymentType> paymentResults = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<PaymentType> paymentResults;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentTypes");
+            List<PaymentTypes> resultList = q.list();
+            paymentResults = convertEntititiesToDtoArray(resultList);
+        }
         return paymentResults;
     }
 
     @Override
     public PaymentType GetById(UUID id) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From PaymentTypes WHERE ptypeId = :id");
-        q.setParameter("id", id);
-        List<PaymentTypes> resultList = q.list();
-        List<PaymentType> paymentTypes = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<PaymentType> paymentTypes;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentTypes WHERE ptypeId = :id");
+            q.setParameter("id", id);
+            List<PaymentTypes> resultList = q.list();
+            paymentTypes = convertEntititiesToDtoArray(resultList);
+        }
         return paymentTypes.get(0);
     }
 
     @Override
     public UUID Add(PaymentTypeData data) throws PaymentTypeAddException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             if (this.typeExistsForAdd(data.getName(), data.getUserId(), session)) {
                 throw new PaymentTypeAddException("Payment type with name \"" + data.getName() + "\" already exists.");
             }
@@ -103,15 +104,12 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
             session.close();
 
             return UUID.fromString(id.toString());
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public void Edit(UUID id, PaymentTypeData data) throws PaymentTypeEditException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             if (this.typeExistsForEdit(data.getName(), data.getUserId(),id, session)) {
                 throw new PaymentTypeEditException("Payment type with name \"" + data.getName() + "\" already exists.");
             }
@@ -120,8 +118,6 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
             paymentTypeEntity.setPtypeId(id);
             session.update(paymentTypeEntity);
             session.getTransaction().commit();
-            session.close();
-        } finally {
             session.close();
         }
     }
@@ -133,14 +129,15 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public List<PaymentType> GetAllActiveTypesForUser(UUID userId) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
-                .setParameter("typeActive", true)
-                .setParameter("userId", userId);
-        List<PaymentTypes> resultList = q.list();
-        List<PaymentType> paymentResults = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<PaymentType> paymentResults;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
+                    .setParameter("typeActive", true)
+                    .setParameter("userId", userId);
+            List<PaymentTypes> resultList = q.list();
+            paymentResults = convertEntititiesToDtoArray(resultList);
+        }
         return paymentResults;
     }
     
