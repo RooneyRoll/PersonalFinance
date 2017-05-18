@@ -7,7 +7,6 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.data.CategoryBudgetData;
 import com.pfm.data.entities.CategoryBudget;
-import com.pfm.personalfinancemanager.datapostgres.entities.CategoryDetails;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;

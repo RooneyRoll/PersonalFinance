@@ -21,8 +21,8 @@
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories" />
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes" />
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.Payments" />
-        <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.CategoryDetails" />
+<!--        <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.CategoryDetails" />-->
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets" />
-
+        <mapping class="com.pfm.personalfinancemanager.datapostgres.views.VCategoryBudgets" />
     </session-factory>
 </hibernate-configuration>
