@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "category_budgets")
@@ -61,7 +61,6 @@ public class CategoryBudgets implements Serializable {
     @JoinColumn(name = "cb_user", referencedColumnName = "user_userid")
     @ManyToOne(optional = false)
     private Users cbUser;
-
     public CategoryBudgets() {
     }
 
