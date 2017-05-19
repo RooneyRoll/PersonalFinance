@@ -16,6 +16,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.pfm.data.sets.ICategoryBudgetSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -34,8 +36,8 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
         detail.setFromDate(Entity.getFromDate());
         detail.setToDate(Entity.getFromDate());
         detail.setId(Entity.getId());
-        detail.setCategoryId(Entity.getCategoryId());
-        return detail;//To change body of generated methods, choose Tools | Templates.
+        detail.setCategoryId(Entity.getCategoryId().getPcatId());
+        return detail;
     }
 
     @Override
@@ -49,25 +51,31 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
 
     @Override
     protected CategoryBudgets convertDtoDataToEntity(CategoryBudgetData DtoData) {
-        CategoryBudgets details = new CategoryBudgets();
-        details.setAmount(DtoData.getAmount());
-        details.setFromDate(DtoData.getFromDate());
-        details.setToDate(DtoData.getToDate());
-        details.setCategoryId(DtoData.getCategoryid());
-        return details;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentCategories where pcatId = :id");
+            q.setParameter("id", DtoData.getCategoryid());
+            List<PaymentCategories> resultList = q.list();
+            CategoryBudgets details = new CategoryBudgets();
+            details.setAmount(DtoData.getAmount());
+            details.setFromDate(DtoData.getFromDate());
+            details.setToDate(DtoData.getToDate());
+            details.setCategoryId(resultList.get(0));
+            return details;
+        }
     }
 
     @Override
     public UUID Add(CategoryBudgetData data) {
-        Serializable id = null  ;
+        Serializable id = null;
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CategoryBudgets categotyDetails = convertDtoDataToEntity(data);
-          
-                System.out.println(categotyDetails);
-                id = session.save(categotyDetails);
-                session.getTransaction().commit();
+
+            System.out.println(categotyDetails);
+            id = session.save(categotyDetails);
+            session.getTransaction().commit();
 
             return UUID.fromString(id.toString());
         }

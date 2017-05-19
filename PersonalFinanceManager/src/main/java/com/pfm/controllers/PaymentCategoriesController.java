@@ -65,7 +65,8 @@ public class PaymentCategoriesController {
         columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true,false));
         columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true,true));
         columnsList.add(new ColumnSettingsObject("pcatId", "id", "uuid", false,false));
-        whereList.add(new TableWhereObject("pcatUser", "eq", user.getId().toString(), "uuid"));
+        columnsList.add(new ColumnSettingsObject("pcatUser.userUsername", "Потребител", "string", true,true));
+        whereList.add(new TableWhereObject("pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
         options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","categories/view/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","categories/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);

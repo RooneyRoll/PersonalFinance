@@ -58,14 +58,12 @@ public class PaymentCategoryBudgetController {
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        List<ColumnOption> options = new ArrayList<ColumnOption>();
-//        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true, true));
+        List<ColumnSettingsObject> columnsList = new ArrayList<>();
+        List<TableWhereObject> whereList = new ArrayList<>();
+        List<ColumnOption> options = new ArrayList<>();
         columnsList.add(new ColumnSettingsObject("cname", "Име", "string", true, true));
         columnsList.add(new ColumnSettingsObject("amount", "Лимит", "int", true, true));
         columnsList.add(new ColumnSettingsObject("id", "id", "uuid", true, false));
-        whereList.add(new TableWhereObject("userId", "eq", user.getId().toString(), "uuid"));
         options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "types/view/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "types/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);

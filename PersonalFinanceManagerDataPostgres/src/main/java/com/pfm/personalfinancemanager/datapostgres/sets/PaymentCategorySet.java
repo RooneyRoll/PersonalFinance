@@ -12,6 +12,7 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         category.setDescription(Entity.getPcatDescription());
         category.setId(Entity.getPcatId());
         category.setName(Entity.getPcatName());
-        category.setUserId(Entity.getPcatUser());
+        category.setUserId(Entity.getPcatUser().getUserUserid());
         return category;
     }
 
@@ -51,7 +52,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             category.setDescription(next.getPcatDescription());
             category.setId(next.getPcatId());
             category.setName(next.getPcatName());
-            category.setUserId(next.getPcatUser());
+            category.setUserId(next.getPcatUser().getUserUserid());
             paymentCategoryList.add(category);
         }
         return paymentCategoryList;
@@ -59,12 +60,20 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
 
     @Override
     protected PaymentCategories convertDtoDataToEntity(PaymentCategoryData DtoData) {
-        PaymentCategories paymentEntity = new PaymentCategories();
-        paymentEntity.setPcatActive(DtoData.isActive());
-        paymentEntity.setPcatDescription(DtoData.getDescription());;
-        paymentEntity.setPcatName(DtoData.getName());
-        paymentEntity.setPcatUser(DtoData.getUserId());
-        return paymentEntity;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Users where userUserid = :userId");
+            q.setParameter("userId", DtoData.getUserId());
+            List<Users> resultList = q.list();
+            PaymentCategories paymentEntity = new PaymentCategories();
+            paymentEntity.setPcatActive(DtoData.isActive());
+            paymentEntity.setPcatDescription(DtoData.getDescription());;
+            paymentEntity.setPcatName(DtoData.getName());
+            paymentEntity.setPcatUser(resultList.get(0));
+            return paymentEntity;
+        }
+        
+        
     }
 
     @Override
@@ -189,7 +198,6 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
 
     @Override
     public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) {
-
         List<PaymentCategory> paymentCategoryObjects = this.GetAllActiveCategoriesForUser(userId);
         List<PaymentCategory> categoriesWithoutDetails = new ArrayList<>();
         try (Session session = this.getSessionFactory().openSession()) {

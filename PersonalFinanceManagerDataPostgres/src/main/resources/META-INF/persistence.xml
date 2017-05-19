@@ -8,6 +8,8 @@
     <class>com.pfm.personalfinancemanager.datapostgres.entities.Users_1</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.Payments</class>
     <class>com.pfm.personalfinancemanager.datapostgres.views.VCategoryBudgets</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/PersonalFinanceManager"/>

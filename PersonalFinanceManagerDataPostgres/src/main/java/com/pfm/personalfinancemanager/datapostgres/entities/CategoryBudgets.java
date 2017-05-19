@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author mihail
  */
 @Entity
 @Table(name = "category_budget")
@@ -36,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CategoryBudgets implements Serializable {
 
     private static final long serialVersionUID = 1L;
-      @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
@@ -49,8 +51,9 @@ public class CategoryBudgets implements Serializable {
     @Column(name = "to_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date toDate;
-    @Column(name = "category_id")   
-    private UUID categoryId;
+    @JoinColumn(name = "category_id", referencedColumnName = "pcat_id")
+    @ManyToOne(optional = false)
+    private PaymentCategories categoryId;
 
     public CategoryBudgets() {
     }
@@ -96,11 +99,11 @@ public class CategoryBudgets implements Serializable {
         this.toDate = toDate;
     }
 
-    public UUID getCategoryId() {
+    public PaymentCategories getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(UUID categoryId) {
+    public void setCategoryId(PaymentCategories categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -126,7 +129,7 @@ public class CategoryBudgets implements Serializable {
 
     @Override
     public String toString() {
-        return "com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudget[ id=" + id + " ]";
+        return "com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets[ id=" + id + " ]";
     }
     
 }

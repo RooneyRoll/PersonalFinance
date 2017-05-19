@@ -67,16 +67,33 @@ public class DataGridDataManager {
                     if (!column.isOptionsColumn()) {
                         for (Field field : fields) {
                             field.setAccessible(true);
-                            if (!field.getName().equals(column.getColumnName())) {
+                            String columnName = "";
+                            if (column.getColumnName().contains(".")) {
+                                String[] innerObjects = column.getColumnName().split("\\.");
+                                columnName = innerObjects[0];
+                            } else {
+                                columnName = column.getColumnName();
+                            }
+                            if (!field.getName().equals(columnName)) {
                                 continue;
                             }
-                            String value = field.get(serializable).toString();
+                            String value = "";
+                            if (column.getColumnName().contains(".")) {
+                                String[] innerObjects = column.getColumnName().split("\\.");
+                                Object innerObject = field.get(serializable);
+                                Class innerObjectType = field.getType();
+                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
+                                inner.setAccessible(true);
+                                value = inner.get(innerObject).toString();
+                            } else {
+                                value = field.get(serializable).toString();
+                            }                             
                             innerResult.add(value);
                         }
                     }
                 }
                 resultArray.add(innerResult);
-            }            
+            }
             Integer itemsCount = allResults.size();
             session.close();
             factory.close();
@@ -104,9 +121,11 @@ public class DataGridDataManager {
         if (!"".equals(where)) {
             where = "where " + where;
         }
+        Integer iterate = 0;
         Query q = session.createQuery("From " + source + " " + source.charAt(0) + " " + where + " order by " + order);
         for (GridCacheTableWhereObject whereObj : cache.getWheres()) {
-            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumnName(), whereObj.getWhereVal(), whereObj.getWhereType());
+            replaceQueryParameters(q, whereObj.getColumnType(), whereObj.getColumnName(), whereObj.getWhereVal(), whereObj.getWhereType(), "w_" + iterate);
+            iterate++;
         }
         Integer iter = 0;
         if (iter < params.getColumns().size()) {
@@ -117,7 +136,7 @@ public class DataGridDataManager {
                     String compareType = column.getFilter().getValue();
                     String columnType = cachedColumn.getType();
                     String searchVal = column.getSearch().getValue();
-                    replaceQueryParameters(q, columnType, columnName, searchVal, compareType);
+                    replaceQueryParameters(q, columnType, columnName, searchVal, compareType, "s_" + iter);
                 }
                 iter++;
             }
@@ -133,7 +152,7 @@ public class DataGridDataManager {
         Integer iterate = 0;
         String statement = "";
         for (GridCacheTableWhereObject where : cache.getWheres()) {
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal());
+            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal(), "w_");
             iterate++;
         }
         Integer iter = 0;
@@ -145,11 +164,12 @@ public class DataGridDataManager {
                     String columnType = cachedColumn.getType();
                     String whereCompareType = column.getFilter().getValue();
                     String whereValue = column.getSearch().getValue();
-                    statement = buildWhereStatementPart(statement, iterate, firstLetter, columnName, whereCompareType, columnType, whereValue);
+                    statement = buildWhereStatementPart(statement, iter, firstLetter, columnName, whereCompareType, columnType, whereValue, "s_");
                 }
                 iter++;
             }
         }
+        System.out.println(statement);
         return statement;
     }
 
@@ -197,54 +217,55 @@ public class DataGridDataManager {
         return sign;
     }
 
-    private String buildWhereStatementPart(String statement, Integer iteration, char firstLetter, String column, String compareType, String columnType, String whereVal) {
+    private String buildWhereStatementPart(String statement, Integer iteration, char firstLetter, String column, String compareType, String columnType, String whereVal, String prefix) {
         if (!"".equals(whereVal)) {
             if (iteration > 0) {
                 statement += " and ";
             }
             String sign = determineParamCompareSign(compareType, columnType);
             if ("uuid".equals(columnType)) {
-                statement += firstLetter + "." + column + " " + sign + " :" + column;
+                statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
             if ("string".equals(columnType)) {
-                statement += firstLetter + "." + column + " " + sign + " :" + column;
+                statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
             if ("int".equals(columnType)) {
-                statement += firstLetter + "." + column + " " + sign + " :" + column;
+                statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
             if ("date".equals(columnType)) {
                 if ("=".equals(sign)) {
-                    statement += "(DAY(" + firstLetter + "." + column + ")" + sign + ":" + column + "_day)";
-                    statement += "and(MONTH(" + firstLetter + "." + column + ")" + sign + ":" + column + "_month)";
-                    statement += "and(YEAR(" + firstLetter + "." + column + ")" + sign + ":" + column + "_year)";
+                    statement += "(DAY(" + firstLetter + "." + column + ")" + sign + ":" + prefix + iteration.toString() + "_day)";
+                    statement += "and(MONTH(" + firstLetter + "." + column + ")" + sign + ":" + prefix + iteration.toString() + "_month)";
+                    statement += "and(YEAR(" + firstLetter + "." + column + ")" + sign + ":" + prefix + iteration.toString() + "_year)";
                 }
                 if ("<".equals(sign) || ">".equals(sign)) {
-                    statement += firstLetter + "." + column + " " + sign + " :" + column;
+                    statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
                 }
             }
         }
-        System.out.println("where = "+statement);
+        System.out.println("where = " + statement);
         return statement;
     }
 
-    private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType) throws ParseException {
+    private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType, String paramName) throws ParseException {
+        System.out.println(searchVal + "" + paramType);
         if ("uuid".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 UUID param = determineQueryParamString(paramType, compareType, searchVal);
-                q.setParameter(columnName, param);
+                q.setParameter(paramName, param);
             }
         }
         if ("int".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 String param = determineQueryParamString(paramType, compareType, searchVal);
                 int paramInt = Integer.parseInt(param);
-                q.setParameter(columnName, paramInt);
+                q.setParameter(paramName, paramInt);
             }
         }
         if ("string".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 String param = determineQueryParamString(paramType, compareType, searchVal);
-                q.setParameter(columnName, param);
+                q.setParameter(paramName, param);
             }
         }
         if ("date".equals(paramType)) {
@@ -256,11 +277,11 @@ public class DataGridDataManager {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 if ("eq".equals(compareType)) {
-                    q.setParameter(columnName + "_day", day);
-                    q.setParameter(columnName + "_month", month + 1);
-                    q.setParameter(columnName + "_year", year);
+                    q.setParameter(paramName + "_day", day);
+                    q.setParameter(paramName + "_month", month + 1);
+                    q.setParameter(paramName + "_year", year);
                 } else if ("gt".equals(compareType) || "lt".equals(compareType)) {
-                    q.setParameter(columnName, param);
+                    q.setParameter(paramName, param);
                 }
             }
         }
@@ -268,7 +289,7 @@ public class DataGridDataManager {
 
     private <T> T determineQueryParamString(String columnType, String compareType, String searchVal) throws ParseException {
         if ("uuid".equals(columnType)) {
-            
+
             UUID val = UUID.fromString(searchVal);
             return (T) val;
         }
