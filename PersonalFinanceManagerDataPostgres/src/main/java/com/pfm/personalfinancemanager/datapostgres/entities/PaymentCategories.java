@@ -6,18 +6,24 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.Type;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,13 +39,10 @@ import org.hibernate.annotations.Type;
     , @NamedQuery(name = "PaymentCategories.findByPcatDescription", query = "SELECT p FROM PaymentCategories p WHERE p.pcatDescription = :pcatDescription")})
 public class PaymentCategories implements Serializable {
 
-    
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pcat_id")
-    @Type(type="pg-uuid")
     private UUID pcatId;
     @Basic(optional = false)
     @Column(name = "pcat_name")
@@ -49,10 +52,12 @@ public class PaymentCategories implements Serializable {
     private boolean pcatActive;
     @Column(name = "pcat_description")
     private String pcatDescription;
-    @Column(name = "pcat_user")
-    @Type(type="pg-uuid")
-    private UUID pcatUser;
-    
+    @JoinColumn(name = "pcat_user", referencedColumnName = "user_userid")
+    @ManyToOne(optional = false)
+    private Users pcatUser;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cbCategoryId")
+    private List<CategoryBudgets> categoryBudgetsList;
+
     public PaymentCategories() {
     }
 
@@ -98,6 +103,23 @@ public class PaymentCategories implements Serializable {
         this.pcatDescription = pcatDescription;
     }
 
+    public Users getPcatUser() {
+        return pcatUser;
+    }
+
+    public void setPcatUser(Users pcatUser) {
+        this.pcatUser = pcatUser;
+    }
+
+    @XmlTransient
+    public List<CategoryBudgets> getCategoryBudgetsList() {
+        return categoryBudgetsList;
+    }
+
+    public void setCategoryBudgetsList(List<CategoryBudgets> categoryBudgetsList) {
+        this.categoryBudgetsList = categoryBudgetsList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -121,14 +143,6 @@ public class PaymentCategories implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories[ pcatId=" + pcatId + " ]";
-    }
-
-    public UUID getPcatUser() {
-        return pcatUser;
-    }
-
-    public void setPcatUser(UUID pcatUser) {
-        this.pcatUser = pcatUser;
     }
     
 }

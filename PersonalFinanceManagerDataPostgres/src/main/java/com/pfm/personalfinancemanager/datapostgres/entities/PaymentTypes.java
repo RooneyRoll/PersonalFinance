@@ -6,21 +6,27 @@
 package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "payment_types")
@@ -28,14 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PaymentTypes.findAll", query = "SELECT p FROM PaymentTypes p")
     , @NamedQuery(name = "PaymentTypes.findByPtypeName", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeName = :ptypeName")
-    , @NamedQuery(name = "PaymentTypes.findByPtypeDescription", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeDescription = :ptypeDescription")})
+    , @NamedQuery(name = "PaymentTypes.findByPtypeDescription", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeDescription = :ptypeDescription")
+    , @NamedQuery(name = "PaymentTypes.findByPtypeActive", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeActive = :ptypeActive")})
 public class PaymentTypes implements Serializable {
 
-    @Basic(optional = false)
-    @Column(name = "ptype_active")
-    private boolean ptypeActive;
-    @Column(name = "ptype_user")
-    private UUID ptypeUser;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,6 +48,15 @@ public class PaymentTypes implements Serializable {
     private String ptypeName;
     @Column(name = "ptype_description")
     private String ptypeDescription;
+    @Basic(optional = false)
+    @Column(name = "ptype_active")
+    private boolean ptypeActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pType")
+    private List<Payments> paymentsList;
+    @JoinColumn(name = "ptype_user", referencedColumnName = "user_userid")
+    @ManyToOne(optional = false)
+    private Users ptypeUser;
+
     public PaymentTypes() {
     }
 
@@ -53,9 +64,10 @@ public class PaymentTypes implements Serializable {
         this.ptypeId = ptypeId;
     }
 
-    public PaymentTypes(UUID ptypeId, String ptypeName) {
+    public PaymentTypes(UUID ptypeId, String ptypeName, boolean ptypeActive) {
         this.ptypeId = ptypeId;
         this.ptypeName = ptypeName;
+        this.ptypeActive = ptypeActive;
     }
 
     public UUID getPtypeId() {
@@ -80,6 +92,31 @@ public class PaymentTypes implements Serializable {
 
     public void setPtypeDescription(String ptypeDescription) {
         this.ptypeDescription = ptypeDescription;
+    }
+
+    public boolean getPtypeActive() {
+        return ptypeActive;
+    }
+
+    public void setPtypeActive(boolean ptypeActive) {
+        this.ptypeActive = ptypeActive;
+    }
+
+    @XmlTransient
+    public List<Payments> getPaymentsList() {
+        return paymentsList;
+    }
+
+    public void setPaymentsList(List<Payments> paymentsList) {
+        this.paymentsList = paymentsList;
+    }
+
+    public Users getPtypeUser() {
+        return ptypeUser;
+    }
+
+    public void setPtypeUser(Users ptypeUser) {
+        this.ptypeUser = ptypeUser;
     }
 
     @Override
@@ -107,20 +144,4 @@ public class PaymentTypes implements Serializable {
         return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes[ ptypeId=" + ptypeId + " ]";
     }
 
-    public boolean getPtypeActive() {
-        return ptypeActive;
-    }
-
-    public void setPtypeActive(boolean ptypeActive) {
-        this.ptypeActive = ptypeActive;
-    }
-
-    public UUID getPtypeUser() {
-        return ptypeUser;
-    }
-
-    public void setPtypeUser(UUID ptypeUser) {
-        this.ptypeUser = ptypeUser;
-    }
-    
 }

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,91 +25,116 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author Misho
  */
 @Entity
-@Table(name = "category_budget")
+@Table(name = "category_budgets")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CategoryBudgets.findAll", query = "SELECT c FROM CategoryBudgets c")
-    , @NamedQuery(name = "CategoryBudgets.findByAmount", query = "SELECT c FROM CategoryBudgets c WHERE c.amount = :amount")
-    , @NamedQuery(name = "CategoryBudgets.findByFromDate", query = "SELECT c FROM CategoryBudgets c WHERE c.fromDate = :fromDate")
-    , @NamedQuery(name = "CategoryBudgets.findByToDate", query = "SELECT c FROM CategoryBudgets c WHERE c.toDate = :toDate")})
+    , @NamedQuery(name = "CategoryBudgets.findByCbAmount", query = "SELECT c FROM CategoryBudgets c WHERE c.cbAmount = :cbAmount")
+    , @NamedQuery(name = "CategoryBudgets.findByCbFromDate", query = "SELECT c FROM CategoryBudgets c WHERE c.cbFromDate = :cbFromDate")
+    , @NamedQuery(name = "CategoryBudgets.findByCbToDate", query = "SELECT c FROM CategoryBudgets c WHERE c.cbToDate = :cbToDate")
+    , @NamedQuery(name = "CategoryBudgets.findByCbActive", query = "SELECT c FROM CategoryBudgets c WHERE c.cbActive = :cbActive")})
 public class CategoryBudgets implements Serializable {
 
     private static final long serialVersionUID = 1L;
-      @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private UUID id;
+    @Column(name = "cb_id")
+    private UUID cbId;
     @Basic(optional = false)
-    @Column(name = "amount")
-    private double amount;
-    @Column(name = "from_date")
+    @Column(name = "cb_amount")
+    private double cbAmount;
+    @Column(name = "cb_from_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fromDate;
-    @Column(name = "to_date")
+    private Date cbFromDate;
+    @Column(name = "cb_to_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date toDate;
-    @Column(name = "category_id")   
-    private UUID categoryId;
+    private Date cbToDate;
+    @Basic(optional = false)
+    @Column(name = "cb_active")
+    private boolean cbActive;
+    @JoinColumn(name = "cb_category_id", referencedColumnName = "pcat_id")
+    @ManyToOne(optional = false)
+    private PaymentCategories cbCategoryId;
+    @JoinColumn(name = "cb_user", referencedColumnName = "user_userid")
+    @ManyToOne(optional = false)
+    private Users cbUser;
 
     public CategoryBudgets() {
     }
 
-    public CategoryBudgets(UUID id) {
-        this.id = id;
+    public CategoryBudgets(UUID cbId) {
+        this.cbId = cbId;
     }
 
-    public CategoryBudgets(UUID id, double amount) {
-        this.id = id;
-        this.amount = amount;
+    public CategoryBudgets(UUID cbId, double cbAmount, boolean cbActive) {
+        this.cbId = cbId;
+        this.cbAmount = cbAmount;
+        this.cbActive = cbActive;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getCbId() {
+        return cbId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setCbId(UUID cbId) {
+        this.cbId = cbId;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getCbAmount() {
+        return cbAmount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setCbAmount(double cbAmount) {
+        this.cbAmount = cbAmount;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public Date getCbFromDate() {
+        return cbFromDate;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setCbFromDate(Date cbFromDate) {
+        this.cbFromDate = cbFromDate;
     }
 
-    public Date getToDate() {
-        return toDate;
+    public Date getCbToDate() {
+        return cbToDate;
     }
 
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
+    public void setCbToDate(Date cbToDate) {
+        this.cbToDate = cbToDate;
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public boolean getCbActive() {
+        return cbActive;
     }
 
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCbActive(boolean cbActive) {
+        this.cbActive = cbActive;
+    }
+
+    public PaymentCategories getCbCategoryId() {
+        return cbCategoryId;
+    }
+
+    public void setCbCategoryId(PaymentCategories cbCategoryId) {
+        this.cbCategoryId = cbCategoryId;
+    }
+
+    public Users getCbUser() {
+        return cbUser;
+    }
+
+    public void setCbUser(Users cbUser) {
+        this.cbUser = cbUser;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (cbId != null ? cbId.hashCode() : 0);
         return hash;
     }
 
@@ -118,7 +145,7 @@ public class CategoryBudgets implements Serializable {
             return false;
         }
         CategoryBudgets other = (CategoryBudgets) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.cbId == null && other.cbId != null) || (this.cbId != null && !this.cbId.equals(other.cbId))) {
             return false;
         }
         return true;
@@ -126,7 +153,7 @@ public class CategoryBudgets implements Serializable {
 
     @Override
     public String toString() {
-        return "com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudget[ id=" + id + " ]";
+        return "com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets[ cbId=" + cbId + " ]";
     }
     
 }

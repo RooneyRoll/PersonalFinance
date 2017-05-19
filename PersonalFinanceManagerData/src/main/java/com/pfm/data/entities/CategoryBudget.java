@@ -13,11 +13,30 @@ import java.util.UUID;
  * @author Admin
  */
 public class CategoryBudget {
-     private UUID id;
+
+    private UUID id;
     private double amount;
     private Date fromDate;
     private Date toDate;
     private UUID categoryId;
+    private UUID userId;
+    private boolean active;
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public UUID getId() {
         return id;

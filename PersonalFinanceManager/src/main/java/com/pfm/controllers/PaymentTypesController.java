@@ -64,7 +64,7 @@ public class PaymentTypesController {
         columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true,true));
         columnsList.add(new ColumnSettingsObject("ptypeId", "id", "uuid", false,false));
         whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","types/edit/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","types/view/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","types/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);

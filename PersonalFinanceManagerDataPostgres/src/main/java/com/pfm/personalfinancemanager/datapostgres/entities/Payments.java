@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "payments")
@@ -53,10 +55,12 @@ public class Payments implements Serializable {
     @Basic(optional = false)
     @Column(name = "p_active")
     private boolean pActive;
-    @Column(name = "p_category")
-    private UUID pCategory;
-    @Column(name = "p_type")
-    private UUID pType;
+    @JoinColumn(name = "p_category", referencedColumnName = "pcat_id")
+    @ManyToOne(optional = false)
+    private PaymentCategories pCategory;
+    @JoinColumn(name = "p_type", referencedColumnName = "ptype_id")
+    @ManyToOne(optional = false)
+    private PaymentTypes pType;
 
     public Payments() {
     }
@@ -112,19 +116,19 @@ public class Payments implements Serializable {
         this.pActive = pActive;
     }
 
-    public UUID getPCategory() {
+    public PaymentCategories getPCategory() {
         return pCategory;
     }
 
-    public void setPCategory(UUID pCategory) {
+    public void setPCategory(PaymentCategories pCategory) {
         this.pCategory = pCategory;
     }
 
-    public UUID getPType() {
+    public PaymentTypes getPType() {
         return pType;
     }
 
-    public void setPType(UUID pType) {
+    public void setPType(PaymentTypes pType) {
         this.pType = pType;
     }
 

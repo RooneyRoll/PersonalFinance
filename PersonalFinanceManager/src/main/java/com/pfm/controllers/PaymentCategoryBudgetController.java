@@ -15,7 +15,7 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.models.categoryDetails.CategoryBudgetAddModel;
 import com.pfm.models.categoryDetails.CategoryBudgetEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
+import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
@@ -61,17 +61,17 @@ public class PaymentCategoryBudgetController {
         List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
         List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
         List<ColumnOption> options = new ArrayList<ColumnOption>();
-        columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true, true));
-        columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", false, false));
-        columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true, true));
-        columnsList.add(new ColumnSettingsObject("ptypeId", "id", "uuid", true, false));
-        whereList.add(new TableWhereObject("ptypeUser", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "types/view/{3}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "types/edit/{3}"));
+        columnsList.add(new ColumnSettingsObject("cbAmount", "Лимит", "int", true,false));
+        columnsList.add(new ColumnSettingsObject("cbActive", "Активност", "string", true,false));
+        columnsList.add(new ColumnSettingsObject("cbCategoryId.pcatName", "Категория", "string", true,true));
+        columnsList.add(new ColumnSettingsObject("cbId", "id", "uuid", false,false));
+        whereList.add(new TableWhereObject("cbUser.userUserid", "eq", user.getId().toString(), "uuid"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","categories/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","categories/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
         GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
-        DataGridBuilder grid = new DataGridBuilder(PaymentTypes.class, columnsList, tableSettings, columnOptions, cacheProvider);
+        DataGridBuilder grid = new DataGridBuilder(CategoryBudgets.class, columnsList, tableSettings, columnOptions,cacheProvider);
         String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("category-details-manage");
 
@@ -89,10 +89,8 @@ public class PaymentCategoryBudgetController {
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-
         List<PaymentCategory> categories = context.getPaymentCategorySet()
                 .getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(user.getId(), true);
-        
         for (PaymentCategory category : categories) {
             categoriesMap.put(category.getName(), category.getId());
         }
@@ -100,30 +98,31 @@ public class PaymentCategoryBudgetController {
         List<String> list = Arrays.asList("one", "two", "three");
         view.addObject("categoriesMap", categories);
         return view;
-
-//        return new ModelAndView("categories-add");
     }
 
     @RequestMapping(value = "/categoryBudget/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @ModelAttribute CategoryBudgetAddModel params) throws PaymentCategoryAddException {
-//        try {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
-//            User user = context
-//                    .getUserSet()
-//                    .GetByUserName(auth.getName());
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
         CategoryBudgetData categoryData = new CategoryBudgetData();
         categoryData.setAmount(Double.valueOf(params.getAmount()));
         categoryData.setCategoryid(params.getCategoryId());
+        categoryData.setFromDate(params.getFromDate());
+        categoryData.setToDate(params.getToDate());
+        categoryData.setUserId(user.getId());
+        categoryData.setActive(true);
         if (params.getFromDate() == null) {
 
         }
 
         if (params.getToDate() == null) {
-        }
 
+        }
         Serializable id = context.getCategoryDetailSet()
                 .Add(categoryData);
         String buttonSubmitted = request.getParameter("submit-button");

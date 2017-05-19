@@ -109,7 +109,7 @@
                 <div class="input-holder">
                     <select id="types-select" name="paymentType">
                         <c:forEach items="${types}" var="element">
-                              <option <c:if test = "${element.getId() == payment.getpType()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
+                              <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>

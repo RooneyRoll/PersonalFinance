@@ -7,6 +7,7 @@ package com.pfm.models.categoryDetails;
 
 import java.util.Date;
 import java.util.UUID;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -15,8 +16,10 @@ import java.util.UUID;
 public class CategoryBudgetAddModel {
     
     private String amount;
-    private String fromDate;
-    private String toDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date fromDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date toDate;
     private UUID categoryId;
 
     public UUID getCategoryId() {
@@ -35,22 +38,19 @@ public class CategoryBudgetAddModel {
         this.amount = amount;
     }
 
-    public String getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(String fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public String getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
-    public void setToDate(String toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
-
-
-    
 }

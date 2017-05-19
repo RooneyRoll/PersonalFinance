@@ -13,13 +13,36 @@ import java.util.UUID;
  * @author Admin
  */
 public class CategoryBudgetData {
+
     private double amount;
     private Date fromDate;
-    private Date toDate ;
+    private Date toDate;
     private UUID categoryId;
+    private UUID userId;
+    private boolean active;
 
-    public UUID getCategoryid() {
+    public UUID getCategoryId() {
         return categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setCategoryid(UUID categoryid) {
@@ -49,5 +72,5 @@ public class CategoryBudgetData {
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
-    
+
 }

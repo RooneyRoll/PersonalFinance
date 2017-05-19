@@ -7,7 +7,6 @@ package com.pfm.personalfinancemanager.datapostgres.sets;
 
 import com.pfm.data.data.CategoryBudgetData;
 import com.pfm.data.entities.CategoryBudget;
-import com.pfm.personalfinancemanager.datapostgres.entities.CategoryDetails;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +16,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.pfm.data.sets.ICategoryBudgetSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -31,12 +33,14 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
     @Override
     protected CategoryBudget convertEntityToDto(CategoryBudgets Entity) {
         CategoryBudget detail = new CategoryBudget();
-        detail.setAmount(Entity.getAmount());
-        detail.setFromDate(Entity.getFromDate());
-        detail.setToDate(Entity.getFromDate());
-        detail.setId(Entity.getId());
-        detail.setCategoryId(Entity.getCategoryId());
-        return detail;//To change body of generated methods, choose Tools | Templates.
+        detail.setActive(Entity.getCbActive());
+        detail.setAmount(Entity.getCbAmount());
+        detail.setCategoryId(Entity.getCbCategoryId().getPcatId());
+        detail.setFromDate(Entity.getCbFromDate());
+        detail.setId(Entity.getCbId());
+        detail.setToDate(Entity.getCbToDate());
+        detail.setUserId(Entity.getCbUser().getUserUserid());
+        return detail;
     }
 
     @Override
@@ -50,26 +54,33 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
 
     @Override
     protected CategoryBudgets convertDtoDataToEntity(CategoryBudgetData DtoData) {
-        CategoryBudgets details = new CategoryBudgets();
-        details.setAmount(DtoData.getAmount());
-        details.setFromDate(DtoData.getFromDate());
-        details.setToDate(DtoData.getToDate());
-        details.setCategoryId(DtoData.getCategoryid());
-        return details;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From PaymentCategories where pcatId = :id");
+            q.setParameter("id", DtoData.getCategoryId());
+            List<PaymentCategories> resultList = q.list();
+            Query q1 = session.createQuery("From Users where userUserid = :id");
+            q1.setParameter("id", DtoData.getUserId());
+            List<Users> userList = q1.list();
+            CategoryBudgets details = new CategoryBudgets();
+            details.setCbActive(DtoData.isActive());
+            details.setCbAmount(DtoData.getAmount());
+            details.setCbCategoryId(resultList.get(0));
+            details.setCbFromDate(DtoData.getFromDate());
+            details.setCbToDate(DtoData.getToDate());
+            details.setCbUser(userList.get(0));
+            return details;
+        }
     }
 
     @Override
     public UUID Add(CategoryBudgetData data) {
-        Serializable id = null  ;
+        Serializable id = null;
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
-
             CategoryBudgets categotyDetails = convertDtoDataToEntity(data);
-          
-                System.out.println(categotyDetails);
-                id = session.save(categotyDetails);
-                session.getTransaction().commit();
-
+            id = session.save(categotyDetails);
+            session.getTransaction().commit();
             return UUID.fromString(id.toString());
         }
     }

@@ -70,11 +70,11 @@ public class Payment {
         this.category = category;
     }
 
-    public UUID getType() {
+    public UUID getpType() {
         return type;
     }
 
-    public void setType(UUID pType) {
+    public void setpType(UUID pType) {
         this.type = pType;
     }
     

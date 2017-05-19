@@ -11,6 +11,7 @@ import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
         paymentObject.setDescription(Entity.getPtypeDescription());
         paymentObject.setId(Entity.getPtypeId());
         paymentObject.setName(Entity.getPtypeName());
-        paymentObject.setUserId(Entity.getPtypeUser());
+        paymentObject.setUserId(Entity.getPtypeUser().getUserUserid());
         return paymentObject;
     }
 
@@ -50,7 +51,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
             paymentObject.setDescription(next.getPtypeDescription());
             paymentObject.setId(next.getPtypeId());
             paymentObject.setName(next.getPtypeName());
-            paymentObject.setUserId(next.getPtypeUser());
+            paymentObject.setUserId(next.getPtypeUser().getUserUserid());
             PaymentTypeList.add(paymentObject);
         }
         return PaymentTypeList;
@@ -58,12 +59,18 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     protected PaymentTypes convertDtoDataToEntity(PaymentTypeData DtoData) {
-        PaymentTypes paymentType = new PaymentTypes();
-        paymentType.setPtypeActive(DtoData.isActive());
-        paymentType.setPtypeDescription(DtoData.getDescription());
-        paymentType.setPtypeName(DtoData.getName());
-        paymentType.setPtypeUser(DtoData.getUserId());
-        return paymentType;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Users where userUserid = :userId");
+            q.setParameter("userId", DtoData.getUserId());
+            List<Users> resultList = q.list();
+            PaymentTypes paymentType = new PaymentTypes();
+            paymentType.setPtypeActive(DtoData.isActive());
+            paymentType.setPtypeDescription(DtoData.getDescription());
+            paymentType.setPtypeName(DtoData.getName());
+            paymentType.setPtypeUser(resultList.get(0));
+            return paymentType;
+        }
     }
 
     @Override
@@ -80,14 +87,13 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public PaymentType GetById(UUID id) {
-        List<PaymentType> paymentTypes;
-        try (Session session = this.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Query q = session.createQuery("From PaymentTypes WHERE ptypeId = :id");
-            q.setParameter("id", id);
-            List<PaymentTypes> resultList = q.list();
-            paymentTypes = convertEntititiesToDtoArray(resultList);
-        }
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From PaymentTypes WHERE ptypeId = :id");
+        q.setParameter("id", id);
+        List<PaymentTypes> resultList = q.list();
+        List<PaymentType> paymentTypes = convertEntititiesToDtoArray(resultList);
+        session.close();
         return paymentTypes.get(0);
     }
 
@@ -109,8 +115,9 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public void Edit(UUID id, PaymentTypeData data) throws PaymentTypeEditException {
-        try (Session session = this.getSessionFactory().openSession()) {
-            if (this.typeExistsForEdit(data.getName(), data.getUserId(),id, session)) {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            if (this.typeExistsForEdit(data.getName(), data.getUserId(), id, session)) {
                 throw new PaymentTypeEditException("Payment type with name \"" + data.getName() + "\" already exists.");
             }
             session.beginTransaction();
@@ -118,6 +125,8 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
             paymentTypeEntity.setPtypeId(id);
             session.update(paymentTypeEntity);
             session.getTransaction().commit();
+            session.close();
+        } finally {
             session.close();
         }
     }
@@ -129,18 +138,17 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     public List<PaymentType> GetAllActiveTypesForUser(UUID userId) {
-        List<PaymentType> paymentResults;
-        try (Session session = this.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
-                    .setParameter("typeActive", true)
-                    .setParameter("userId", userId);
-            List<PaymentTypes> resultList = q.list();
-            paymentResults = convertEntititiesToDtoArray(resultList);
-        }
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
+                .setParameter("typeActive", true)
+                .setParameter("userId", userId);
+        List<PaymentTypes> resultList = q.list();
+        List<PaymentType> paymentResults = convertEntititiesToDtoArray(resultList);
+        session.close();
         return paymentResults;
     }
-    
+
     private boolean typeExistsForAdd(String typeName, UUID userId, Session session) {
         Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName=:typeName and pt.ptypeUser=:userId", PaymentTypes.class)
                 .setParameter("typeName", typeName)
@@ -152,7 +160,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
         }
         return exists;
     }
-    
+
     private boolean typeExistsForEdit(String typeName, UUID userId, UUID typeId, Session session) {
         Query q = session.createQuery("From PaymentTypes pt where pt.ptypeName=:typeName and pt.ptypeUser=:userId and pt.ptypeId!=:typeId", PaymentTypes.class)
                 .setParameter("typeName", typeName)

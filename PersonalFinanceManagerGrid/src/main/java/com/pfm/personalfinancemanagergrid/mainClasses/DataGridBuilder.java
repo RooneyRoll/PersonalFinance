@@ -394,8 +394,15 @@ public class DataGridBuilder {
 
     public String determineFieldType(String fieldName) {
         Field reflField = null;
+
         try {
-            reflField = entity.getDeclaredField(fieldName);
+            if (fieldName.contains(".")) {
+                String[] innerObjects = fieldName.split("\\.");
+                Class innerObjectType = entity.getDeclaredField(innerObjects[0]).getType();
+                reflField = innerObjectType.getDeclaredField(innerObjects[1]);
+            } else {
+                reflField = entity.getDeclaredField(fieldName);
+            }
         } catch (NoSuchFieldException e) {
             System.out.println("field with name " + fieldName + " could not be found in entity " + table);
         }
