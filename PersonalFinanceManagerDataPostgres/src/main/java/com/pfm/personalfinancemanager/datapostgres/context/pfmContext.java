@@ -20,6 +20,8 @@ import com.pfm.personalfinancemanager.datapostgres.sets.UserRoleSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserSet;
 import org.hibernate.SessionFactory;
 import com.pfm.data.sets.ICategoryBudgetSet;
+import com.pfm.data.sets.IUserBudgetSet;
+import com.pfm.personalfinancemanager.datapostgres.sets.UserBudgetSet;
 
 /**
  *
@@ -34,6 +36,7 @@ public class pfmContext implements IpfmContext {
     private IPaymentTypeSet PaymentTypeSet;
     private IPaymentSet PaymentSet;
     private ICategoryBudgetSet categoryBudgetSet;
+    private IUserBudgetSet userBudgetSet;
     private static pfmContext instance;
 
     public static IpfmContext getInstance() {
@@ -52,6 +55,7 @@ public class pfmContext implements IpfmContext {
         this.PaymentTypeSet = new PaymentTypeSet(this.manager);
         this.PaymentSet = new PaymentSet(this.manager);
         this.categoryBudgetSet = new CategoryBudgetSet(this.manager);
+        this.userBudgetSet = new UserBudgetSet(this.manager);
     }
 
     @Override
@@ -82,5 +86,10 @@ public class pfmContext implements IpfmContext {
     @Override
     public ICategoryBudgetSet getCategoryDetailSet() {
         return this.categoryBudgetSet;//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public IUserBudgetSet getUserBudgetSet() {
+        return this.userBudgetSet;
     }
 }

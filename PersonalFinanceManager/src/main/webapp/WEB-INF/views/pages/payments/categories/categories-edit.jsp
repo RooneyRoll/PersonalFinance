@@ -76,6 +76,19 @@
                 <div class="input-holder">
                     <textarea resize="false" placeholder="Описание" name="categoryDescription">${category.getDescription()}</textarea>
                 </div>
+            </div><div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Тип на Категория<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <select id="types-select" name="paymentType">
+                        <c:forEach items="${types}" var="element">
+                              <option <c:if test = "${element.getId() == category.getType()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
             </div>
             <div class="buttons-container size-1">
                 <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>

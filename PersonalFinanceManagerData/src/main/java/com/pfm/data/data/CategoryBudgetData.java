@@ -15,11 +15,17 @@ import java.util.UUID;
 public class CategoryBudgetData {
 
     private double amount;
-    private Date fromDate;
-    private Date toDate;
     private UUID categoryId;
-    private UUID userId;
+    private UUID budgetId;
     private boolean active;
+
+    public UUID getBudgetId() {
+        return budgetId;
+    }
+
+    public void setBudgetId(UUID budgetId) {
+        this.budgetId = budgetId;
+    }
 
     public UUID getCategoryId() {
         return categoryId;
@@ -27,14 +33,6 @@ public class CategoryBudgetData {
 
     public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 
     public boolean isActive() {
@@ -56,21 +54,4 @@ public class CategoryBudgetData {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
 }

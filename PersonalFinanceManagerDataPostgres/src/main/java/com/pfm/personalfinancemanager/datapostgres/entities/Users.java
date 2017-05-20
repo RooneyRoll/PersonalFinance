@@ -40,6 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Users.findByUserUsername", query = "SELECT u FROM Users u WHERE u.userUsername = :userUsername")})
 public class Users implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ubUser")
+    private List<UserBudgets> userBudgetsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ptypeUser")
+    private List<PaymentTypes> paymentTypesList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -64,8 +69,6 @@ public class Users implements Serializable {
     private String userUsername;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatUser")
     private List<PaymentCategories> paymentCategoriesList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cbUser")
-    private List<CategoryBudgets> categoryBudgetsList;
 
     public Users() {
     }
@@ -154,15 +157,6 @@ public class Users implements Serializable {
         this.paymentCategoriesList = paymentCategoriesList;
     }
 
-    @XmlTransient
-    public List<CategoryBudgets> getCategoryBudgetsList() {
-        return categoryBudgetsList;
-    }
-
-    public void setCategoryBudgetsList(List<CategoryBudgets> categoryBudgetsList) {
-        this.categoryBudgetsList = categoryBudgetsList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -186,5 +180,23 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.Users[ userUserid=" + userUserid + " ]";
+    }
+
+    @XmlTransient
+    public List<UserBudgets> getUserBudgetsList() {
+        return userBudgetsList;
+    }
+
+    public void setUserBudgetsList(List<UserBudgets> userBudgetsList) {
+        this.userBudgetsList = userBudgetsList;
+    }
+
+    @XmlTransient
+    public List<PaymentTypes> getPaymentTypesList() {
+        return paymentTypesList;
+    }
+
+    public void setPaymentTypesList(List<PaymentTypes> paymentTypesList) {
+        this.paymentTypesList = paymentTypesList;
     }
 }

@@ -6,18 +6,30 @@
 package com.pfm.models.paymentCategory;
 
 import com.pfm.exceptions.ValidationException;
+import java.util.UUID;
 
 /**
  *
  * @author mihail
  */
 public class PaymentCategoryAddModel {
+
     public String categoryName;
     public String categoryDescription;
+    public UUID categoryType;
+
+    public UUID getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(UUID categoryType) {
+        this.categoryType = categoryType;
+    }
 
     public String getCategoryName() throws ValidationException {
-        if("".equals(categoryName))
+        if ("".equals(categoryName)) {
             throw new ValidationException("PaymentCategoryAddException: category name cannot be empty.");
+        }
         return categoryName;
     }
 

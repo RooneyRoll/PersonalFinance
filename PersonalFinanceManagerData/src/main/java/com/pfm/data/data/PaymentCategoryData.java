@@ -12,10 +12,20 @@ import java.util.UUID;
  * @author Misho
  */
 public class PaymentCategoryData {
+
     private String name;
     private boolean active;
     private String description;
     private UUID userId;
+    private UUID type;
+
+    public UUID getType() {
+        return type;
+    }
+
+    public void setType(UUID type) {
+        this.type = type;
+    }
 
     public UUID getUserId() {
         return userId;
@@ -25,7 +35,6 @@ public class PaymentCategoryData {
         this.userId = userId;
     }
 
-    
     public String getDescription() {
         return description;
     }
@@ -34,7 +43,6 @@ public class PaymentCategoryData {
         this.description = description;
     }
 
-    
     public String getName() {
         return name;
     }
@@ -50,5 +58,5 @@ public class PaymentCategoryData {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
 }

@@ -17,7 +17,6 @@ public class PaymentEditModel {
     public double paymentAmount;
     public String paymentDescription;
     public UUID paymentCategory;
-    public UUID paymentType;
     public String paymentActive;
     public Date paymentDate; 
 
@@ -43,14 +42,6 @@ public class PaymentEditModel {
 
     public void setPaymentCategory(UUID paymentCategory) {
         this.paymentCategory = paymentCategory;
-    }
-
-    public UUID getPaymentType() {
-        return paymentType;
-    }
-
-    public void setPaymentType(UUID paymentType) {
-        this.paymentType = paymentType;
     }
 
     public String isPaymentActive() {

@@ -86,10 +86,8 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 .getUserSet()
                 .GetByUserName(auth.getName());
         List<PaymentCategory> caregories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(user.getId());
-        List<PaymentType> types = context.getPaymentTypeSet().GetAllActiveTypesForUser(user.getId());
         ModelAndView view = new ModelAndView("payment-add");
         view.addObject("categories", caregories);
-        view.addObject("types", types);
         return view;
     }
 
@@ -106,7 +104,6 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         PaymentObject.setActive(true);
         PaymentObject.setDescription(params.getPaymentDescription());
         PaymentObject.setCategory(params.getPaymentCategory());
-        PaymentObject.setType(params.getPaymentType());
         PaymentObject.setAmount(params.getPaymentAmount());
         PaymentObject.setDate(new Date());
         UUID id = context.getPaymentSet().Add(PaymentObject);
@@ -138,11 +135,9 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 .GetByUserName(auth.getName());
         Payment payment = context.getPaymentSet().GetById(paymentId);
         List<PaymentCategory> caregories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(user.getId());
-        List<PaymentType> types = context.getPaymentTypeSet().GetAllActiveTypesForUser(user.getId());
         ModelAndView view = new ModelAndView("payment-edit");
         view.addObject("payment", payment);
         view.addObject("categories", caregories);
-        view.addObject("types", types);
         return view;
     }
     
@@ -163,7 +158,6 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             paymentDataObject.setCategory(params.getPaymentCategory());
             paymentDataObject.setDate(currentPayment.getDate());
             paymentDataObject.setDescription(params.getPaymentDescription());
-            paymentDataObject.setType(params.getPaymentType());
             context.getPaymentSet()
                     .Edit(paymentId, paymentDataObject);
             String buttonSubmitted = request.getParameter("submit-button");

@@ -418,6 +418,9 @@ public class DataGridBuilder {
             case "double":
                 type = "int";
                 break;
+            case "boolean":
+                type = "bool";
+                break;
         }
         return type;
     }

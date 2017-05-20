@@ -20,7 +20,6 @@ public class Payment {
     private String description;
     private boolean active;
     private UUID category;
-    private UUID type; 
 
     public UUID getId() {
         return id;
@@ -69,13 +68,4 @@ public class Payment {
     public void setCategory(UUID category) {
         this.category = category;
     }
-
-    public UUID getpType() {
-        return type;
-    }
-
-    public void setpType(UUID pType) {
-        this.type = pType;
-    }
-    
 }

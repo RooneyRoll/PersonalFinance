@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author mihail
+ * @author Misho
  */
 @Entity
 @Table(name = "payment_categories")
@@ -51,12 +52,16 @@ public class PaymentCategories implements Serializable {
     private boolean pcatActive;
     @Column(name = "pcat_description")
     private String pcatDescription;
+    @JoinColumn(name = "pcat_type", referencedColumnName = "ptype_id")
+    @ManyToOne(optional = false)
+    private PaymentTypes pcatType;
     @JoinColumn(name = "pcat_user", referencedColumnName = "user_userid")
     @ManyToOne(optional = false)
     private Users pcatUser;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pCategory")
+    private List<Payments> paymentsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cbCategoryId")
     private List<CategoryBudgets> categoryBudgetsList;
-
 
     public PaymentCategories() {
     }
@@ -103,12 +108,29 @@ public class PaymentCategories implements Serializable {
         this.pcatDescription = pcatDescription;
     }
 
+    public PaymentTypes getPcatType() {
+        return pcatType;
+    }
+
+    public void setPcatType(PaymentTypes pcatType) {
+        this.pcatType = pcatType;
+    }
+
     public Users getPcatUser() {
         return pcatUser;
     }
 
     public void setPcatUser(Users pcatUser) {
         this.pcatUser = pcatUser;
+    }
+
+    @XmlTransient
+    public List<Payments> getPaymentsList() {
+        return paymentsList;
+    }
+
+    public void setPaymentsList(List<Payments> paymentsList) {
+        this.paymentsList = paymentsList;
     }
 
     @XmlTransient

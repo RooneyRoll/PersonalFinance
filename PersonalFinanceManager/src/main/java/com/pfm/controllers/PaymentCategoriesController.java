@@ -9,6 +9,7 @@ import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
@@ -46,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class PaymentCategoriesController {
-    
+
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
@@ -59,32 +60,36 @@ public class PaymentCategoriesController {
         List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
         List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
         List<ColumnOption> options = new ArrayList<ColumnOption>();
-        columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true,false));
-        columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true,false));
-        columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true,true));
-        columnsList.add(new ColumnSettingsObject("pcatId", "id", "uuid", false,false));
-        columnsList.add(new ColumnSettingsObject("pcatUser.userUsername", "Потребител", "string", true,true));
+        columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true, false));
+        columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true, false));
+        columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("pcatId", "id", "uuid", false, false));
+        columnsList.add(new ColumnSettingsObject("pcatUser.userUsername", "Потребител", "string", true, true));
         whereList.add(new TableWhereObject("pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","categories/view/{3}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","categories/edit/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "categories/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "categories/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
         GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
-        DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings, columnOptions,cacheProvider);
+        DataGridBuilder grid = new DataGridBuilder(PaymentCategories.class, columnsList, tableSettings, columnOptions, cacheProvider);
         String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("categories-manage");
         view.addObject("grid", gridHtml);
         return view;
     }
-    
+
     @RequestMapping(value = "/categories/add", method = RequestMethod.GET)
     public ModelAndView addIndex(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
-        
-        return new ModelAndView("categories-add");
+        IpfmContext context = pfmContext.getInstance();
+        ModelAndView view = new ModelAndView("categories-add");
+        List<PaymentType> types = context
+                .getPaymentTypeSet().GetAll();
+        view.addObject("types", types);
+        return view;
     }
-    
+
     @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
@@ -100,6 +105,7 @@ public class PaymentCategoriesController {
             categoryDataObject.setDescription(params.getCategoryDescription());
             categoryDataObject.setName(params.getCategoryName());
             categoryDataObject.setUserId(user.getId());
+            categoryDataObject.setType(params.getCategoryType());
             Serializable id = context.getPaymentCategorySet()
                     .Add(categoryDataObject);
             String buttonSubmitted = request.getParameter("submit-button");
@@ -122,19 +128,22 @@ public class PaymentCategoriesController {
             return view;
         }
     }
-    
+
     @RequestMapping(value = "/categories/edit/{categoryId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
         IpfmContext context = pfmContext.getInstance();
+        List<PaymentType> types = context
+                .getPaymentTypeSet().GetAll();
         PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
         ModelAndView view = new ModelAndView("categories-edit");
         view.addObject("category", category);
+        view.addObject("types", types);
         return view;
     }
-    
+
     @RequestMapping(value = "/categories/edit/{categoryId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
@@ -147,10 +156,11 @@ public class PaymentCategoriesController {
                     .getUserSet()
                     .GetByUserName(auth.getName());
             PaymentCategoryData categoryDataObject = new PaymentCategoryData();
-            categoryDataObject.setActive("1".equals(params.getCategoryActive()) ? true : false);
+            categoryDataObject.setActive("1".equals(params.getCategoryActive()));
             categoryDataObject.setDescription(params.getCategoryDescription());
             categoryDataObject.setName(params.getCategoryName());
             categoryDataObject.setUserId(user.getId());
+            categoryDataObject.setType(params.getCategoryType());
             context.getPaymentCategorySet()
                     .Edit(categoryId, categoryDataObject);
             String buttonSubmitted = request.getParameter("submit-button");

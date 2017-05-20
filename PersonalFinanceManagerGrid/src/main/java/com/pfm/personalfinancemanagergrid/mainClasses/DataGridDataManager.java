@@ -176,6 +176,9 @@ public class DataGridDataManager {
     private String determineParamCompareSign(String whereType, String columnType) {
         String sign = "";
         switch (columnType) {
+            case "bool":
+                sign = "=";
+                break;
             case "uuid":
                 sign = "=";
                 break;
@@ -223,6 +226,9 @@ public class DataGridDataManager {
                 statement += " and ";
             }
             String sign = determineParamCompareSign(compareType, columnType);
+            if ("bool".equals(columnType)) {
+                statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
+            }
             if ("uuid".equals(columnType)) {
                 statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
@@ -243,12 +249,16 @@ public class DataGridDataManager {
                 }
             }
         }
-        System.out.println("where = " + statement);
         return statement;
     }
 
     private void replaceQueryParameters(Query q, String paramType, String columnName, String searchVal, String compareType, String paramName) throws ParseException {
-        System.out.println(searchVal + "" + paramType);
+        if ("bool".equals(paramType)) {
+            if (!"".equals(searchVal)) {
+                boolean param = determineQueryParamString(paramType, compareType, searchVal);
+                q.setParameter(paramName, param);
+            }
+        }
         if ("uuid".equals(paramType)) {
             if (!"".equals(searchVal)) {
                 UUID param = determineQueryParamString(paramType, compareType, searchVal);
@@ -288,8 +298,11 @@ public class DataGridDataManager {
     }
 
     private <T> T determineQueryParamString(String columnType, String compareType, String searchVal) throws ParseException {
+        if ("bool".equals(columnType)) {
+            Boolean val = Boolean.parseBoolean(searchVal);
+            return (T) val;
+        }
         if ("uuid".equals(columnType)) {
-
             UUID val = UUID.fromString(searchVal);
             return (T) val;
         }

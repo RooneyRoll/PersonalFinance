@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author mihail
+ * @author Misho
  */
 @Entity
 @Table(name = "payment_types")
@@ -51,8 +52,8 @@ public class PaymentTypes implements Serializable {
     @Basic(optional = false)
     @Column(name = "ptype_active")
     private boolean ptypeActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pType")
-    private List<Payments> paymentsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatType")
+    private List<PaymentCategories> paymentCategoriesList;
     @JoinColumn(name = "ptype_user", referencedColumnName = "user_userid")
     @ManyToOne(optional = false)
     private Users ptypeUser;
@@ -103,12 +104,12 @@ public class PaymentTypes implements Serializable {
     }
 
     @XmlTransient
-    public List<Payments> getPaymentsList() {
-        return paymentsList;
+    public List<PaymentCategories> getPaymentCategoriesList() {
+        return paymentCategoriesList;
     }
 
-    public void setPaymentsList(List<Payments> paymentsList) {
-        this.paymentsList = paymentsList;
+    public void setPaymentCategoriesList(List<PaymentCategories> paymentCategoriesList) {
+        this.paymentCategoriesList = paymentCategoriesList;
     }
 
     public Users getPtypeUser() {
@@ -143,5 +144,5 @@ public class PaymentTypes implements Serializable {
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes[ ptypeId=" + ptypeId + " ]";
     }
-
+    
 }

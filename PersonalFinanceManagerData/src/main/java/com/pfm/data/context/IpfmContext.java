@@ -11,6 +11,7 @@ import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.data.sets.IPaymentSet;
 import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.data.sets.ICategoryBudgetSet;
+import com.pfm.data.sets.IUserBudgetSet;
 
 /**
  *
@@ -29,4 +30,6 @@ public interface IpfmContext {
     public IPaymentSet getPaymentSet();
 
     public ICategoryBudgetSet getCategoryDetailSet();
+
+    public IUserBudgetSet getUserBudgetSet();
 }

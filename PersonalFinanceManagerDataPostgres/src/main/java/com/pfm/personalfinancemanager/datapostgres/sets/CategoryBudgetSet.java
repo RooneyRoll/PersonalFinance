@@ -17,6 +17,7 @@ import org.hibernate.SessionFactory;
 import com.pfm.data.sets.ICategoryBudgetSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.UserBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import org.hibernate.query.Query;
 
@@ -36,10 +37,8 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
         detail.setActive(Entity.getCbActive());
         detail.setAmount(Entity.getCbAmount());
         detail.setCategoryId(Entity.getCbCategoryId().getPcatId());
-        detail.setFromDate(Entity.getCbFromDate());
         detail.setId(Entity.getCbId());
-        detail.setToDate(Entity.getCbToDate());
-        detail.setUserId(Entity.getCbUser().getUserUserid());
+        detail.setBudgetId(Entity.getCbBudget().getUbId());
         return detail;
     }
 
@@ -59,16 +58,14 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
             Query q = session.createQuery("From PaymentCategories where pcatId = :id");
             q.setParameter("id", DtoData.getCategoryId());
             List<PaymentCategories> resultList = q.list();
-            Query q1 = session.createQuery("From Users where userUserid = :id");
-            q1.setParameter("id", DtoData.getUserId());
-            List<Users> userList = q1.list();
+            Query q1 = session.createQuery("From UserBudgets where ubId = :id");
+            q1.setParameter("id", DtoData.getBudgetId());
+            List<UserBudgets> budgetList = q1.list();
             CategoryBudgets details = new CategoryBudgets();
             details.setCbActive(DtoData.isActive());
             details.setCbAmount(DtoData.getAmount());
+            details.setCbBudget(budgetList.get(0));
             details.setCbCategoryId(resultList.get(0));
-            details.setCbFromDate(DtoData.getFromDate());
-            details.setCbToDate(DtoData.getToDate());
-            details.setCbUser(userList.get(0));
             return details;
         }
     }

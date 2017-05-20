@@ -18,7 +18,6 @@ public class PaymentData {
     private String description;
     private boolean active;
     private UUID category;
-    private UUID type; 
 
     public double getAmount() {
         return amount;
@@ -59,13 +58,4 @@ public class PaymentData {
     public void setCategory(UUID category) {
         this.category = category;
     }
-
-    public UUID getType() {
-        return type;
-    }
-
-    public void setType(UUID type) {
-        this.type = type;
-    }
-    
 }

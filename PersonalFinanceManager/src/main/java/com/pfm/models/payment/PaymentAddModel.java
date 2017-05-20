@@ -16,7 +16,6 @@ public class PaymentAddModel {
     public double paymentAmount;
     public String paymentDescription;
     public UUID paymentCategory;
-    public UUID paymentType;
 
     public double getPaymentAmount() {
         return paymentAmount;
@@ -40,13 +39,5 @@ public class PaymentAddModel {
 
     public void setPaymentCategory(UUID paymentCategory) {
         this.paymentCategory = paymentCategory;
-    }
-
-    public UUID getPaymentType() {
-        return paymentType;
-    }
-
-    public void setPaymentType(UUID paymentType) {
-        this.paymentType = paymentType;
     }
 }

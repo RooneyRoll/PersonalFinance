@@ -12,6 +12,7 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.sets.IPaymentCategorySet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
@@ -40,6 +41,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         category.setId(Entity.getPcatId());
         category.setName(Entity.getPcatName());
         category.setUserId(Entity.getPcatUser().getUserUserid());
+        category.setType(Entity.getPcatType().getPtypeId());
         return category;
     }
 
@@ -47,13 +49,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     protected List<PaymentCategory> convertEntititiesToDtoArray(List<PaymentCategories> EntityArray) {
         List<PaymentCategory> paymentCategoryList = new ArrayList<PaymentCategory>();
         for (PaymentCategories next : EntityArray) {
-            PaymentCategory category = new PaymentCategory();
-            category.setActive(next.getPcatActive());
-            category.setDescription(next.getPcatDescription());
-            category.setId(next.getPcatId());
-            category.setName(next.getPcatName());
-            category.setUserId(next.getPcatUser().getUserUserid());
-            paymentCategoryList.add(category);
+            paymentCategoryList.add(this.convertEntityToDto(next));
         }
         return paymentCategoryList;
     }
@@ -65,15 +61,17 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             Query q = session.createQuery("From Users where userUserid = :userId");
             q.setParameter("userId", DtoData.getUserId());
             List<Users> resultList = q.list();
+            Query q1 = session.createQuery("From PaymentTypes where ptypeId = :id");
+            q1.setParameter("id", DtoData.getType());
+            List<PaymentTypes> typesList = q1.list();
             PaymentCategories paymentEntity = new PaymentCategories();
             paymentEntity.setPcatActive(DtoData.isActive());
             paymentEntity.setPcatDescription(DtoData.getDescription());;
             paymentEntity.setPcatName(DtoData.getName());
             paymentEntity.setPcatUser(resultList.get(0));
+            paymentEntity.setPcatType(typesList.get(0));
             return paymentEntity;
         }
-        
-        
     }
 
     @Override
@@ -210,7 +208,6 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
                 }
 
             }
-
         }
         return categoriesWithoutDetails;
     }

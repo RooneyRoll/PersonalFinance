@@ -40,7 +40,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDate(Entity.getPDate());
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
-        paymentObject.setpType(Entity.getPType().getPtypeId());
         return paymentObject;
     }
 
@@ -55,7 +54,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             paymentObject.setDate(next.getPDate());
             paymentObject.setDescription(next.getPDescription());
             paymentObject.setId(next.getPId());
-            paymentObject.setpType(next.getPType().getPtypeId());
             PaymentList.add(paymentObject);
         }
         return PaymentList;
@@ -68,16 +66,12 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             Query q = session.createQuery("From PaymentCategories where pcatId = :catId");
             q.setParameter("catId", DtoData.getCategory());
             List<PaymentCategories> categoriesList = q.list();
-            Query q1 = session.createQuery("From PaymentTypes where ptypeId = :typeId");
-            q.setParameter("typeId", DtoData.getType());
-            List<PaymentTypes> typesList = q1.list();
             Payments payment = new Payments();
             payment.setPActive(true);
             payment.setPAmount(DtoData.getAmount());
             payment.setPCategory(categoriesList.get(0));
             payment.setPDate(DtoData.getDate());
             payment.setPDescription(DtoData.getDescription());
-            payment.setPType(typesList.get(0));
             return payment;
         }
 

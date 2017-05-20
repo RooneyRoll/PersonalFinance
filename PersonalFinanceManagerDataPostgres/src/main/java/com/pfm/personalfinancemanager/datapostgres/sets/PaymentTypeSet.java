@@ -140,7 +140,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     public List<PaymentType> GetAllActiveTypesForUser(UUID userId) {
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
-        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser=:userId")
+        Query q = session.createQuery("From PaymentTypes pt where pt.ptypeActive=:typeActive and pt.ptypeUser.userUserid=:userId")
                 .setParameter("typeActive", true)
                 .setParameter("userId", userId);
         List<PaymentTypes> resultList = q.list();
