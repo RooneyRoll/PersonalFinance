@@ -20,6 +20,7 @@
                 $(element).removeClass("error");
             }
         });
+        $("#types-select").select2();
     });
 </script>
 <div class="form-container">

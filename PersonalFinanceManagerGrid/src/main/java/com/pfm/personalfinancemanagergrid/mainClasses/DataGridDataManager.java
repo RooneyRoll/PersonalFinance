@@ -13,8 +13,15 @@ import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,7 +74,47 @@ public class DataGridDataManager {
                     if (!column.isOptionsColumn()) {
                         for (Field field : fields) {
                             field.setAccessible(true);
-                            String columnName = "";
+                            String cachedFieldName = column.getColumnName();
+                            Field sourceEntityField = null;
+                            String rootEntityField = null;
+                            Field parentEntityField = null;
+                            if (cachedFieldName.contains(".")) {
+                                String[] innerObjects = cachedFieldName.split("\\.");
+                                rootEntityField = innerObjects[0];
+                                int num = 0;
+                                Class innerObjectType;
+                                Class currentEntity = cls;
+                                for (String innerObject : innerObjects) {
+                                    if (num < innerObjects.length - 1) {
+                                        innerObjectType = currentEntity.getDeclaredField(innerObjects[num]).getType();
+                                        parentEntityField = currentEntity.getDeclaredField(innerObjects[num]);
+                                        currentEntity = innerObjectType;
+                                        sourceEntityField = innerObjectType.getDeclaredField(innerObjects[num + 1]);
+                                        num++;
+                                    }
+                                }
+                            } else {
+                                rootEntityField = cachedFieldName;
+                                sourceEntityField = cls.getDeclaredField(cachedFieldName);
+                            }
+                            if (!field.getName().equals(rootEntityField)) {
+                                continue;
+                            }
+                            String value = "";
+                            if (column.getColumnName().contains(".")) {
+                                String[] innerObjects = column.getColumnName().split("\\.");
+                                Object innerObject = field.get(serializable);
+                                System.out.println(field.getDeclaringClass() + "--class");
+                                System.out.println(serializable.toString() + "--serializable");
+                                Class innerObjectType = field.getType();
+                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
+                                inner.setAccessible(true);
+                                value = inner.get(innerObject).toString();
+                            } else {
+                                value = field.get(serializable).toString();
+                            }
+                            innerResult.add(value);
+                            /*/String columnName = "";
                             if (column.getColumnName().contains(".")) {
                                 String[] innerObjects = column.getColumnName().split("\\.");
                                 columnName = innerObjects[0];
@@ -88,7 +135,7 @@ public class DataGridDataManager {
                             } else {
                                 value = field.get(serializable).toString();
                             }                             
-                            innerResult.add(value);
+                            innerResult.add(value);*/
                         }
                     }
                 }
@@ -225,6 +272,7 @@ public class DataGridDataManager {
             if (iteration > 0) {
                 statement += " and ";
             }
+            //System.out.println(iteration+"---"+column);
             String sign = determineParamCompareSign(compareType, columnType);
             if ("bool".equals(columnType)) {
                 statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();

@@ -21,7 +21,6 @@
             }
         });
         $("#categories-select").select2();
-        $("#types-select").select2();
     });
 </script>
 <div class="form-container">

@@ -398,8 +398,17 @@ public class DataGridBuilder {
         try {
             if (fieldName.contains(".")) {
                 String[] innerObjects = fieldName.split("\\.");
-                Class innerObjectType = entity.getDeclaredField(innerObjects[0]).getType();
-                reflField = innerObjectType.getDeclaredField(innerObjects[1]);
+                int num = 0;
+                Class innerObjectType;
+                Class currentEntity = entity;
+                for (String innerObject : innerObjects) {
+                    if (num < innerObjects.length - 1) {
+                        innerObjectType = currentEntity.getDeclaredField(innerObjects[num]).getType();
+                        currentEntity = innerObjectType;
+                        reflField = innerObjectType.getDeclaredField(innerObjects[num + 1]);
+                        num++;
+                    }
+                }
             } else {
                 reflField = entity.getDeclaredField(fieldName);
             }

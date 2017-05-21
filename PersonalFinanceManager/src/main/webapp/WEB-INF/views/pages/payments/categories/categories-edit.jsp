@@ -38,6 +38,7 @@
                 insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
             });
         });
+        $("#types-select").select2();
     });
 </script>
 <div class="form-container">
