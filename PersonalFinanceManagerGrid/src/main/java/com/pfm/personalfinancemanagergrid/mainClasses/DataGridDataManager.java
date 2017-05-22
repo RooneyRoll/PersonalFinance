@@ -75,67 +75,33 @@ public class DataGridDataManager {
                         for (Field field : fields) {
                             field.setAccessible(true);
                             String cachedFieldName = column.getColumnName();
-                            Field sourceEntityField = null;
-                            String rootEntityField = null;
-                            Field parentEntityField = null;
+                            String rootEntityField;                                                   
                             if (cachedFieldName.contains(".")) {
                                 String[] innerObjects = cachedFieldName.split("\\.");
-                                rootEntityField = innerObjects[0];
-                                int num = 0;
-                                Class innerObjectType;
-                                Class currentEntity = cls;
-                                for (String innerObject : innerObjects) {
-                                    if (num < innerObjects.length - 1) {
-                                        innerObjectType = currentEntity.getDeclaredField(innerObjects[num]).getType();
-                                        parentEntityField = currentEntity.getDeclaredField(innerObjects[num]);
-                                        currentEntity = innerObjectType;
-                                        sourceEntityField = innerObjectType.getDeclaredField(innerObjects[num + 1]);
-                                        num++;
-                                    }
-                                }
+                                rootEntityField = innerObjects[0];                                
                             } else {
                                 rootEntityField = cachedFieldName;
-                                sourceEntityField = cls.getDeclaredField(cachedFieldName);
                             }
                             if (!field.getName().equals(rootEntityField)) {
                                 continue;
                             }
                             String value = "";
                             if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                Object innerObject = field.get(serializable);
-                                System.out.println(field.getDeclaringClass() + "--class");
-                                System.out.println(serializable.toString() + "--serializable");
-                                Class innerObjectType = field.getType();
-                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
-                                inner.setAccessible(true);
-                                value = inner.get(innerObject).toString();
+                                String[] innerObjects = cachedFieldName.split("\\.");        
+                                Field currentField;
+                                Class currentEntity = cls;
+                                Object valueHolder = serializable;
+                                for (String innerObject : innerObjects) {                                    
+                                    currentField = currentEntity.getDeclaredField(innerObject);
+                                    currentField.setAccessible(true);
+                                    valueHolder = currentField.get(valueHolder);
+                                    currentEntity = valueHolder.getClass();
+                                }
+                                value = valueHolder.toString();
                             } else {
                                 value = field.get(serializable).toString();
                             }
-                            innerResult.add(value);
-                            /*/String columnName = "";
-                            if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                columnName = innerObjects[0];
-                            } else {
-                                columnName = column.getColumnName();
-                            }
-                            if (!field.getName().equals(columnName)) {
-                                continue;
-                            }
-                            String value = "";
-                            if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                Object innerObject = field.get(serializable);
-                                Class innerObjectType = field.getType();
-                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
-                                inner.setAccessible(true);
-                                value = inner.get(innerObject).toString();
-                            } else {
-                                value = field.get(serializable).toString();
-                            }                             
-                            innerResult.add(value);*/
+                            innerResult.add(value);                           
                         }
                     }
                 }
