@@ -18,14 +18,15 @@
         <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css' />" rel="stylesheet" ></link>
         <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Select/css/select.bootstrap.min.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/flatpickr/flatpickr.min.css' />" rel="stylesheet" type="text/css"></link>
-        <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link> 
+        <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link>
+        <link href="<c:url value='/resources/js/datePicker/datepicker.min.css' />" rel="stylesheet" type="text/css"></link> 
         <link href="<c:url value='/resources/js/select2-4.0.3/dist/css/select2.min.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/css/gridCustomCss/grid.css' />" rel="stylesheet" ></link> 
         <link href='<c:url value='/resources/js/smartmenus/css/sm-core-css.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartmenus/css/sm-mint/sm-mint.css' />' rel='stylesheet' type='text/css' />
-        <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
         <link href="<c:url value='/resources/css/slick-carousel/slick.css' />" rel="stylesheet"></link>
         <link href="<c:url value='/resources/css/slick-carousel/slick-theme.css' />" rel="stylesheet"></link>
+        <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
         <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
         <script src="<c:url value='/resources/js/smartmenus/jquery.smartmenus.min.js' />" type="text/javascript"></script>
         <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
@@ -37,6 +38,7 @@
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
+        <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
         <script src="<c:url value='/resources/js/slick-carousel/slick.min.js' />"></script>
         <script>
             $(document).ready(function () {

@@ -6,12 +6,13 @@
 package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
-import com.pfm.data.entities.UserBudget;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,21 +28,22 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class userBudgetController {
 
-    @RequestMapping(value = "/budgets", method = RequestMethod.GET)
+    @RequestMapping(value = "/userBudget", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView view = new ModelAndView("/budgets");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        UserBudget budget = context.getUserBudgetSet()
-                .getCurrentlyActiveBudgetForUser(user.getId());
-        boolean hasBudget = false;
-        if(budget != null){
-            hasBudget = true;
-        }
-        view.addObject("hasBudget", hasBudget);
+        List<PaymentType> paymentTypes = context
+                .getPaymentTypeSet()
+                .GetAll();
+        List<PaymentCategory> categories = context
+                .getPaymentCategorySet()
+                .GetAllActiveCategoriesForUser(user.getId());
+        ModelAndView view = new ModelAndView("user-budget");
+        view.addObject("categories",categories);
+        view.addObject("paymentTypes", paymentTypes);
         return view;
     }
 }

@@ -85,6 +85,11 @@
         <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/payments/payments/payment-edit.jsp" />  
     </definition>
+    <definition name="user-budget" extends="base-definition">  
+        <put-attribute name="navigation" value="Бюджет"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budgets-manage.jsp" />  
+    </definition>
     <definition name="404" extends="base-definition">
         <put-attribute name="navigation" value="Грешка"  cascade="true"/>   
         <put-attribute name="title" value="register result" />  

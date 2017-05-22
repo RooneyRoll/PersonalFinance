@@ -51,26 +51,26 @@ public class PaymentController {
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        List<ColumnOption> options = new ArrayList<ColumnOption>();
-        columnsList.add(new ColumnSettingsObject("pAmount", "Сума", "int", true,true));
-        columnsList.add(new ColumnSettingsObject("pDate", "Дата на плащане", "string", true,true));
-        columnsList.add(new ColumnSettingsObject("pDescription", "Описание на плащане", "string", true,true));
-        columnsList.add(new ColumnSettingsObject("pId", "", "string", false,false));
-        columnsList.add(new ColumnSettingsObject("pCategory.pcatUser.userUsername", "Потребител", "string", true,true));
+        List<ColumnSettingsObject> columnsList = new ArrayList<>();
+        List<TableWhereObject> whereList = new ArrayList<>();
+        List<ColumnOption> options = new ArrayList<>();
+        columnsList.add(new ColumnSettingsObject("pAmount", "Сума", "int", true, true));
+        columnsList.add(new ColumnSettingsObject("pDate", "Дата на плащане", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("pDescription", "Описание на плащане", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("pId", "", "string", false, false));
+        columnsList.add(new ColumnSettingsObject("pCategory.pcatUser.userUsername", "Потребител", "string", true, true));
         whereList.add(new TableWhereObject("pCategory.pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>","3","payments/view/{3}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>","3","payments/edit/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "payments/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "payments/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
         GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
-        DataGridBuilder grid = new DataGridBuilder(Payments.class, columnsList, tableSettings, columnOptions,cacheProvider);
+        DataGridBuilder grid = new DataGridBuilder(Payments.class, columnsList, tableSettings, columnOptions, cacheProvider);
         String gridHtml = grid.buildHtmlForGrid();
         ModelAndView view = new ModelAndView("payment-manage");
         view.addObject("grid", gridHtml);
@@ -123,7 +123,7 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         }
         return view;
     }
-    
+
     @RequestMapping(value = "/payments/edit/{paymentId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("paymentId") UUID paymentId,
@@ -141,39 +141,39 @@ Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         view.addObject("categories", caregories);
         return view;
     }
-    
+
     @RequestMapping(value = "/payments/edit/{paymentId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("paymentId") UUID paymentId,
             @ModelAttribute PaymentEditModel params) throws BasicException {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            IpfmContext context = pfmContext.getInstance();
-            User user = context
-                    .getUserSet()
-                    .GetByUserName(auth.getName());
-            Payment currentPayment = pfmContext.getInstance().getPaymentSet().GetById(paymentId);
-            PaymentData paymentDataObject = new PaymentData();
-            paymentDataObject.setActive("1".equals(params.isPaymentActive()));
-            paymentDataObject.setAmount(params.getPaymentAmount());
-            paymentDataObject.setCategory(params.getPaymentCategory());
-            paymentDataObject.setDate(currentPayment.getDate());
-            paymentDataObject.setDescription(params.getPaymentDescription());
-            context.getPaymentSet()
-                    .Edit(paymentId, paymentDataObject);
-            String buttonSubmitted = request.getParameter("submit-button");
-            ModelAndView view = null;
-            switch (buttonSubmitted) {
-                case "1":
-                    view = new ModelAndView("redirect:/payments");
-                    break;
-                case "2":
-                    view = new ModelAndView("redirect:/payments/edit/" + paymentId);
-                    break;
-                case "3":
-                    view = new ModelAndView("redirect:/payments/add");
-                    break;
-            }
-            return view;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        Payment currentPayment = pfmContext.getInstance().getPaymentSet().GetById(paymentId);
+        PaymentData paymentDataObject = new PaymentData();
+        paymentDataObject.setActive("1".equals(params.isPaymentActive()));
+        paymentDataObject.setAmount(params.getPaymentAmount());
+        paymentDataObject.setCategory(params.getPaymentCategory());
+        paymentDataObject.setDate(currentPayment.getDate());
+        paymentDataObject.setDescription(params.getPaymentDescription());
+        context.getPaymentSet()
+                .Edit(paymentId, paymentDataObject);
+        String buttonSubmitted = request.getParameter("submit-button");
+        ModelAndView view = null;
+        switch (buttonSubmitted) {
+            case "1":
+                view = new ModelAndView("redirect:/payments");
+                break;
+            case "2":
+                view = new ModelAndView("redirect:/payments/edit/" + paymentId);
+                break;
+            case "3":
+                view = new ModelAndView("redirect:/payments/add");
+                break;
+        }
+        return view;
     }
 }

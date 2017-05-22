@@ -27,11 +27,9 @@
                         <spring:url var = "categories-add" value='/categories/add' />
                         <spring:url var = "types" value='/types' />
                         <spring:url var = "payments" value='/payments' />
-                        <spring:url var = "categoryBudget" value='/categoryBudget' />
-                        <spring:url var = "categoryBudget-add" value='/categoryBudget/add' />
+                        <spring:url var = "categoryBudget" value='/userBudget' />
                         <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
-
                             <li><a class="animation" href="${register}">Регистрация</a></li>
                             <li><a class="animation" href="${login}">Вход</a></li>
                             </c:if>
