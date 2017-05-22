@@ -57,9 +57,9 @@ public class PaymentCategoriesController {
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        List<ColumnOption> options = new ArrayList<ColumnOption>();
+        List<ColumnSettingsObject> columnsList = new ArrayList<>();
+        List<TableWhereObject> whereList = new ArrayList<>();
+        List<ColumnOption> options = new ArrayList<>();
         columnsList.add(new ColumnSettingsObject("pcatActive", "Активност", "string", true, false));
         columnsList.add(new ColumnSettingsObject("pcatName", "Име", "string", true, false));
         columnsList.add(new ColumnSettingsObject("pcatDescription", "Описание", "string", true, true));

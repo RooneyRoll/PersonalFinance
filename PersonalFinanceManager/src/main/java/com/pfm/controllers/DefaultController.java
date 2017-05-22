@@ -28,9 +28,4 @@ public class DefaultController {
             List<PaymentType> list = context.getPaymentTypeSet().GetAll();
         return "home";
     }
-    
-
-    
-    
-    
 }

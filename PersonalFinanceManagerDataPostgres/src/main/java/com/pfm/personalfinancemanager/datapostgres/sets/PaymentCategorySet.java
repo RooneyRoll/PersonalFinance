@@ -66,7 +66,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             List<PaymentTypes> typesList = q1.list();
             PaymentCategories paymentEntity = new PaymentCategories();
             paymentEntity.setPcatActive(DtoData.isActive());
-            paymentEntity.setPcatDescription(DtoData.getDescription());;
+            paymentEntity.setPcatDescription(DtoData.getDescription());
             paymentEntity.setPcatName(DtoData.getName());
             paymentEntity.setPcatUser(resultList.get(0));
             paymentEntity.setPcatType(typesList.get(0));

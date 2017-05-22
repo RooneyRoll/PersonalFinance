@@ -13,15 +13,8 @@ import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Table;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -65,77 +59,42 @@ public class DataGridDataManager {
             Query q = this.buildQuery(session, params, true);
             List<Serializable> allResults = query.list();
             List<Serializable> resultList = q.list();
-            List<List<String>> resultArray = new ArrayList<List<String>>();
-
+            List<List<String>> resultArray = new ArrayList<>();
             for (Serializable serializable : resultList) {
                 Field[] fields = cls.getDeclaredFields();
-                List<String> innerResult = new ArrayList<String>();
+                List<String> innerResult = new ArrayList<>();
                 for (GridCacheColumnObject column : cache.getColumns()) {
                     if (!column.isOptionsColumn()) {
                         for (Field field : fields) {
                             field.setAccessible(true);
                             String cachedFieldName = column.getColumnName();
-                            Field sourceEntityField = null;
-                            String rootEntityField = null;
-                            Field parentEntityField = null;
+                            String rootEntityField;
                             if (cachedFieldName.contains(".")) {
                                 String[] innerObjects = cachedFieldName.split("\\.");
                                 rootEntityField = innerObjects[0];
-                                int num = 0;
-                                Class innerObjectType;
-                                Class currentEntity = cls;
-                                for (String innerObject : innerObjects) {
-                                    if (num < innerObjects.length - 1) {
-                                        innerObjectType = currentEntity.getDeclaredField(innerObjects[num]).getType();
-                                        parentEntityField = currentEntity.getDeclaredField(innerObjects[num]);
-                                        currentEntity = innerObjectType;
-                                        sourceEntityField = innerObjectType.getDeclaredField(innerObjects[num + 1]);
-                                        num++;
-                                    }
-                                }
                             } else {
                                 rootEntityField = cachedFieldName;
-                                sourceEntityField = cls.getDeclaredField(cachedFieldName);
                             }
                             if (!field.getName().equals(rootEntityField)) {
                                 continue;
                             }
                             String value = "";
                             if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                Object innerObject = field.get(serializable);
-                                System.out.println(field.getDeclaringClass() + "--class");
-                                System.out.println(serializable.toString() + "--serializable");
-                                Class innerObjectType = field.getType();
-                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
-                                inner.setAccessible(true);
-                                value = inner.get(innerObject).toString();
+                                String[] innerObjects = cachedFieldName.split("\\.");
+                                Field currentField;
+                                Class currentEntity = cls;
+                                Object valueHolder = serializable;
+                                for (String innerObject : innerObjects) {
+                                    currentField = currentEntity.getDeclaredField(innerObject);
+                                    currentField.setAccessible(true);
+                                    valueHolder = currentField.get(valueHolder);
+                                    currentEntity = valueHolder.getClass();
+                                }
+                                value = valueHolder.toString();
                             } else {
                                 value = field.get(serializable).toString();
                             }
                             innerResult.add(value);
-                            /*/String columnName = "";
-                            if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                columnName = innerObjects[0];
-                            } else {
-                                columnName = column.getColumnName();
-                            }
-                            if (!field.getName().equals(columnName)) {
-                                continue;
-                            }
-                            String value = "";
-                            if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = column.getColumnName().split("\\.");
-                                Object innerObject = field.get(serializable);
-                                Class innerObjectType = field.getType();
-                                Field inner = innerObjectType.getDeclaredField(innerObjects[1]);
-                                inner.setAccessible(true);
-                                value = inner.get(innerObject).toString();
-                            } else {
-                                value = field.get(serializable).toString();
-                            }                             
-                            innerResult.add(value);*/
                         }
                     }
                 }
@@ -145,14 +104,14 @@ public class DataGridDataManager {
             session.close();
             factory.close();
             Gson gson = new Gson();
-            DataGridResponseObject<Serializable> resp = new DataGridResponseObject<Serializable>();
+            DataGridResponseObject<Serializable> resp = new DataGridResponseObject<>();
             resp.setData(resultArray);
             resp.setDraw(params.getDraw());
             resp.setRecordsFiltered(itemsCount);
             resp.setRecordsTotal(itemsCount);
             String json = gson.toJson(resp);
             return json;
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchFieldException | SecurityException | ParseException | HibernateException ex) {
             session.close();
             factory.close();
             System.err.println("Initial SessionFactory creation failed." + ex);
@@ -216,7 +175,6 @@ public class DataGridDataManager {
                 iter++;
             }
         }
-        System.out.println(statement);
         return statement;
     }
 
@@ -272,7 +230,6 @@ public class DataGridDataManager {
             if (iteration > 0) {
                 statement += " and ";
             }
-            //System.out.println(iteration+"---"+column);
             String sign = determineParamCompareSign(compareType, columnType);
             if ("bool".equals(columnType)) {
                 statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();

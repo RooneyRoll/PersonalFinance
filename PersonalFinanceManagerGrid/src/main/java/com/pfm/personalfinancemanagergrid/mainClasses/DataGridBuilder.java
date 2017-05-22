@@ -32,11 +32,10 @@ public class DataGridBuilder {
     private String table;
     private String jsonFieldsVariable;
     private String columnFilters;
-    private String initialWhereJson;
     private TableSettingsObject tableSettings;
     private ColumnOptionsObject columnOptions;
     private ICacheProvider cacheProvider;
-    private List<ColumnSettingsObject> columnsSettings = new ArrayList<ColumnSettingsObject>();
+    private List<ColumnSettingsObject> columnsSettings = new ArrayList<>();
 
     public String getGridHtml() {
         return gridHtml;
@@ -52,7 +51,7 @@ public class DataGridBuilder {
         UUID id = UUID.randomUUID();
         cacheProvider.setCache(id.toString(), cache);
         buildFieldsJson(cache);
-        this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
+        this.appendToGridHtml("<table id='grid-" + table + "' class='table table-striped table-bordered' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
         int iteration = 0;
@@ -139,12 +138,14 @@ public class DataGridBuilder {
                 + "         'processing': true,\n"
                 + "         'responsive': true,\n"
                 + "         'serverSide': true,\n"
+                + "         'footer': true,\n"
                 + "         'paging': true,\n"
-                + "         'lengthMenu': [ 5, 10, 15, 20, 25 ],\n"
+                + "         'select': false,\n"
+                + "         'lengthMenu': [ 5, 10, 15],\n"
                 + "         'searching': true,\n"
                 + "         'bLengthChange': false,\n"
                 + "         'columns': [\n"
-                + columnsDeclaration + "\n"
+                +               columnsDeclaration + "\n"
                 + "          ],\n"
                 + "         'language':{\n"
                 + "             'sProcessing':   'Обработка на резултатите...',\n"
@@ -222,9 +223,7 @@ public class DataGridBuilder {
                 + "         $('#grid-" + table + " th:not(.options)').each( function (key,val) {\n"
                 + "             var title = $('#grid-" + table + " th').eq( $(this).index()).text();\n"
                 + "             var jsonFields = " + this.jsonFieldsVariable + ";\n"
-                + "console.log(jsonFields);"
                 + "             var currentField = getCurrentFieldByNum(key,jsonFields);"
-                + "console.log(currentField);"
                 + "             if(currentField != null && currentField.search == true){\n"
                 + "                 var filter = buildFilterByType(currentField.type,currentField.col,title);\n"
                 + "                 $(this).append(filter);\n"
@@ -261,6 +260,7 @@ public class DataGridBuilder {
                 + "         $('.dataTable thead th').unbind('click.DT');"
                 + "         $('.dataTable thead th:not(.options)').click(function(e) {\n"
                 + "             var clicked = $(e.target);"
+                + "             console.log(clicked);"
                 + "             if (!($(e.target).is('th' ))){ \n"
                 + "             } else { \n"
                 + "                 var columnIndex = $(this).find('.filter-input input').attr('data-column');\n"
@@ -271,14 +271,13 @@ public class DataGridBuilder {
                 + "                 }else{\n"
                 + "                     orderType = 'asc';\n"
                 + "                 }\n"
-                + "                 console.log(orderType);"
                 + "                 table\n"
                 + "                     .order( [ columnIndex, orderType ] )\n"
                 + "                     .draw();"
                 + "             }\n"
                 + "         });"
                 + "         $('.filter-holder select').each(function(){\n"
-                + "             $(this).select2({minimumResultsForSearch: -1});"
+                + "             $(this).select2({minimumResultsForSearch: -1,\"theme\": \"classic\"});"
                 + "             $('.filter-type-select input').on('change', function(e) {\n"
                 + "                 table \n"
                 + "                     .column($(this).attr('data-column'))\n"

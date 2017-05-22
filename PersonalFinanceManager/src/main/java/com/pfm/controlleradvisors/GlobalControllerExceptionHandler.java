@@ -5,11 +5,16 @@
  */
 package com.pfm.controlleradvisors;
 
+import com.pfm.data.context.IpfmContext;
+import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.entities.PaymentType;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.exceptions.UserRegisterException;
+import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,7 +46,11 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(PaymentCategoryAddException.class)
     public ModelAndView handlePaymentCategoryAdd(PaymentCategoryAddException ex) {
         ModelAndView mav = new ModelAndView();
+        IpfmContext context = pfmContext.getInstance();
+        List<PaymentType> types = context
+                .getPaymentTypeSet().GetAll();
         mav.addObject("errorMessage", "Вече съществува категория с това име.");
+        mav.addObject("types",types);
         mav.setViewName("categories-add");
         return mav;
     }
@@ -49,6 +58,12 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(PaymentCategoryEditException.class)
     public ModelAndView PaymentCategoryEditException(PaymentCategoryEditException ex) {
         ModelAndView mav = new ModelAndView();
+        IpfmContext context = pfmContext.getInstance();
+        List<PaymentType> types = context
+                .getPaymentTypeSet().GetAll();
+        //PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
+        //mav.addObject("category", category);
+        mav.addObject("types", types);
         mav.addObject("errorMessage", "Вече съществува категория с това име.");
         mav.setViewName("categories-add");
         return mav;
