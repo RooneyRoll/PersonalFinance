@@ -140,7 +140,7 @@ public class DataGridBuilder {
                 + "         'responsive': true,\n"
                 + "         'serverSide': true,\n"
                 + "         'paging': true,\n"
-                + "         'lengthMenu': [ 5, 10, 15, 20, 25 ],\n"
+                + "         'lengthMenu': [ 10, 15, 20],\n"
                 + "         'searching': true,\n"
                 + "         'bLengthChange': false,\n"
                 + "         'columns': [\n"
