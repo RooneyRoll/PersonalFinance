@@ -52,7 +52,7 @@ public class DataGridBuilder {
         UUID id = UUID.randomUUID();
         cacheProvider.setCache(id.toString(), cache);
         buildFieldsJson(cache);
-        this.appendToGridHtml("<table id='grid-" + table + "' class='cell-border stripe' cellspacing='0' width='100%'><thead><tr>");
+        this.appendToGridHtml("<table id='grid-" + table + "' class='table table-striped table-bordered' cellspacing='0' width='100%'><thead><tr>");
         String columnsDeclaration = "";
         int columnsLength = this.columnsSettings.size();
         int iteration = 0;
@@ -261,6 +261,7 @@ public class DataGridBuilder {
                 + "         $('.dataTable thead th').unbind('click.DT');"
                 + "         $('.dataTable thead th:not(.options)').click(function(e) {\n"
                 + "             var clicked = $(e.target);"
+                + "             console.log(clicked);"
                 + "             if (!($(e.target).is('th' ))){ \n"
                 + "             } else { \n"
                 + "                 var columnIndex = $(this).find('.filter-input input').attr('data-column');\n"
@@ -278,7 +279,7 @@ public class DataGridBuilder {
                 + "             }\n"
                 + "         });"
                 + "         $('.filter-holder select').each(function(){\n"
-                + "             $(this).select2({minimumResultsForSearch: -1});"
+                + "             $(this).select2({minimumResultsForSearch: -1,\"theme\": \"classic\"});"
                 + "             $('.filter-type-select input').on('change', function(e) {\n"
                 + "                 table \n"
                 + "                     .column($(this).attr('data-column'))\n"

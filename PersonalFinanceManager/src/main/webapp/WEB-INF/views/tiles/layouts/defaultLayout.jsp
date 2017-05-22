@@ -7,12 +7,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
+        <meta i>
         <title><tiles:getAsString name="title" /></title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> </link>
         <link href="<c:url value='/resources/js/icheck-1.x/skins/line/green.css'/>" rel="stylesheet" ></link>
         <link href="<c:url value='/resources/js/icheck-1.x/skins/line/grey.css'/>" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"  type="text/css" />
-        <link href="<c:url value='/resources/js/DataTables-1.10.13/media/css/jquery.dataTables.css' />" rel="stylesheet" ></link> 
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" ></link> 
+        <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/flatpickr/flatpickr.min.css' />" rel="stylesheet" type="text/css"></link>
         <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link> 
@@ -28,6 +30,7 @@
         <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
         <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.js' />"></script>
+        <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/dataTables.bootstrap4.min.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.js' />"></script>
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.min.js' />"></script>

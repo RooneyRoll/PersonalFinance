@@ -56,9 +56,9 @@ public class PaymentTypesController {
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        List<ColumnSettingsObject> columnsList = new ArrayList<ColumnSettingsObject>();
-        List<TableWhereObject> whereList = new ArrayList<TableWhereObject>();
-        List<ColumnOption> options = new ArrayList<ColumnOption>();
+        List<ColumnSettingsObject> columnsList = new ArrayList<>();
+        List<TableWhereObject> whereList = new ArrayList<>();
+        List<ColumnOption> options = new ArrayList<>();
         columnsList.add(new ColumnSettingsObject("ptypeActive", "Активност", "string", true,false));
         columnsList.add(new ColumnSettingsObject("ptypeName", "Име", "string", true,true));
         columnsList.add(new ColumnSettingsObject("ptypeDescription", "Описание", "string", true,true));

@@ -13,15 +13,8 @@ import com.pfm.personalfinancemanagergrid.cache.GridCacheTableWhereObject;
 import com.pfm.personalfinancemanagergrid.cache.ICacheProvider;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.ColumnRequestObject;
 import com.pfm.personalfinancemanagergrid.classes.requestObjects.DataGridResponseObject;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Table;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -75,10 +69,10 @@ public class DataGridDataManager {
                         for (Field field : fields) {
                             field.setAccessible(true);
                             String cachedFieldName = column.getColumnName();
-                            String rootEntityField;                                                   
+                            String rootEntityField;
                             if (cachedFieldName.contains(".")) {
                                 String[] innerObjects = cachedFieldName.split("\\.");
-                                rootEntityField = innerObjects[0];                                
+                                rootEntityField = innerObjects[0];
                             } else {
                                 rootEntityField = cachedFieldName;
                             }
@@ -87,11 +81,11 @@ public class DataGridDataManager {
                             }
                             String value = "";
                             if (column.getColumnName().contains(".")) {
-                                String[] innerObjects = cachedFieldName.split("\\.");        
+                                String[] innerObjects = cachedFieldName.split("\\.");
                                 Field currentField;
                                 Class currentEntity = cls;
                                 Object valueHolder = serializable;
-                                for (String innerObject : innerObjects) {                                    
+                                for (String innerObject : innerObjects) {
                                     currentField = currentEntity.getDeclaredField(innerObject);
                                     currentField.setAccessible(true);
                                     valueHolder = currentField.get(valueHolder);
@@ -101,7 +95,7 @@ public class DataGridDataManager {
                             } else {
                                 value = field.get(serializable).toString();
                             }
-                            innerResult.add(value);                           
+                            innerResult.add(value);
                         }
                     }
                 }
@@ -111,14 +105,14 @@ public class DataGridDataManager {
             session.close();
             factory.close();
             Gson gson = new Gson();
-            DataGridResponseObject<Serializable> resp = new DataGridResponseObject<Serializable>();
+            DataGridResponseObject<Serializable> resp = new DataGridResponseObject<>();
             resp.setData(resultArray);
             resp.setDraw(params.getDraw());
             resp.setRecordsFiltered(itemsCount);
             resp.setRecordsTotal(itemsCount);
             String json = gson.toJson(resp);
             return json;
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchFieldException | SecurityException | ParseException | HibernateException ex) {
             session.close();
             factory.close();
             System.err.println("Initial SessionFactory creation failed." + ex);

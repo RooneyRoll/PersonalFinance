@@ -1,11 +1,32 @@
-table.dataTable .select2-container--default .select2-selection--single{
+.select2-container--classic .select2-selection--single{
     border-radius:0;
-    border-left:0;
-    border-right:0;
-    border-bottom:0;
+    background:none;
+    border-color:#ddd;
 }
+
+.select2-container--classic .select2-selection--single .select2-selection__arrow{
+    border-radius:0;
+    background:#ddd;
+    border-color:#ddd;
+}
+
+.select2-results__option {
+    -moz-user-select: none;
+    padding: 4px 10px;
+}
+
+.select2-container--classic.select2-container--open.select2-container--below .select2-selection--single{
+    background:none;
+    border-bottom:1px solid #5897fb;
+}
+
+.select2-dropdown {
+    border-radius:0;
+}
+
 table.dataTable .select2-container{
     min-width:100%;
+    font-weight: normal;
 }
 .filter-holder{
     display:inline-block;
@@ -26,9 +47,10 @@ table.dataTable .select2-container{
 table.dataTable thead th .filter-input input[type="text"]{
     width:100%;
     height:30px;
-    border:1px solid #aaa;
+    border:1px solid #ddd;
     padding:0px 10px;
     border-left:0;
+    font-weight:normal;
     border-right:0;
     border-bottom:0;
     font-family: FontAwesome, Roboto;
@@ -44,8 +66,9 @@ table.dataTable thead .filter-input .flatpickr a{
     box-sizing:border-box;
     padding:6px;
     width:30px;
-    border-top:1px solid #aaa;
-    border-left:1px solid #aaa;
+    height:30px;
+    border-top:1px solid #ddd;
+    border-left:1px solid #ddd;
 }
 table.dataTable thead .filter-input .flatpickr .toggle-button{
     color:#6DB33F;
@@ -54,8 +77,6 @@ table.dataTable thead .filter-input .flatpickr .remove-button{
     color:#e74c3c;
 }
 table.dataTable.no-footer {
-    border-left:1px solid #aaa;
-    border-right:1px solid #aaa;
     box-sizing:border-box;
     background-color:#fff;
 }
@@ -66,6 +87,8 @@ table.dataTable thead th,
 table.dataTable thead td {
     padding:0;
     padding-top:5px;
+    vertical-align: middle;
+    text-align:center;
 }
 
 table.dataTable th{
@@ -91,12 +114,12 @@ table.dataTable thead .sorting{
     display: none;
 } 
 table.dataTable thead th.options{
-   padding: 0 20px; 
+    padding: 0 20px; 
 }
 table.dataTable .grid-option{
-  display:inline-block;  
-  font-size:20px;
-  
+    display:inline-block;  
+    font-size:20px;
+
 }
 table.dataTable .grid-option a{
     color: #34302D;
@@ -106,4 +129,40 @@ table.dataTable .grid-option a:hover{
 }
 table.dataTable .grid-option:not(:last-child){
     margin-right:5px;
+}
+
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > td.sorting_asc,
+table.dataTable thead > tr > td.sorting_desc,
+table.dataTable thead > tr > td.sorting {
+    padding-right:0;
+}
+
+table.dataTable thead .sorting::after,
+table.dataTable thead .sorting_asc::after,
+table.dataTable thead .sorting_desc::after,
+table.dataTable thead .sorting_asc_disabled::after,
+table.dataTable thead .sorting_desc_disabled::after,
+table.dataTable thead .sorting::before,
+table.dataTable thead .sorting_asc::before, 
+table.dataTable thead .sorting_desc::before,
+table.dataTable thead .sorting_asc_disabled::before,
+table.dataTable thead .sorting_desc_disabled::before{
+    top:5;
+}
+
+.dataTables_wrapper > div.row{
+    width:100%;
+    min-width:100%;
+    box-sizing:border-box;
+    display:inline-block;
+    margin:0;
+}
+.dataTables_wrapper > div.row > div{
+    width:100%;
+    min-width:100%;
+    margin:0;
+    padding:0;
 }
