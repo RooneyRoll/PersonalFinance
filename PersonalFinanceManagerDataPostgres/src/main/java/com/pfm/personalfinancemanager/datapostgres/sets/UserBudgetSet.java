@@ -13,9 +13,11 @@ import com.pfm.personalfinancemanager.datapostgres.entities.UserBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -93,7 +95,7 @@ public class UserBudgetSet extends BaseSet<UserBudgets, UserBudget, UserBudgetDa
         Date now = new Date();
         UserBudget budget;
         try (Session session = this.getSessionFactory().openSession()) {
-            Query q = session.createQuery("From UserBudgets b where b.ubUser = :user and b.ubFrom < :from and b.ubTo > :to")
+            Query q = session.createQuery("From UserBudgets b where b.ubUser.userUserid = :user and b.ubFrom < :from and b.ubTo > :to")
                     .setParameter("user", userId)
                     .setParameter("from", now)
                     .setParameter("to", now);
@@ -101,4 +103,24 @@ public class UserBudgetSet extends BaseSet<UserBudgets, UserBudget, UserBudgetDa
             return convertEntityToDto(resultList.get(0));
         }
     }
+
+    @Override
+    public UserBudget getBudgetByDateAndUserId(UUID userId, Date date) {
+        UserBudget budget;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            Query q = session.createQuery("From UserBudgets b where b.ubUser.userUserid = :user and MONTH(b.ubFrom) = :month and YEAR(b.ubFrom) = :year and MONTH(b.ubTo) = :month and YEAR(b.ubTo) = :year")
+                    .setParameter("user", userId)
+                    .setParameter("year", year)
+                    .setParameter("month", month);
+            List<UserBudgets> resultList = q.list();
+            if (resultList.isEmpty())
+                throw new EntityNotFoundException("Budget not found!");
+            return convertEntityToDto(resultList.get(0));
+        }
+    }
+    
 }

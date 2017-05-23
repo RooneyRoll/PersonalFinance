@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="header">
     <div class="header-content">
         <div class="header-content-left">
@@ -27,7 +28,11 @@
                         <spring:url var = "categories-add" value='/categories/add' />
                         <spring:url var = "types" value='/types' />
                         <spring:url var = "payments" value='/payments' />
-                        <spring:url var = "categoryBudget" value='/userBudget' />
+                        <jsp:useBean id="now" class="java.util.Date"/>    
+                        <fmt:formatDate value="${now}" dateStyle="long"/>
+                        <fmt:formatDate value="${now}" var="year" pattern="yyyy" />
+                        <fmt:formatDate value="${now}" var="month" pattern="MM" />
+                        <spring:url var = "categoryBudget" value='/userBudget?year=${year}&month=${month}' />
                         <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
                             <li><a class="animation" href="${register}">Регистрация</a></li>

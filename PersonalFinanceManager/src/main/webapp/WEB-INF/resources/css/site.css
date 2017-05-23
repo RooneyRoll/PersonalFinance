@@ -253,6 +253,26 @@ html body{
     display:inline-block;
 }
 
+.input-group + .input-group{
+    margin-top:10px;
+}
+
+.site-content .content-container .form-container .form-content .partial-contentainer .input-group{
+    display:inline-block;
+    width:100%;
+    padding-left:5px;
+    border-left:2px solid #6DB33F;
+}
+
+.site-content .content-container .form-container .form-content .partial-contentainer .input-group .input-group-title-holder{
+    display:inline-block;
+    width:100%;
+    text-align:left;
+    font-size:20px;
+    /*border-bottom:2px solid #6DB33F;*/
+    padding-bottom:5px;
+}
+
 .site-content .content-container .form-container .form-content form{
     display:inline-block;   
     width:100%
