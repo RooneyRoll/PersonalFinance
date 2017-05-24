@@ -42,7 +42,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a class="animation" href="${categoryBudget}">Бюджет</a></li>
+                            <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
+                                    <li>
+                                        <a class="animation" href="${categories}">Графики</a>
+                                    </li>
+                                </ul></li>
                             <li><a class="animation" href="javascript:formSubmit()">Изход</a></li>
                             </c:if>
                     </ul>

@@ -38,8 +38,7 @@
                 insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
             });
         });
-        $("#categories-select").select2();
-        $("#types-select").select2();
+        $("#categories-select").select2({"theme": "classic"});
     });
 </script>
 <div class="form-container">
@@ -56,7 +55,7 @@
                 <div class="input-holder">
                     <input type="text" name="paymentAmount" placeholder="сума" id="password" value="${payment.getAmount()}"/>
                 </div>
-            </div><div class="input-container size-2">
+            </div><div class="input-container size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         Дата на плащане<span class="required-tip">&nbsp;*</span>
@@ -65,7 +64,7 @@
                 <div class="input-holder">
                     <input type="text" readonly disabled name="paymentDate" placeholder="Дата на плащане" id="password" value="${payment.getDate()}"/>
                 </div>
-            </div><div class="input-container size-2">
+            </div><div class="input-container size-2 side-padding-left">
                 <div class="input-title-holder no-select">
                     <span> 
                         Активност

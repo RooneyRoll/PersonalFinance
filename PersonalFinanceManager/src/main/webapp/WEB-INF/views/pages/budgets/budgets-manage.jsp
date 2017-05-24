@@ -4,44 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
-        var parent = $("#budgetMonthPicker").parent();
-        var parent1 = $("#copyBudgetMonthPicker").parent();
-        var copyDatepicker = $('#copyBudgetMonthPicker').datepicker({
-            "inline": true,
-            "format": "yyyy/mm",
-            "container": parent1,
-            "autoPick": true,
-            "language": "bg-BG"
-        });
-        var datepicker = $('#budgetMonthPicker').datepicker({
-            "inline": true,
-            "format": "yyyy/mm",
-            "container": parent,
-            "autoPick": true,
-            "language": "bg-BG"
-        });
-        datepicker.datepicker("update");
-        $("#budget-manage-form").validate({
-            errorPlacement: function (error, element) {
-
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass("error");
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass("error");
-            }
-        });
-        $(".category-input").each(function (key, val) {
-            var input = $(val);
-            input.rules("add", {
-                required: true,
-                number: true,
-                messages: {
-                    number: true
-                }
-            });
-        });
         function getBudgetData(month, year) {
             var data = JSON.stringify({"month": month, "year": year});
             $.ajax({
@@ -75,21 +37,87 @@
                 }
             });
         }
+        
+        $('.tabs-container').pwstabs({
+            effect: 'scale',
+            defaultTab: 1,
+            containerWidth: '100%',
+            tabsPosition: 'horizontal',
+            horizontalPosition: 'top',
+            verticalPosition: 'left',
+            responsive: true,
+            theme: 'pws_theme_green',
+            rtl: false,
+            onBeforeFirstInit: function () {},
+            onAfterFirstInit: function () {
+                var parent = $("#budgetMonthPicker").parent();
+                var parent1 = $("#copyBudgetMonthPicker").parent();
+                var copyDatepicker = $('#copyBudgetMonthPicker').datepicker({
+                    inline: true,
+                    format: "yyyy/mm",
+                    container: parent1,
+                    autoPick: true,
+                    language: "bg-BG"
+                });
+                var datepicker = $('#budgetMonthPicker').datepicker({
+                    inline: true,
+                    format: "yyyy/mm",
+                    container: parent,
+                    autoPick: true,
+                    language: "bg-BG"
+                });
+                datepicker.datepicker("update");
+                $("#budget-manage-form").validate({
+                    errorPlacement: function (error, element) {
 
-        $('#budgetMonthPicker').change(function () {
-            var date = $(this).val();
-            var inputs = date.split("/");
-            var year = inputs[0];
-            var month = inputs[1];
-            getBudgetData(month, year);
-            datepicker.datepicker("update");
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        $(element).addClass("error");
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass("error");
+                    }
+                });
+                $(".category-input").each(function (key, val) {
+                    var input = $(val);
+                    input.rules("add", {
+                        required: true,
+                        number: true,
+                        messages: {
+                            number: true
+                        }
+                    });
+                });
+                
+                $('#budgetMonthPicker').change(function () {
+                    var date = $(this).val();
+                    var inputs = date.split("/");
+                    var year = inputs[0];
+                    var month = inputs[1];
+                    getBudgetData(month, year);
+                    datepicker.datepicker("update");
+                });
+                $('#copyBudgetMonthPicker').change(function () {
+                    var date = $(this).val();
+                    var inputs = date.split("/");
+                    var year = inputs[0];
+                    var month = inputs[1];
+                    getBudgetData(month, year);
+                    copyDatepicker.datepicker("update");
+                });
+
+                var date = $("#budgetMonthPicker").val();
+                var inputs = date.split("/");
+                var year = inputs[0];
+                var month = inputs[1];
+                getBudgetData(month, year);
+            },
+            onBeforeInit: function () {},
+            onAfterInit: function () {},
+            onBeforeChange: function () {},
+            onAfterChange: function () {}
+
         });
-        var date = $("#budgetMonthPicker").val();
-        var inputs = date.split("/");
-        var year = inputs[0];
-        var month = inputs[1];
-        getBudgetData(month,year);
-
     });
 </script>
 <div class="form-container">
@@ -97,23 +125,29 @@
         <div class="form-content">
             <form id="budget-manage-form" method="post">
                 <div class="partial-contentainer size-2 side-padding">
-                    <div class="input-container size-2">
-                        <div class="input-title-holder no-select">
-                            <span> 
-                                Бюджет за месец:
-                            </span>
-                        </div>
-                        <div class="input-holder">
-                            <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
-                        </div>
-                    </div><div class="input-container size-2">
-                        <div class="input-title-holder no-select">
-                            <span> 
-                                Копиране от месец:
-                            </span>
-                        </div>
-                        <div class="input-holder">
-                            <input data-toggle="datepicker" type="hidden" name="budgetCopyDate" id="copyBudgetMonthPicker">
+                    <div class="tabs-container">
+                        <div data-pws-tab="anynameyouwant1" data-pws-tab-name="<i class='fa fa-calendar' aria-hidden='true'></i>&nbsp  Бюджет за месец">
+                            <div class="input-container size-1">
+                                <div class="input-title-holder no-select">
+                                    <span> 
+                                        Бюджет за месец
+                                    </span>
+                                </div>
+                                <div class="input-holder">
+                                    <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
+                                </div>
+                            </div>
+                        </div><div data-pws-tab="anynameyouwant2" data-pws-tab-name="<i class='fa fa-files-o' aria-hidden='true'></i>&nbsp Копиране от месец">
+                            <div class="input-container size-1">
+                                <div class="input-title-holder no-select">
+                                    <span> 
+                                        Копиране от месец
+                                    </span>
+                                </div>
+                                <div class="input-holder">
+                                    <input data-toggle="datepicker" type="hidden" name="budgetCopyDate" id="copyBudgetMonthPicker">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div><div class="partial-contentainer size-2 side-padding">
@@ -124,23 +158,16 @@
                                 ${type.getName()}
                             </span>
                         </div>
-                        <c:forEach items="${categories}" var="category">
-                            <c:if test="${type.getId() == category.getType()}">
-                                <div class="input-container size-1">
+                        <c:forEach items="${categories}" var="category"><c:if test="${type.getId() == category.getType()}"><div class="input-container size-2 side-padding">
                                     <div class="input-title-holder no-select">
-                                        <span> 
-                                            ${category.getName()}:
-                                        </span>
+                                        <span>${category.getName()}:</span>
                                     </div>
-                                    <div class="input-holder">
-                                        <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
-                                    </div>
-                                </div>
-                            </c:if>
-                        </c:forEach>
+                                        <div class="input-holder">
+                                            <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
+                                        </div>
+                                </div></c:if></c:forEach>
                     </div>
-                </c:forEach>
-            </div>
+                </c:forEach></div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="buttons-container size-1 side-padding">
                 <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>

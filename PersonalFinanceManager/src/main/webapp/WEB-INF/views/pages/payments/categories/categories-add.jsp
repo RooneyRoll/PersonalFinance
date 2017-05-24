@@ -20,7 +20,7 @@
                 $(element).removeClass("error");
             }
         });
-        $("#types-select").select2();
+        $("#types-select").select2({"theme": "classic"});
     });
 </script>
 <div class="form-container">

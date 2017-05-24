@@ -34,6 +34,14 @@ html body .site-content#site-content .size-3{
     padding:0 10px;
 }
 
+.side-padding-left{
+    padding-left:10px;
+}
+
+.side-padding-right{
+    padding-right:10px;
+}
+
 .required-field-text{
     color:#c0392b;
     font-weight:bold;
@@ -251,6 +259,7 @@ html body{
 .site-content .content-container .form-container .form-content .partial-contentainer{
     width:100%;
     display:inline-block;
+    margin-bottom:10px;
 }
 
 .input-group + .input-group{
@@ -409,6 +418,27 @@ html body{
 }
 /*error pages end*/
 /*plugins css overwrite*/
+.select2-container--classic .select2-selection--single{
+    border-radius:0;
+}
+
+.select2-container--classic .select2-selection--single .select2-selection__arrow{
+    border-radius:0;
+}
+
+.select2-results__option {
+    -moz-user-select: none;
+    padding: 4px 10px;
+}
+
+.select2-container--classic.select2-container--open.select2-container--below .select2-selection--single{
+    border-bottom:1px solid #5897fb;
+}
+
+.select2-dropdown {
+    border-radius:0;
+}
+
 .site-content .datepicker-container.datepicker-inline{
     width:100%;
     box-sizing:border-box;
@@ -447,6 +477,23 @@ html body{
     background-color: #e6f2ff;
     border-left: 1px solid #e6f2ff;
     border-right: 1px solid #e6f2ff;
+}
+
+.pws_tabs_container ul.pws_tabs_controll li a {
+    margin-right: 0px;
+}
+
+.pws_tabs_container.pws_theme_green ul.pws_tabs_controll li a.pws_tab_active {
+    background-color: #6DB33F;
+    color:#fff;
+}
+
+.pws_tabs_container.pws_theme_green ul.pws_tabs_controll li a:hover {
+    background-color: #6DB33F;
+}
+
+.pws_tabs_container.pws_theme_green ul.pws_tabs_controll li a {
+    background-color: #34302D;
 }
 
 .site-content .select2{
@@ -667,6 +714,18 @@ html body{
 /*plugins css overwrite end*/
 /* mobile styles */
 @media (max-width:768px){
+    .side-padding{
+        padding:0px;
+    }
+
+    .side-padding-left{
+        padding-left:0px;
+    }
+
+    .side-padding-right{
+        padding-right:0px;;
+    }
+
     .site-content .select2{
         min-width:100%;
     }

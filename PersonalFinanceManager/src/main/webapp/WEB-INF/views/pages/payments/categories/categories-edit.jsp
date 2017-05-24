@@ -38,7 +38,7 @@
                 insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
             });
         });
-        $("#types-select").select2();
+        $("#types-select").select2({"theme": "classic"});
     });
 </script>
 <div class="form-container">
@@ -46,7 +46,7 @@
         <div class="form-content">
             <form id="payment-category-edit-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-2">
+            <div class="input-container size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         Име на категория<span class="required-tip">&nbsp;*</span>
@@ -55,7 +55,7 @@
                 <div class="input-holder">
                     <input type="text" name="categoryName" placeholder="Име" id="password" value="${category.getName()}"/>
                 </div>
-            </div><div class="input-container size-2">
+            </div><div class="input-container size-2 side-padding-left">
                 <div class="input-title-holder no-select">
                     <span> 
                         Активност

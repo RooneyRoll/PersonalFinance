@@ -1,26 +1,26 @@
-.select2-container--classic .select2-selection--single{
+table.dataTable .select2-container--classic .select2-selection--single{
     border-radius:0;
     background:none;
     border-color:#ddd;
 }
 
-.select2-container--classic .select2-selection--single .select2-selection__arrow{
+table.dataTable .select2-container--classic .select2-selection--single .select2-selection__arrow{
     border-radius:0;
     background:#ddd;
     border-color:#ddd;
 }
 
-.select2-results__option {
+table.dataTable .select2-results__option {
     -moz-user-select: none;
     padding: 4px 10px;
 }
 
-.select2-container--classic.select2-container--open.select2-container--below .select2-selection--single{
+table.dataTable .select2-container--classic.select2-container--open.select2-container--below .select2-selection--single{
     background:none;
     border-bottom:1px solid #5897fb;
 }
 
-.select2-dropdown {
+table.dataTable .select2-dropdown {
     border-radius:0;
 }
 
