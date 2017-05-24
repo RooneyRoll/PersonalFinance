@@ -2,21 +2,51 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
+        function getSumOfInputVals(Selector){
+        var sum = 0;    
+            $(Selector+" input").each(function(key,val){
+                var value = $(val).val();
+                console.log(value);
+                if(value !== ""){
+                    sum = sum + parseInt(value);
+                }else{
+                  sum = sum + 0;  
+                }
+            });
+            return sum;
+        }
+        function getInitialSumOfInputVals(){
+            var sum = [];
+            $(".input-group").each(function(key,val){
+                var value = 0;
+                var name = $(val).find(".input-group-title-holder span").text();
+                var inputs = $(val).find("input");
+                $(input).each(function(k,v){
+                    value = value + parseInt($(v).val());
+                });
+                sum.push([name,value]);
+            });
+            return sum;
+        }
         function getBudgetData(month, year) {
+            var JsonResult;
             var data = JSON.stringify({"month": month, "year": year});
             $.ajax({
                 type: "POST",
                 url: "budget",
                 dataType: "json",
                 data: data,
+                async:false,
                 contentType: 'application/json',
                 beforeSend: function (xhr, settings) {
                     var token = $('meta[name="_csrf"]').attr('content');
                     xhr.setRequestHeader('X-CSRF-TOKEN', token);
                 }
             }).done(function (data) {
+                JsonResult = data;
                 if (data.length > 0) {
                     $(data).each(function (key, val) {
                         var id = val.categoryId;
@@ -35,7 +65,10 @@
                         $(value).val(0);
                     });
                 }
+                var array = getInitialSumOfInputVals();
+                chart.series[0].setData(array, true);
             });
+            return JsonResult;
         }
         
         $('.tabs-container').pwstabs({
@@ -88,7 +121,7 @@
                         }
                     });
                 });
-                
+
                 $('#budgetMonthPicker').change(function () {
                     var date = $(this).val();
                     var inputs = date.split("/");
@@ -97,6 +130,7 @@
                     getBudgetData(month, year);
                     datepicker.datepicker("update");
                 });
+                
                 $('#copyBudgetMonthPicker').change(function () {
                     var date = $(this).val();
                     var inputs = date.split("/");
@@ -105,19 +139,83 @@
                     getBudgetData(month, year);
                     copyDatepicker.datepicker("update");
                 });
-
+                var paymentTypes = [];
+                var chart = Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Сравнение (Категории на плащания)'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        labels: {
+                            style: {
+                                fontSize: '14px',
+                                fontFamily: 'Roboto,Aral, sans-serif'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Стойност'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
+                    },
+                    series: [{
+                            name: 'Population',
+                            data: paymentTypes,
+                            dataLabels: {
+                                enabled: true,
+                                rotation: 0,
+                                color: '#FFFFFF',
+                                align: 'right',
+                                format: '{point.y:.1f}', // one decimal
+                                y: 10, // 10 pixels down from the top
+                                style: {
+                                    fontSize: '14px',
+                                    fontFamily: 'Roboto,Arial, sans-serif'
+                                }
+                            }
+                        }]
+                });
+                var selectors = [];
+                <c:forEach items="${paymentTypes}" var="type">
+                    selectors.push({selector:"#group_${type.getId()}",name:"${type.getName()}"});
+                </c:forEach>
+                <c:forEach items="${paymentTypes}" var="type">
+                    $("#group_${type.getId()} input").each(function(key,val){
+                        $(val).keyup(function(){
+                            paymentTypes = [];
+                            $(selectors).each(function(key,val){
+                               paymentTypes.push([val.name,parseInt(getSumOfInputVals(val.selector))]);
+                            });
+                            chart.series[0].setData(paymentTypes, true);
+                        });
+                    });
+                </c:forEach>
+                    
                 var date = $("#budgetMonthPicker").val();
                 var inputs = date.split("/");
                 var year = inputs[0];
                 var month = inputs[1];
-                getBudgetData(month, year);
+                var jsonData = getBudgetData(month, year);
+               
+                
             },
             onBeforeInit: function () {},
             onAfterInit: function () {},
             onBeforeChange: function () {},
             onAfterChange: function () {}
-
         });
+
+
     });
 </script>
 <div class="form-container">
@@ -150,9 +248,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="input-container size-1">
+                        <div class="input-title-holder no-select">
+                            <span> 
+                            </span>
+                        </div>
+                        <div class="input-holder">
+                            <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
                 </div><div class="partial-contentainer size-2 side-padding">
                 <c:forEach items="${paymentTypes}" var="type">
-                    <div class = "input-group">
+                    <div class = "input-group" id='group_${type.getId()}'>
                         <div class="input-group-title-holder">
                             <span> 
                                 ${type.getName()}
@@ -162,11 +269,11 @@
                                     <div class="input-title-holder no-select">
                                         <span>${category.getName()}:</span>
                                     </div>
-                                        <div class="input-holder">
-                                            <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
-                                        </div>
+                                    <div class="input-holder">
+                                        <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
+                                    </div>
                                 </div></c:if></c:forEach>
-                    </div>
+                            </div>
                 </c:forEach></div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="buttons-container size-1 side-padding">
