@@ -10,7 +10,6 @@ import com.pfm.data.entities.Payment;
 import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.sets.IPaymentSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
-import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
 import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
@@ -126,6 +125,11 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
 
     @Override
     public void Delete(UUID id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UUID AddOrUpdate(PaymentData data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

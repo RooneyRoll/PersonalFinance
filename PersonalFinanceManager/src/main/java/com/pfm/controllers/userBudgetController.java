@@ -6,29 +6,32 @@
 package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.data.CategoryBudgetData;
+import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
+import com.pfm.data.entities.UserBudget;
+import com.pfm.data.exceptions.BasicException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -39,8 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class userBudgetController {
 
     @RequestMapping(value = "/userBudget", method = RequestMethod.GET)
-    public ModelAndView index(@RequestParam("year") int year, @RequestParam("month") int month,
-            ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
@@ -52,22 +54,71 @@ public class userBudgetController {
         List<PaymentCategory> categories = context
                 .getPaymentCategorySet()
                 .GetAllActiveCategoriesForUser(user.getId());
-        DateFormat format = new SimpleDateFormat("MM/yyyy");
-        boolean exists = true;
-        try {
-            context.getUserBudgetSet()
-                    .getBudgetByDateAndUserId(user.getId(), format.parse(month + "/" + year));
-        } catch (ParseException ex) {
-            System.out.println("could not parse date.");
-        } catch (EntityNotFoundException exp) {
-            exists = false;
-        }
         ModelAndView view = new ModelAndView("user-budget");
-        view.addObject("categories",categories);
-        view.addObject("month",month);
-        view.addObject("year",year);
-        view.addObject("exists",exists);
+        view.addObject("categories", categories);
         view.addObject("paymentTypes", paymentTypes);
         return view;
     }
+
+    @RequestMapping(value = "/userBudget", method = RequestMethod.POST)
+    public ModelAndView saveBudget(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        List<PaymentType> paymentTypes = context
+                .getPaymentTypeSet()
+                .GetAll();
+        List<PaymentCategory> categories = context
+                .getPaymentCategorySet()
+                .GetAllActiveCategoriesForUser(user.getId());
+
+        DateFormat format = new SimpleDateFormat("yyyy/MM");
+        String budgetDate = request.getParameter("budgetDate");
+
+        String[] budgetMonthAndYear = budgetDate.split("/");
+        int year = Integer.parseInt(budgetMonthAndYear[0]);
+        int month = Integer.parseInt(budgetMonthAndYear[1]) - 1;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1);
+        Date start = calendar.getTime();
+        int lastDay = calendar.getActualMaximum(Calendar.DATE);
+        calendar.set(year, month, lastDay);
+        Date end = calendar.getTime();
+        UserBudgetData budgetData = new UserBudgetData();
+        budgetData.setFromDate(start);
+        budgetData.setToDate(end);
+        budgetData.setUser(user.getId());
+        UUID budgetId = null;
+        try {
+            budgetId = context.getUserBudgetSet().AddOrUpdate(budgetData);
+        } catch (BasicException ex) {
+            System.out.println(ex.getMessage());
+        }
+        for (PaymentCategory category : categories) {
+            String amountForCategory = request.getParameter("category_" + category.getId().toString());
+            Double amount = Double.parseDouble(amountForCategory);
+            CategoryBudgetData budgetCategory = new CategoryBudgetData();
+            budgetCategory.setActive(true);
+            budgetCategory.setAmount(amount);
+            budgetCategory.setBudgetId(budgetId);
+            budgetCategory.setCategoryId(category.getId());
+            try {
+                context.getCategoryDetailSet().AddOrUpdate(budgetCategory);
+            } catch (BasicException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    
+
+    ModelAndView view = new ModelAndView("user-budget");
+
+    view.addObject (
+
+    "categories", categories);
+    view.addObject (
+    "paymentTypes", paymentTypes);
+    return view ;
+}
 }

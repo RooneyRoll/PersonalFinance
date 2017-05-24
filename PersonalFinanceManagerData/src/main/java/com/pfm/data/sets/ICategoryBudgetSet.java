@@ -9,6 +9,7 @@ import com.pfm.data.data.CategoryBudgetData;
 import com.pfm.data.entities.CategoryBudget;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -22,5 +23,7 @@ public interface ICategoryBudgetSet extends IViewable<CategoryBudget, UUID>, IMa
     
     @Override
     public void Edit(UUID id,CategoryBudgetData data);
+    
+    public List<CategoryBudget> GetAllActiveCategoryBudgetsByBudgetId(UUID budgetId);
     
 }

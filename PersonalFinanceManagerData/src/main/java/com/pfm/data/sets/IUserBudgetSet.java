@@ -7,6 +7,7 @@ package com.pfm.data.sets;
 
 import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.UserBudget;
+import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.util.Date;
@@ -16,7 +17,9 @@ import java.util.UUID;
  *
  * @author Misho
  */
-public interface IUserBudgetSet extends IViewable<UserBudget,UUID>,IManagable<UserBudgetData,UUID>  {
+public interface IUserBudgetSet extends IViewable<UserBudget, UUID>, IManagable<UserBudgetData, UUID> {
+
     public UserBudget getCurrentlyActiveBudgetForUser(UUID userId);
+
     public UserBudget getBudgetByDateAndUserId(UUID userId, Date date);
 }

@@ -151,4 +151,9 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
     public void Delete(Serializable id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Serializable AddOrUpdate(UserData data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

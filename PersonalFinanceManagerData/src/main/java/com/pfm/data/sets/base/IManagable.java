@@ -11,8 +11,14 @@ import com.pfm.data.exceptions.BasicException;
  *
  * @author Misho
  */
-public interface IManagable<DataType,T> {
+public interface IManagable<DataType, T> {
+
     public T Add(DataType data) throws BasicException;
+
     public void Edit(T id, DataType data) throws BasicException;
+
     public void Delete(T id);
+
+    public T AddOrUpdate(DataType data) throws BasicException;
+;
 }

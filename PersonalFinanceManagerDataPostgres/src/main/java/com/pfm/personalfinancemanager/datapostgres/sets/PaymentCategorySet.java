@@ -211,4 +211,9 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         }
         return categoriesWithoutDetails;
     }
+
+    @Override
+    public UUID AddOrUpdate(PaymentCategoryData data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

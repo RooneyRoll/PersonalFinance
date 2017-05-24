@@ -5,7 +5,6 @@
  */
 package com.pfm.data.data;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -41,10 +40,6 @@ public class CategoryBudgetData {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public void setCategoryid(UUID categoryid) {
-        this.categoryId = categoryid;
     }
 
     public double getAmount() {

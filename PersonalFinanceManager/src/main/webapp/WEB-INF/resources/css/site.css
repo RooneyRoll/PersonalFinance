@@ -409,6 +409,45 @@ html body{
 }
 /*error pages end*/
 /*plugins css overwrite*/
+.site-content .datepicker-container.datepicker-inline{
+    width:100%;
+    box-sizing:border-box;
+    display:inline-block;
+}
+
+.site-content .datepicker-panel > ul {
+    width: 100%;
+    box-sizing:border-box;
+    display: inline-block;
+}
+
+.site-content .datepicker-panel > ul > li {
+    float:none;
+    display:inline-block;
+    box-sizing: border-box;
+    width:30px;
+    vertical-align: top;
+}
+.site-content .datepicker-panel > ul > li[data-view="month current"],
+.site-content .datepicker-panel > ul > li[data-view="years current"], 
+.site-content .datepicker-panel > ul > li[data-view="year current"] {
+    width: calc(100% - 60px);
+    display:inline-block;
+}
+
+.site-content .datepicker-panel > ul[data-view="years"] > li, 
+.site-content .datepicker-panel > ul[data-view="months"] > li {
+    display:inline-block;
+    width:25%;
+    box-sizing: border-box;
+}
+
+.datepicker-panel > ul > li.highlighted, 
+.datepicker-panel > ul > li:hover {
+    background-color: #e6f2ff;
+    border-left: 1px solid #e6f2ff;
+    border-right: 1px solid #e6f2ff;
+}
 
 .site-content .select2{
     min-width:300px;

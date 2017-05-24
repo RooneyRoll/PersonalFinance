@@ -161,6 +161,7 @@ public class PaymentCategoriesController {
             categoryDataObject.setName(params.getCategoryName());
             categoryDataObject.setUserId(user.getId());
             categoryDataObject.setType(params.getCategoryType());
+            System.out.println(params.getCategoryType());
             context.getPaymentCategorySet()
                     .Edit(categoryId, categoryDataObject);
             String buttonSubmitted = request.getParameter("submit-button");

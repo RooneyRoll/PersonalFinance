@@ -18,7 +18,6 @@ import com.pfm.data.sets.ICategoryBudgetSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.entities.UserBudgets;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import org.hibernate.query.Query;
 
 /**
@@ -60,6 +59,8 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
             List<PaymentCategories> resultList = q.list();
             Query q1 = session.createQuery("From UserBudgets where ubId = :id");
             q1.setParameter("id", DtoData.getBudgetId());
+            System.out.println(DtoData.getBudgetId());
+            System.out.println(DtoData.getCategoryId());
             List<UserBudgets> budgetList = q1.list();
             CategoryBudgets details = new CategoryBudgets();
             details.setCbActive(DtoData.isActive());
@@ -86,11 +87,11 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
     public void Edit(UUID id, CategoryBudgetData data) {
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
-            CategoryBudgets categotyDetails = convertDtoDataToEntity(data);
-//            session.
-//            Serializable id = session.save(categotyDetails);
-//            return UUID.fromString(id.toString());
-            return;
+            CategoryBudgets categoryBudgetEntity = convertDtoDataToEntity(data);
+            categoryBudgetEntity.setCbId(id);
+            session.update(categoryBudgetEntity);
+            session.getTransaction().commit();
+            session.close();
         }
     }
 
@@ -107,6 +108,43 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
     @Override
     public void Delete(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UUID AddOrUpdate(CategoryBudgetData data) {
+        try (Session session = this.getSessionFactory().openSession()) {
+            Serializable id = null;
+            session.beginTransaction();
+            Query q = session.createQuery("From CategoryBudgets cb where cb.cbBudget.ubId = :budgetId and cb.cbCategoryId.pcatId = :categoryId")
+                    .setParameter("categoryId", data.getCategoryId())
+                    .setParameter("budgetId", data.getBudgetId());
+            List<CategoryBudgets> resultList = q.list();
+            if (resultList.isEmpty()) {
+                CategoryBudgets budgetCategoryEntity = convertDtoDataToEntity(data);
+                id = session.save(budgetCategoryEntity);
+            } else {
+                UUID catId = resultList.get(0).getCbId();
+                Edit(catId, data);
+                id = catId;
+            }
+            session.getTransaction().commit();
+            session.close();
+            return UUID.fromString(id.toString());
+        }
+    }
+
+    @Override
+    public List<CategoryBudget> GetAllActiveCategoryBudgetsByBudgetId(UUID budgetId) {
+        List<CategoryBudget> categoryBudgets;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From CategoryBudgets cb where cb.cbActive = :active and cb.cbBudget.ubId = :budgetId");
+            q.setParameter("active", true);
+            q.setParameter("budgetId", budgetId);
+            List<CategoryBudgets> resultList = q.list();
+            categoryBudgets = convertEntititiesToDtoArray(resultList);
+        }
+        return categoryBudgets;
     }
 
 }
