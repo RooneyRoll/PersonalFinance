@@ -8,15 +8,21 @@ package com.pfm.controllers;
 import com.google.gson.Gson;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.CategoryBudget;
+import com.pfm.data.entities.Payment;
+import com.pfm.data.entities.PaymentCategory;
+import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
 import com.pfm.models.budgetService.BudgetParamObject;
+import com.pfm.models.budgetService.BudgetPlannedVsSpentResultObject;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
@@ -34,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class userBudgetRestController {
 
     @RequestMapping(value = "/budget", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-
     public String budgetData(HttpServletRequest request, @RequestBody BudgetParamObject params) {
         List<CategoryBudget> categories = new ArrayList<>();
         try {
@@ -56,6 +61,66 @@ public class userBudgetRestController {
         }
         Gson gson = new Gson();
         String json = gson.toJson(categories);
+        return json;
+    }
+
+    @RequestMapping(value = "/budget/plannedVsSpent", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String plannedVsSpent(HttpServletRequest request, @RequestBody BudgetParamObject params) {
+        Gson gson = new Gson();
+        List<BudgetPlannedVsSpentResultObject> result = new ArrayList<>();
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            IpfmContext context = pfmContext.getInstance();
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
+            DateFormat format = new SimpleDateFormat("MM/yyyy");
+            UserBudget budget = context.getUserBudgetSet()
+                    .getBudgetByDateAndUserId(user.getId(), format.parse(params.getMonth() + "/" + params.getYear()));
+            List<PaymentType> types = context.getPaymentTypeSet().GetAll();
+            for (PaymentType type : types) {
+                BudgetPlannedVsSpentResultObject resultObject = new BudgetPlannedVsSpentResultObject();
+                resultObject.setPaymentType(type.getName());
+                double planned = 0;
+                double spent = 0;
+                List<CategoryBudget> catBudget = context.getCategoryDetailSet()
+                        .GetAllActiveCategoryBudgetsByBudgetId(budget.getId());
+                for (CategoryBudget categoryBudget : catBudget) {
+                    PaymentCategory category = context.getPaymentCategorySet().GetById(categoryBudget.getCategoryId());
+                    UUID categoryId = category.getType();
+                    UUID categoryType = type.getId();
+                    boolean equals = categoryId.equals(categoryType);
+                    if (equals) {
+                        planned = planned + categoryBudget.getAmount();
+                        Date date = format.parse(params.getMonth() + "/" + params.getYear());
+                        List<Payment> payments = context.
+                                getPaymentSet().
+                                getAllActivePaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
+                        for (Payment payment : payments) {
+                            spent = spent + payment.getAmount();
+                        }
+                    }
+                }
+                resultObject.setActual(spent);
+                resultObject.setPlanned(planned);
+                result.add(resultObject);
+            }
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        } catch (EntityNotFoundException exp) {
+            IpfmContext context = pfmContext.getInstance();
+            List<PaymentType> types = context.getPaymentTypeSet().GetAll();
+            for (PaymentType type : types) {
+                BudgetPlannedVsSpentResultObject resultObject = new BudgetPlannedVsSpentResultObject();
+                resultObject.setPaymentType(type.getName());
+                resultObject.setActual(0);
+                resultObject.setPlanned(0);
+                result.add(resultObject);
+            }
+            String json = gson.toJson(result);
             return json;
+        }
+        String json = gson.toJson(result);
+        return json;
     }
 }

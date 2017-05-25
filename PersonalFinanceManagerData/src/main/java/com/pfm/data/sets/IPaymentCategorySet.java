@@ -22,10 +22,13 @@ public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, I
 
     @Override
     public UUID Add(PaymentCategoryData data) throws PaymentCategoryAddException;
-    
+
     @Override
-    public void Edit(UUID id,PaymentCategoryData data) throws PaymentCategoryEditException;
+    public void Edit(UUID id, PaymentCategoryData data) throws PaymentCategoryEditException;
 
     public List<PaymentCategory> GetAllActiveCategoriesForUser(UUID userId);
-public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive) ; 
+
+    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId,UUID paymentTypeId);
+    
+    public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive);
 }

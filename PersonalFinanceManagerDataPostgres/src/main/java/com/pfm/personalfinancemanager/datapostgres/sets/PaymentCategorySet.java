@@ -162,7 +162,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         if (q.getResultList().size() > 0) {
             exists = true;
         }
-       
+
         return exists;
     }
 
@@ -175,12 +175,11 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
         if (q.getResultList().size() > 0) {
             exists = true;
         }
-       
+
         return exists;
     }
 
     public List<PaymentCategory> getActiveCategoriesByUserIdAndActive(UUID userId, boolean isActive) {
-
         List<PaymentCategory> paymentCategoryObjects;
         try (Session session = this.getSessionFactory().openSession()) {
             Query q = session.createQuery("From PaymentCategories pc where pc.pcatUser.userUserid = :userId and pc.pcatActive = :isActive", PaymentCategories.class)
@@ -206,7 +205,6 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
                 if (resultList.isEmpty()) {
                     categoriesWithoutDetails.add(category);
                 }
-
             }
         }
         return categoriesWithoutDetails;
@@ -215,5 +213,19 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     @Override
     public UUID AddOrUpdate(PaymentCategoryData data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId, UUID paymentTypeId) {
+        List<PaymentCategory> paymentCategoryObjects;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Query q = session.createQuery("From PaymentCategories pc where pc.pcatUser.userUserid = :userId and pc.pcatActive = :isActive and pc.pcatType.ptypeId = :paymentType", PaymentCategories.class)
+                    .setParameter("userId", userId)
+                    .setParameter("isActive", true)
+                    .setParameter("paymentType", paymentTypeId);
+            List<PaymentCategories> resultList = q.list();
+            paymentCategoryObjects = convertEntititiesToDtoArray(resultList);
+        }
+        return paymentCategoryObjects;
     }
 }

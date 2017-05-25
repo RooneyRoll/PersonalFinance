@@ -9,13 +9,17 @@ import com.pfm.data.data.PaymentData;
 import com.pfm.data.entities.Payment;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
-import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
  *
  * @author Misho
  */
-public interface IPaymentSet extends IViewable<Payment,UUID>,IManagable<PaymentData,UUID>  {
-    
+public interface IPaymentSet extends IViewable<Payment, UUID>, IManagable<PaymentData, UUID> {
+
+    public List<Payment> getAllActivePaymentsByPaymentCategory(UUID paymentCategoryId);
+
+    public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date);
 }

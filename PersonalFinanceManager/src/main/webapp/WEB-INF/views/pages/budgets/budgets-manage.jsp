@@ -32,7 +32,6 @@
             return sum;
         }
         function getBudgetData(month, year, chart) {
-            var array = [];
             var data = JSON.stringify({"month": month, "year": year});
             $.ajax({
                 type: "POST",
@@ -55,7 +54,7 @@
                     });
                     $(".category-input").each(function (key, value) {
                         var val = $(value).val();
-                        if (val == "") {
+                        if (val === "") {
                             $(this).val(0);
                         }
                     });
@@ -108,6 +107,7 @@
                         $(element).removeClass("error");
                     }
                 });
+
                 $(".category-input").each(function (key, val) {
                     var input = $(val);
                     input.rules("add", {
@@ -118,9 +118,6 @@
                         }
                     });
                 });
-
-
-                var paymentTypes = [];
                 var chart = new Highcharts.Chart({
                     chart: {
                         renderTo: 'container',
@@ -207,8 +204,6 @@
             onBeforeChange: function () {},
             onAfterChange: function () {}
         });
-
-
     });
 </script>
 <div class="form-container">

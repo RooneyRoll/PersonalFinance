@@ -14,6 +14,8 @@ import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.hibernate.Session;
@@ -44,7 +46,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
 
     @Override
     protected List<Payment> convertEntititiesToDtoArray(List<Payments> EntityArray) {
-        List<Payment> PaymentList = new ArrayList<Payment>();
+        List<Payment> PaymentList = new ArrayList<>();
         for (Payments next : EntityArray) {
             Payment paymentObject = new Payment();
             paymentObject.setActive(next.getPActive());
@@ -133,4 +135,35 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Payment> getAllActivePaymentsByPaymentCategory(UUID paymentCategoryId) {
+        List<Payment> payments;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Query q = session.createQuery("From Payments p where p.pActive = :isActive and p.pCategory.pcatId = :category")
+                    .setParameter("isActive", true)
+                    .setParameter("category", paymentCategoryId);
+            List<Payments> resultList = q.list();
+            payments = convertEntititiesToDtoArray(resultList);
+        }
+        return payments;
+    }
+
+    @Override
+    public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId,Date date) {
+        List<Payment> payments;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) + 1;
+            Query q = session.createQuery("From Payments p where p.pActive = :isActive and p.pCategory.pcatId = :category and MONTH(p.pDate) = :month and YEAR(p.pDate) = :year")
+                    .setParameter("isActive", true)
+                    .setParameter("category", paymentCategoryId)
+                    .setParameter("month", month)
+                    .setParameter("year", year);
+            List<Payments> resultList = q.list();
+            payments = convertEntititiesToDtoArray(resultList);
+        }
+        return payments;
+    }
 }

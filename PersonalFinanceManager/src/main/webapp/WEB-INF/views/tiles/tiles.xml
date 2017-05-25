@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
  
-<tiles-definitions>  
-  
+<tiles-definitions>
     <!-- Base Definition -->
     <definition name="base-definition" template="/WEB-INF/views/tiles/layouts/defaultLayout.jsp">  
         <put-attribute name="title" value="" />  
@@ -10,7 +9,6 @@
         <put-attribute name="body" value="" />  
         <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />  
     </definition>  
-  
     <!-- Home Page -->
     <definition name="home" extends="base-definition">
         <put-attribute name="navigation" value="Начало"  cascade="true"/>  
@@ -89,6 +87,11 @@
         <put-attribute name="navigation" value="Бюджет"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budgets-manage.jsp" />  
+    </definition>
+    <definition name="user-budget-status" extends="base-definition">  
+        <put-attribute name="navigation" value="Статистики"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budgets-status.jsp" />  
     </definition>
     <definition name="404" extends="base-definition">
         <put-attribute name="navigation" value="Грешка"  cascade="true"/>   

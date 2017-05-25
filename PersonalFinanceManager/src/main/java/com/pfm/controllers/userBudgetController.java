@@ -11,19 +11,12 @@ import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
-import com.pfm.data.entities.UserBudget;
 import com.pfm.data.exceptions.BasicException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -73,10 +66,7 @@ public class userBudgetController {
         List<PaymentCategory> categories = context
                 .getPaymentCategorySet()
                 .GetAllActiveCategoriesForUser(user.getId());
-
-        DateFormat format = new SimpleDateFormat("yyyy/MM");
         String budgetDate = request.getParameter("budgetDate");
-
         String[] budgetMonthAndYear = budgetDate.split("/");
         int year = Integer.parseInt(budgetMonthAndYear[0]);
         int month = Integer.parseInt(budgetMonthAndYear[1]) - 1;
@@ -110,15 +100,18 @@ public class userBudgetController {
                 System.out.println(ex.getMessage());
             }
         }
+        ModelAndView view = new ModelAndView("user-budget");
+        view.addObject(
+                "categories", categories);
+        view.addObject(
+                "paymentTypes", paymentTypes);
+        return view;
+    }
     
-
-    ModelAndView view = new ModelAndView("user-budget");
-
-    view.addObject (
-
-    "categories", categories);
-    view.addObject (
-    "paymentTypes", paymentTypes);
-    return view ;
-}
+    @RequestMapping(value = "/userBudgetStatus", method = RequestMethod.GET)
+    public ModelAndView budgetStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        
+        ModelAndView view = new ModelAndView("user-budget-status");
+        return view;
+    }
 }
