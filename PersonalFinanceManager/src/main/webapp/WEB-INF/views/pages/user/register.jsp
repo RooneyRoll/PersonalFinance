@@ -43,7 +43,7 @@
         <div class="form-content">
             <form id="register-form" th:action="@{/register}" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container with-icon size-2">
+            <div class="input-container with-icon size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         Потребителско име<span class="required-tip">&nbsp;*</span>
@@ -54,7 +54,7 @@
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </div><input class="input-style-4" type="text" name="username" placeholder="Потребителско име" id="username"/>
                 </div>
-            </div><div class="input-container with-icon size-2">
+            </div><div class="input-container with-icon size-2 side-padding-left">
                 <div class="input-title-holder no-select">
                     <span> 
                         Парола<span class="required-tip">&nbsp;*</span>
@@ -65,7 +65,7 @@
                         <i class="fa fa-lock" aria-hidden="true"></i>
                     </div><input type="password" name="password" placeholder="Парола" id="password"/>
                 </div>
-            </div><div class="input-container with-icon size-2">
+            </div><div class="input-container with-icon size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         е-mail<span class="required-tip">&nbsp;*</span>
@@ -76,7 +76,7 @@
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </div><input type="text" name="email" placeholder="e-mail" id="email"/>
                 </div>
-            </div><div class="input-container with-icon size-2">
+            </div><div class="input-container with-icon size-2 side-padding-left">
                 <div class="input-title-holder no-select">
                     <span> 
                         Име<span class="required-tip">&nbsp;*</span>
@@ -87,7 +87,7 @@
                         <i class="fa fa-id-card-o" aria-hidden="true"></i>
                     </div><input type="text" name="firstname" placeholder="Име" id="firstnamr"/>
                 </div>
-            </div><div class="input-container with-icon size-2">
+            </div><div class="input-container with-icon size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         Презиме<span class="required-tip">&nbsp;*</span>
@@ -98,7 +98,7 @@
                         <i class="fa fa-id-card-o" aria-hidden="true"></i>
                     </div><input type="text" name="middlename" placeholder="Презиме" id="middlename"/>
                 </div>
-            </div><div class="input-container with-icon size-2">
+            </div><div class="input-container with-icon size-2 side-padding-left">
                 <div class="input-title-holder no-select">
                     <span> 
                         Фамилия<span class="required-tip">&nbsp;*</span>

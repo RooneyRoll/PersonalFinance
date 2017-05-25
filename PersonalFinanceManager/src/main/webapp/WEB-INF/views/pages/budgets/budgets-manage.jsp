@@ -5,48 +5,47 @@
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
-        function getSumOfInputVals(Selector){
-        var sum = 0;    
-            $(Selector+" input").each(function(key,val){
-                var value = $(val).val();
-                console.log(value);
-                if(value !== ""){
-                    sum = sum + parseInt(value);
-                }else{
-                  sum = sum + 0;  
-                }
-            });
-            return sum;
-        }
-        function getInitialSumOfInputVals(){
+        var sumTotal = 0;
+        function getInitialSumOfInputVals(chart) {
             var sum = [];
-            $(".input-group").each(function(key,val){
+            $(".input-group").each(function (key, val) {
                 var value = 0;
                 var name = $(val).find(".input-group-title-holder span").text();
                 var inputs = $(val).find("input");
-                $(input).each(function(k,v){
-                    value = value + parseInt($(v).val());
+                $(inputs).each(function (k, v) {
+                    if ($(v).val() !== "") {
+                        value = value + parseInt($(v).val());
+                    } else {
+                        value = value + 0;
+                    }
                 });
-                sum.push([name,value]);
+                var color = "#7CB5EC";
+                if (key !== 0)
+                    color = "#E74C3C";
+                sum.push({y: value, color: color, name: name});
             });
+            sumTotal = parseInt(sum[0].y) - parseInt(sum[1].y);
+            if (typeof (chart.series) !== 'undefined') {
+                chart.series[0].setData(sum, true);
+                chart.setTitle(null, {text: 'Крайно: ' + sumTotal});
+            }
             return sum;
         }
-        function getBudgetData(month, year) {
-            var JsonResult;
+        function getBudgetData(month, year, chart) {
+            var array = [];
             var data = JSON.stringify({"month": month, "year": year});
             $.ajax({
                 type: "POST",
                 url: "budget",
                 dataType: "json",
                 data: data,
-                async:false,
+                async: false,
                 contentType: 'application/json',
                 beforeSend: function (xhr, settings) {
                     var token = $('meta[name="_csrf"]').attr('content');
                     xhr.setRequestHeader('X-CSRF-TOKEN', token);
                 }
             }).done(function (data) {
-                JsonResult = data;
                 if (data.length > 0) {
                     $(data).each(function (key, val) {
                         var id = val.categoryId;
@@ -65,12 +64,10 @@
                         $(value).val(0);
                     });
                 }
-                var array = getInitialSumOfInputVals();
-                chart.series[0].setData(array, true);
+                getInitialSumOfInputVals(chart);
             });
-            return JsonResult;
         }
-        
+
         $('.tabs-container').pwstabs({
             effect: 'scale',
             defaultTab: 1,
@@ -122,30 +119,25 @@
                     });
                 });
 
-                $('#budgetMonthPicker').change(function () {
-                    var date = $(this).val();
-                    var inputs = date.split("/");
-                    var year = inputs[0];
-                    var month = inputs[1];
-                    getBudgetData(month, year);
-                    datepicker.datepicker("update");
-                });
-                
-                $('#copyBudgetMonthPicker').change(function () {
-                    var date = $(this).val();
-                    var inputs = date.split("/");
-                    var year = inputs[0];
-                    var month = inputs[1];
-                    getBudgetData(month, year);
-                    copyDatepicker.datepicker("update");
-                });
+
                 var paymentTypes = [];
-                var chart = Highcharts.chart('container', {
+                var chart = new Highcharts.Chart({
                     chart: {
-                        type: 'column'
+                        renderTo: 'container',
+                        type: 'column',
+                        events: {
+                            load: function (event) {
+                                var date = $("#budgetMonthPicker").val();
+                                var inputs = date.split("/");
+                                var year = inputs[0];
+                                var month = inputs[1];
+                                var data = getBudgetData(month, year, this);
+
+                            }
+                        }
                     },
                     title: {
-                        text: 'Сравнение (Категории на плащания)'
+                        text: 'Бюджет'
                     },
                     xAxis: {
                         type: 'category',
@@ -162,22 +154,22 @@
                             text: 'Стойност'
                         }
                     },
+                    tooltip: {
+                        pointFormat: '<b>{point.y:.1f}</b>'
+                    },
                     legend: {
                         enabled: false
                     },
-                    tooltip: {
-                        pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
-                    },
                     series: [{
-                            name: 'Population',
-                            data: paymentTypes,
+                            animation: false,
+                            name: "",
+                            data: getInitialSumOfInputVals(this),
                             dataLabels: {
                                 enabled: true,
                                 rotation: 0,
                                 color: '#FFFFFF',
-                                align: 'right',
-                                format: '{point.y:.1f}', // one decimal
-                                y: 10, // 10 pixels down from the top
+                                align: 'center',
+                                y: 35,
                                 style: {
                                     fontSize: '14px',
                                     fontFamily: 'Roboto,Arial, sans-serif'
@@ -185,29 +177,30 @@
                             }
                         }]
                 });
-                var selectors = [];
-                <c:forEach items="${paymentTypes}" var="type">
-                    selectors.push({selector:"#group_${type.getId()}",name:"${type.getName()}"});
-                </c:forEach>
-                <c:forEach items="${paymentTypes}" var="type">
-                    $("#group_${type.getId()} input").each(function(key,val){
-                        $(val).keyup(function(){
-                            paymentTypes = [];
-                            $(selectors).each(function(key,val){
-                               paymentTypes.push([val.name,parseInt(getSumOfInputVals(val.selector))]);
-                            });
-                            chart.series[0].setData(paymentTypes, true);
-                        });
+
+                $(".input-group input").each(function () {
+                    $(this).keyup(function () {
+                        getInitialSumOfInputVals(chart);
                     });
-                </c:forEach>
-                    
-                var date = $("#budgetMonthPicker").val();
-                var inputs = date.split("/");
-                var year = inputs[0];
-                var month = inputs[1];
-                var jsonData = getBudgetData(month, year);
-               
-                
+                });
+
+                $('#budgetMonthPicker').change(function () {
+                    var date = $(this).val();
+                    var inputs = date.split("/");
+                    var year = inputs[0];
+                    var month = inputs[1];
+                    getBudgetData(month, year, chart);
+                    datepicker.datepicker("update");
+                });
+
+                $('#copyBudgetMonthPicker').change(function () {
+                    var date = $(this).val();
+                    var inputs = date.split("/");
+                    var year = inputs[0];
+                    var month = inputs[1];
+                    getBudgetData(month, year, chart);
+                    copyDatepicker.datepicker("update");
+                });
             },
             onBeforeInit: function () {},
             onAfterInit: function () {},
@@ -265,7 +258,7 @@
                                 ${type.getName()}
                             </span>
                         </div>
-                        <c:forEach items="${categories}" var="category"><c:if test="${type.getId() == category.getType()}"><div class="input-container size-2 side-padding">
+                        <c:forEach items="${categories}" var="category"><c:if test="${type.getId() == category.getType()}"><div class="input-container size-1 side-padding">
                                     <div class="input-title-holder no-select">
                                         <span>${category.getName()}:</span>
                                     </div>

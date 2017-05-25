@@ -345,6 +345,7 @@ html body{
 .site-content .content-container .form-container .form-content input[type="password"],
 .site-content .content-container .form-container .form-content textarea{
     padding: 10px;
+    font-size:14px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
