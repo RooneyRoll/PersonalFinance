@@ -21,7 +21,6 @@
                 }
             }).done(function (data) {
                 $(data).each(function (key, val) {
-                    console.log(data);
                     var color = "#7CB5EC";
                     var secondDcolor = "#A1D1FF";
                     if (key !== 0) {
@@ -30,6 +29,19 @@
                     }
                     sum.push({y: val.planned, color: color, name: /*"Планирани " +*/ val.categoryName});
                     sum.push({y: val.actual, color: secondDcolor, name: /*"Действителни " +*/ val.categoryName});
+                    var percent = val.percents;
+                    var catId = val.categoryId;
+                    var widthPercent = 0;
+                    if (percent > 100) {
+                        widthPercent = 100;
+                    } else {
+                        widthPercent = percent;
+                    }
+                    $("#percent_" + catId).css("background-color", color).animate({
+                        width: widthPercent + '%'
+                    });
+                    //$("#percent_" + catId).css("width", percent + "%");
+                    $("#percent_" + catId).text(percent + "%");
                 });
                 if (typeof (chart.series) !== 'undefined') {
                     chart.series[0].setData(sum, true);
@@ -146,7 +158,7 @@
                                         <span>${category.getName()}:</span>
                                     </div>
                                     <div class="input-holder">
-                                        <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
+                                        <div class="percentage" id="percent_${category.getId()}" style="color:#fff;background-color:#7CB5EC;border-radius:2px;padding:5px 10px;">asf</div>
                                     </div>
                                 </div></c:if></c:forEach>
                             </div>

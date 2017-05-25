@@ -5,6 +5,8 @@
  */
 package com.pfm.models.budgetService;
 
+import java.util.UUID;
+
 /**
  *
  * @author Misho
@@ -14,7 +16,25 @@ public class BudgetCategoriesPlannedVsSpentResult {
     private String categoryName;
     private double planned;
     private double actual;
+    private double percents;
+    private UUID categoryId;
 
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
+    }
+    
+    public double getPercents() {
+        return percents;
+    }
+
+    public void setPercents(double percents) {
+        this.percents = percents;
+    }
+    
     public String getPaymentType() {
         return paymentType;
     }

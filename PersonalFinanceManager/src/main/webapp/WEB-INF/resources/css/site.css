@@ -321,6 +321,15 @@ html body{
     width:100%;
 }
 
+.site-content .content-container .percentage{
+    color: rgb(255, 255, 255);
+    background-color: rgb(124, 181, 236);
+    border-radius: 2px;
+    padding: 5px 10px;
+    min-width: 40px;
+    text-align: center;
+}
+
 /*form styles with icon*/
 .site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder{
     background:#6DB33F;

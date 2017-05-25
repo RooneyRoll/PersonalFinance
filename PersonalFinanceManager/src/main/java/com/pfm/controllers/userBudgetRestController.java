@@ -39,7 +39,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class userBudgetRestController {
-    
+
+    private double calculatePercentage(double planned, double actual) {
+        double percents = 0;
+        percents = (actual / planned) * 100;
+        return percents;
+    }
+
     @RequestMapping(value = "/budget", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String budgetData(HttpServletRequest request, @RequestBody BudgetParamObject params) {
         List<CategoryBudget> categories = new ArrayList<>();
@@ -64,7 +70,7 @@ public class userBudgetRestController {
         String json = gson.toJson(categories);
         return json;
     }
-    
+
     @RequestMapping(value = "/budget/plannedVsSpent", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String plannedVsSpent(HttpServletRequest request, @RequestBody BudgetParamObject params) {
         Gson gson = new Gson();
@@ -124,7 +130,7 @@ public class userBudgetRestController {
         String json = gson.toJson(result);
         return json;
     }
-    
+
     @RequestMapping(value = "/budget/plannedVsSpentCategories", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String plannedVsSpentCategories(HttpServletRequest request, @RequestBody BudgetParamObject params) {
         Gson gson = new Gson();
@@ -156,13 +162,15 @@ public class userBudgetRestController {
                                 getPaymentSet().
                                 getAllActivePaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
                         for (Payment payment : payments) {
-                            spent = payment.getAmount();
+                            spent = spent + payment.getAmount();
                         }
                         BudgetCategoriesPlannedVsSpentResult resultObject = new BudgetCategoriesPlannedVsSpentResult();
                         resultObject.setPaymentType(type.getName());
                         resultObject.setCategoryName(category.getName());
                         resultObject.setActual(spent);
                         resultObject.setPlanned(planned);
+                        resultObject.setCategoryId(category.getId());
+                        resultObject.setPercents(calculatePercentage(planned, spent));
                         result.add(resultObject);
                     }
                 }
@@ -170,13 +178,21 @@ public class userBudgetRestController {
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
         } catch (EntityNotFoundException exp) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
-            List<PaymentType> types = context.getPaymentTypeSet().GetAll();
-            for (PaymentType type : types) {
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
+            List<PaymentCategory> catList = context.
+                    getPaymentCategorySet().
+                    GetAllActiveCategoriesForUser(user.getId());
+            for (PaymentCategory paymentCategory : catList) {
                 BudgetCategoriesPlannedVsSpentResult resultObject = new BudgetCategoriesPlannedVsSpentResult();
-                resultObject.setPaymentType(type.getName());
+                resultObject.setCategoryName(paymentCategory.getName());
                 resultObject.setActual(0);
                 resultObject.setPlanned(0);
+                resultObject.setCategoryId(paymentCategory.getId());
+                resultObject.setPercents(0);
                 result.add(resultObject);
             }
             String json = gson.toJson(result);
