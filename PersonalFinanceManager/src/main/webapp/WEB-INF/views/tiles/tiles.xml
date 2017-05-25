@@ -93,6 +93,11 @@
         <put-attribute name="title" value="Personal finance manager" />
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budgets-status.jsp" />  
     </definition>
+    <definition name="user-budget-categories-status" extends="base-definition">  
+        <put-attribute name="navigation" value="Статистики"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-categories-status.jsp" />  
+    </definition>
     <definition name="404" extends="base-definition">
         <put-attribute name="navigation" value="Грешка"  cascade="true"/>   
         <put-attribute name="title" value="register result" />  

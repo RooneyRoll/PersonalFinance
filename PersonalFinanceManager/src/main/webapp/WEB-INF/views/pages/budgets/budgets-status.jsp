@@ -13,7 +13,7 @@
             autoPick: true,
             language: "bg-BG"
         });
-        function getCategoryStatus(month, year, chart) {
+        function getBudgetStatus(month, year, chart) {
             var data = JSON.stringify({"month": month, "year": year});
             var sum = [];
             $.ajax({
@@ -28,15 +28,21 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', token);
                 }
             }).done(function (data) {
+                var sumTotal = sumTotal = 0;
+                var subTitleText = "";
                 $(data).each(function (key, val) {
+                    sumTotal = 0;
                     var color = "#7CB5EC";
                     if (key !== 0)
                         color = "#E74C3C";
                     sum.push({y: val.planned, color: color, name: "Планирани " + val.paymentType});
                     sum.push({y: val.actual, color: color, name: "Действителни " + val.paymentType});
+                    sumTotal = parseInt(val.planned) - (val.actual);
+                    subTitleText += "Оставащи " + val.paymentType + " до план: " + sumTotal + "<br>";
                 });
                 if (typeof (chart.series) !== 'undefined') {
                     chart.series[0].setData(sum, true);
+                    chart.setTitle(null, {text: subTitleText});
                 }
             });
             return sum;
@@ -47,9 +53,7 @@
             var year = inputs[0];
             var month = inputs[1];
             datepicker.datepicker("update");
-            var data = getCategoryStatus(month, year, chart);
-            console.log(data);
-
+            var data = getBudgetStatus(month, year, chart);
         });
 
         var date = $("#budgetMonthPicker").val();
@@ -66,12 +70,12 @@
                         var inputs = date.split("/");
                         var year = inputs[0];
                         var month = inputs[1];
-                        var data = getCategoryStatus(month, year, this);
+                        var data = getBudgetStatus(month, year, this);
                     }
                 }
             },
             title: {
-                text: 'Бюджет'
+                text: 'Планирани и действителни приходи/разходи'
             },
             xAxis: {
                 type: 'category',
@@ -97,7 +101,7 @@
             series: [{
                     animation: false,
                     name: "",
-                    data: getCategoryStatus(month, year, this),
+                    data: getBudgetStatus(month, year, this),
                     dataLabels: {
                         enabled: true,
                         rotation: 0,

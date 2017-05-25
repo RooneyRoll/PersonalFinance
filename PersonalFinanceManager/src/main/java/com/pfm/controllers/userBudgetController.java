@@ -110,8 +110,26 @@ public class userBudgetController {
     
     @RequestMapping(value = "/userBudgetStatus", method = RequestMethod.GET)
     public ModelAndView budgetStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
-        
         ModelAndView view = new ModelAndView("user-budget-status");
+        return view;
+    }
+    
+    @RequestMapping(value = "/userBudgetCategoriesStatus", method = RequestMethod.GET)
+    public ModelAndView budgetCategoriesStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        List<PaymentType> paymentTypes = context
+                .getPaymentTypeSet()
+                .GetAll();
+        List<PaymentCategory> categories = context
+                .getPaymentCategorySet()
+                .GetAllActiveCategoriesForUser(user.getId());
+        ModelAndView view = new ModelAndView("user-budget-categories-status");
+        view.addObject("categories", categories);
+        view.addObject("paymentTypes", paymentTypes);
         return view;
     }
 }

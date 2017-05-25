@@ -30,6 +30,7 @@
                         <spring:url var = "payments" value='/payments' />
                         <spring:url var = "categoryBudget" value='/userBudget' />
                         <spring:url var = "userBudgetStatus" value ="/userBudgetStatus"/>
+                        <spring:url var = "categoryCoverage" value ="/userBudgetCategoriesStatus"/>
                         <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
                             <li><a class="animation" href="${register}">Регистрация</a></li>
@@ -45,7 +46,10 @@
                             </li>
                             <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
                                     <li>
-                                        <a class="animation" href="${userBudgetStatus}">Статистики</a>
+                                        <a class="animation" href="${userBudgetStatus}">Планирано/Действително</a>
+                                    </li>
+                                    <li>
+                                        <a class="animation" href="${categoryCoverage}">Покритие по категории</a>
                                     </li>
                                 </ul></li>
                             <li><a class="animation" href="javascript:formSubmit()">Изход</a></li>
