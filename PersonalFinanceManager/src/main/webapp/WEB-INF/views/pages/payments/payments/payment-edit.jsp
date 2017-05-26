@@ -35,7 +35,7 @@
             var check = self.iCheck({
                 checkboxClass: 'icheckbox_line-grey visibility-check',
                 radioClass: 'iradio_line-grey visibility-check ' + visible,
-                insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>",
+                insert: '<div class="icheck_line-icon"></div>' + "<div class='label-text'>" + label_text + "</div>"
             });
         });
         $("#categories-select").select2({"theme": "classic"});

@@ -37,6 +37,7 @@
                     } else {
                         widthPercent = percent;
                     }
+                    percent = parseFloat(widthPercent.toFixed(2));
                     $("#percent_" + catId).css("background-color", color).animate({
                         width: widthPercent + '%'
                     });

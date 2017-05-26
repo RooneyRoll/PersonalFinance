@@ -68,7 +68,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             q.setParameter("catId", DtoData.getCategory());
             List<PaymentCategories> categoriesList = q.list();
             Payments payment = new Payments();
-            payment.setPActive(true);
+            payment.setPActive(DtoData.isActive());
             payment.setPAmount(DtoData.getAmount());
             payment.setPCategory(categoriesList.get(0));
             payment.setPDate(DtoData.getDate());
