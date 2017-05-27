@@ -24,7 +24,7 @@
                 <i class="fa fa-address-book-o"></i><div class="text">Михаил Петров <br>|&nbsp;Developer <br>|&nbsp;Ф.Н:&nbsp;25407</div><br>
                 <i class="fa fa-address-book-o"></i><div class="text">Николай Ставрев <br>|&nbsp;Developer <br>|&nbsp;Ф.Н:&nbsp;25375</div><br>
                 <i class="fa fa-address-book-o"></i><div class="text">Светльо Михайлов <br>|&nbsp;Developer <br>|&nbsp;Ф.Н:&nbsp;</div><br>
-                <i class="fa fa-address-book-o"></i><div class="text">Петър Нанчев <br>|&nbsp;QA <br>|&nbsp;Ф.Н:&nbsp;</div><br>
+                <i class="fa fa-address-book-o"></i><div class="text">Петър Нанчев <br>|&nbsp;QA <br>|&nbsp;Ф.Н:&nbsp;25562</div><br>
             </div><div class="footer-col">
                 <i class="fa"></i><div class="text">Денонощен телефон:</div><br>
                 <i class="fa fa-phone"></i><div class="text">Т.: 000000000</div><br>
@@ -36,7 +36,6 @@
                 <i class="fa fa-question-circle"></i><div class="text"><a src="https://www.highcharts.com/">Highcharts</a></div><br>
                 <i class="fa fa-question-circle"></i><div class="text"><a src="http://hibernate.org/">Hibernate</a></div><br>
                 <i class="fa fa-question-circle"></i><div class="text"><a src="https://tiles.apache.org/">Apache Tiles</a></div><br>
-                
             </div>
         </div>
     </div>

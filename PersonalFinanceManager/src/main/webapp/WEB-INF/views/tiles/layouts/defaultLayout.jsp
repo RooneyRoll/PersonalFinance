@@ -5,6 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="_csrf" content="${_csrf.token}"/>
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
         <meta i>
@@ -25,8 +26,7 @@
         <link href="<c:url value='/resources/css/gridCustomCss/grid.css' />" rel="stylesheet" ></link> 
         <link href='<c:url value='/resources/js/smartmenus/css/sm-core-css.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartmenus/css/sm-mint/sm-mint.css' />' rel='stylesheet' type='text/css' />
-        <link href="<c:url value='/resources/css/slick-carousel/slick.css' />" rel="stylesheet"></link>
-        <link href="<c:url value='/resources/css/slick-carousel/slick-theme.css' />" rel="stylesheet"></link>
+        <link href='<c:url value='/resources/js/slider-pro/dist/css/slider-pro.min.css' />' rel='stylesheet' type='text/css' />
         <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
         <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
         <script src="<c:url value='/resources/js/smartmenus/jquery.smartmenus.min.js' />" type="text/javascript"></script>
@@ -42,7 +42,6 @@
         <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/i18n/datepicker.bg-BG.js' />"></script>
         <script src="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.js' />"></script>
-        <script src="<c:url value='/resources/js/slick-carousel/slick.min.js' />"></script>
         <script>
             $(document).ready(function () {
                 $(".top-menu-container").smartmenus({

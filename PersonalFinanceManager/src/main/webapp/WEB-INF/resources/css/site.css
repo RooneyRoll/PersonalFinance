@@ -126,6 +126,11 @@ html body{
     font-size:16px;
 }
 
+.site-content p{
+    text-align: justify;
+    text-indent: 35px;
+}
+
 .navigation-title{
     display:inline-block;
     width:100%;
@@ -314,6 +319,29 @@ html body{
     display:inline-block;
     width:100%;
     overflow:hidden;
+}
+
+.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button{
+    vertical-align: middle;
+    display:inline-block;
+    color:#34302D;
+    font-size:25px;
+    margin-left:5px;
+    cursor:pointer;
+}
+
+.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button a{
+    color:#34302D;
+}
+
+.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button a:hover{
+    color:#6DB33F;
+}
+
+.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button:hover{
+    vertical-align: middle;
+    display:inline-block;
+    color:#6DB33F;
 }
 
 .site-content .content-container .form-container .form-content form .input-container .input-holder input{

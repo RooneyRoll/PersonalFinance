@@ -1,11 +1,13 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script>
     $(document).ready(function () {
         $("#payment-type-add-form").validate({
             rules: {
-                paymentAmount: {"required":true,"number":true}
+                paymentAmount: {"required": true, "number": true}
             },
             messages: {
                 paymentAmount: "Моля въведете сума.",
@@ -55,9 +57,13 @@
                 <div class="input-holder">
                     <select id="categories-select" name="paymentCategory">
                         <c:forEach items="${categories}" var="element">
-                              <option value="${element.getId()}">${element.getName()}</option>
+                            <option value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
                     </select>
+                    <spring:url var = "categoriesAdd" value='/categories/add' />
+                    <div class="input-add-button">
+                        <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="buttons-container size-1">
