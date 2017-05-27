@@ -78,30 +78,24 @@ public class UserBudgetSet extends BaseSet<UserBudgets, UserBudget, UserBudgetDa
 
     @Override
     public UUID Add(UserBudgetData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             UserBudgets userBudgetEntity = convertDtoDataToEntity(data);
             Serializable id = session.save(userBudgetEntity);
             session.getTransaction().commit();
             session.close();
             return UUID.fromString(id.toString());
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public void Edit(UUID id, UserBudgetData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             UserBudgets userBudgetEntity = convertDtoDataToEntity(data);
             userBudgetEntity.setUbId(id);
             session.update(userBudgetEntity);
             session.getTransaction().commit();
-            session.close();
-        } finally {
             session.close();
         }
     }

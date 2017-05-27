@@ -76,48 +76,51 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
 
     @Override
     public List<User> GetAll() {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From Users");
-        List<Users> resultList = q.list();
-        List<User> userObjects = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<User> userObjects;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Users");
+            List<Users> resultList = q.list();
+            userObjects = convertEntititiesToDtoArray(resultList);
+        }
         return userObjects;
     }
 
     @Override
     public User GetById(UUID id) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From Users WHERE userUserid = :id");
-        q.setParameter("id", id);
-        List<Users> resultList = q.list();
-        List<User> userObject = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<User> userObject;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Users WHERE userUserid = :id");
+            q.setParameter("id", id);
+            List<Users> resultList = q.list();
+            userObject = convertEntititiesToDtoArray(resultList);
+        }
         return userObject.get(0);
     }
 
     @Override
     public User GetByUserName(String userName) {
-         Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From Users WHERE userUsername = :username");
-        q.setParameter("username", userName);
-        List<Users> resultList = q.list();
-        List<User> userObject = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<User> userObject;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Users WHERE userUsername = :username");
+            q.setParameter("username", userName);
+            List<Users> resultList = q.list();
+            userObject = convertEntititiesToDtoArray(resultList);
+        }
         return userObject.get(0);
     }
     
     /**
      *
      * @param data
+     * @return 
      * @throws UserRegisterException
      */
     @Override
     public Serializable Add(UserData data) throws UserRegisterException {
-        Session session = this.getSessionFactory().openSession();
-        try{
+        try(Session session = this.getSessionFactory().openSession()) {
         if (this.userExists(data.getUserName(), session)) {
             throw new UserRegisterException("User already with name "+data.getUserName()+" has been already registered.");
         }
@@ -127,8 +130,6 @@ public class UserSet extends BaseSet<Users, User, UserData> implements IUserSet 
         session.getTransaction().commit();
         session.close();
         return id;
-        }finally{
-            session.close();
         }
     }
 

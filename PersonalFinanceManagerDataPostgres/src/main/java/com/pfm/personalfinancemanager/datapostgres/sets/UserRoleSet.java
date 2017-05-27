@@ -61,23 +61,25 @@ public class UserRoleSet extends BaseSet<UserRoles, UserRole, UserRoleData> impl
 
     @Override
     public Serializable Add(UserRoleData data) throws UserRegisterException {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        UserRoles useRoleEntity = convertDtoDataToEntity(data);
-        Serializable id = session.save(useRoleEntity);
-        session.getTransaction().commit();
-        session.close();
+        Serializable id;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            UserRoles useRoleEntity = convertDtoDataToEntity(data);
+            id = session.save(useRoleEntity);
+            session.getTransaction().commit();
+        }
         return id;
     }
 
     @Override
     public List<UserRole> GetAll() {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From UserRoles");
-        List<UserRoles> resultList = q.list();
-        List<UserRole> userRoleObjects = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<UserRole> userRoleObjects;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From UserRoles");
+            List<UserRoles> resultList = q.list();
+            userRoleObjects = convertEntititiesToDtoArray(resultList);
+        }
         return userRoleObjects;
     }
 

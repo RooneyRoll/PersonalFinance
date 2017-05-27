@@ -85,42 +85,37 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
 
     @Override
     public Payment GetById(UUID id) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query q = session.createQuery("From Payments WHERE pId = :id");
-        q.setParameter("id", id);
-        List<Payments> resultList = q.list();
-        List<Payment> paymentTypes = convertEntititiesToDtoArray(resultList);
-        session.close();
+        List<Payment> paymentTypes;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From Payments WHERE pId = :id");
+            q.setParameter("id", id);
+            List<Payments> resultList = q.list();
+            paymentTypes = convertEntititiesToDtoArray(resultList);
+        }
         return paymentTypes.get(0);
     }
 
     @Override
     public UUID Add(PaymentData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             Payments PaymentTypeEntity = convertDtoDataToEntity(data);
             Serializable id = session.save(PaymentTypeEntity);
             session.getTransaction().commit();
             session.close();
             return UUID.fromString(id.toString());
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public void Edit(UUID id, PaymentData data) throws BasicException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             Payments paymentEntity = convertDtoDataToEntity(data);
             paymentEntity.setPId(id);
             session.update(paymentEntity);
             session.getTransaction().commit();
-            session.close();
-        } finally {
             session.close();
         }
     }
@@ -156,7 +151,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             cal.setTime(date);
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH) + 1;
-            Query q = session.createQuery("From Payments p where p.pActive = :isActive and p.pCategory.pcatId = :category and MONTH(p.pDate) = :month and YEAR(p.pDate) = :year")
+            Query q = session.createQuery("From Payments p where p.pActive = :isActive and p.pCategory.pcatId = :category and MONTH(p.pDate) = :month and YEAR(p.pDate) = :year order by p.pDate asc")
                     .setParameter("isActive", true)
                     .setParameter("category", paymentCategoryId)
                     .setParameter("month", month)

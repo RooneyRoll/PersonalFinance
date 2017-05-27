@@ -108,13 +108,13 @@ public class userBudgetController {
         return view;
     }
     
-    @RequestMapping(value = "/userBudgetStatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/userBudget/status", method = RequestMethod.GET)
     public ModelAndView budgetStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView view = new ModelAndView("user-budget-status");
         return view;
     }
     
-    @RequestMapping(value = "/userBudgetCategoriesStatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/userBudget/categoriesStatus", method = RequestMethod.GET)
     public ModelAndView budgetCategoriesStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();

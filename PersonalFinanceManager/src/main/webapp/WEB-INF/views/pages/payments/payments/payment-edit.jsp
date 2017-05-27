@@ -1,11 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
     $(document).ready(function () {
         $("#payment-type-edit-form").validate({
             rules: {
-                paymentAmount: {"required":true,"number":true}
+                paymentAmount: {"required": true, "number": true}
             },
             messages: {
                 paymentAmount: "Моля, въведете име на категория",
@@ -27,7 +29,6 @@
             var visible = "label-check-not-visible";
             if (label.hasClass("visible"))
                 visible = "label-check-visible";
-
             label.remove();
             $(this).on("ifChanged", function (event) {
                 $(this).change();
@@ -39,6 +40,17 @@
             });
         });
         $("#categories-select").select2({"theme": "classic"});
+        $('#paymentDate').flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            'enableTime': true,
+            'enableTime': true,
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                FPOBJ.close();
+            }
+        });
+
     });
 </script>
 <div class="form-container">
@@ -62,7 +74,9 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" readonly disabled name="paymentDate" placeholder="Дата на плащане" id="password" value="${payment.getDate()}"/>
+                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                    <input type="text" readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
                 </div>
             </div><div class="input-container size-2 side-padding-left">
                 <div class="input-title-holder no-select">
@@ -73,18 +87,18 @@
                 <div class="input-holder">
                     <input  type="radio" <c:if test="${payment.isActive()}">checked="checked"</c:if>
                             name="paymentActive" value="1"/><label
-                        class="visible">Плащането е активно</label><input type="radio" <c:if test="${payment.isActive() == false}">checked="checked"</c:if>
-                           name="paymentActive" value="2"/><label>
-                        Плащането не е активно</label>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Описание на плащане
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="paymentDescription">${payment.getDescription()}</textarea>
+                            class="visible">Плащането е активно</label><input type="radio" <c:if test="${payment.isActive() == false}">checked="checked"</c:if>
+                            name="paymentActive" value="2"/><label>
+                            Плащането не е активно</label>
+                    </div>
+                </div><div class="input-container size-1">
+                    <div class="input-title-holder no-select">
+                        <span> 
+                            Описание на плащане
+                        </span>
+                    </div>
+                    <div class="input-holder">
+                        <textarea resize="false" placeholder="Описание" name="paymentDescription">${payment.getDescription()}</textarea>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -95,7 +109,7 @@
                 <div class="input-holder">
                     <select id="categories-select" name="paymentCategory">
                         <c:forEach items="${categories}" var="element">
-                              <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
+                            <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>

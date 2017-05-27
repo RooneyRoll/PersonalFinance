@@ -8,9 +8,10 @@
         function getBudgetCategoryStatus(month, year, chart) {
             var data = JSON.stringify({"month": month, "year": year});
             var sum = [];
+            <spring:url var = "serviceUrl" value ="/budget/plannedVsSpentCategories"/>
             $.ajax({
                 type: "POST",
-                url: "budget/plannedVsSpentCategories",
+                url: "${serviceUrl}",
                 dataType: "json",
                 data: data,
                 async: false,

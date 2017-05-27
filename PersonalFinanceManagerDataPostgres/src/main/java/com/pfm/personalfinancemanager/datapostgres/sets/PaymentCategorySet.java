@@ -97,8 +97,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
 
     @Override
     public void Edit(UUID id, PaymentCategoryData data) throws PaymentCategoryEditException {
-        Session session = this.getSessionFactory().openSession();
-        try {
+        try (Session session = this.getSessionFactory().openSession()) {
             if (this.categoryExistsForEdit(data.getName(), data.getUserId(), id, session)) {
                 throw new PaymentCategoryEditException("Payment category with name \"" + data.getName() + "\" already exists.");
             }
@@ -107,8 +106,6 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             paymentCategoryEntity.setPcatId(id);
             session.update(paymentCategoryEntity);
             session.getTransaction().commit();
-            session.close();
-        } finally {
             session.close();
         }
     }

@@ -362,7 +362,7 @@ public class DataGridBuilder {
             GridCacheColumnObject cacheColumn = new GridCacheColumnObject();
             cacheColumn.setVisibleName(this.columnOptions.getTableFieldName());
             cacheColumn.setOptionsColumn(true);
-            List<GridCacheColumnOption> optionList = new ArrayList<GridCacheColumnOption>();
+            List<GridCacheColumnOption> optionList = new ArrayList<>();
             for (ColumnOption option : this.columnOptions.getOptions()) {
                 GridCacheColumnOption cacheOption = new GridCacheColumnOption();
                 cacheOption.setObjectIdSource(option.getObjectIdSource());
@@ -374,7 +374,7 @@ public class DataGridBuilder {
             cacheColumn.setOptions(optionList);
             cacheObject.getColumns().add(cacheColumn);
         }
-        List<GridCacheTableWhereObject> whereList = new ArrayList<GridCacheTableWhereObject>();
+        List<GridCacheTableWhereObject> whereList = new ArrayList<>();
         for (TableWhereObject whereObject : tableSettings.getWhereObjects()) {
             String columnName = whereObject.getColumnEntityName();
             String columnType = determineFieldType(columnName);

@@ -25,22 +25,33 @@
                         <spring:url var = "register" value='/register' />
                         <spring:url var = "login" value='/login' />
                         <spring:url var = "categories" value='/categories' />
-                        <spring:url var = "categories-add" value='/categories/add' />
+                        <spring:url var = "categoriesАdd" value='/categories/add' />
+                        <spring:url var = "paymentAdd" value='/payments/add' />
                         <spring:url var = "types" value='/types' />
                         <spring:url var = "payments" value='/payments' />
                         <spring:url var = "categoryBudget" value='/userBudget' />
-                        <spring:url var = "userBudgetStatus" value ="/userBudgetStatus"/>
-                        <spring:url var = "categoryCoverage" value ="/userBudgetCategoriesStatus"/>
+                        <spring:url var = "userBudgetStatus" value ="/userBudget/status"/>
+                        <spring:url var = "categoryCoverage" value ="/userBudget/categoriesStatus"/>
+                        <spring:url var = "paymentsStatus" value ="/payments/status"/>
                         <span class="main-menu-btn-icon"></span></label><ul class="top-menu-container sm sm-mint " id="main-menu">
                         <c:if test="${pageContext.request.userPrincipal.name == null}">
                             <li><a class="animation" href="${register}">Регистрация</a></li>
                             <li><a class="animation" href="${login}">Вход</a></li>
                             </c:if>
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            <li>
+                                <a class="animation" href="${paymentAdd}">Ново плащане</a>
+                            </li>
+                            <li>
+                                <a class="animation" href="${categoriesАdd}">Нова категория</a>
+                            </li>
                             <li><a class="animation" href="${payments}">Плащания</a>
                                 <ul>
                                     <li>
                                         <a class="animation" href="${categories}">Категории</a>
+                                    </li>
+                                    <li>
+                                        <a class="animation" href="${paymentsStatus}">Приходи към разходи</a>
                                     </li>
                                 </ul>
                             </li>

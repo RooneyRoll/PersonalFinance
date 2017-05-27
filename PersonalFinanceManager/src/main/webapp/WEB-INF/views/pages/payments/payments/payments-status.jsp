@@ -5,18 +5,18 @@
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
-        var parent = $("#budgetMonthPicker").parent();
-        var datepicker = $('#budgetMonthPicker').datepicker({
+        var parent = $("#paymentsMonthPicker").parent();
+        var datepicker = $('#paymentsMonthPicker').datepicker({
             inline: true,
             format: "yyyy/mm",
             container: parent,
             autoPick: true,
             language: "bg-BG"
         });
-        <spring:url var = "serviceUrl" value ="/budget/plannedVsSpent"/>
-        function getBudgetStatus(month, year, chart) {
+    <spring:url var = "serviceUrl" value ="/getPayments"/>
+        function getPaymentsStatus(month, year, chart) {
+            var series = [];
             var data = JSON.stringify({"month": month, "year": year});
-            var sum = [];
             $.ajax({
                 type: "POST",
                 url: "${serviceUrl}",
@@ -29,95 +29,85 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', token);
                 }
             }).done(function (data) {
-                var sumTotal = sumTotal = 0;
-                var subTitleText = "";
                 $(data).each(function (key, val) {
+                    var serie = {name: val.paymentType, data: val.amounts}
+                    series.push(serie);
                     sumTotal = 0;
                     var color = "#7CB5EC";
                     if (key !== 0)
                         color = "#E74C3C";
-                    sum.push({y: val.planned, color: color, name: "Планирани " + val.paymentType});
-                    sum.push({y: val.actual, color: color, name: "Действителни " + val.paymentType});
-                    sumTotal = parseInt(val.planned) - (val.actual);
-                    subTitleText += "Оставащи " + val.paymentType + " до план: " + sumTotal + "<br>";
                 });
                 if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(sum, true);
-                    chart.setTitle(null, {text: subTitleText});
+                    $(series).each(function(key,serie){
+                        chart.series[key].setData(serie.data, true);
+                    });
                 }
             });
-            return sum;
+            console.log(series);
+            return series;
         }
-        $('#budgetMonthPicker').change(function () {
+        $('#paymentsMonthPicker').change(function () {
             var date = $(this).val();
             var inputs = date.split("/");
             var year = inputs[0];
             var month = inputs[1];
             datepicker.datepicker("update");
-            var data = getBudgetStatus(month, year, chart);
+            var data = getPaymentsStatus(month, year, chart);
         });
-
-        var date = $("#budgetMonthPicker").val();
+        var date = $("#paymentsMonthPicker").val();
         var inputs = date.split("/");
         var year = inputs[0];
         var month = inputs[1];
-        var chart = new Highcharts.Chart({
+        var chart = new Highcharts.chart('container', {
             chart: {
-                renderTo: 'container',
-                type: 'column',
-                events: {
-                    load: function (event) {
-                        var date = $("#budgetMonthPicker").val();
-                        var inputs = date.split("/");
-                        var year = inputs[0];
-                        var month = inputs[1];
-                        var data = getBudgetStatus(month, year, this);
-                    }
-                }
+                type: 'area'
             },
             title: {
-                text: 'Планирани и действителни приходи/разходи'
+                text: 'Приходи и разходи за месец'
+            },
+            subtitle: {
+                //text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
+                //        'thebulletin.metapress.com</a>'
             },
             xAxis: {
-                type: 'category',
+                allowDecimals: false,
                 labels: {
-                    style: {
-                        fontSize: '14px',
-                        fontFamily: 'Roboto,Aral, sans-serif'
+                    formatter: function () {
+                        return this.value; //
                     }
                 }
             },
             yAxis: {
-                min: 0,
                 title: {
                     text: 'Стойност'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value; //
+                    }
                 }
             },
             tooltip: {
-                pointFormat: '<b>{point.y:.1f}</b>'
+                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}'
             },
-            legend: {
-                enabled: false
-            },
-            series: [{
-                    animation: false,
-                    name: "",
-                    data: getBudgetStatus(month, year, this),
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#FFFFFF',
-                        align: 'center',
-                        y: 35,
-                        style: {
-                            fontSize: '14px',
-                            fontFamily: 'Roboto,Arial, sans-serif'
+            plotOptions: {
+                area: {
+                    pointStart: 1,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 1,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
                         }
                     }
-                }]
+                }
+            },
+            series: getPaymentsStatus(month, year, this)
         });
-
-    });
+    })
 </script>
 <div class="form-container">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
@@ -127,11 +117,11 @@
                 <div class="input-container size-1">
                     <div class="input-title-holder no-select">
                         <span> 
-                            Планирано/изхарчено за месец
+                            приходи и разходи за месец:
                         </span>
                     </div>
                     <div class="input-holder">
-                        <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
+                        <input data-toggle="datepicker" type="hidden" name="budgetDate" id="paymentsMonthPicker">
                     </div>
                 </div>
             </div><div class="partial-contentainer size-2 side-padding">
