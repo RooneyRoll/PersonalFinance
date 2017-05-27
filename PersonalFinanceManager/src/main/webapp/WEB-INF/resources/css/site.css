@@ -175,7 +175,7 @@ html body{
     display:inline-block;
     width:100%;
     cursor:default;
-    padding:10px;
+    padding:10px 0;
 }
 
 .size-2 .error-container .error-content,

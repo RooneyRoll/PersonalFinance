@@ -10,9 +10,9 @@ import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.PaymentData;
 import com.pfm.data.entities.Payment;
 import com.pfm.data.entities.PaymentCategory;
-import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
+import com.pfm.exceptions.ValidationException;
 import com.pfm.models.payment.PaymentAddModel;
 import com.pfm.models.payment.PaymentEditModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -96,32 +97,41 @@ public class PaymentController {
     public ModelAndView add(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
-        PaymentData PaymentObject = new PaymentData();
-        PaymentObject.setActive(true);
-        PaymentObject.setDescription(params.getPaymentDescription());
-        PaymentObject.setCategory(params.getPaymentCategory());
-        PaymentObject.setAmount(params.getPaymentAmount());
-        PaymentObject.setDate(new Date());
-        UUID id = context.getPaymentSet().Add(PaymentObject);
-        String buttonSubmitted = request.getParameter("submit-button");
-        ModelAndView view = null;
-        switch (buttonSubmitted) {
-            case "1":
-                view = new ModelAndView("redirect:/payments");
-                break;
-            case "2":
-                view = new ModelAndView("redirect:/payments/edit/" + id);
-                break;
-            case "3":
-                view = new ModelAndView("redirect:/payments/add");
-                break;
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            IpfmContext context = pfmContext.getInstance();
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
+            if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
+                throw new ValidationException("Payment edit error: required fields not filled.");
+            }
+            PaymentData PaymentObject = new PaymentData();
+            PaymentObject.setActive(true);
+            PaymentObject.setDescription(params.getPaymentDescription());
+            PaymentObject.setCategory(params.getPaymentCategory());
+            PaymentObject.setAmount(params.getPaymentAmount());
+            PaymentObject.setDate(new Date());
+            UUID id = context.getPaymentSet().Add(PaymentObject);
+            String buttonSubmitted = request.getParameter("submit-button");
+            ModelAndView view = null;
+            switch (buttonSubmitted) {
+                case "1":
+                    view = new ModelAndView("redirect:/payments");
+                    break;
+                case "2":
+                    view = new ModelAndView("redirect:/payments/edit/" + id);
+                    break;
+                case "3":
+                    view = new ModelAndView("redirect:/payments/add");
+                    break;
+            }
+            return view;
+        } catch (ValidationException ex) {
+            map.put("errorMessage", "Моля въведете всички задължителни полета.");
+            ModelAndView view = new ModelAndView("payment-add");
+            return view;
         }
-        return view;
     }
 
     @RequestMapping(value = "/payments/edit/{paymentId}", method = RequestMethod.GET)
@@ -146,34 +156,44 @@ public class PaymentController {
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @PathVariable("paymentId") UUID paymentId,
-            @ModelAttribute PaymentEditModel params) throws BasicException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
-        Payment currentPayment = pfmContext.getInstance().getPaymentSet().GetById(paymentId);
-        PaymentData paymentDataObject = new PaymentData();
-        paymentDataObject.setActive("1".equals(params.isPaymentActive()));
-        paymentDataObject.setAmount(params.getPaymentAmount());
-        paymentDataObject.setCategory(params.getPaymentCategory());
-        paymentDataObject.setDate(currentPayment.getDate());
-        paymentDataObject.setDescription(params.getPaymentDescription());
-        context.getPaymentSet()
-                .Edit(paymentId, paymentDataObject);
-        String buttonSubmitted = request.getParameter("submit-button");
-        ModelAndView view = null;
-        switch (buttonSubmitted) {
-            case "1":
-                view = new ModelAndView("redirect:/payments");
-                break;
-            case "2":
-                view = new ModelAndView("redirect:/payments/edit/" + paymentId);
-                break;
-            case "3":
-                view = new ModelAndView("redirect:/payments/add");
-                break;
+            @ModelAttribute PaymentEditModel params,
+            RedirectAttributes redirectAttributes) throws BasicException {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            IpfmContext context = pfmContext.getInstance();
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
+            if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
+                throw new ValidationException("Payment edit error: required fields not filled.");
+            }
+            Payment currentPayment = pfmContext.getInstance().getPaymentSet().GetById(paymentId);
+            PaymentData paymentDataObject = new PaymentData();
+            paymentDataObject.setActive("1".equals(params.isPaymentActive()));
+            paymentDataObject.setAmount(params.getPaymentAmount());
+            paymentDataObject.setCategory(params.getPaymentCategory());
+            paymentDataObject.setDate(currentPayment.getDate());
+            paymentDataObject.setDescription(params.getPaymentDescription());
+            context.getPaymentSet()
+                    .Edit(paymentId, paymentDataObject);
+            String buttonSubmitted = request.getParameter("submit-button");
+            ModelAndView view = null;
+            switch (buttonSubmitted) {
+                case "1":
+                    view = new ModelAndView("redirect:/payments");
+                    break;
+                case "2":
+                    view = new ModelAndView("redirect:/payments/edit/" + paymentId);
+                    break;
+                case "3":
+                    view = new ModelAndView("redirect:/payments/add");
+                    break;
+            }
+            return view;
+        } catch (ValidationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Моля въведете всички задължителни полета.");
+            ModelAndView view = new ModelAndView("redirect:/payments/edit/" + paymentId);
+            return view;
         }
-        return view;
     }
 }

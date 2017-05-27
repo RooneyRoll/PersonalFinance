@@ -42,8 +42,6 @@ public class Users implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ubUser")
     private List<UserBudgets> userBudgetsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ptypeUser")
-    private List<PaymentTypes> paymentTypesList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -189,14 +187,5 @@ public class Users implements Serializable {
 
     public void setUserBudgetsList(List<UserBudgets> userBudgetsList) {
         this.userBudgetsList = userBudgetsList;
-    }
-
-    @XmlTransient
-    public List<PaymentTypes> getPaymentTypesList() {
-        return paymentTypesList;
-    }
-
-    public void setPaymentTypesList(List<PaymentTypes> paymentTypesList) {
-        this.paymentTypesList = paymentTypesList;
     }
 }

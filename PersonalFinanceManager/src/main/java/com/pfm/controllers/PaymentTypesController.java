@@ -98,7 +98,6 @@ public class PaymentTypesController {
             PaymentTypeObject.setActive(true);
             PaymentTypeObject.setDescription(params.getTypeDescription());
             PaymentTypeObject.setName(params.getTypeName());
-            PaymentTypeObject.setUserId(user.getId());
             UUID id = context.getPaymentTypeSet()
                     .Add(PaymentTypeObject);
             String buttonSubmitted = request.getParameter("submit-button");
@@ -153,7 +152,6 @@ public class PaymentTypesController {
             paymentTypeDataObject.setActive("1".equals(params.getTypeActive()));
             paymentTypeDataObject.setDescription(params.getTypeDescription());
             paymentTypeDataObject.setName(params.getTypeName());
-            paymentTypeDataObject.setUserId(user.getId());
             context.getPaymentTypeSet()
                     .Edit(typeId, paymentTypeDataObject);
             String buttonSubmitted = request.getParameter("submit-button");

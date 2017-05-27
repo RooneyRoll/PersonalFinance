@@ -16,7 +16,6 @@ public class PaymentType {
     private String name;
     private boolean active;
     private String description;
-    private UUID userId;
 
     public UUID getId() {
         return id;
@@ -48,13 +47,5 @@ public class PaymentType {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 }

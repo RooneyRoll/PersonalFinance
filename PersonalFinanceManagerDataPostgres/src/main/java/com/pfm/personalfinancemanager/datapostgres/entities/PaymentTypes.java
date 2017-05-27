@@ -53,9 +53,6 @@ public class PaymentTypes implements Serializable {
     private boolean ptypeActive;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatType")
     private List<PaymentCategories> paymentCategoriesList;
-    @JoinColumn(name = "ptype_user", referencedColumnName = "user_userid")
-    @ManyToOne(optional = false)
-    private Users ptypeUser;
 
     public PaymentTypes() {
     }
@@ -109,14 +106,6 @@ public class PaymentTypes implements Serializable {
 
     public void setPaymentCategoriesList(List<PaymentCategories> paymentCategoriesList) {
         this.paymentCategoriesList = paymentCategoriesList;
-    }
-
-    public Users getPtypeUser() {
-        return ptypeUser;
-    }
-
-    public void setPtypeUser(Users ptypeUser) {
-        this.ptypeUser = ptypeUser;
     }
 
     @Override

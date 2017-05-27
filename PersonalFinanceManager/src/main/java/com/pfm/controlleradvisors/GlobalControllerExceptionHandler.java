@@ -6,7 +6,6 @@
 package com.pfm.controlleradvisors;
 
 import com.pfm.data.context.IpfmContext;
-import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
