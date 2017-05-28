@@ -90,9 +90,17 @@ html body{
 .header .header-content .header-content-left{
     width:30%;
 }
+
+.header .header-content .header-content-left a{
+    color:#fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .header .header-content .header-content-right{
     width:70%;
 }
+
 .header .header-content .header-content-left .header-text{
     font-size:22px;
     font-weight:bold;
