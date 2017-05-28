@@ -111,7 +111,7 @@ public class PaymentController {
             PaymentObject.setDescription(params.getPaymentDescription());
             PaymentObject.setCategory(params.getPaymentCategory());
             PaymentObject.setAmount(params.getPaymentAmount());
-            PaymentObject.setDate(new Date());
+            PaymentObject.setDate(params.getPaymentDate());
             UUID id = context.getPaymentSet().Add(PaymentObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;

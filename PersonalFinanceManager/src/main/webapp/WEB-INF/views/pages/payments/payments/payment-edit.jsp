@@ -50,7 +50,6 @@
                 FPOBJ.close();
             }
         });
-
     });
 </script>
 <div class="form-container">

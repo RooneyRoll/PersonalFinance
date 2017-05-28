@@ -50,19 +50,22 @@
                                     <li>
                                         <a class="animation" href="${categories}">Категории</a>
                                     </li>
-                                    <li>
-                                        <a class="animation" href="${paymentsStatus}">Приходи към разходи</a>
-                                    </li>
                                 </ul>
                             </li>
-                            <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
+                            <li><a class="animation" href="${categoryBudget}">Бюджет</a></li>
+                            <li>
+                                <a class="animation" href="#">Статистики</a><ul>
                                     <li>
                                         <a class="animation" href="${userBudgetStatus}">Планирано/Действително</a>
                                     </li>
                                     <li>
                                         <a class="animation" href="${categoryCoverage}">Покритие по категории</a>
                                     </li>
-                                </ul></li>
+                                    <li>
+                                        <a class="animation" href="${paymentsStatus}">Приходи към разходи</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li><a class="animation" href="javascript:formSubmit()">Изход</a></li>
                             </c:if>
                     </ul>

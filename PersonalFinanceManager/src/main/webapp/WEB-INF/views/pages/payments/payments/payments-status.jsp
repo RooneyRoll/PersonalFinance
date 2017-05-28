@@ -30,15 +30,30 @@
                 }
             }).done(function (data) {
                 $(data).each(function (key, val) {
-                    var serie = {name: val.paymentType, data: val.amounts}
+                    var name = val.paymentType;
+                    var color = "#7CB5EC";
+                    var opacity = 1;
+                    if (name !== "Приходи") {
+                        color = "#E74C3C";
+                    }
+                    if (val.budget) {
+                        opacity = 0;
+                        name = name + " - план"
+                    } else {
+                        opacity = 0.3;
+                    }
+                    var serie = {
+                        name: name,
+                        data: val.amounts,
+                        fillOpacity: opacity,
+                        color: color
+                    };
                     series.push(serie);
                     sumTotal = 0;
-                    var color = "#7CB5EC";
-                    if (key !== 0)
-                        color = "#E74C3C";
+
                 });
                 if (typeof (chart.series) !== 'undefined') {
-                    $(series).each(function(key,serie){
+                    $(series).each(function (key, serie) {
                         chart.series[key].setData(serie.data, true);
                     });
                 }

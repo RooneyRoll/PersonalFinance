@@ -23,6 +23,17 @@
             }
         });
         $("#categories-select").select2({"theme": "classic"});
+        $('#paymentDate').flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            'enableTime': true,
+            'enableTime': true,
+            'defaultDate':'today', 
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                FPOBJ.close();
+            }
+        });
     });
 </script>
 <div class="form-container">
@@ -47,6 +58,17 @@
                 </div>
                 <div class="input-holder">
                     <textarea resize="false" placeholder="Описание" name="paymentDescription"></textarea>
+                </div>
+            </div><div class="input-container size-1 side-padding-right">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Дата на плащане<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                    <input type="text" readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">

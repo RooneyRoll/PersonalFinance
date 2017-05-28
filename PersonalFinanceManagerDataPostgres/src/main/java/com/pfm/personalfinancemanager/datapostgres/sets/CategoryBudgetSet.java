@@ -59,8 +59,6 @@ public class CategoryBudgetSet extends BaseSet<CategoryBudgets, CategoryBudget, 
             List<PaymentCategories> resultList = q.list();
             Query q1 = session.createQuery("From UserBudgets where ubId = :id");
             q1.setParameter("id", DtoData.getBudgetId());
-            System.out.println(DtoData.getBudgetId());
-            System.out.println(DtoData.getCategoryId());
             List<UserBudgets> budgetList = q1.list();
             CategoryBudgets details = new CategoryBudgets();
             details.setCbActive(DtoData.isActive());

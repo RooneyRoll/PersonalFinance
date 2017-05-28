@@ -112,10 +112,10 @@
             </div>
             <div class="buttons-container size-2">
                 <button type="submit" class="button animation">
-                    Регисиация
+                    Регистрация
                 </button>
                 <button type="reset" class="button animation">
-                    Изчисване на форма
+                    Изчистване на форма
                 </button>
             </div>
         </form>

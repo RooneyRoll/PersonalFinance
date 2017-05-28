@@ -18,10 +18,19 @@ public class PaymentsForMonthResultObject {
 
     public String paymentType;
     public Double[] amounts;
-
+    public boolean budget;
+    
     public PaymentsForMonthResultObject(int days) {
         this.amounts = new Double[days];
         Arrays.fill(amounts, 0.0);
+    }
+
+    public void setBudgetValues(double amount, int maxDay) {
+        int size = amounts.length;
+        for (int i = 0; i < size; i++) {
+            double averageForDay = amount / maxDay;
+            amounts[i] = averageForDay * (i + 1);
+        }
     }
 
     public void setAt(int position, Double amount, int paymentMonth) {
@@ -39,6 +48,14 @@ public class PaymentsForMonthResultObject {
                 amounts[i] = null;
             }
         }
+    }
+
+    public boolean isBudget() {
+        return budget;
+    }
+
+    public void setBudget(boolean budget) {
+        this.budget = budget;
     }
 
     public String getPaymentType() {

@@ -6,16 +6,29 @@
 package com.pfm.models.payment;
 
 import com.pfm.exceptions.ValidationException;
+import java.util.Date;
 import java.util.UUID;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
  * @author mihail
  */
 public class PaymentAddModel {
+
     public double paymentAmount;
     public String paymentDescription;
     public UUID paymentCategory;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date paymentDate;
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
 
     public double getPaymentAmount() {
         return paymentAmount;

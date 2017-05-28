@@ -87,7 +87,12 @@ html body{
     cursor:default;
     vertical-align: middle;
 }
-
+.header .header-content .header-content-left{
+    width:30%;
+}
+.header .header-content .header-content-right{
+    width:70%;
+}
 .header .header-content .header-content-left .header-text{
     font-size:22px;
     font-weight:bold;
