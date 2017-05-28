@@ -22,287 +22,290 @@
             fullScreen: false,
             autoHeight: true,
             responsive: true
-        });
+        })
+    <c:if test="${pageContext.request.userPrincipal.name == null}">
+    });
+    </c:if>
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <spring:url var = "paymentsServiceUrl" value ="/getPayments"/>
         <spring:url var = "plannedVsSpentUrl" value ="/budget/plannedVsSpent"/>
-        var dateObj = new Date();
-        var month = dateObj.getUTCMonth() + 1; //months from 1-12
-        var year = dateObj.getUTCFullYear();
-        function getBudgetStatus(month, year, chart) {
-            var data = JSON.stringify({"month": month, "year": year});
-            var sum = [];
-            $.ajax({
-                type: "POST",
-                url: "${plannedVsSpentUrl}",
-                dataType: "json",
-                data: data,
-                async: false,
-                contentType: 'application/json',
-                beforeSend: function (xhr, settings) {
-                    var token = $('meta[name="_csrf"]').attr('content');
-                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                }
-            }).done(function (data) {
-                var sumTotal = sumTotal = 0;
-                var subTitleText = "";
-                $(data).each(function (key, val) {
-                    sumTotal = 0;
-                    var color = "#7CB5EC";
-                    if (key !== 0)
-                        color = "#E74C3C";
-                    sum.push({y: val.planned, color: color, name: "Планирани " + val.paymentType});
-                    sum.push({y: val.actual, color: color, name: "Действителни " + val.paymentType});
-                    sumTotal = parseInt(val.planned) - (val.actual);
-                    subTitleText += "Оставащи " + val.paymentType + " до план: " + sumTotal + "<br>";
-                });
-                if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(sum, true);
-                    chart.setTitle(null, {text: subTitleText});
-                }
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var year = dateObj.getUTCFullYear();
+    function getBudgetStatus(month, year, chart) {
+        var data = JSON.stringify({"month": month, "year": year});
+        var sum = [];
+        $.ajax({
+            type: "POST",
+            url: "${plannedVsSpentUrl}",
+            dataType: "json",
+            data: data,
+            async: false,
+            contentType: 'application/json',
+            beforeSend: function (xhr, settings) {
+                var token = $('meta[name="_csrf"]').attr('content');
+                xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        }).done(function (data) {
+            var sumTotal = sumTotal = 0;
+            var subTitleText = "";
+            $(data).each(function (key, val) {
+                sumTotal = 0;
+                var color = "#7CB5EC";
+                if (key !== 0)
+                    color = "#E74C3C";
+                sum.push({y: val.planned, color: color, name: "Планирани " + val.paymentType});
+                sum.push({y: val.actual, color: color, name: "Действителни " + val.paymentType});
+                sumTotal = parseInt(val.planned) - (val.actual);
+                subTitleText += "Оставащи " + val.paymentType + " до план: " + sumTotal + "<br>";
             });
-            return sum;
-        }
-        function getPaymentsStatus(month, year, chart) {
-            console.log(month);
-            console.log(year);
-            var series = [];
-            var data = JSON.stringify({"month": month, "year": year});
-            $.ajax({
-                type: "POST",
-                url: "${paymentsServiceUrl}",
-                dataType: "json",
-                data: data,
-                async: false,
-                contentType: 'application/json',
-                beforeSend: function (xhr, settings) {
-                    var token = $('meta[name="_csrf"]').attr('content');
-                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            if (typeof (chart.series) !== 'undefined') {
+                chart.series[0].setData(sum, true);
+                chart.setTitle(null, {text: subTitleText});
+            }
+        });
+        return sum;
+    }
+    function getPaymentsStatus(month, year, chart) {
+        console.log(month);
+        console.log(year);
+        var series = [];
+        var data = JSON.stringify({"month": month, "year": year});
+        $.ajax({
+            type: "POST",
+            url: "${paymentsServiceUrl}",
+            dataType: "json",
+            data: data,
+            async: false,
+            contentType: 'application/json',
+            beforeSend: function (xhr, settings) {
+                var token = $('meta[name="_csrf"]').attr('content');
+                xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        }).done(function (data) {
+            $(data).each(function (key, val) {
+                var name = val.paymentType;
+                var color = "#7CB5EC";
+                var opacity = 1;
+                if (name !== "Приходи") {
+                    color = "#E74C3C";
                 }
-            }).done(function (data) {
-                $(data).each(function (key, val) {
-                    var name = val.paymentType;
-                    var color = "#7CB5EC";
-                    var opacity = 1;
-                    if (name !== "Приходи") {
-                        color = "#E74C3C";
-                    }
-                    if (val.budget) {
-                        opacity = 0;
-                        name = name + " - план"
-                    } else {
-                        opacity = 0.3;
-                    }
-                    var serie = {
-                        name: name,
-                        data: val.amounts,
-                        fillOpacity: opacity,
-                        color: color
-                    };
-                    series.push(serie);
-                    sumTotal = 0;
+                if (val.budget) {
+                    opacity = 0;
+                    name = name + " - план"
+                } else {
+                    opacity = 0.3;
+                }
+                var serie = {
+                    name: name,
+                    data: val.amounts,
+                    fillOpacity: opacity,
+                    color: color
+                };
+                series.push(serie);
+                sumTotal = 0;
 
-                });
-                if (typeof (chart.series) !== 'undefined') {
-                    $(series).each(function (key, serie) {
-                        chart.series[key].setData(serie.data, true);
-                    });
-                }
             });
-            return series;
-        }
-        function getBudgetCategoryStatus(month, year, chart) {
-            var data = JSON.stringify({"month": month, "year": year});
-            var sum = [];
+            if (typeof (chart.series) !== 'undefined') {
+                $(series).each(function (key, serie) {
+                    chart.series[key].setData(serie.data, true);
+                });
+            }
+        });
+        return series;
+    }
+    function getBudgetCategoryStatus(month, year, chart) {
+        var data = JSON.stringify({"month": month, "year": year});
+        var sum = [];
         <spring:url var = "serviceUrl" value ="/budget/plannedVsSpentCategories"/>
-            $.ajax({
-                type: "POST",
-                url: "${serviceUrl}",
-                dataType: "json",
-                data: data,
-                async: false,
-                contentType: 'application/json',
-                beforeSend: function (xhr, settings) {
-                    var token = $('meta[name="_csrf"]').attr('content');
-                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        $.ajax({
+            type: "POST",
+            url: "${serviceUrl}",
+            dataType: "json",
+            data: data,
+            async: false,
+            contentType: 'application/json',
+            beforeSend: function (xhr, settings) {
+                var token = $('meta[name="_csrf"]').attr('content');
+                xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        }).done(function (data) {
+            $(data).each(function (key, val) {
+                var color = "#7CB5EC";
+                var secondDcolor = "#A1D1FF";
+                if (key !== 0) {
+                    color = "#E74C3C";
+                    secondDcolor = "#FF7061";
                 }
-            }).done(function (data) {
-                $(data).each(function (key, val) {
-                    var color = "#7CB5EC";
-                    var secondDcolor = "#A1D1FF";
-                    if (key !== 0) {
-                        color = "#E74C3C";
-                        secondDcolor = "#FF7061";
-                    }
-                    sum.push({y: val.planned, color: color, name: /*"Планирани " +*/ val.categoryName});
-                    sum.push({y: val.actual, color: secondDcolor, name: /*"Действителни " +*/ val.categoryName});
-                    var percent = val.percents;
-                    var catId = val.categoryId;
-                    var widthPercent = 0;
-                    if (percent > 100) {
-                        widthPercent = 100;
-                    } else {
-                        widthPercent = percent;
-                    }
-                    percent = parseFloat(widthPercent.toFixed(2));
-                    $("#percent_" + catId).css("background-color", color).animate({
-                        width: widthPercent + '%'
-                    });
-                    //$("#percent_" + catId).css("width", percent + "%");
-                    $("#percent_" + catId).text(percent + "%");
+                sum.push({y: val.planned, color: color, name: /*"Планирани " +*/ val.categoryName});
+                sum.push({y: val.actual, color: secondDcolor, name: /*"Действителни " +*/ val.categoryName});
+                var percent = val.percents;
+                var catId = val.categoryId;
+                var widthPercent = 0;
+                if (percent > 100) {
+                    widthPercent = 100;
+                } else {
+                    widthPercent = percent;
+                }
+                percent = parseFloat(widthPercent.toFixed(2));
+                $("#percent_" + catId).css("background-color", color).animate({
+                    width: widthPercent + '%'
                 });
-                if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(sum, true);
-                }
+                //$("#percent_" + catId).css("width", percent + "%");
+                $("#percent_" + catId).text(percent + "%");
             });
-            return sum;
-        }
-        new Highcharts.chart('container-1', {
-            chart: {
-                type: 'area'
-            },
+            if (typeof (chart.series) !== 'undefined') {
+                chart.series[0].setData(sum, true);
+            }
+        });
+        return sum;
+    }
+    new Highcharts.chart('container-1', {
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Приходи и разходи за месец'
+        },
+        xAxis: {
+            allowDecimals: false,
+            labels: {
+                formatter: function () {
+                    return this.value; //
+                }
+            }
+        },
+        yAxis: {
             title: {
-                text: 'Приходи и разходи за месец'
+                text: 'Стойност'
             },
-            xAxis: {
-                allowDecimals: false,
-                labels: {
-                    formatter: function () {
-                        return this.value; //
-                    }
+            labels: {
+                formatter: function () {
+                    return this.value; //
                 }
-            },
-            yAxis: {
-                title: {
-                    text: 'Стойност'
-                },
-                labels: {
-                    formatter: function () {
-                        return this.value; //
-                    }
-                }
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}'
-            },
-            plotOptions: {
-                area: {
-                    pointStart: 1,
-                    marker: {
-                        enabled: false,
-                        symbol: 'circle',
-                        radius: 1,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}'
+        },
+        plotOptions: {
+            area: {
+                pointStart: 1,
+                marker: {
+                    enabled: false,
+                    symbol: 'circle',
+                    radius: 1,
+                    states: {
+                        hover: {
+                            enabled: true
                         }
                     }
                 }
-            },
-            series: getPaymentsStatus(month, year, this)
-        });
-        new Highcharts.Chart({
-            chart: {
-                renderTo: 'container-2',
-                type: 'column',
-                events: {
-                    load: function (event) {
+            }
+        },
+        series: getPaymentsStatus(month, year, this)
+    });
+    new Highcharts.Chart({
+        chart: {
+            renderTo: 'container-2',
+            type: 'column',
+            events: {
+                load: function (event) {
 
-                    }
                 }
-            },
+            }
+        },
+        title: {
+            text: 'Планирани и действителни приходи/разходи'
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                style: {
+                    fontSize: '14px',
+                    fontFamily: 'Roboto,Aral, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
             title: {
-                text: 'Планирани и действителни приходи/разходи'
-            },
-            xAxis: {
-                type: 'category',
-                labels: {
+                text: 'Стойност'
+            }
+        },
+        tooltip: {
+            pointFormat: '<b>{point.y:.1f}</b>'
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+                animation: false,
+                name: "",
+                data: getBudgetStatus(month, year, this),
+                dataLabels: {
+                    enabled: true,
+                    rotation: 0,
+                    color: '#FFFFFF',
+                    align: 'center',
+                    y: 35,
                     style: {
                         fontSize: '14px',
-                        fontFamily: 'Roboto,Aral, sans-serif'
+                        fontFamily: 'Roboto,Arial, sans-serif'
                     }
                 }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Стойност'
-                }
-            },
-            tooltip: {
-                pointFormat: '<b>{point.y:.1f}</b>'
-            },
-            legend: {
-                enabled: false
-            },
-            series: [{
-                    animation: false,
-                    name: "",
-                    data: getBudgetStatus(month, year, this),
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#FFFFFF',
-                        align: 'center',
-                        y: 35,
-                        style: {
-                            fontSize: '14px',
-                            fontFamily: 'Roboto,Arial, sans-serif'
-                        }
-                    }
-                }]
-        });
-        new Highcharts.Chart({
-            chart: {
-                renderTo: 'container-3',
-                type: 'column',
-                events: {
-                    load: function (event) {
-                    }
-                }
-            },
+            }]
+    });
+    new Highcharts.Chart({
+    chart: {
+    renderTo: 'container-3',
+            type: 'column',
+            events: {
+            load: function (event) {
+            }
+            }
+    },
             title: {
-                text: 'Планирани и действителни приходи/разходи'
+            text: 'Планирани и действителни приходи/разходи'
             },
             xAxis: {
-                type: 'category',
-                labels: {
+            type: 'category',
+                    labels: {
                     style: {
-                        fontSize: '14px',
-                        fontFamily: 'Roboto,Aral, sans-serif'
+                    fontSize: '14px',
+                            fontFamily: 'Roboto,Aral, sans-serif'
                     }
-                }
+                    }
             },
             yAxis: {
-                min: 0,
-                title: {
+            min: 0,
+                    title: {
                     text: 'Стойност'
-                }
+                    }
             },
             tooltip: {
-                pointFormat: '<b>{point.y:.1f}</b>'
+            pointFormat: '<b>{point.y:.1f}</b>'
             },
             legend: {
-                enabled: false
+            enabled: false
             },
             series: [{
-                    animation: false,
+            animation: false,
                     name: "",
                     data: getBudgetCategoryStatus(month, year, this),
                     dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#FFFFFF',
-                        align: 'center',
-                        y: 35,
-                        style: {
+                    enabled: true,
+                            rotation: 0,
+                            color: '#FFFFFF',
+                            align: 'center',
+                            y: 35,
+                            style: {
                             fontSize: '14px',
-                            fontFamily: 'Roboto,Arial, sans-serif'
-                        }
+                                    fontFamily: 'Roboto,Arial, sans-serif'
+                            }
                     }
-                }]
-        });
+            }]
+    });
     });
     </c:if>
 </script>
@@ -312,7 +315,7 @@
             <div class="partial-contentainer size-2 side-padding">
                 <h2>Здравейте ${pageContext.request.userPrincipal.name}!</h2>
                 <p>На тази страница имате възможност да прегледате състоянието на вашия бюджет, както и статистики, 
-                свързани с нето.</p>
+                    свързани с нето.</p>
             </div><div class="partial-contentainer size-2 side-padding">
                 <div class="slider-pro" id="my-slider">
                     <div class="sp-slides">
