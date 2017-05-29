@@ -20,5 +20,4 @@ public interface IManagable<DataType, T> {
     public void Delete(T id);
 
     public T AddOrUpdate(DataType data) throws BasicException;
-;
 }

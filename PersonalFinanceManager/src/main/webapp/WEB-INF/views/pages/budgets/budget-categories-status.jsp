@@ -42,7 +42,6 @@
                     $("#percent_" + catId).css("background-color", color).animate({
                         width: widthPercent + '%'
                     });
-                    //$("#percent_" + catId).css("width", percent + "%");
                     $("#percent_" + catId).text(percent + "%");
                 });
                 if (typeof (chart.series) !== 'undefined') {
@@ -160,7 +159,7 @@
                                         <span>${category.getName()}:</span>
                                     </div>
                                     <div class="input-holder">
-                                        <div class="percentage" id="percent_${category.getId()}" style="color:#fff;background-color:#7CB5EC;border-radius:2px;padding:5px 10px;">asf</div>
+                                        <div class="percentage" id="percent_${category.getId()}">&nbsp;</div>
                                     </div>
                                 </div></c:if></c:forEach>
                             </div>

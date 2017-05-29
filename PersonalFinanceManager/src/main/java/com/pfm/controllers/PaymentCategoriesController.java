@@ -7,10 +7,12 @@ package com.pfm.controllers;
 
 import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.data.CategoryBudgetData;
 import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
+import com.pfm.data.entities.UserBudget;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.exceptions.ValidationException;
@@ -108,6 +110,17 @@ public class PaymentCategoriesController {
             categoryDataObject.setType(params.getCategoryType());
             Serializable id = context.getPaymentCategorySet()
                     .Add(categoryDataObject);
+            List<UserBudget> budgets = context.getUserBudgetSet()
+                    .getAllBudgetsForUser(user.getId());
+            for (UserBudget budget : budgets) {
+                CategoryBudgetData budgetCat = new CategoryBudgetData();
+                budgetCat.setActive(true);
+                budgetCat.setAmount(0);
+                budgetCat.setBudgetId(budget.getId());
+                budgetCat.setCategoryId(UUID.fromString(id.toString()));
+                context.getCategoryDetailSet().Add(budgetCat);
+            }
+            
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {

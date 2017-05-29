@@ -165,4 +165,17 @@ public class UserBudgetSet extends BaseSet<UserBudgets, UserBudget, UserBudgetDa
             return UUID.fromString(id.toString());
         }
     }
+
+    @Override
+    public List<UserBudget> getAllBudgetsForUser(UUID userId) {
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From UserBudgets b where b.ubUser.userUserid = :user")
+                    .setParameter("user", userId);
+            List<UserBudgets> resultList = q.list();
+            session.getTransaction().commit();
+            session.close();
+            return convertEntititiesToDtoArray(resultList);
+        }
+    }
 }

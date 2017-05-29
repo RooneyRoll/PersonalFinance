@@ -10,6 +10,7 @@ import com.pfm.data.entities.UserBudget;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,4 +22,6 @@ public interface IUserBudgetSet extends IViewable<UserBudget, UUID>, IManagable<
     public UserBudget getCurrentlyActiveBudgetForUser(UUID userId);
 
     public UserBudget getBudgetByDateAndUserId(UUID userId, Date date);
+    
+    public List<UserBudget> getAllBudgetsForUser(UUID userId);
 }
