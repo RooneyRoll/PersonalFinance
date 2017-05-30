@@ -88,7 +88,10 @@ public class userBudgetController {
         }
         for (PaymentCategory category : categories) {
             String amountForCategory = request.getParameter("category_" + category.getId().toString());
-            Double amount = Double.parseDouble(amountForCategory);
+            double amount = Double.parseDouble(amountForCategory);
+            if (amount < 0) {
+                amount = 0;
+            }
             CategoryBudgetData budgetCategory = new CategoryBudgetData();
             budgetCategory.setActive(true);
             budgetCategory.setAmount(amount);
@@ -107,13 +110,13 @@ public class userBudgetController {
                 "paymentTypes", paymentTypes);
         return view;
     }
-    
+
     @RequestMapping(value = "/userBudget/status", method = RequestMethod.GET)
     public ModelAndView budgetStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView view = new ModelAndView("user-budget-status");
         return view;
     }
-    
+
     @RequestMapping(value = "/userBudget/categoriesStatus", method = RequestMethod.GET)
     public ModelAndView budgetCategoriesStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

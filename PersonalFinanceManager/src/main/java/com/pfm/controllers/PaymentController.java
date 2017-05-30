@@ -24,7 +24,6 @@ import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -110,7 +109,11 @@ public class PaymentController {
             PaymentObject.setActive(true);
             PaymentObject.setDescription(params.getPaymentDescription());
             PaymentObject.setCategory(params.getPaymentCategory());
-            PaymentObject.setAmount(params.getPaymentAmount());
+            double amount = params.getPaymentAmount();
+            if(amount < 0){
+                amount = 0;
+            }
+            PaymentObject.setAmount(amount);
             PaymentObject.setDate(params.getPaymentDate());
             UUID id = context.getPaymentSet().Add(PaymentObject);
             String buttonSubmitted = request.getParameter("submit-button");
@@ -169,7 +172,11 @@ public class PaymentController {
             }
             PaymentData paymentDataObject = new PaymentData();
             paymentDataObject.setActive("1".equals(params.isPaymentActive()));
-            paymentDataObject.setAmount(params.getPaymentAmount());
+            double amount = params.getPaymentAmount();
+            if(amount < 0){
+                amount = 0;
+            }
+            paymentDataObject.setAmount(amount);
             paymentDataObject.setCategory(params.getPaymentCategory());
             paymentDataObject.setDate(params.getPaymentDate());
             paymentDataObject.setDescription(params.getPaymentDescription());

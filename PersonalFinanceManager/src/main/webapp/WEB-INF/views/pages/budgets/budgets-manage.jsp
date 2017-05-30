@@ -113,6 +113,7 @@
                     input.rules("add", {
                         required: true,
                         number: true,
+                        min:0,
                         messages: {
                             number: true
                         }

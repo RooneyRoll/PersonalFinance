@@ -7,10 +7,10 @@
     $(document).ready(function () {
         $("#payment-type-edit-form").validate({
             rules: {
-                paymentAmount: {"required": true, "number": true}
+                paymentAmount: {"required": true, "number": true,"min":0}
             },
             messages: {
-                paymentAmount: "Моля, въведете име на категория",
+                paymentAmount: "Моля, въведете име на категория"
             },
             errorPlacement: function (error, element) {
 
