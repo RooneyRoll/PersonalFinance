@@ -19,7 +19,7 @@ public class PaymentsForMonthResultObject {
     public String paymentType;
     public Double[] amounts;
     public boolean budget;
-    
+
     public PaymentsForMonthResultObject(int days) {
         this.amounts = new Double[days];
         Arrays.fill(amounts, 0.0);
@@ -34,18 +34,34 @@ public class PaymentsForMonthResultObject {
     }
 
     public void setAt(int position, Double amount, int paymentMonth) {
+
         int size = amounts.length;
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
-        int month = cal.get(Calendar.MONTH) + 1;
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
         int todayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        for (int i = position; i < size; i++) {
-            if (i < todayOfMonth) {
+        /*System.out.println("paymentMonth --> " + paymentMonth);
+        System.out.println("currentMonth --> " + currentMonth);
+        System.out.println("position --> " + position);
+        System.out.println("today --> " + todayOfMonth);
+        System.out.println("------------------------------------------------");*/
+        
+        if (paymentMonth > currentMonth) {
+            //todo
+        }
+        if (paymentMonth < currentMonth) {
+            for (int i = position; i < size; i++) {
                 amounts[i] = amount;
-            } else {
-                //todo month compare
-                amounts[i] = null;
+            }
+        }
+        if (paymentMonth == currentMonth) {
+            for (int i = position; i < size; i++) {
+                if (i < todayOfMonth) {
+                    amounts[i] = amount;
+                } else {
+                    amounts[i] = null;
+                }
             }
         }
     }

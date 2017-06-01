@@ -73,7 +73,7 @@ public class PaymentsRestController {
                 budgetForMonthObject.setPaymentType(type.getName());
                 double total = 0;
                 double budgetLimit = 0;
-                int month = cal.get(Calendar.DAY_OF_MONTH) + 1;
+                int month = cal.get(Calendar.MONTH) + 1;
 
                 List<PaymentCategory> categories = context
                         .getPaymentCategorySet()
