@@ -18,13 +18,13 @@ import java.util.UUID;
  *
  * @author Misho
  */
-public interface IPaymentTypeSet extends IViewable<PaymentType, UUID>, IManagable<PaymentTypeData, UUID> {
+public interface IPaymentTypeSet extends IViewable<PaymentType, Integer>, IManagable<PaymentTypeData, Integer> {
 
     @Override
-    public UUID Add(PaymentTypeData data) throws PaymentTypeAddException;
+    public Integer Add(PaymentTypeData data) throws PaymentTypeAddException;
 
     @Override
-    public void Edit(UUID id, PaymentTypeData data) throws PaymentTypeEditException;
+    public void Edit(Integer id, PaymentTypeData data) throws PaymentTypeEditException;
     
     public List<PaymentType> GetAllActiveTypes();
 }

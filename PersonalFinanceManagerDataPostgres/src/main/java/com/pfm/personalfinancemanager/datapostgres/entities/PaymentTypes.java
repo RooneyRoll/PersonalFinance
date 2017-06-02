@@ -15,8 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,9 +38,10 @@ public class PaymentTypes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "ptype_id")
-    private UUID ptypeId;
+    private Integer ptypeId;
     @Basic(optional = false)
     @Column(name = "ptype_name")
     private String ptypeName;
@@ -57,21 +56,21 @@ public class PaymentTypes implements Serializable {
     public PaymentTypes() {
     }
 
-    public PaymentTypes(UUID ptypeId) {
+    public PaymentTypes(Integer ptypeId) {
         this.ptypeId = ptypeId;
     }
 
-    public PaymentTypes(UUID ptypeId, String ptypeName, boolean ptypeActive) {
+    public PaymentTypes(Integer ptypeId, String ptypeName, boolean ptypeActive) {
         this.ptypeId = ptypeId;
         this.ptypeName = ptypeName;
         this.ptypeActive = ptypeActive;
     }
 
-    public UUID getPtypeId() {
+    public Integer getPtypeId() {
         return ptypeId;
     }
 
-    public void setPtypeId(UUID ptypeId) {
+    public void setPtypeId(Integer ptypeId) {
         this.ptypeId = ptypeId;
     }
 

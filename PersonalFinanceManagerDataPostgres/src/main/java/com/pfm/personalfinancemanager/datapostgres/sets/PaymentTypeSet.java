@@ -77,7 +77,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
 
     @Override
-    public PaymentType GetById(UUID id) {
+    public PaymentType GetById(Integer id) {
         List<PaymentType> paymentTypes;
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -90,7 +90,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
 
     @Override
-    public UUID Add(PaymentTypeData data) throws PaymentTypeAddException {
+    public Integer Add(PaymentTypeData data) throws PaymentTypeAddException {
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             PaymentTypes PaymentTypeEntity = convertDtoDataToEntity(data);
@@ -98,12 +98,12 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
             session.getTransaction().commit();
             session.close();
 
-            return UUID.fromString(id.toString());
+            return Integer.parseInt(id.toString());
         }
     }
 
     @Override
-    public void Edit(UUID id, PaymentTypeData data) throws PaymentTypeEditException {
+    public void Edit(Integer id, PaymentTypeData data) throws PaymentTypeEditException {
         try (Session session = this.getSessionFactory().openSession()) {
             session.beginTransaction();
             PaymentTypes paymentTypeEntity = convertDtoDataToEntity(data);
@@ -115,7 +115,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
 
     @Override
-    public void Delete(UUID id) {
+    public void Delete(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -133,7 +133,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
     }
     
     @Override
-    public UUID AddOrUpdate(PaymentTypeData data) {
+    public Integer AddOrUpdate(PaymentTypeData data) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

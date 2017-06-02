@@ -17,13 +17,13 @@ public class PaymentCategoryData {
     private boolean active;
     private String description;
     private UUID userId;
-    private UUID type;
+    private Integer type;
 
-    public UUID getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(UUID type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

@@ -213,7 +213,7 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
     }
 
     @Override
-    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId, UUID paymentTypeId) {
+    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId, Integer paymentTypeId) {
         List<PaymentCategory> paymentCategoryObjects;
         try (Session session = this.getSessionFactory().openSession()) {
             Query q = session.createQuery("From PaymentCategories pc where pc.pcatUser.userUserid = :userId and pc.pcatActive = :isActive and pc.pcatType.ptypeId = :paymentType", PaymentCategories.class)

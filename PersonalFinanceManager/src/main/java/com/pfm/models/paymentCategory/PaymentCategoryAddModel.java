@@ -16,13 +16,13 @@ public class PaymentCategoryAddModel {
 
     public String categoryName;
     public String categoryDescription;
-    public UUID categoryType;
+    public Integer categoryType;
 
-    public UUID getCategoryType() {
+    public Integer getCategoryType() {
         return categoryType;
     }
 
-    public void setCategoryType(UUID categoryType) {
+    public void setCategoryType(Integer categoryType) {
         this.categoryType = categoryType;
     }
 

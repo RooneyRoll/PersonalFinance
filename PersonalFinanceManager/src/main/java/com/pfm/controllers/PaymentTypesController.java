@@ -98,7 +98,7 @@ public class PaymentTypesController {
             PaymentTypeObject.setActive(true);
             PaymentTypeObject.setDescription(params.getTypeDescription());
             PaymentTypeObject.setName(params.getTypeName());
-            UUID id = context.getPaymentTypeSet()
+            Integer id = context.getPaymentTypeSet()
                     .Add(PaymentTypeObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
@@ -123,7 +123,7 @@ public class PaymentTypesController {
 
     @RequestMapping(value = "/types/edit/{typeId}", method = RequestMethod.GET)
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
-            @PathVariable("typeId") UUID typeId,
+            @PathVariable("typeId") Integer typeId,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentTypeEditException {
         IpfmContext context = pfmContext.getInstance();
@@ -140,7 +140,7 @@ public class PaymentTypesController {
     @RequestMapping(value = "/types/edit/{typeId}", method = RequestMethod.POST)
     public ModelAndView edit(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
-            @PathVariable("typeId") UUID typeId,
+            @PathVariable("typeId") Integer typeId,
             @ModelAttribute PaymentTypeEditModel params) throws PaymentTypeEditException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

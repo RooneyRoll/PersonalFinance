@@ -28,7 +28,7 @@ public interface IPaymentCategorySet extends IViewable<PaymentCategory, UUID>, I
 
     public List<PaymentCategory> GetAllActiveCategoriesForUser(UUID userId);
 
-    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId,UUID paymentTypeId);
+    public List<PaymentCategory> GetAllActiveCategoriesForUserByPaymentTypeId(UUID userId,Integer paymentTypeId);
     
     public List<PaymentCategory> getActiveCategoriesByUserIdAndActiveAndWithNoDetailsAdded(UUID userId, boolean isActive);
 }

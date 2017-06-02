@@ -98,8 +98,8 @@ public class userBudgetRestController {
                         .GetAllActiveCategoryBudgetsByBudgetId(budget.getId());
                 for (CategoryBudget categoryBudget : catBudget) {
                     PaymentCategory category = context.getPaymentCategorySet().GetById(categoryBudget.getCategoryId());
-                    UUID categoryId = category.getType();
-                    UUID categoryType = type.getId();
+                    Integer categoryId = category.getType();
+                    Integer categoryType = type.getId();
                     boolean equals = categoryId.equals(categoryType);
                     if (equals) {
                         planned = planned + categoryBudget.getAmount();
@@ -154,8 +154,8 @@ public class userBudgetRestController {
                         .GetAllActiveCategoryBudgetsByBudgetId(budget.getId());
                 for (CategoryBudget categoryBudget : catBudget) {
                     PaymentCategory category = context.getPaymentCategorySet().GetById(categoryBudget.getCategoryId());
-                    UUID categoryId = category.getType();
-                    UUID categoryType = type.getId();
+                    Integer categoryId = category.getType();
+                    Integer categoryType = type.getId();
                     double planned = 0;
                     double spent = 0;
                     boolean equals = categoryId.equals(categoryType);
