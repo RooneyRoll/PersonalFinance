@@ -13,6 +13,7 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
+import com.pfm.enums.PaymentTypes;
 import com.pfm.models.payment.PaymentRestParamObject;
 import com.pfm.models.payment.PaymentsForMonthResultObject;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
