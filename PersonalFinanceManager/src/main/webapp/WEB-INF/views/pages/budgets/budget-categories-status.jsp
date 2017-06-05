@@ -7,8 +7,11 @@
     $(document).ready(function () {
         function getBudgetCategoryStatus(month, year, chart) {
             var data = JSON.stringify({"month": month, "year": year});
-            var sum = [];
-            <spring:url var = "serviceUrl" value ="/budget/plannedVsSpentCategories"/>
+            var result = [];
+            var planned = [];
+            var actual = [];
+            var names = [];
+    <spring:url var = "serviceUrl" value ="/budget/plannedVsSpentCategories"/>
             $.ajax({
                 type: "POST",
                 url: "${serviceUrl}",
@@ -22,14 +25,16 @@
                 }
             }).done(function (data) {
                 $(data).each(function (key, val) {
+                    names.push(val.categoryName);
+                    actual.push(val.actual);
+                    planned.push(val.planned);
                     var color = "#7CB5EC";
                     var secondDcolor = "#A1D1FF";
                     if (key !== 0) {
                         color = "#E74C3C";
                         secondDcolor = "#FF7061";
                     }
-                    sum.push({y: val.planned, color: color, name: /*"Планирани " +*/ val.categoryName});
-                    sum.push({y: val.actual, color: secondDcolor, name: /*"Действителни " +*/ val.categoryName});
+
                     var percent = val.percents;
                     var catId = val.categoryId;
                     var widthPercent = 0;
@@ -45,10 +50,13 @@
                     $("#percent_" + catId).text(percent + "%");
                 });
                 if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(sum, true);
+                    chart.series[0].setData(result, true);
                 }
             });
-            return sum;
+            result.push(planned);
+            result.push(actual);
+            result.push(names);
+            return result;
         }
         var parent = $("#budgetMonthPicker").parent();
         var datepicker = $('#budgetMonthPicker').datepicker({
@@ -70,54 +78,57 @@
         var inputs = date.split("/");
         var year = inputs[0];
         var month = inputs[1];
-        var chart = new Highcharts.Chart({
+        var data = getBudgetCategoryStatus(month, year, this);
+        var chart = Highcharts.chart('container', {
             chart: {
-                renderTo: 'container',
-                type: 'column',
-                events: {
-                    load: function (event) {
-                    }
-                }
+                type: 'bar'
             },
             title: {
-                text: 'Планирани и действителни приходи/разходи'
+                text: 'Efficiency Optimization by Branch'
             },
             xAxis: {
-                type: 'category',
-                labels: {
-                    style: {
-                        fontSize: '14px',
-                        fontFamily: 'Roboto,Aral, sans-serif'
-                    }
-                }
+                categories: data[2]
             },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Стойност'
-                }
+            yAxis: [{
+                    min: 0,
+                    title: {
+                        text: 'Employees'
+                    }
+                }, {
+                    title: {
+                        text: 'Profit (millions)'
+                    },
+                    opposite: true
+                }],
+            legend: {
+                shadow: false
             },
             tooltip: {
-                pointFormat: '<b>{point.y:.1f}</b>'
+                enabled: false,
+                shared: true
             },
-            legend: {
-                enabled: false
+            plotOptions: {
+                column: {
+                    grouping: true,
+                    shadow: false,
+                    borderWidth: 0
+                }
             },
             series: [{
-                    animation: false,
-                    name: "",
-                    data: getBudgetCategoryStatus(month, year, this),
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#FFFFFF',
-                        align: 'center',
-                        y: 35,
-                        style: {
-                            fontSize: '14px',
-                            fontFamily: 'Roboto,Arial, sans-serif'
-                        }
-                    }
+                    name: 'Планирано',
+                    color: 'rgba(186,60,61,0.8)',
+                    data: data[0],
+                    tooltip: {enabled: false},
+                    pointPadding: 0.15,
+                    pointPlacement: 0.85
+                },
+                {
+                    name: 'Действително',
+                    color: 'rgba(165,170,217,0.8)',
+                    data: data[1],
+                    tooltip: {enabled: false},
+                    pointPadding: -0.2,
+                    pointPlacement: 0.15
                 }]
         });
     })
@@ -143,7 +154,7 @@
                             </span>
                         </div>
                         <div class="input-holder">
-                            <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                            <div id="container" style="min-width: 300px; margin: 0 auto"></div>
                         </div>
                     </div>
                 </div><div class="partial-contentainer size-2 side-padding">
