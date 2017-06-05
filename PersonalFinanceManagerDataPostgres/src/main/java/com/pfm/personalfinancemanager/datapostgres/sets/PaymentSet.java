@@ -75,7 +75,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             payment.setPDescription(DtoData.getDescription());
             return payment;
         }
-
     }
 
     @Override

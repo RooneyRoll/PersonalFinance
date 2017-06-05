@@ -90,7 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SavedRequestAwareAuthenticationSuccessHandler
             savedRequestAwareAuthenticationSuccessHandler() {
-
         SavedRequestAwareAuthenticationSuccessHandler auth
                 = new SavedRequestAwareAuthenticationSuccessHandler();
         auth.setTargetUrlParameter("targetUrl");

@@ -33,12 +33,14 @@
                     var name = val.paymentType;
                     var color = "#7CB5EC";
                     var opacity = 1;
+                    var dashStyle = "Solid";
                     if (name !== "Приходи") {
                         color = "#E74C3C";
                     }
                     if (val.budget) {
                         opacity = 0;
-                        name = name + " - план"
+                        name = name + " - план";
+                        dashStyle = "DashDot";
                     } else {
                         opacity = 0.3;
                     }
@@ -46,7 +48,8 @@
                         name: name,
                         data: val.amounts,
                         fillOpacity: opacity,
-                        color: color
+                        color: color,
+                        dashStyle: dashStyle
                     };
                     series.push(serie);
                     sumTotal = 0;
@@ -58,7 +61,6 @@
                     });
                 }
             });
-            console.log(series);
             return series;
         }
         $('#paymentsMonthPicker').change(function () {
@@ -103,7 +105,8 @@
                 }
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}'
+                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}',
+                split:true
             },
             plotOptions: {
                 area: {

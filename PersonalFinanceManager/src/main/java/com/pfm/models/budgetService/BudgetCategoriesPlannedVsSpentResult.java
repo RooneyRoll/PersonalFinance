@@ -18,6 +18,15 @@ public class BudgetCategoriesPlannedVsSpentResult {
     private double actual;
     private double percents;
     private UUID categoryId;
+    private Integer catType;
+
+    public Integer getCatType() {
+        return catType;
+    }
+
+    public void setCatType(Integer catType) {
+        this.catType = catType;
+    }
 
     public UUID getCategoryId() {
         return categoryId;

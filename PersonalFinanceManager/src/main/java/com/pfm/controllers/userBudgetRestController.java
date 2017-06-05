@@ -13,6 +13,7 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
+import com.pfm.enums.PaymentTypes;
 import com.pfm.models.budgetService.BudgetCategoriesPlannedVsSpentResult;
 import com.pfm.models.budgetService.BudgetParamObject;
 import com.pfm.models.budgetService.BudgetPlannedVsSpentResultObject;
@@ -23,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
@@ -174,6 +174,7 @@ public class userBudgetRestController {
                         resultObject.setActual(spent);
                         resultObject.setPlanned(planned);
                         resultObject.setCategoryId(category.getId());
+                        resultObject.setCatType(categoryType);
                         resultObject.setPercents(calculatePercentage(planned, spent));
                         result.add(resultObject);
                     }
@@ -192,12 +193,14 @@ public class userBudgetRestController {
                     GetAllActiveCategoriesForUser(user.getId());
             for (PaymentCategory paymentCategory : catList) {
                 BudgetCategoriesPlannedVsSpentResult resultObject = new BudgetCategoriesPlannedVsSpentResult();
+                resultObject.setCatType(paymentCategory.getType());
                 resultObject.setCategoryName(paymentCategory.getName());
                 resultObject.setActual(0);
                 resultObject.setPlanned(0);
                 resultObject.setCategoryId(paymentCategory.getId());
                 resultObject.setPercents(0);
                 result.add(resultObject);
+                
             }
             String json = gson.toJson(result);
             return json;

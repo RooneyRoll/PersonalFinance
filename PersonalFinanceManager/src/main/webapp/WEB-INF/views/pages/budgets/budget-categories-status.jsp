@@ -1,10 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page import="com.pfm.enums.PaymentTypes" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
+        var income = "${PaymentTypes.Income.getValue()}";
+        var spendings = "${PaymentTypes.Spendings.getValue()}";
         function getBudgetCategoryStatus(month, year, chart) {
             var data = JSON.stringify({"month": month, "year": year});
             var result = [];
@@ -28,13 +31,11 @@
                     names.push(val.categoryName);
                     actual.push(val.actual);
                     planned.push(val.planned);
+                    var type = val.catType;
                     var color = "#7CB5EC";
-                    var secondDcolor = "#A1D1FF";
-                    if (key !== 0) {
+                    if (type == spendings) {
                         color = "#E74C3C";
-                        secondDcolor = "#FF7061";
                     }
-
                     var percent = val.percents;
                     var catId = val.categoryId;
                     var widthPercent = 0;
@@ -50,7 +51,8 @@
                     $("#percent_" + catId).text(percent + "%");
                 });
                 if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(result, true);
+                    chart.series[0].setData(planned, true);
+                    chart.series[1].setData(actual, true);
                 }
             });
             result.push(planned);
@@ -84,51 +86,52 @@
                 type: 'bar'
             },
             title: {
-                text: 'Efficiency Optimization by Branch'
+                text: 'Покритие по категорики за бюджетен план'
+            },
+            subtitle: {
+                //text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
             },
             xAxis: {
-                categories: data[2]
+                categories: data[2],
+                title: {
+                    text: null
+                }
             },
-            yAxis: [{
-                    min: 0,
-                    title: {
-                        text: 'Employees'
-                    }
-                }, {
-                    title: {
-                        text: 'Profit (millions)'
-                    },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Сума',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
             },
             tooltip: {
-                enabled: false,
+                valueSuffix: '',
                 shared: true
             },
             plotOptions: {
-                column: {
-                    grouping: true,
-                    shadow: false,
-                    borderWidth: 0
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
                 }
+            },
+            legend: {
+                enabled: true
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                     name: 'Планирано',
-                    color: 'rgba(186,60,61,0.8)',
                     data: data[0],
-                    tooltip: {enabled: false},
-                    pointPadding: 0.15,
-                    pointPlacement: 0.85
-                },
-                {
+                    color:"#7CB5EC"
+                }, {
                     name: 'Действително',
-                    color: 'rgba(165,170,217,0.8)',
                     data: data[1],
-                    tooltip: {enabled: false},
-                    pointPadding: -0.2,
-                    pointPlacement: 0.15
+                    color:"#434348"
                 }]
         });
     })

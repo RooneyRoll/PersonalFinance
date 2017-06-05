@@ -6,6 +6,7 @@
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
+
         $('#my-slider').sliderPro({
             width: "100%",
             orientation: 'horizontal',
@@ -67,8 +68,6 @@
         return sum;
     }
     function getPaymentsStatus(month, year, chart) {
-        console.log(month);
-        console.log(year);
         var series = [];
         var data = JSON.stringify({"month": month, "year": year});
         $.ajax({
@@ -87,12 +86,14 @@
                 var name = val.paymentType;
                 var color = "#7CB5EC";
                 var opacity = 1;
+                var dashStyle = "Solid";
                 if (name !== "Приходи") {
                     color = "#E74C3C";
                 }
                 if (val.budget) {
                     opacity = 0;
-                    name = name + " - план"
+                    name = name + " - план";
+                    dashStyle = "DashDot";
                 } else {
                     opacity = 0.3;
                 }
@@ -100,11 +101,11 @@
                     name: name,
                     data: val.amounts,
                     fillOpacity: opacity,
-                    color: color
+                    color: color,
+                    dashStyle: dashStyle
                 };
                 series.push(serie);
                 sumTotal = 0;
-
             });
             if (typeof (chart.series) !== 'undefined') {
                 $(series).each(function (key, serie) {
@@ -115,8 +116,13 @@
         return series;
     }
     function getBudgetCategoryStatus(month, year, chart) {
+        var income = "${PaymentTypes.Income.getValue()}";
+        var spendings = "${PaymentTypes.Spendings.getValue()}";
         var data = JSON.stringify({"month": month, "year": year});
-        var sum = [];
+        var result = [];
+        var planned = [];
+        var actual = [];
+        var names = [];
         <spring:url var = "serviceUrl" value ="/budget/plannedVsSpentCategories"/>
         $.ajax({
             type: "POST",
@@ -131,14 +137,14 @@
             }
         }).done(function (data) {
             $(data).each(function (key, val) {
+                names.push(val.categoryName);
+                actual.push(val.actual);
+                planned.push(val.planned);
+                var type = val.catType;
                 var color = "#7CB5EC";
-                var secondDcolor = "#A1D1FF";
-                if (key !== 0) {
+                if (type == spendings) {
                     color = "#E74C3C";
-                    secondDcolor = "#FF7061";
                 }
-                sum.push({y: val.planned, color: color, name: /*"Планирани " +*/ val.categoryName});
-                sum.push({y: val.actual, color: secondDcolor, name: /*"Действителни " +*/ val.categoryName});
                 var percent = val.percents;
                 var catId = val.categoryId;
                 var widthPercent = 0;
@@ -154,10 +160,14 @@
                 $("#percent_" + catId).text(percent + "%");
             });
             if (typeof (chart.series) !== 'undefined') {
-                chart.series[0].setData(sum, true);
+                chart.series[0].setData(planned, true);
+                chart.series[1].setData(actual, true);
             }
         });
-        return sum;
+        result.push(planned);
+        result.push(actual);
+        result.push(names);
+        return result;
     }
     new Highcharts.chart('container-1', {
         chart: {
@@ -185,7 +195,8 @@
             }
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}'
+            pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}',
+            split: true
         },
         plotOptions: {
             area: {
@@ -255,55 +266,58 @@
                 }
             }]
     });
-    new Highcharts.Chart({
+    var data = getBudgetCategoryStatus(month, year, this);
+    new Highcharts.chart('container-3', {
     chart: {
-    renderTo: 'container-3',
-            type: 'column',
-            events: {
-            load: function (event) {
-
-            }
-            }
+    type: 'bar'
     },
             title: {
-            text: 'Планирани и действителни приходи/разходи'
+            text: 'Покритие по категории за бюджетен план'
+            },
+            subtitle: {
+            //text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
             },
             xAxis: {
-            type: 'category',
-                    labels: {
-                    style: {
-                    fontSize: '14px',
-                            fontFamily: 'Roboto,Aral, sans-serif'
-                    }
+            categories: data[2],
+                    title: {
+                    text: null
                     }
             },
             yAxis: {
             min: 0,
                     title: {
-                    text: 'Стойност'
+                    text: 'Сума',
+                            align: 'high'
+                    },
+                    labels: {
+                    overflow: 'justify'
                     }
             },
             tooltip: {
-            pointFormat: '<b>{point.y:.1f}</b>'
+            valueSuffix: '',
+                    shared: true
+            },
+            plotOptions: {
+            bar: {
+            dataLabels: {
+            enabled: true
+            }
+            }
             },
             legend: {
+            enabled: true
+            },
+            credits: {
             enabled: false
             },
             series: [{
-            animation: false,
-                    name: "",
-                    data: getBudgetCategoryStatus(month, year, this),
-                    dataLabels: {
-                    enabled: true,
-                            rotation: 0,
-                            color: '#FFFFFF',
-                            align: 'center',
-                            y: 35,
-                            style: {
-                            fontSize: '14px',
-                                    fontFamily: 'Roboto,Arial, sans-serif'
-                            }
-                    }
+            name: 'Планирано',
+                    data: data[0],
+                    color:"#7CB5EC"
+            }, {
+            name: 'Действително',
+                    data: data[1],
+                    color:"#434348"
             }]
     });
     }
