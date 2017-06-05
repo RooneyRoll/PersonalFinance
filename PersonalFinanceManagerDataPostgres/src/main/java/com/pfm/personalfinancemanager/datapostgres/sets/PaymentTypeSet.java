@@ -11,12 +11,10 @@ import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.sets.IPaymentTypeSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes;
-import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -43,7 +41,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
 
     @Override
     protected List<PaymentType> convertEntititiesToDtoArray(List<PaymentTypes> EntityArray) {
-        List<PaymentType> PaymentTypeList = new ArrayList<PaymentType>();
+        List<PaymentType> PaymentTypeList = new ArrayList<>();
         for (PaymentTypes next : EntityArray) {
             PaymentType paymentObject = new PaymentType();
             paymentObject.setActive(next.getPtypeActive());
@@ -131,7 +129,7 @@ public class PaymentTypeSet extends BaseSet<PaymentTypes, PaymentType, PaymentTy
         }
         return paymentResults;
     }
-    
+
     @Override
     public Integer AddOrUpdate(PaymentTypeData data) {
         throw new UnsupportedOperationException("Not supported yet.");

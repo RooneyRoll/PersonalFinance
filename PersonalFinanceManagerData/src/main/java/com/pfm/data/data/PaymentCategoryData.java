@@ -58,5 +58,4 @@ public class PaymentCategoryData {
     public void setActive(boolean active) {
         this.active = active;
     }
-
 }

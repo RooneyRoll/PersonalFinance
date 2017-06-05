@@ -6,12 +6,18 @@
 package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.data.PaymentCategoryData;
 import com.pfm.data.data.UserData;
 import com.pfm.data.data.UserRoleData;
+import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.UserRegisterException;
+import com.pfm.enums.PaymentTypes;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.io.Serializable;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -80,6 +86,11 @@ public class RegisterController {
             IpfmContext context = pfmContext.getInstance();
             Serializable id = context.getUserSet()
                     .Add(userObject);
+            UUID userId = UUID.fromString(id.toString());
+            addDefaultPaymentCategoriesForUser(userId,"Заплата","Приходи свързани с месечно възнаграждение",PaymentTypes.Income.getValue());
+            addDefaultPaymentCategoriesForUser(userId,"Храни и напитки","Разходи свързани с храни и напитки",PaymentTypes.Spendings.getValue());
+            addDefaultPaymentCategoriesForUser(userId,"Транспорт","Разходи свързани с транспорт",PaymentTypes.Spendings.getValue());
+            addDefaultPaymentCategoriesForUser(userId,"Битови","Битови разходи",PaymentTypes.Spendings.getValue());
             context.getUserRoleSet()
                     .Add(userRoleObject);
             redirectAttributes.addFlashAttribute("success", true);
@@ -91,5 +102,21 @@ public class RegisterController {
             map.put("errorMessage", "Моля въведете всички задължителни полета.");
             return "register";
         }
+    }
+    
+    private void addDefaultPaymentCategoriesForUser(UUID userId,String name,String description, Integer type){
+        try {
+            PaymentCategoryData catData = new PaymentCategoryData();
+            catData.setActive(true);
+            catData.setDescription(name);
+            catData.setName(description);
+            catData.setType(type);
+            catData.setUserId(userId);
+            IpfmContext context = pfmContext.getInstance();
+            context.getPaymentCategorySet().Add(catData);
+        } catch (PaymentCategoryAddException ex) {
+            System.out.println("Could not add default payment category for user with id: "+userId.toString());
+        }
+        
     }
 }
