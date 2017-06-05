@@ -65,7 +65,7 @@ public class PaymentController {
         columnsList.add(new ColumnSettingsObject("pId", "", "string", false, false));
         columnsList.add(new ColumnSettingsObject("pCategory.pcatType.ptypeName", "Тип", "string", true, true));
         whereList.add(new TableWhereObject("pCategory.pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "payments/edit/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "payments/preview/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "payments/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
@@ -97,11 +97,8 @@ public class PaymentController {
             HttpServletResponse response,
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             IpfmContext context = pfmContext.getInstance();
-            User user = context
-                    .getUserSet()
-                    .GetByUserName(auth.getName());
+            
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
@@ -202,12 +199,31 @@ public class PaymentController {
             return view;
         }
     }
+    
     @RequestMapping(value = "/payments/status", method = RequestMethod.GET)
     public ModelAndView paymentsStatus(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         
         ModelAndView view = new ModelAndView("payments-status");
+        return view;
+    }
+    
+    @RequestMapping(value = "/payments/preview/{paymentId}", method = RequestMethod.GET)
+    public ModelAndView preview(ModelMap map, HttpServletRequest request,
+            @PathVariable("paymentId") UUID paymentId,
+            HttpServletResponse response,
+            @RequestParam(value = "error", required = false) String error) throws BasicException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        Payment payment = context.getPaymentSet().GetById(paymentId);
+        List<PaymentCategory> caregories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(user.getId());
+        ModelAndView view = new ModelAndView("payment-preview");
+        view.addObject("payment", payment);
+        view.addObject("categories", caregories);
         return view;
     }
 }

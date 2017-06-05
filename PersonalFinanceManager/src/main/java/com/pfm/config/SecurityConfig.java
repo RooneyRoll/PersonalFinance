@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/categories/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/types/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/userBudget/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/payments/**").access("hasRole('ROLE_USER')")
                 .and()
                 .formLogin()
                 .successHandler(savedRequestAwareAuthenticationSuccessHandler())

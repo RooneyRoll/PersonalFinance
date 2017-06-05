@@ -7,7 +7,6 @@ package com.pfm.personalfinancemanager.datapostgres.entities;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

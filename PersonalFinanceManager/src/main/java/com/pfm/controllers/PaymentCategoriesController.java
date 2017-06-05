@@ -68,7 +68,7 @@ public class PaymentCategoriesController {
         columnsList.add(new ColumnSettingsObject("pcatId", "id", "uuid", false, false));
         columnsList.add(new ColumnSettingsObject("pcatType.ptypeName", "Тип", "string", true, true));
         whereList.add(new TableWhereObject("pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "categories/view/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "categories/preview/{3}"));
         options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "categories/edit/{3}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
@@ -196,4 +196,20 @@ public class PaymentCategoriesController {
             return view;
         }
     }
+    
+    @RequestMapping(value = "/categories/preview/{categoryId}", method = RequestMethod.GET)
+    public ModelAndView categoryPreview(ModelMap map, HttpServletRequest request,
+            @PathVariable("categoryId") UUID categoryId,
+            HttpServletResponse response,
+            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
+        IpfmContext context = pfmContext.getInstance();
+        List<PaymentType> types = context
+                .getPaymentTypeSet().GetAll();
+        PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
+        ModelAndView view = new ModelAndView("categories-preview");
+        view.addObject("category", category);
+        view.addObject("types", types);
+        return view;
+    }
+    
 }

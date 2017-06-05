@@ -270,11 +270,13 @@ html body{
     width:100%;
 }
 
-.site-content .content-container .form-container .form-content{
+.site-content .content-container .form-container .form-content,
+.site-content .content-container .content{
     display:inline-block;
     width:100%;
 }
-.site-content .content-container .form-container .form-content .partial-contentainer{
+.site-content .content-container .form-container .form-content .partial-contentainer,
+.site-content .content-container .content .partial-contentainer{
     width:100%;
     display:inline-block;
     margin-bottom:10px;
@@ -284,14 +286,16 @@ html body{
     margin-top:10px;
 }
 
-.site-content .content-container .form-container .form-content .partial-contentainer .input-group{
+.site-content .content-container .form-container .form-content .partial-contentainer .input-group,
+.site-content .content-container .content .partial-contentainer .input-group{
     display:inline-block;
     width:100%;
     padding-left:5px;
     border-left:2px solid #6DB33F;
 }
 
-.site-content .content-container .form-container .form-content .partial-contentainer .input-group .input-group-title-holder{
+.site-content .content-container .form-container .form-content .partial-contentainer .input-group .input-group-title-holder,
+.site-content .content-container .content .input-group .input-group-title-holder{
     display:inline-block;
     width:100%;
     text-align:left;
@@ -305,36 +309,36 @@ html body{
     width:100%
 }
 
-.site-content .content-container .form-container .form-content form .buttons-container{
+.site-content .content-container .form-container .form-content .buttons-container{
     /*margin-top:10px;*/
 }
 
-.site-content .content-container .form-container .form-content form .input-container{
+.site-content .content-container .form-container .form-content .input-container{
     display:inline-block;   
     width:100%;
     margin-bottom:10px;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-title-holder{
+.site-content .content-container .form-container .form-content .input-container .input-title-holder{
     display:inline-block;
     width:100%;
     margin-bottom:5px;
     cursor:default;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-title-holder span.required-tip {
+.site-content .content-container .form-container .form-content .input-container .input-title-holder span.required-tip {
     color: #E74C3C;
     font-size: 15px;
     font-weight: bold;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder{
+.site-content .content-container .form-container .form-content .input-container .input-holder{
     display:inline-block;
     width:100%;
     overflow:hidden;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button{
+.site-content .content-container .form-container .form-content .input-container .input-holder .input-add-button{
     vertical-align: middle;
     display:inline-block;
     color:#34302D;
@@ -343,21 +347,21 @@ html body{
     cursor:pointer;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button a{
+.site-content .content-container .form-container .form-content .input-container .input-holder .input-add-button a{
     color:#34302D;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button a:hover{
+.site-content .content-container .form-container .form-content .input-container .input-holder .input-add-button a:hover{
     color:#6DB33F;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder .input-add-button:hover{
+.site-content .content-container .form-container .form-content .input-container .input-holder .input-add-button:hover{
     vertical-align: middle;
     display:inline-block;
     color:#6DB33F;
 }
 
-.site-content .content-container .form-container .form-content form .input-container .input-holder input{
+.site-content .content-container .form-container .form-content .input-container .input-holder input{
     display:inline-block;
     width:100%;
 }
@@ -372,16 +376,16 @@ html body{
 }
 
 /*form styles with icon*/
-.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder{
+.site-content .content-container .form-container .form-content .input-container.with-icon .input-holder{
     background:#6DB33F;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
 }
 
-.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder input{
+.site-content .content-container .form-container .form-content .input-container.with-icon .input-holder input{
     width: calc(100% - 40px);
 }
-.site-content .content-container .form-container .form-content form .input-container.with-icon .input-holder .input-icon{
+.site-content .content-container .form-container .form-content .input-container.with-icon .input-holder .input-icon{
     display:inline-block;
     width:40px;
     font-size:20px;
@@ -590,6 +594,11 @@ html body{
     border-radius:0;
 }
 
+.select2-container--classic .select2-selection--multiple .select2-selection__choice,
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin-bottom: 5px;
+}
+
 .site-content .datepicker-container.datepicker-inline{
     width:100%;
     box-sizing:border-box;
@@ -666,6 +675,10 @@ html body{
     width:50%;
     margin-top:5px;
     display:inline-block;
+}
+
+.visibility-check.disabled{
+    width:100%;
 }
 
 .visibility-check {
@@ -881,11 +894,12 @@ html body{
         min-width:100%;
     }
 
-    html body #site-content.site-content .content-container .form-container {
+    html body #site-content.site-content .content-container .form-container{
         width:100%;
     }
 
-    html body #site-content.site-content .content-container .form-container .form-content .partial-contentainer{
+    html body #site-content.site-content .content-container .form-container .form-content .partial-contentainer,
+    html body #site-content.site-content .content-container .content .partial-contentainer{
         width:100%;
         display:inline-block;
     }

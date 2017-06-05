@@ -151,7 +151,6 @@
                 $("#percent_" + catId).css("background-color", color).animate({
                     width: widthPercent + '%'
                 });
-                //$("#percent_" + catId).css("width", percent + "%");
                 $("#percent_" + catId).text(percent + "%");
             });
             if (typeof (chart.series) !== 'undefined') {
@@ -262,6 +261,7 @@
             type: 'column',
             events: {
             load: function (event) {
+
             }
             }
     },
@@ -306,28 +306,27 @@
                     }
             }]
     });
-    });
+    }
+    );
     </c:if>
 </script>
 <c:if test="${pageContext.request.userPrincipal.name != null}">
-    <div class="form-container">
-        <div class="form-content">
-            <div class="partial-contentainer size-2 side-padding">
-                <h2>Здравейте ${pageContext.request.userPrincipal.name}!</h2>
-                <p>На тази страница имате възможност да прегледате състоянието на вашия бюджет, както и статистики, 
-                    свързани с нето.</p>
-            </div><div class="partial-contentainer size-2 side-padding">
-                <div class="slider-pro" id="my-slider">
-                    <div class="sp-slides">
-                        <div class="sp-slide">
-                            <div id="container-1" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-                        </div>
-                        <div class="sp-slide">
-                            <div id="container-2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-                        </div>
-                        <div class="sp-slide">
-                            <div id="container-3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-                        </div>
+    <div class="content">
+        <div class="partial-contentainer size-2 side-padding">
+            <h2>Здравейте ${pageContext.request.userPrincipal.name}!</h2>
+            <p>На тази страница имате възможност да прегледате състоянието на вашия бюджет, както и статистики, 
+                свързани с нето.</p>
+        </div><div class="partial-contentainer size-2 side-padding">
+            <div class="slider-pro" id="my-slider">
+                <div class="sp-slides">
+                    <div class="sp-slide">
+                        <div id="container-1" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                    <div class="sp-slide">
+                        <div id="container-2" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                    <div class="sp-slide">
+                        <div id="container-3" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
                     </div>
                 </div>
             </div>
@@ -335,35 +334,33 @@
     </div>
 </c:if>
 <c:if test="${pageContext.request.userPrincipal.name == null}">
-    <div class="form-container">
-        <div class="form-content">
-            <div class="partial-contentainer size-2 side-padding">
-                <p>Умението да управлявате парите си означава да осъществявате дългосрочните и 
-                    краткосрочните си цели с лекота, да се наслаждавате пълноценно на реализираните 
-                    си планове, както и да се радвате на финансова стабилност.</p>
-                <h2>Създаване на бюджет</h2>
-                <p>Съставянето на бюджет е първата стъпка, когато искате да сложите финансите си в
-                    ред. За целта можеш да си помогнеш с текущото  онлайн приложение, което ще Ви улесни в управлението на личните финанси.</p>
-                <h2>Дневник на разходите</h2>
-                <p>Следващата стъпка е да разберете за какво харчите парите си.<br>
-                    Приложението за управление на лични финанси предлага функционалности за подробни справки на вашите разходи.</p>
-                <h2>План на месечните плащания</h2>
-                <p>Много е важно да правите плащанията по месечните си задължения навреме, за да избегнете начисляване на лихви за просрочията.
-                    С помощта на приложението, можете да изготвите план на месечните си плащания и да ги контролирате.</p>
-                <h2>План за спестяване</h2>
-                <p>След като знаете каква част от доходите Ви ще покрият задължителните Ви месечни разходи, ще можете лесно да прецените и каква сума да спестите.</p>
-            </div><div class="partial-contentainer size-2 side-padding">
-                <div class="slider-pro" id="my-slider">
-                    <div class="sp-slides">
-                        <div class="sp-slide">
-                            <img class="sp-image" src="<c:url value='/resources/images/carousel/1.jpeg'/>"/>
-                        </div>
-                        <div class="sp-slide">
-                            <img class="sp-image" src="<c:url value='/resources/images/carousel/2.jpeg'/>"/>
-                        </div>
-                        <div class="sp-slide">
-                            <img class="sp-image" src="<c:url value='/resources/images/carousel/3.jpeg'/>"/>
-                        </div>
+    <div class="content">
+        <div class="partial-contentainer size-2 side-padding">
+            <p>Умението да управлявате парите си означава да осъществявате дългосрочните и 
+                краткосрочните си цели с лекота, да се наслаждавате пълноценно на реализираните 
+                си планове, както и да се радвате на финансова стабилност.</p>
+            <h2>Създаване на бюджет</h2>
+            <p>Съставянето на бюджет е първата стъпка, когато искате да сложите финансите си в
+                ред. За целта можеш да си помогнеш с текущото  онлайн приложение, което ще Ви улесни в управлението на личните финанси.</p>
+            <h2>Дневник на разходите</h2>
+            <p>Следващата стъпка е да разберете за какво харчите парите си.<br>
+                Приложението за управление на лични финанси предлага функционалности за подробни справки на вашите разходи.</p>
+            <h2>План на месечните плащания</h2>
+            <p>Много е важно да правите плащанията по месечните си задължения навреме, за да избегнете начисляване на лихви за просрочията.
+                С помощта на приложението, можете да изготвите план на месечните си плащания и да ги контролирате.</p>
+            <h2>План за спестяване</h2>
+            <p>След като знаете каква част от доходите Ви ще покрият задължителните Ви месечни разходи, ще можете лесно да прецените и каква сума да спестите.</p>
+        </div><div class="partial-contentainer size-2 side-padding">
+            <div class="slider-pro" id="my-slider">
+                <div class="sp-slides">
+                    <div class="sp-slide">
+                        <img class="sp-image" src="<c:url value='/resources/images/carousel/1.jpeg'/>"/>
+                    </div>
+                    <div class="sp-slide">
+                        <img class="sp-image" src="<c:url value='/resources/images/carousel/2.jpeg'/>"/>
+                    </div>
+                    <div class="sp-slide">
+                        <img class="sp-image" src="<c:url value='/resources/images/carousel/3.jpeg'/>"/>
                     </div>
                 </div>
             </div>
