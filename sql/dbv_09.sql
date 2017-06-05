@@ -410,6 +410,12 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
+insert into payment_types (ptype_name, ptype_description, ptype_active)
+VALUES ('Приходи', 'Приходи', true);
+insert into payment_types (ptype_name, ptype_description, ptype_active)
+VALUES ('Разходи', 'Разходи', true);
+
+
 -- Completed on 2017-06-02 16:49:22
 
 --

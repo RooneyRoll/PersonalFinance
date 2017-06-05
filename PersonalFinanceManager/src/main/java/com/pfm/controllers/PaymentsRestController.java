@@ -13,7 +13,6 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
-import com.pfm.enums.PaymentTypes;
 import com.pfm.models.payment.PaymentRestParamObject;
 import com.pfm.models.payment.PaymentsForMonthResultObject;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
@@ -62,7 +61,7 @@ public class PaymentsRestController {
                 catBudgetList = context.getCategoryDetailSet()
                         .GetAllActiveCategoryBudgetsByBudgetId(budget.getId());
             } catch (EntityNotFoundException notFoundExc) {
-
+                System.out.println(notFoundExc.getMessage());
             }
             int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             int minDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH) - 1;

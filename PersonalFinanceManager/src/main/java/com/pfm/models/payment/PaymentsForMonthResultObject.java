@@ -41,11 +41,6 @@ public class PaymentsForMonthResultObject {
         cal.setTime(now);
         int currentMonth = cal.get(Calendar.MONTH) + 1;
         int todayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        /*System.out.println("paymentMonth --> " + paymentMonth);
-        System.out.println("currentMonth --> " + currentMonth);
-        System.out.println("position --> " + position);
-        System.out.println("today --> " + todayOfMonth);
-        System.out.println("------------------------------------------------");*/
         
         if (paymentMonth > currentMonth) {
             //todo
@@ -57,11 +52,11 @@ public class PaymentsForMonthResultObject {
         }
         if (paymentMonth == currentMonth) {
             for (int i = position; i < size; i++) {
-                if (i < todayOfMonth) {
+            //    if (i < todayOfMonth) {
                     amounts[i] = amount;
-                } else {
-                    amounts[i] = null;
-                }
+            //    } else {
+            //        amounts[i] = null;
+            //    }
             }
         }
     }
