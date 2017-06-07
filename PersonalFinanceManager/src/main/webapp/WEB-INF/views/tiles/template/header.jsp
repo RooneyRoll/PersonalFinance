@@ -54,7 +54,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a class="animation" href="${categoryBudget}">Бюджет</a></li>
+                            <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
+                                    <li>
+                                        <a class="animation" href="${userBudgetStatus}">Повтарящи се плащания</a>
+                                    </li>
+                                </ul></li>
                             <li>
                                 <a class="animation" href="#">Статистики</a><ul>
                                     <li>

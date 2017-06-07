@@ -13,6 +13,7 @@
     <class>com.pfm.personalfinancemanager.datapostgres.views.VCategoryBudgets</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudget</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.UserBudgets</class>
+    <class>com.pfm.personalfinancemanager.datapostgres.entities.RecurringTypes</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/PersonalFinanceManager"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>

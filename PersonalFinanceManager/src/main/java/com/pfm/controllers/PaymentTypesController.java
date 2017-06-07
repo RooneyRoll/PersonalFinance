@@ -26,7 +26,6 @@ import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

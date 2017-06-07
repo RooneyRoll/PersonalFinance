@@ -74,16 +74,18 @@ public class PaymentsRestController {
                 List<Payment> payments = context
                         .getPaymentSet()
                         .getAllActivePaymentsByPaymentTypeAndMonth(type.getId(), date);
-                for (Payment payment : payments) {
-                    System.out.println("----"+payment.getDate());
-                }
-                double total = 0;
-                double budgetLimit = 0;
-                int month = cal.get(Calendar.MONTH) + 1;
-
                 List<PaymentCategory> categories = context
                         .getPaymentCategorySet()
                         .GetAllActiveCategoriesForUserByPaymentTypeId(user.getId(), type.getId());
+                double total = 0;
+                double budgetLimit = 0;
+                int month = cal.get(Calendar.MONTH) + 1;
+                for (Payment payment : payments) {
+                    total = total + payment.getAmount();
+                    cal.setTime(payment.getDate());
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    resultObject.setAt(day - 1, total, month);
+                }
                 for (PaymentCategory category : categories) {
                     for (CategoryBudget categoryBudget : catBudgetList) {
                         if (categoryBudget.getCategoryId().equals(category.getId())) {
@@ -91,15 +93,6 @@ public class PaymentsRestController {
                         }
                     }
                     budgetForMonthObject.setBudgetValues(budgetLimit, maxDay);
-                    List<Payment> paymentsForCategory = context
-                            .getPaymentSet()
-                            .getAllActivePaymentsByPaymentCategoryAndMonth(category.getId(), date);
-                    for (Payment payment : paymentsForCategory) {
-                        total = total + payment.getAmount();
-                        cal.setTime(payment.getDate());
-                        int day = cal.get(Calendar.DAY_OF_MONTH);
-                        resultObject.setAt(day - 1, total, month);
-                    }
                 }
                 result.add(budgetForMonthObject);
                 result.add(resultObject);
