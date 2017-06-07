@@ -143,7 +143,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     }
 
     @Override
-    public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId,Date date) {
+    public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date) {
         List<Payment> payments;
         try (Session session = this.getSessionFactory().openSession()) {
             Calendar cal = Calendar.getInstance();
@@ -156,6 +156,33 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
                     .setParameter("month", month)
                     .setParameter("year", year);
             List<Payments> resultList = q.list();
+            for (Payments payments1 : resultList) {
+                System.out.println(payments1.getPAmount());
+            }
+            payments = convertEntititiesToDtoArray(resultList);
+        }
+        return payments;
+    }
+
+    @Override
+    public List<Payment> getAllActivePaymentsByPaymentTypeAndMonth(int paymentType, Date date) {
+        List<Payment> payments;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) + 1;
+            Query q = session.createQuery("From Payments"
+                    + " where pCategory.pcatType.ptypeId = :paymentType and pActive = :isActive and MONTH(pDate) = :month "
+                    + "and YEAR(pDate) = :year order by pDate asc")
+                    .setParameter("isActive", true)
+                    .setParameter("paymentType", paymentType)
+                    .setParameter("month", month)
+                    .setParameter("year", year);
+            List<Payments> resultList = q.list();
+            for (Payments payments1 : resultList) {
+                System.out.println(payments1.getPAmount());
+            }
             payments = convertEntititiesToDtoArray(resultList);
         }
         return payments;

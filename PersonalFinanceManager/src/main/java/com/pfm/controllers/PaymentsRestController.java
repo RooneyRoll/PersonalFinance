@@ -71,6 +71,12 @@ public class PaymentsRestController {
                 resultObject.setPaymentType(type.getName());
                 budgetForMonthObject.setBudget(true);
                 budgetForMonthObject.setPaymentType(type.getName());
+                List<Payment> payments = context
+                        .getPaymentSet()
+                        .getAllActivePaymentsByPaymentTypeAndMonth(type.getId(), date);
+                for (Payment payment : payments) {
+                    System.out.println("----"+payment.getDate());
+                }
                 double total = 0;
                 double budgetLimit = 0;
                 int month = cal.get(Calendar.MONTH) + 1;
