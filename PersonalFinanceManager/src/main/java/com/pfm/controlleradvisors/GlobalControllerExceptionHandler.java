@@ -12,6 +12,7 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeAddException;
 import com.pfm.data.exceptions.PaymentType.PaymentTypeEditException;
 import com.pfm.data.exceptions.UserRegisterException;
+import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -25,15 +26,20 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  *
  * @author Misho
  */
-
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handleNotFound(NoHandlerFoundException ex) {
+    @ExceptionHandler(
+            {
+                NoHandlerFoundException.class,
+                PageNotFoundException.class
+            }
+    )
+    public String handleNotFound(Exception ex) {
         return "404";
     }
-    
+
     @ExceptionHandler(UserRegisterException.class)
     public ModelAndView handleRegister(UserRegisterException ex) {
         ModelAndView mav = new ModelAndView();
@@ -41,7 +47,7 @@ class GlobalControllerExceptionHandler {
         mav.setViewName("register");
         return mav;
     }
-    
+
     @ExceptionHandler(PaymentCategoryAddException.class)
     public ModelAndView handlePaymentCategoryAdd(PaymentCategoryAddException ex) {
         ModelAndView mav = new ModelAndView();
@@ -49,11 +55,11 @@ class GlobalControllerExceptionHandler {
         List<PaymentType> types = context
                 .getPaymentTypeSet().GetAll();
         mav.addObject("errorMessage", "Вече съществува категория с това име.");
-        mav.addObject("types",types);
+        mav.addObject("types", types);
         mav.setViewName("categories-add");
         return mav;
     }
-    
+
     @ExceptionHandler(PaymentCategoryEditException.class)
     public ModelAndView PaymentCategoryEditException(PaymentCategoryEditException ex) {
         ModelAndView mav = new ModelAndView();
@@ -67,7 +73,7 @@ class GlobalControllerExceptionHandler {
         mav.setViewName("categories-add");
         return mav;
     }
-    
+
     @ExceptionHandler(PaymentTypeAddException.class)
     public ModelAndView handlePaymentTypeAdd(PaymentTypeAddException ex) {
         ModelAndView mav = new ModelAndView();
@@ -75,7 +81,7 @@ class GlobalControllerExceptionHandler {
         mav.setViewName("types-add");
         return mav;
     }
-    
+
     @ExceptionHandler(PaymentTypeEditException.class)
     public ModelAndView PaymentTypeEditException(PaymentTypeEditException ex) {
         ModelAndView mav = new ModelAndView();

@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "payment_categories")
@@ -59,8 +60,8 @@ public class PaymentCategories implements Serializable {
     private Users pcatUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pCategory")
     private List<Payments> paymentsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cbCategoryId")
-    private List<CategoryBudgets> categoryBudgetsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rbpCategory")
+    private List<RecurringBudgetPayments> recurringBudgetPaymentsList;
 
     public PaymentCategories() {
     }
@@ -133,12 +134,12 @@ public class PaymentCategories implements Serializable {
     }
 
     @XmlTransient
-    public List<CategoryBudgets> getCategoryBudgetsList() {
-        return categoryBudgetsList;
+    public List<RecurringBudgetPayments> getRecurringBudgetPaymentsList() {
+        return recurringBudgetPaymentsList;
     }
 
-    public void setCategoryBudgetsList(List<CategoryBudgets> categoryBudgetsList) {
-        this.categoryBudgetsList = categoryBudgetsList;
+    public void setRecurringBudgetPaymentsList(List<RecurringBudgetPayments> recurringBudgetPaymentsList) {
+        this.recurringBudgetPaymentsList = recurringBudgetPaymentsList;
     }
 
     @Override
@@ -165,5 +166,5 @@ public class PaymentCategories implements Serializable {
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories[ pcatId=" + pcatId + " ]";
     }
-    
+
 }

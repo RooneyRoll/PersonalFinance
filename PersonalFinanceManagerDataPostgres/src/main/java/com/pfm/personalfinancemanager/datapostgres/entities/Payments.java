@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "payments")
@@ -58,6 +59,9 @@ public class Payments implements Serializable {
     @JoinColumn(name = "p_category", referencedColumnName = "pcat_id")
     @ManyToOne(optional = false)
     private PaymentCategories pCategory;
+    @JoinColumn(name = "p_recurring_budget_payment", referencedColumnName = "rbp_id")
+    @ManyToOne
+    private RecurringBudgetPayments pRecurringBudgetPayment;
 
     public Payments() {
     }
@@ -119,6 +123,14 @@ public class Payments implements Serializable {
 
     public void setPCategory(PaymentCategories pCategory) {
         this.pCategory = pCategory;
+    }
+
+    public RecurringBudgetPayments getPRecurringBudgetPayment() {
+        return pRecurringBudgetPayment;
+    }
+
+    public void setPRecurringBudgetPayment(RecurringBudgetPayments pRecurringBudgetPayment) {
+        this.pRecurringBudgetPayment = pRecurringBudgetPayment;
     }
 
     @Override

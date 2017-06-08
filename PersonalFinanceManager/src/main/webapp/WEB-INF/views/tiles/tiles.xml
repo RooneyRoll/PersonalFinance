@@ -55,23 +55,6 @@
         <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/payments/categories/category-preview.jsp" />  
     </definition>
-    <definition name="types-manage" extends="base-definition">  
-        <put-attribute name="navigation" value="Типове плащания"  cascade="true"/> 
-        <put-attribute name="title" value="Personal finance manager" />  
-        <put-attribute name="body" value="/WEB-INF/views/pages/payments/types/types-manage.jsp" />  
-    </definition>
-    <definition name="types-add" extends="base-definition">  
-        <put-attribute name="navigation" value="Добавяне на тип за плащания"  cascade="true"/> 
-        <put-attribute name="title" value="Personal finance manager" />
-        <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
-        <put-attribute name="body" value="/WEB-INF/views/pages/payments/types/types-add.jsp" />  
-    </definition>
-    <definition name="types-edit" extends="base-definition">  
-        <put-attribute name="navigation" value="Редакция на тип за плащания"  cascade="true"/> 
-        <put-attribute name="title" value="Personal finance manager" />
-        <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
-        <put-attribute name="body" value="/WEB-INF/views/pages/payments/types/types-edit.jsp" />  
-    </definition>
     <definition name="payment-manage" extends="base-definition">  
         <put-attribute name="navigation" value="Плащания"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />  

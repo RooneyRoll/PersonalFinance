@@ -108,8 +108,8 @@ public class RegisterController {
         try {
             PaymentCategoryData catData = new PaymentCategoryData();
             catData.setActive(true);
-            catData.setDescription(name);
-            catData.setName(description);
+            catData.setDescription(description);
+            catData.setName(name);
             catData.setType(type);
             catData.setUserId(userId);
             IpfmContext context = pfmContext.getInstance();

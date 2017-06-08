@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
 @Entity
 @Table(name = "payment_types")
@@ -32,15 +32,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PaymentTypes.findAll", query = "SELECT p FROM PaymentTypes p")
     , @NamedQuery(name = "PaymentTypes.findByPtypeName", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeName = :ptypeName")
     , @NamedQuery(name = "PaymentTypes.findByPtypeDescription", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeDescription = :ptypeDescription")
-    , @NamedQuery(name = "PaymentTypes.findByPtypeActive", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeActive = :ptypeActive")})
+    , @NamedQuery(name = "PaymentTypes.findByPtypeActive", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeActive = :ptypeActive")
+    , @NamedQuery(name = "PaymentTypes.findByPtypeId", query = "SELECT p FROM PaymentTypes p WHERE p.ptypeId = :ptypeId")})
 public class PaymentTypes implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ptype_id")
-    private Integer ptypeId;
     @Basic(optional = false)
     @Column(name = "ptype_name")
     private String ptypeName;
@@ -49,6 +45,11 @@ public class PaymentTypes implements Serializable {
     @Basic(optional = false)
     @Column(name = "ptype_active")
     private boolean ptypeActive;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ptype_id")
+    private Integer ptypeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pcatType")
     private List<PaymentCategories> paymentCategoriesList;
 
@@ -63,14 +64,6 @@ public class PaymentTypes implements Serializable {
         this.ptypeId = ptypeId;
         this.ptypeName = ptypeName;
         this.ptypeActive = ptypeActive;
-    }
-
-    public Integer getPtypeId() {
-        return ptypeId;
-    }
-
-    public void setPtypeId(Integer ptypeId) {
-        this.ptypeId = ptypeId;
     }
 
     public String getPtypeName() {
@@ -95,6 +88,14 @@ public class PaymentTypes implements Serializable {
 
     public void setPtypeActive(boolean ptypeActive) {
         this.ptypeActive = ptypeActive;
+    }
+
+    public Integer getPtypeId() {
+        return ptypeId;
+    }
+
+    public void setPtypeId(Integer ptypeId) {
+        this.ptypeId = ptypeId;
     }
 
     @XmlTransient

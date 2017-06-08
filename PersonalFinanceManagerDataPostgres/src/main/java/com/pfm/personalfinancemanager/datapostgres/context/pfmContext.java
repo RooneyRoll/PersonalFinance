@@ -20,7 +20,11 @@ import com.pfm.personalfinancemanager.datapostgres.sets.UserRoleSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserSet;
 import org.hibernate.SessionFactory;
 import com.pfm.data.sets.ICategoryBudgetSet;
+import com.pfm.data.sets.IRecurringBudgetPaymentSet;
+import com.pfm.data.sets.IRecurringTypeSet;
 import com.pfm.data.sets.IUserBudgetSet;
+import com.pfm.personalfinancemanager.datapostgres.sets.RecurringBudgetPaymentSet;
+import com.pfm.personalfinancemanager.datapostgres.sets.RecurringTypeSet;
 import com.pfm.personalfinancemanager.datapostgres.sets.UserBudgetSet;
 
 /**
@@ -29,14 +33,16 @@ import com.pfm.personalfinancemanager.datapostgres.sets.UserBudgetSet;
  */
 public class pfmContext implements IpfmContext {
 
-    private SessionFactory manager;
-    private IUserSet UserSet;
-    private IUserRoleSet UserRoleSet;
-    private IPaymentCategorySet PaymentCategorySet;
-    private IPaymentTypeSet PaymentTypeSet;
-    private IPaymentSet PaymentSet;
-    private ICategoryBudgetSet categoryBudgetSet;
-    private IUserBudgetSet userBudgetSet;
+    private final SessionFactory manager;
+    private final IUserSet UserSet;
+    private final IUserRoleSet UserRoleSet;
+    private final IPaymentCategorySet PaymentCategorySet;
+    private final IPaymentTypeSet PaymentTypeSet;
+    private final IPaymentSet PaymentSet;
+    private final ICategoryBudgetSet categoryBudgetSet;
+    private final IUserBudgetSet userBudgetSet;
+    private final IRecurringBudgetPaymentSet recurringBudgetPaymentSet;
+    private final IRecurringTypeSet recurringTypeSet;
     private static pfmContext instance;
 
     public static IpfmContext getInstance() {
@@ -56,6 +62,8 @@ public class pfmContext implements IpfmContext {
         this.PaymentSet = new PaymentSet(this.manager);
         this.categoryBudgetSet = new CategoryBudgetSet(this.manager);
         this.userBudgetSet = new UserBudgetSet(this.manager);
+        this.recurringTypeSet = new RecurringTypeSet(this.manager);
+        this.recurringBudgetPaymentSet = new RecurringBudgetPaymentSet(this.manager);
     }
 
     @Override
@@ -85,11 +93,21 @@ public class pfmContext implements IpfmContext {
 
     @Override
     public ICategoryBudgetSet getCategoryDetailSet() {
-        return this.categoryBudgetSet;//To change body of generated methods, choose Tools | Templates.
+        return this.categoryBudgetSet;
     }
 
     @Override
     public IUserBudgetSet getUserBudgetSet() {
         return this.userBudgetSet;
+    }
+
+    @Override
+    public IRecurringTypeSet getRecurringTypeSet() {
+        return this.recurringTypeSet;
+    }
+
+    @Override
+    public IRecurringBudgetPaymentSet getRecurringBudgetPaymentSet() {
+        return this.recurringBudgetPaymentSet;
     }
 }

@@ -18,6 +18,15 @@ public class PaymentData {
     private String description;
     private boolean active;
     private UUID category;
+    private UUID budgetRecurringPayment;
+
+    public UUID getBudgetRecurringPayment() {
+        return budgetRecurringPayment;
+    }
+
+    public void setBudgetRecurringPayment(UUID budgetRecurringPayment) {
+        this.budgetRecurringPayment = budgetRecurringPayment;
+    }
 
     public double getAmount() {
         return amount;

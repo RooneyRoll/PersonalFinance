@@ -12,6 +12,7 @@ import com.pfm.data.entities.Payment;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
+import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.models.payment.PaymentAddModel;
 import com.pfm.models.payment.PaymentEditModel;
@@ -26,6 +27,7 @@ import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -98,7 +100,7 @@ public class PaymentController {
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
         try {
             IpfmContext context = pfmContext.getInstance();
-            
+
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
@@ -107,7 +109,7 @@ public class PaymentController {
             PaymentObject.setDescription(params.getPaymentDescription());
             PaymentObject.setCategory(params.getPaymentCategory());
             double amount = params.getPaymentAmount();
-            if(amount < 0){
+            if (amount < 0) {
                 amount = 0;
             }
             PaymentObject.setAmount(amount);
@@ -138,13 +140,27 @@ public class PaymentController {
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("paymentId") UUID paymentId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws BasicException {
+            @RequestParam(value = "error", required = false) String error) throws BasicException, PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        Payment payment = context.getPaymentSet().GetById(paymentId);
+        Payment payment = new Payment();
+        PaymentCategory category;
+        try {
+            payment = context
+                    .getPaymentSet()
+                    .GetById(paymentId);
+            category = context
+                    .getPaymentCategorySet()
+                    .GetById(payment.getCategory());
+            if (!category.getUserId().equals(user.getId())) {
+                throw new PageNotFoundException("Payment with id:" + paymentId + " for user:" + user.getUserName() + " does not exists.");
+            }
+        } catch (EntityNotFoundException exc) {
+            throw new PageNotFoundException("Payment with id:" + paymentId + " for user:" + user.getUserName() + " does not exists.");
+        }
         List<PaymentCategory> caregories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(user.getId());
         ModelAndView view = new ModelAndView("payment-edit");
         view.addObject("payment", payment);
@@ -170,7 +186,7 @@ public class PaymentController {
             PaymentData paymentDataObject = new PaymentData();
             paymentDataObject.setActive("1".equals(params.isPaymentActive()));
             double amount = params.getPaymentAmount();
-            if(amount < 0){
+            if (amount < 0) {
                 amount = 0;
             }
             paymentDataObject.setAmount(amount);
@@ -199,31 +215,47 @@ public class PaymentController {
             return view;
         }
     }
-    
-    @RequestMapping(value = "/payments/status", method = RequestMethod.GET)
-    public ModelAndView paymentsStatus(ModelMap map, HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
-        
-        ModelAndView view = new ModelAndView("payments-status");
-        return view;
-    }
-    
+
     @RequestMapping(value = "/payments/preview/{paymentId}", method = RequestMethod.GET)
     public ModelAndView preview(ModelMap map, HttpServletRequest request,
             @PathVariable("paymentId") UUID paymentId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws BasicException {
+            @RequestParam(value = "error", required = false) String error) throws BasicException, PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
-        Payment payment = context.getPaymentSet().GetById(paymentId);
-        List<PaymentCategory> caregories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(user.getId());
+        Payment payment = new Payment();
+        PaymentCategory category;
+        try {
+            payment = context
+                    .getPaymentSet()
+                    .GetById(paymentId);
+            category = context
+                    .getPaymentCategorySet()
+                    .GetById(payment.getCategory());
+            if (!category.getUserId().equals(user.getId())) {
+                throw new PageNotFoundException("Payment with id:" + paymentId + " for user:" + user.getUserName() + " does not exists.");
+            }
+        } catch (EntityNotFoundException Exc) {
+            throw new PageNotFoundException("Payment with id:" + paymentId + " for user:" + user.getUserName() + " does not exists.");
+        }
+        List<PaymentCategory> caregories = context
+                .getPaymentCategorySet()
+                .GetAllActiveCategoriesForUser(user.getId());
         ModelAndView view = new ModelAndView("payment-preview");
         view.addObject("payment", payment);
         view.addObject("categories", caregories);
+        return view;
+    }
+
+    @RequestMapping(value = "/payments/status", method = RequestMethod.GET)
+    public ModelAndView paymentsStatus(ModelMap map, HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
+
+        ModelAndView view = new ModelAndView("payments-status");
         return view;
     }
 }

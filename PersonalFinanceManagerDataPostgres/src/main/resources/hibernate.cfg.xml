@@ -23,5 +23,7 @@
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.Payments" />
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets" />
         <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.UserBudgets" />
+        <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments" />
+        <mapping class="com.pfm.personalfinancemanager.datapostgres.entities.RecurringTypes" />
     </session-factory>
 </hibernate-configuration>

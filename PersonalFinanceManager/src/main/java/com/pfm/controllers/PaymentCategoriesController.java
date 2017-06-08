@@ -15,6 +15,7 @@ import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
+import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
@@ -30,6 +31,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -120,7 +122,7 @@ public class PaymentCategoriesController {
                 budgetCat.setCategoryId(UUID.fromString(id.toString()));
                 context.getCategoryDetailSet().Add(budgetCat);
             }
-            
+
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
             switch (buttonSubmitted) {
@@ -146,11 +148,21 @@ public class PaymentCategoriesController {
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
+            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException, PageNotFoundException {
         IpfmContext context = pfmContext.getInstance();
-        List<PaymentType> types = context
-                .getPaymentTypeSet().GetAll();
-        PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
+        PaymentCategory category;
+        List<PaymentType> types = new ArrayList<>();
+        try {
+            
+            category = context
+                    .getPaymentCategorySet()
+                    .GetById(categoryId);
+            types = context
+                    .getPaymentTypeSet()
+                    .GetAll();
+        } catch (EntityNotFoundException Exc) {
+            throw new PageNotFoundException("Payment category does not exists");
+        }
         ModelAndView view = new ModelAndView("categories-edit");
         view.addObject("category", category);
         view.addObject("types", types);
@@ -196,7 +208,7 @@ public class PaymentCategoriesController {
             return view;
         }
     }
-    
+
     @RequestMapping(value = "/categories/preview/{categoryId}", method = RequestMethod.GET)
     public ModelAndView categoryPreview(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
@@ -211,5 +223,5 @@ public class PaymentCategoriesController {
         view.addObject("types", types);
         return view;
     }
-    
+
 }
