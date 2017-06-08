@@ -9,11 +9,18 @@ import com.pfm.data.data.RecurringBudgetPaymentData;
 import com.pfm.data.entities.RecurringBudgetPayment;
 import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.sets.IRecurringBudgetPaymentSet;
+import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments;
+import com.pfm.personalfinancemanager.datapostgres.entities.RecurringTypes;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -24,20 +31,54 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
     public RecurringBudgetPaymentSet(SessionFactory factory) {
         super(factory);
     }
-    
+
     @Override
     protected RecurringBudgetPayment convertEntityToDto(RecurringBudgetPayments Entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        RecurringBudgetPayment paymentObject = new RecurringBudgetPayment();
+        paymentObject.setActive(Entity.getRbpActive());
+        paymentObject.setAmount(Entity.getRbpAmount());
+        paymentObject.setId(Entity.getRbpId());
+        paymentObject.setPaymentCategoryId(Entity.getRbpCategory().getPcatId());
+        paymentObject.setPeriods(Entity.getRbpPeriods());
+        paymentObject.setRecurringType(Entity.getRbpRecType().getRtId());
+        paymentObject.setStartDate(Entity.getRbpDateStart());
+        paymentObject.setUserId(Entity.getRbpUser().getUserUserid());
+        return paymentObject;
     }
 
     @Override
     protected List<RecurringBudgetPayment> convertEntititiesToDtoArray(List<RecurringBudgetPayments> EntityArray) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<RecurringBudgetPayment> recBudgetPaymentList = new ArrayList<>();
+        for (RecurringBudgetPayments next : EntityArray) {
+            RecurringBudgetPayment recBudgetPayment = convertEntityToDto(next);
+            recBudgetPaymentList.add(recBudgetPayment);
+        }
+        return recBudgetPaymentList;
     }
 
     @Override
     protected RecurringBudgetPayments convertDtoDataToEntity(RecurringBudgetPaymentData DtoData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query catsQuery = session.createQuery("From PaymentCategories where pcatId = :catId");
+            catsQuery.setParameter("catId", DtoData.getPaymentCategoryId());
+            List<PaymentCategories> categoriesList = catsQuery.list();
+            Query recTypesQuery = session.createQuery("From RecurringTypes rt where rt.rtId = :id");
+            recTypesQuery.setParameter("id", DtoData.getRecurringType());
+            List<RecurringTypes> recTypesList = recTypesQuery.list();
+            Query userQuery = session.createQuery("From Users where userUserid = :userId");
+            userQuery.setParameter("userId", DtoData.getUserId());
+            List<Users> userList = userQuery.list();
+            RecurringBudgetPayments entity = new RecurringBudgetPayments();
+            entity.setRbpActive(DtoData.isActive());
+            entity.setRbpAmount(DtoData.getAmount());
+            entity.setRbpCategory(categoriesList.get(0));
+            entity.setRbpDateStart(DtoData.getStartDate());
+            entity.setRbpPeriods(DtoData.getPeriods());
+            entity.setRbpRecType(recTypesList.get(0));
+            entity.setRbpUser(userList.get(0));
+            return entity;
+        }
     }
 
     @Override
@@ -52,7 +93,14 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
 
     @Override
     public UUID Add(RecurringBudgetPaymentData data) throws BasicException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            RecurringBudgetPayments entity = convertDtoDataToEntity(data);
+            Serializable id = session.save(entity);
+            session.getTransaction().commit();
+            session.close();
+            return UUID.fromString(id.toString());
+        }
     }
 
     @Override

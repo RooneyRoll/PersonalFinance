@@ -85,7 +85,6 @@ public class PaymentCategorySet extends BaseSet<PaymentCategories, PaymentCatego
             Serializable id = session.save(paymentCategoryEntity);
             session.getTransaction().commit();
             session.close();
-
             return UUID.fromString(id.toString());
         }
     }
