@@ -36,6 +36,6 @@ public interface IpfmContext {
     public IUserBudgetSet getUserBudgetSet();
     
     public IRecurringTypeSet getRecurringTypeSet();
-    
+
     public IRecurringBudgetPaymentSet getRecurringBudgetPaymentSet();
 }

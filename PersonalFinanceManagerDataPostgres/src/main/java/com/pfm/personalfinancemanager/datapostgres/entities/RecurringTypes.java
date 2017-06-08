@@ -22,6 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author mihail
+=======
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ *
+ * @author Misho
+>>>>>>> origin/master
  */
 @Entity
 @Table(name = "recurring_types")
@@ -79,7 +87,7 @@ public class RecurringTypes implements Serializable {
     public void setRecurringBudgetPaymentsList(List<RecurringBudgetPayments> recurringBudgetPaymentsList) {
         this.recurringBudgetPaymentsList = recurringBudgetPaymentsList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
