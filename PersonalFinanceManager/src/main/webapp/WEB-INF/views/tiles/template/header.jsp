@@ -15,6 +15,7 @@
 <spring:url var = "userBudgetStatus" value ="/userBudget/status"/>
 <spring:url var = "categoryCoverage" value ="/userBudget/categoriesStatus"/>
 <spring:url var = "paymentsStatus" value ="/payments/status"/>
+<spring:url var = "budgetRecPayments" value ="/userBudget/recurring/add"/>
 <div class="header">
     <div class="header-content">
         <div class="header-content-left">
@@ -56,7 +57,7 @@
                             </li>
                             <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
                                     <li>
-                                        <a class="animation" href="${userBudgetStatus}">Повтарящи се плащания</a>
+                                        <a class="animation" href="${budgetRecPayments}">Повтарящи се плащания</a>
                                     </li>
                                 </ul></li>
                             <li>

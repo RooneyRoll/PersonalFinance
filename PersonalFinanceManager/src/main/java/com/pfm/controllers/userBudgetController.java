@@ -140,18 +140,9 @@ public class userBudgetController {
     public ModelAndView recurringPayments(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
-        List<PaymentType> paymentTypes = context
-                .getPaymentTypeSet()
-                .GetAll();
-        List<PaymentCategory> categories = context
-                .getPaymentCategorySet()
-                .GetAllActiveCategoriesForUser(user.getId());
-        ModelAndView view = new ModelAndView("user-budget-categories-status");
-        view.addObject("categories", categories);
-        view.addObject("paymentTypes", paymentTypes);
+        
+        
+        ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
         return view;
     }
 }
