@@ -5,7 +5,6 @@
     <class>com.pfm.personalfinancemanager.datapostgres.entities.Users</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.UserRoles</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.PersistentLogins</class>
-    <class>com.pfm.personalfinancemanager.datapostgres.entities.Users_1</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.CategoryBudgets</class>
     <class>com.pfm.personalfinancemanager.datapostgres.entities.PaymentTypes</class>

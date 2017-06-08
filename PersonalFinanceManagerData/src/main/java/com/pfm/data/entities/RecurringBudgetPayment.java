@@ -31,8 +31,6 @@ public class RecurringBudgetPayment {
         this.id = id;
     }
 
-    
-    
     public int getRecurringType() {
         return recurringType;
     }

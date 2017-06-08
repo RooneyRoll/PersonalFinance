@@ -87,7 +87,7 @@ public class RecurringBudgetPayments implements Serializable {
         this.rbpAmount = rbpAmount;
     }
 
-    public Object getRbpId() {
+    public UUID getRbpId() {
         return rbpId;
     }
 

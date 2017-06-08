@@ -19,6 +19,15 @@ public class PaymentData {
     private boolean active;
     private UUID category;
     private UUID budgetRecurringPayment;
+    private int coveredRecurringPeriods;
+
+    public int getCoveredRecurringPeriods() {
+        return coveredRecurringPeriods;
+    }
+
+    public void setCoveredRecurringPeriods(int coveredRecurringPeriods) {
+        this.coveredRecurringPeriods = coveredRecurringPeriods;
+    }
 
     public UUID getBudgetRecurringPayment() {
         return budgetRecurringPayment;

@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.4.7
 -- Dumped by pg_dump version 9.4.7
--- Started on 2017-06-08 15:39:15
+-- Started on 2017-06-08 17:18:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -31,7 +31,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- TOC entry 3 (class 3079 OID 90352)
+-- TOC entry 3 (class 3079 OID 90568)
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -48,7 +48,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 2 (class 3079 OID 90387)
+-- TOC entry 2 (class 3079 OID 90603)
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -71,7 +71,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 175 (class 1259 OID 90398)
+-- TOC entry 175 (class 1259 OID 90614)
 -- Name: category_budgets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -87,7 +87,7 @@ CREATE TABLE category_budgets (
 ALTER TABLE category_budgets OWNER TO postgres;
 
 --
--- TOC entry 176 (class 1259 OID 90402)
+-- TOC entry 176 (class 1259 OID 90618)
 -- Name: payment_categories; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -104,7 +104,7 @@ CREATE TABLE payment_categories (
 ALTER TABLE payment_categories OWNER TO postgres;
 
 --
--- TOC entry 177 (class 1259 OID 90408)
+-- TOC entry 177 (class 1259 OID 90624)
 -- Name: payment_types; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -119,7 +119,7 @@ CREATE TABLE payment_types (
 ALTER TABLE payment_types OWNER TO postgres;
 
 --
--- TOC entry 184 (class 1259 OID 90498)
+-- TOC entry 178 (class 1259 OID 90630)
 -- Name: payment_types_ptype_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -135,7 +135,7 @@ ALTER TABLE payment_types_ptype_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2132 (class 0 OID 0)
--- Dependencies: 184
+-- Dependencies: 178
 -- Name: payment_types_ptype_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -143,7 +143,7 @@ ALTER SEQUENCE payment_types_ptype_id_seq OWNED BY payment_types.ptype_id;
 
 
 --
--- TOC entry 178 (class 1259 OID 90415)
+-- TOC entry 179 (class 1259 OID 90632)
 -- Name: payments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -154,14 +154,15 @@ CREATE TABLE payments (
     p_date timestamp without time zone NOT NULL,
     p_description text,
     p_active boolean NOT NULL,
-    p_recurring_budget_payment uuid
+    p_recurring_budget_payment uuid,
+    p_covered_recurring_periods integer
 );
 
 
 ALTER TABLE payments OWNER TO postgres;
 
 --
--- TOC entry 179 (class 1259 OID 90421)
+-- TOC entry 180 (class 1259 OID 90638)
 -- Name: persistent_logins; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -176,7 +177,7 @@ CREATE TABLE persistent_logins (
 ALTER TABLE persistent_logins OWNER TO postgres;
 
 --
--- TOC entry 186 (class 1259 OID 90522)
+-- TOC entry 181 (class 1259 OID 90641)
 -- Name: recurring_budget_payments; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -195,7 +196,7 @@ CREATE TABLE recurring_budget_payments (
 ALTER TABLE recurring_budget_payments OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 90514)
+-- TOC entry 182 (class 1259 OID 90644)
 -- Name: recurring_types; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -208,7 +209,7 @@ CREATE TABLE recurring_types (
 ALTER TABLE recurring_types OWNER TO postgres;
 
 --
--- TOC entry 187 (class 1259 OID 90551)
+-- TOC entry 183 (class 1259 OID 90650)
 -- Name: recurring_types_rt_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -224,7 +225,7 @@ ALTER TABLE recurring_types_rt_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2133 (class 0 OID 0)
--- Dependencies: 187
+-- Dependencies: 183
 -- Name: recurring_types_rt_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -232,7 +233,7 @@ ALTER SEQUENCE recurring_types_rt_id_seq OWNED BY recurring_types.rt_id;
 
 
 --
--- TOC entry 180 (class 1259 OID 90424)
+-- TOC entry 184 (class 1259 OID 90652)
 -- Name: user_budgets; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -247,7 +248,7 @@ CREATE TABLE user_budgets (
 ALTER TABLE user_budgets OWNER TO postgres;
 
 --
--- TOC entry 181 (class 1259 OID 90427)
+-- TOC entry 185 (class 1259 OID 90655)
 -- Name: user_role_gen_id; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -262,7 +263,7 @@ CREATE SEQUENCE user_role_gen_id
 ALTER TABLE user_role_gen_id OWNER TO postgres;
 
 --
--- TOC entry 182 (class 1259 OID 90429)
+-- TOC entry 186 (class 1259 OID 90657)
 -- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -276,7 +277,7 @@ CREATE TABLE user_roles (
 ALTER TABLE user_roles OWNER TO postgres;
 
 --
--- TOC entry 183 (class 1259 OID 90436)
+-- TOC entry 187 (class 1259 OID 90664)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -295,7 +296,7 @@ CREATE TABLE users (
 ALTER TABLE users OWNER TO postgres;
 
 --
--- TOC entry 1974 (class 2604 OID 90500)
+-- TOC entry 1974 (class 2604 OID 90671)
 -- Name: ptype_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -303,7 +304,7 @@ ALTER TABLE ONLY payment_types ALTER COLUMN ptype_id SET DEFAULT nextval('paymen
 
 
 --
--- TOC entry 1977 (class 2604 OID 90553)
+-- TOC entry 1975 (class 2604 OID 90672)
 -- Name: rt_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -311,7 +312,7 @@ ALTER TABLE ONLY recurring_types ALTER COLUMN rt_id SET DEFAULT nextval('recurri
 
 
 --
--- TOC entry 1979 (class 2606 OID 90444)
+-- TOC entry 1979 (class 2606 OID 90674)
 -- Name: category_budget_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -320,7 +321,7 @@ ALTER TABLE ONLY category_budgets
 
 
 --
--- TOC entry 1981 (class 2606 OID 90446)
+-- TOC entry 1981 (class 2606 OID 90676)
 -- Name: payment_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -329,7 +330,7 @@ ALTER TABLE ONLY payment_categories
 
 
 --
--- TOC entry 1983 (class 2606 OID 90508)
+-- TOC entry 1983 (class 2606 OID 90678)
 -- Name: payment_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -338,7 +339,7 @@ ALTER TABLE ONLY payment_types
 
 
 --
--- TOC entry 1985 (class 2606 OID 90450)
+-- TOC entry 1985 (class 2606 OID 90680)
 -- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -347,7 +348,7 @@ ALTER TABLE ONLY payments
 
 
 --
--- TOC entry 1987 (class 2606 OID 90452)
+-- TOC entry 1987 (class 2606 OID 90682)
 -- Name: persistent_logins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -356,7 +357,7 @@ ALTER TABLE ONLY persistent_logins
 
 
 --
--- TOC entry 2001 (class 2606 OID 90526)
+-- TOC entry 1989 (class 2606 OID 90684)
 -- Name: recurring_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -365,7 +366,7 @@ ALTER TABLE ONLY recurring_budget_payments
 
 
 --
--- TOC entry 1999 (class 2606 OID 90561)
+-- TOC entry 1991 (class 2606 OID 90686)
 -- Name: recurring_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -374,7 +375,7 @@ ALTER TABLE ONLY recurring_types
 
 
 --
--- TOC entry 1991 (class 2606 OID 90454)
+-- TOC entry 1995 (class 2606 OID 90688)
 -- Name: uni_username_role; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -383,7 +384,7 @@ ALTER TABLE ONLY user_roles
 
 
 --
--- TOC entry 1989 (class 2606 OID 90456)
+-- TOC entry 1993 (class 2606 OID 90690)
 -- Name: user_budgets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -392,7 +393,7 @@ ALTER TABLE ONLY user_budgets
 
 
 --
--- TOC entry 1993 (class 2606 OID 90458)
+-- TOC entry 1997 (class 2606 OID 90692)
 -- Name: user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -401,7 +402,7 @@ ALTER TABLE ONLY user_roles
 
 
 --
--- TOC entry 1995 (class 2606 OID 90460)
+-- TOC entry 1999 (class 2606 OID 90694)
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -410,7 +411,7 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 1997 (class 2606 OID 90462)
+-- TOC entry 2001 (class 2606 OID 90696)
 -- Name: users_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -419,7 +420,7 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 2002 (class 2606 OID 90463)
+-- TOC entry 2002 (class 2606 OID 90697)
 -- Name: budgetfk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -428,7 +429,7 @@ ALTER TABLE ONLY category_budgets
 
 
 --
--- TOC entry 2003 (class 2606 OID 90468)
+-- TOC entry 2003 (class 2606 OID 90702)
 -- Name: paymentCategoryFk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -437,7 +438,7 @@ ALTER TABLE ONLY category_budgets
 
 
 --
--- TOC entry 2005 (class 2606 OID 90509)
+-- TOC entry 2004 (class 2606 OID 90707)
 -- Name: payment_categories_pcat_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -446,7 +447,7 @@ ALTER TABLE ONLY payment_categories
 
 
 --
--- TOC entry 2006 (class 2606 OID 90473)
+-- TOC entry 2006 (class 2606 OID 90712)
 -- Name: payment_catfk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -455,7 +456,7 @@ ALTER TABLE ONLY payments
 
 
 --
--- TOC entry 2007 (class 2606 OID 90541)
+-- TOC entry 2007 (class 2606 OID 90717)
 -- Name: payments_p_recurring_budget_payment_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -464,7 +465,7 @@ ALTER TABLE ONLY payments
 
 
 --
--- TOC entry 2004 (class 2606 OID 90483)
+-- TOC entry 2005 (class 2606 OID 90722)
 -- Name: pcat_userfk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -473,7 +474,7 @@ ALTER TABLE ONLY payment_categories
 
 
 --
--- TOC entry 2011 (class 2606 OID 90546)
+-- TOC entry 2008 (class 2606 OID 90727)
 -- Name: recurring_budget_payments_rbp_category_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -482,7 +483,7 @@ ALTER TABLE ONLY recurring_budget_payments
 
 
 --
--- TOC entry 2012 (class 2606 OID 90562)
+-- TOC entry 2009 (class 2606 OID 90732)
 -- Name: recurring_budget_payments_rbp_rec_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -491,7 +492,7 @@ ALTER TABLE ONLY recurring_budget_payments
 
 
 --
--- TOC entry 2010 (class 2606 OID 90536)
+-- TOC entry 2010 (class 2606 OID 90737)
 -- Name: recurring_budget_payments_rbp_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -500,7 +501,7 @@ ALTER TABLE ONLY recurring_budget_payments
 
 
 --
--- TOC entry 2008 (class 2606 OID 90488)
+-- TOC entry 2011 (class 2606 OID 90742)
 -- Name: ub_userfk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -509,7 +510,7 @@ ALTER TABLE ONLY user_budgets
 
 
 --
--- TOC entry 2009 (class 2606 OID 90493)
+-- TOC entry 2012 (class 2606 OID 90747)
 -- Name: user_roles_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -532,7 +533,7 @@ VALUES ('Годишно');
 	
 --
 -- TOC entry 2128 (class 0 OID 0)
--- Dependencies: 8
+-- Dependencies: 9
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
@@ -542,7 +543,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2017-06-08 15:39:16
+-- Completed on 2017-06-08 17:18:11
 
 --
 -- PostgreSQL database dump complete

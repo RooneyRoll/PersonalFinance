@@ -36,8 +36,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Payments.findByPAmount", query = "SELECT p FROM Payments p WHERE p.pAmount = :pAmount")
     , @NamedQuery(name = "Payments.findByPDate", query = "SELECT p FROM Payments p WHERE p.pDate = :pDate")
     , @NamedQuery(name = "Payments.findByPDescription", query = "SELECT p FROM Payments p WHERE p.pDescription = :pDescription")
-    , @NamedQuery(name = "Payments.findByPActive", query = "SELECT p FROM Payments p WHERE p.pActive = :pActive")})
+    , @NamedQuery(name = "Payments.findByPActive", query = "SELECT p FROM Payments p WHERE p.pActive = :pActive")
+    , @NamedQuery(name = "Payments.findByPCoveredRecurringPeriods", query = "SELECT p FROM Payments p WHERE p.pCoveredRecurringPeriods = :pCoveredRecurringPeriods")})
 public class Payments implements Serializable {
+
+    @JoinColumn(name = "p_category", referencedColumnName = "pcat_id")
+    @ManyToOne(optional = false)
+    private PaymentCategories pCategory;
+    @JoinColumn(name = "p_recurring_budget_payment", referencedColumnName = "rbp_id")
+    @ManyToOne
+    private RecurringBudgetPayments pRecurringBudgetPayment;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,12 +64,8 @@ public class Payments implements Serializable {
     @Basic(optional = false)
     @Column(name = "p_active")
     private boolean pActive;
-    @JoinColumn(name = "p_category", referencedColumnName = "pcat_id")
-    @ManyToOne(optional = false)
-    private PaymentCategories pCategory;
-    @JoinColumn(name = "p_recurring_budget_payment", referencedColumnName = "rbp_id")
-    @ManyToOne
-    private RecurringBudgetPayments pRecurringBudgetPayment;
+    @Column(name = "p_covered_recurring_periods")
+    private Integer pCoveredRecurringPeriods;
 
     public Payments() {
     }
@@ -117,20 +121,12 @@ public class Payments implements Serializable {
         this.pActive = pActive;
     }
 
-    public PaymentCategories getPCategory() {
-        return pCategory;
+    public Integer getPCoveredRecurringPeriods() {
+        return pCoveredRecurringPeriods;
     }
 
-    public void setPCategory(PaymentCategories pCategory) {
-        this.pCategory = pCategory;
-    }
-
-    public RecurringBudgetPayments getPRecurringBudgetPayment() {
-        return pRecurringBudgetPayment;
-    }
-
-    public void setPRecurringBudgetPayment(RecurringBudgetPayments pRecurringBudgetPayment) {
-        this.pRecurringBudgetPayment = pRecurringBudgetPayment;
+    public void setPCoveredRecurringPeriods(Integer pCoveredRecurringPeriods) {
+        this.pCoveredRecurringPeriods = pCoveredRecurringPeriods;
     }
 
     @Override
@@ -156,6 +152,22 @@ public class Payments implements Serializable {
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.Payments[ pId=" + pId + " ]";
+    }
+
+    public PaymentCategories getPCategory() {
+        return pCategory;
+    }
+
+    public void setPCategory(PaymentCategories pCategory) {
+        this.pCategory = pCategory;
+    }
+
+    public RecurringBudgetPayments getPRecurringBudgetPayment() {
+        return pRecurringBudgetPayment;
+    }
+
+    public void setPRecurringBudgetPayment(RecurringBudgetPayments pRecurringBudgetPayment) {
+        this.pRecurringBudgetPayment = pRecurringBudgetPayment;
     }
     
 }

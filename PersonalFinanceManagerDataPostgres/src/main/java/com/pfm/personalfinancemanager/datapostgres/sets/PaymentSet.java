@@ -41,6 +41,8 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDate(Entity.getPDate());
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
+        paymentObject.setCoveredRecurringPeriods(Entity.getPCoveredRecurringPeriods());
+        paymentObject.setBudgetRecurringPayment(Entity.getPRecurringBudgetPayment().getRbpId());
         return paymentObject;
     }
 
@@ -48,13 +50,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     protected List<Payment> convertEntititiesToDtoArray(List<Payments> EntityArray) {
         List<Payment> PaymentList = new ArrayList<>();
         for (Payments next : EntityArray) {
-            Payment paymentObject = new Payment();
-            paymentObject.setActive(next.getPActive());
-            paymentObject.setAmount(next.getPAmount());
-            paymentObject.setCategory(next.getPCategory().getPcatId());
-            paymentObject.setDate(next.getPDate());
-            paymentObject.setDescription(next.getPDescription());
-            paymentObject.setId(next.getPId());
+            Payment paymentObject = convertEntityToDto(next);
             PaymentList.add(paymentObject);
         }
         return PaymentList;
