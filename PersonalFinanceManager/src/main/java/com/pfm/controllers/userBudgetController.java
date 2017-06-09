@@ -10,6 +10,7 @@ import com.pfm.data.data.CategoryBudgetData;
 import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
+import com.pfm.data.entities.RecurringType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
@@ -140,9 +141,10 @@ public class userBudgetController {
     public ModelAndView recurringPayments(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
-        
+        List<RecurringType> recurringTypes = context.getRecurringTypeSet().GetAll();
         
         ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
+        view.addObject("recTypes",recurringTypes);
         return view;
     }
 }

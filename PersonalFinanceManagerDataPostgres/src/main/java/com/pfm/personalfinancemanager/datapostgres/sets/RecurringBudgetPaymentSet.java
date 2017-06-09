@@ -43,6 +43,10 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         paymentObject.setRecurringType(Entity.getRbpRecType().getRtId());
         paymentObject.setStartDate(Entity.getRbpDateStart());
         paymentObject.setUserId(Entity.getRbpUser().getUserUserid());
+        paymentObject.setDescription(Entity.getRbpDescription());
+        paymentObject.setTitle(Entity.getRbpTitle());
+        paymentObject.setFinished(Entity.getRbvFinished());
+        paymentObject.setFinishedDate(Entity.getRbpFinishedDate());
         return paymentObject;
     }
 
@@ -77,6 +81,10 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             entity.setRbpPeriods(DtoData.getPeriods());
             entity.setRbpRecType(recTypesList.get(0));
             entity.setRbpUser(userList.get(0));
+            entity.setRbpDescription(DtoData.getDescription());
+            entity.setRbpTitle(DtoData.getTitle());
+            entity.setRbvFinished(DtoData.isFinished());
+            entity.setRbpFinishedDate(DtoData.getFinishedDate());
             return entity;
         }
     }

@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "RecurringBudgetPayments.findByRbpAmount", query = "SELECT r FROM RecurringBudgetPayments r WHERE r.rbpAmount = :rbpAmount")})
 public class RecurringBudgetPayments implements Serializable {
 
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,7 +72,19 @@ public class RecurringBudgetPayments implements Serializable {
     @JoinColumn(name = "rbp_user", referencedColumnName = "user_userid")
     @ManyToOne(optional = false)
     private Users rbpUser;
+    @Basic(optional = false)
+    @Column(name = "rbv_finished")
+    private boolean rbvFinished;
+    @Column(name = "rbp_finished_date")
+    @Temporal(TemporalType.TIME)
+    private Date rbpFinishedDate;
+    @Column(name = "rbp_title")
+    private String rbpTitle;
+    @Column(name = "rbp_description")
+    private String rbpDescription;
 
+    
+    
     public RecurringBudgetPayments() {
     }
 
@@ -160,6 +173,22 @@ public class RecurringBudgetPayments implements Serializable {
         this.rbpUser = rbpUser;
     }
 
+    public String getRbpTitle() {
+        return rbpTitle;
+    }
+
+    public void setRbpTitle(String rbpTitle) {
+        this.rbpTitle = rbpTitle;
+    }
+
+    public String getRbpDescription() {
+        return rbpDescription;
+    }
+
+    public void setRbpDescription(String rbpDescription) {
+        this.rbpDescription = rbpDescription;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -180,9 +209,27 @@ public class RecurringBudgetPayments implements Serializable {
         return true;
     }
 
+    
     @Override
     public String toString() {
         return "com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments[ rbpId=" + rbpId + " ]";
     }
+
+    public boolean getRbvFinished() {
+        return rbvFinished;
+    }
+
+    public void setRbvFinished(boolean rbvFinished) {
+        this.rbvFinished = rbvFinished;
+    }
+
+    public Date getRbpFinishedDate() {
+        return rbpFinishedDate;
+    }
+
+    public void setRbpFinishedDate(Date rbpFinishedDate) {
+        this.rbpFinishedDate = rbpFinishedDate;
+    }
+
     
 }

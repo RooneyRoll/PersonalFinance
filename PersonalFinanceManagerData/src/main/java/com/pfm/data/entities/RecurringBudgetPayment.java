@@ -14,14 +14,50 @@ import java.util.UUID;
  */
 public class RecurringBudgetPayment {
     
-    public UUID id;
-    public int recurringType;
-    public int periods;
-    public boolean active;
-    public Date startDate;
-    public double amount;
-    public UUID userId;
-    public UUID paymentCategoryId;
+    private UUID id;
+    private int recurringType;
+    private int periods;
+    private boolean active;
+    private Date startDate;
+    private double amount;
+    private UUID userId;
+    private UUID paymentCategoryId;
+    private String description;
+    private String title;
+    private boolean finished;
+    private Date finishedDate;
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public Date getFinishedDate() {
+        return finishedDate;
+    }
+
+    public void setFinishedDate(Date finishedDate) {
+        this.finishedDate = finishedDate;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public UUID getId() {
         return id;

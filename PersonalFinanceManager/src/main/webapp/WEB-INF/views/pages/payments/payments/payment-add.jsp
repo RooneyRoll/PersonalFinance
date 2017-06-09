@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script>
     $(document).ready(function () {
-        $("#payment-type-add-form").validate({
+        $("#payment-add-form").validate({
             rules: {
                 paymentAmount: {"required": true, "number": true,"min":0}
             },
@@ -39,7 +39,7 @@
 <div class="form-container">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
         <div class="form-content">
-            <form id="payment-type-add-form" method="post">
+            <form id="payment-add-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input-container size-1">
                 <div class="input-title-holder no-select">
