@@ -5,7 +5,6 @@
  */
 package com.pfm.models.payment;
 
-import com.pfm.exceptions.ValidationException;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;

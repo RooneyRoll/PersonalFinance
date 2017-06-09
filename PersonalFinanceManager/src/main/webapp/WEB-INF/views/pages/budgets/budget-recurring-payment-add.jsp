@@ -6,10 +6,14 @@
     $(document).ready(function () {
         $("#recurring-payment-add-form").validate({
             rules: {
-                paymentAmount: {"required": true, "number": true, "min": 1}
+                recurringPaymentAmount: {"required": true, "number": true, "min": 1},
+                recurringPaymentPeriodsCount: {"required": true, "number": true, "min": 1},
+                recurringPaymentName: {"required":true}
             },
             messages: {
-                paymentAmount: "Моля въведете сума.",
+                recurringPaymentAmount: "Моля въведете сума.",
+                recurringPaymentPeriodsCount: "Моля въведете брой периоди на плащането.",
+                recurringPaymentName: "Моля въведете име на плащането."
             },
             errorPlacement: function (error, element) {
 
@@ -21,8 +25,8 @@
                 $(element).removeClass("error");
             }
         });
-        $("#categories-select").select2({"theme": "classic"});
-        $('#paymentDate').flatpickr({
+        $("#categories-select,#recurring-types-select").select2({"theme": "classic"});
+        $('#recurringPaymentStartDate').flatpickr({
             'locale': 'bg',
             'mode': 'single',
             'enableTime': true,
@@ -36,11 +40,29 @@
     });
 </script>
 <div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
+    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="recurringPaymentAddError" /></c:if>
         <div class="form-content">
             <form id="recurring-payment-add-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-1 side-padding-right">
+            <div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Име на плащане<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <input type="text" name="recurringPaymentName" placeholder="Име"/>
+                </div>
+            </div><div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Сума за период<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <input type="text" name="recurringPaymentAmount" placeholder="Сума"/>
+                </div>
+            </div><div class="input-container size-2 side-padding-right">
                 <div class="input-title-holder no-select">
                     <span> 
                         Начален период на плащане<span class="required-tip">&nbsp;*</span>
@@ -49,16 +71,16 @@
                 <div class="input-holder">
                     <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
                     <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                    <input type="text" readonly name="periodStart" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
+                    <input type="text" readonly name="recurringPaymentPeriodStart" id="recurringPaymentStartDate" placeholder="Началена дата на повтарящо плащане" value="${date}"/>
                 </div>
-            </div><div class="input-container size-1">
+            </div><div class="input-container size-2">
                 <div class="input-title-holder no-select">
                     <span> 
-                        брой периоди<span class="required-tip">&nbsp;*</span>
+                        Брой периоди<span class="required-tip">&nbsp;*</span>
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="periodsCount" value="1" placeholder="Сума"/>
+                    <input type="text" name="recurringPaymentPeriodsCount" value="1" placeholder="Брой периоди"/>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -67,7 +89,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="paymentDescription"></textarea>
+                    <textarea resize="false" placeholder="Описание" name="recurringPaymentDescription"></textarea>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -76,7 +98,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <select id="categories-select" name="paymentCategory">
+                    <select id="categories-select" name="recurringPaymentCategory">
                         <c:forEach items="${categories}" var="element">
                             <option value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
@@ -85,6 +107,19 @@
                     <div class="input-add-button">
                         <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                     </div>
+                </div>
+            </div><div class="input-container size-1">
+                <div class="input-title-holder no-select">
+                    <span> 
+                        Плащането е<span class="required-tip">&nbsp;*</span>
+                    </span>
+                </div>
+                <div class="input-holder">
+                    <select id="recurring-types-select" name="recurringPaymentRecurringType">
+                        <c:forEach items="${recTypes}" var="element">
+                            <option value="${element.getId()}">${element.getName()}</option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
             <div class="buttons-container size-1">

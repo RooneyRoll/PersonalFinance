@@ -891,7 +891,7 @@ html body{
     }
 
     .site-content .select2{
-        min-width:100%;
+        min-width: calc(100% - 31px);
     }
 
     html body #site-content.site-content .content-container .form-container{

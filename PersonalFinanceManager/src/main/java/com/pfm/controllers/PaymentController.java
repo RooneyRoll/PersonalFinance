@@ -100,7 +100,6 @@ public class PaymentController {
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
         try {
             IpfmContext context = pfmContext.getInstance();
-
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
