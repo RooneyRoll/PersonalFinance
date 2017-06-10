@@ -23,5 +23,5 @@ public interface IPaymentSet extends IViewable<Payment, UUID>, IManagable<Paymen
 
     public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date);
 
-    public List<Payment> getAllActivePaymentsByPaymentTypeAndMonth(int paymentType, Date date);
+    public List<Payment> getAllActivePaymentsForUserByPaymentTypeAndMonth(UUID userId,int paymentType, Date date);
 }
