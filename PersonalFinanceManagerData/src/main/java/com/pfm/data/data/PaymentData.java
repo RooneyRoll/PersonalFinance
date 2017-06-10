@@ -19,13 +19,13 @@ public class PaymentData {
     private boolean active;
     private UUID category;
     private UUID budgetRecurringPayment;
-    private int coveredRecurringPeriods;
+    private Integer coveredRecurringPeriods;
 
-    public int getCoveredRecurringPeriods() {
+    public Integer getCoveredRecurringPeriods() {
         return coveredRecurringPeriods;
     }
 
-    public void setCoveredRecurringPeriods(int coveredRecurringPeriods) {
+    public void setCoveredRecurringPeriods(Integer coveredRecurringPeriods) {
         this.coveredRecurringPeriods = coveredRecurringPeriods;
     }
 

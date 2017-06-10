@@ -41,8 +41,13 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDate(Entity.getPDate());
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
-        paymentObject.setCoveredRecurringPeriods(Entity.getPCoveredRecurringPeriods());
-        paymentObject.setBudgetRecurringPayment(Entity.getPRecurringBudgetPayment().getRbpId());
+        if (Entity.getPCoveredRecurringPeriods() != null && Entity.getPRecurringBudgetPayment() != null) {
+            paymentObject.setCoveredRecurringPeriods(Entity.getPCoveredRecurringPeriods());
+            paymentObject.setBudgetRecurringPayment(Entity.getPRecurringBudgetPayment().getRbpId());
+        }else{
+            paymentObject.setCoveredRecurringPeriods(null);
+            paymentObject.setBudgetRecurringPayment(null);
+        }
         return paymentObject;
     }
 
@@ -176,9 +181,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
                     .setParameter("month", month)
                     .setParameter("year", year);
             List<Payments> resultList = q.list();
-            for (Payments payments1 : resultList) {
-                System.out.println(payments1.getPAmount());
-            }
             payments = convertEntititiesToDtoArray(resultList);
         }
         return payments;
