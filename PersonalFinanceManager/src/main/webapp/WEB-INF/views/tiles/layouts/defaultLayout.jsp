@@ -32,9 +32,9 @@
         <script src="<c:url value='/resources/js/smartmenus/jquery.smartmenus.min.js' />" type="text/javascript"></script>
         <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
         <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.js' />"></script>
+        <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.min.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/dataTables.bootstrap4.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.js' />"></script>
+        <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.min.js' />"></script>
         <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js' />"></script>
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.min.js' />"></script>
