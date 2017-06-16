@@ -149,17 +149,23 @@ public class PaymentCategoriesController {
             @PathVariable("categoryId") UUID categoryId,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException, PageNotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         PaymentCategory category;
         List<PaymentType> types = new ArrayList<>();
         try {
-            
+            User user = context
+                    .getUserSet()
+                    .GetByUserName(auth.getName());
             category = context
                     .getPaymentCategorySet()
                     .GetById(categoryId);
             types = context
                     .getPaymentTypeSet()
                     .GetAll();
+            if (!category.getUserId().equals(user.getId())) {
+                throw new PageNotFoundException("Payment category with id:" + categoryId + " for user:" + user.getUserName() + " does not exists.");
+            }
         } catch (EntityNotFoundException Exc) {
             throw new PageNotFoundException("Payment category does not exists");
         }
@@ -213,11 +219,27 @@ public class PaymentCategoriesController {
     public ModelAndView categoryPreview(ModelMap map, HttpServletRequest request,
             @PathVariable("categoryId") UUID categoryId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
+            @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException, PageNotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
-        List<PaymentType> types = context
-                .getPaymentTypeSet().GetAll();
-        PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        List<PaymentType> types = new ArrayList<>();
+        PaymentCategory category = new PaymentCategory();
+        try {
+            category = context
+                    .getPaymentCategorySet()
+                    .GetById(categoryId);
+            types = context
+                    .getPaymentTypeSet()
+                    .GetAll();
+            if (!category.getUserId().equals(user.getId())) {
+                throw new PageNotFoundException("Payment category with id:" + categoryId + " for user:" + user.getUserName() + " does not exists.");
+            }
+        } catch (EntityNotFoundException Exc) {
+            throw new PageNotFoundException("Payment category does not exists");
+        }
         ModelAndView view = new ModelAndView("categories-preview");
         view.addObject("category", category);
         view.addObject("types", types);

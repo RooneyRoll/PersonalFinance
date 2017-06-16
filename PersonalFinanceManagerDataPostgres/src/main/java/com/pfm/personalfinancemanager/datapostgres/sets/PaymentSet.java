@@ -157,9 +157,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
                     .setParameter("month", month)
                     .setParameter("year", year);
             List<Payments> resultList = q.list();
-            for (Payments payments1 : resultList) {
-                System.out.println(payments1.getPAmount());
-            }
             payments = convertEntititiesToDtoArray(resultList);
         }
         return payments;

@@ -64,7 +64,6 @@ public class PaymentsRestController {
                 System.out.println(notFoundExc.getMessage());
             }
             int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            int minDay = cal.getActualMinimum(Calendar.DAY_OF_MONTH) - 1;
             for (PaymentType type : types) {
                 PaymentsForMonthResultObject resultObject = new PaymentsForMonthResultObject(maxDay);
                 PaymentsForMonthResultObject budgetForMonthObject = new PaymentsForMonthResultObject(maxDay);

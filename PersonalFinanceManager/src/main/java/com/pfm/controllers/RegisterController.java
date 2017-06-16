@@ -14,10 +14,9 @@ import com.pfm.data.exceptions.UserRegisterException;
 import com.pfm.enums.PaymentTypes;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import com.pfm.utils.MD5Hasher;
 import java.io.Serializable;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 /**
  * @author Misho
  */
@@ -62,7 +60,7 @@ public class RegisterController {
             HttpServletResponse response, final RedirectAttributes redirectAttributes) throws UserRegisterException {
         try {
             String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            String password = MD5Hasher.getMD5(request.getParameter("password"));
             String firstname = request.getParameter("firstname");
             String middlename = request.getParameter("middlename");
             String lastname = request.getParameter("lastname");
