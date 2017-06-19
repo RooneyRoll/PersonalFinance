@@ -13,10 +13,11 @@ import java.util.UUID;
  * @author mihail
  */
 public class RecurringBudgetPayment {
-    
+
     private UUID id;
     private int recurringType;
     private int periods;
+    private int missPerPeriods;
     private boolean active;
     private Date startDate;
     private double amount;
@@ -26,6 +27,14 @@ public class RecurringBudgetPayment {
     private String title;
     private boolean finished;
     private Date finishedDate;
+
+    public int getMissPerPeriods() {
+        return missPerPeriods;
+    }
+
+    public void setMissPerPeriods(int missPerPeriods) {
+        this.missPerPeriods = missPerPeriods;
+    }
 
     public boolean isFinished() {
         return finished;
@@ -42,7 +51,7 @@ public class RecurringBudgetPayment {
     public void setFinishedDate(Date finishedDate) {
         this.finishedDate = finishedDate;
     }
-    
+
     public String getDescription() {
         return description;
     }

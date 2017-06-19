@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "RecurringBudgetPayments.findByRbpAmount", query = "SELECT r FROM RecurringBudgetPayments r WHERE r.rbpAmount = :rbpAmount")})
 public class RecurringBudgetPayments implements Serializable {
 
-    
+   
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -82,6 +82,9 @@ public class RecurringBudgetPayments implements Serializable {
     private String rbpTitle;
     @Column(name = "rbp_description")
     private String rbpDescription;
+    @Basic(optional = false)
+    @Column(name = "rbp_miss_per_periods")
+    private int rbpMissPerPeriods;
 
     
     
@@ -231,5 +234,11 @@ public class RecurringBudgetPayments implements Serializable {
         this.rbpFinishedDate = rbpFinishedDate;
     }
 
-    
+    public int getRbpMissPerPeriods() {
+        return rbpMissPerPeriods;
+    }
+
+    public void setRbpMissPerPeriods(int rbpMissPerPeriods) {
+        this.rbpMissPerPeriods = rbpMissPerPeriods;
+    }   
 }

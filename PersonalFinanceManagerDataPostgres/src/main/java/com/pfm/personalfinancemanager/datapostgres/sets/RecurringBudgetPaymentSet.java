@@ -27,11 +27,11 @@ import org.hibernate.query.Query;
  * @author mihail
  */
 public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, RecurringBudgetPayment, RecurringBudgetPaymentData> implements IRecurringBudgetPaymentSet {
-
+    
     public RecurringBudgetPaymentSet(SessionFactory factory) {
         super(factory);
     }
-
+    
     @Override
     protected RecurringBudgetPayment convertEntityToDto(RecurringBudgetPayments Entity) {
         RecurringBudgetPayment paymentObject = new RecurringBudgetPayment();
@@ -47,9 +47,10 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         paymentObject.setTitle(Entity.getRbpTitle());
         paymentObject.setFinished(Entity.getRbvFinished());
         paymentObject.setFinishedDate(Entity.getRbpFinishedDate());
+        paymentObject.setMissPerPeriods(Entity.getRbpMissPerPeriods());
         return paymentObject;
     }
-
+    
     @Override
     protected List<RecurringBudgetPayment> convertEntititiesToDtoArray(List<RecurringBudgetPayments> EntityArray) {
         List<RecurringBudgetPayment> recBudgetPaymentList = new ArrayList<>();
@@ -59,7 +60,7 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         }
         return recBudgetPaymentList;
     }
-
+    
     @Override
     protected RecurringBudgetPayments convertDtoDataToEntity(RecurringBudgetPaymentData DtoData) {
         try (Session session = this.getSessionFactory().openSession()) {
@@ -85,20 +86,21 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             entity.setRbpTitle(DtoData.getTitle());
             entity.setRbvFinished(DtoData.isFinished());
             entity.setRbpFinishedDate(DtoData.getFinishedDate());
+            entity.setRbpMissPerPeriods(DtoData.getMissPerPeriods());
             return entity;
         }
     }
-
+    
     @Override
     public List<RecurringBudgetPayment> GetAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public RecurringBudgetPayment GetById(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public UUID Add(RecurringBudgetPaymentData data) throws BasicException {
         try (Session session = this.getSessionFactory().openSession()) {
@@ -110,17 +112,17 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             return UUID.fromString(id.toString());
         }
     }
-
+    
     @Override
     public void Edit(UUID id, RecurringBudgetPaymentData data) throws BasicException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void Delete(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public UUID AddOrUpdate(RecurringBudgetPaymentData data) throws BasicException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

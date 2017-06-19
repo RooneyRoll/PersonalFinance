@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 public class RecurringBudgetPaymentData {
     private int recurringType;
+    private int missPerPeriods;
     private int periods;
     private boolean active;
     private Date startDate;
@@ -24,6 +25,14 @@ public class RecurringBudgetPaymentData {
     private String title;
     private boolean finished;
     private Date finishedDate;
+
+    public int getMissPerPeriods() {
+        return missPerPeriods;
+    }
+
+    public void setMissPerPeriods(int missPerPeriods) {
+        this.missPerPeriods = missPerPeriods;
+    }
 
     public boolean isFinished() {
         return finished;
