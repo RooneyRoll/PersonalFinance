@@ -127,7 +127,7 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>com.samaxes.maven</groupId>
                 <artifactId>minify-maven-plugin</artifactId>
                 <version>1.7.6</version>
@@ -142,15 +142,15 @@
                             <cssSourceDir>
                                 WEB-INF/resources/css
                             </cssSourceDir>
-                            <!--<cssTargetDir>
+                            -<cssTargetDir>
                                 WEB-INF/resources/css
-                            </cssTargetDir>-->
+                            </cssTargetDir>-
                             <jsSourceDir>
                                 WEB-INF/resources/js
                             </jsSourceDir>
-                            <!--<jsTargetDir>
+                            -<jsTargetDir>
                                 WEB-INF/resources/js
-                            </jsTargetDir>-->
+                            </jsTargetDir>-
                             <jsSourceIncludes>
                                 <jsSourceInclude>*.js</jsSourceInclude>
                             </jsSourceIncludes>
@@ -164,7 +164,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -55,11 +55,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a class="animation" href="${categoryBudget}">Бюджет</a><!--<ul>
+                            <li><a class="animation" href="${categoryBudget}">Бюджет</a><ul>
                                     <li>
                                         <a class="animation" href="${budgetRecPayments}">Повтарящи се плащания</a>
                                     </li>
-                                </ul>--></li>
+                                </ul></li>
                             <li>
                                 <a class="animation" href="#">Статистики</a><ul>
                                     <li>

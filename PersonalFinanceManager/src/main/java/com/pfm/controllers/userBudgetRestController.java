@@ -13,7 +13,6 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.entities.UserBudget;
-import com.pfm.enums.PaymentTypes;
 import com.pfm.models.budgetService.BudgetCategoriesPlannedVsSpentResult;
 import com.pfm.models.budgetService.BudgetParamObject;
 import com.pfm.models.budgetService.BudgetPlannedVsSpentResultObject;
@@ -41,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class userBudgetRestController {
 
     private double calculatePercentage(double planned, double actual) {
-       double percents = 0;
+       double percents;
         if (planned != 0) {
             percents = (actual / planned) * 100;
         }else{
@@ -156,7 +155,7 @@ public class userBudgetRestController {
                     PaymentCategory category = context.getPaymentCategorySet().GetById(categoryBudget.getCategoryId());
                     Integer categoryId = category.getType();
                     Integer categoryType = type.getId();
-                    double planned = 0;
+                    double planned;
                     double spent = 0;
                     boolean equals = categoryId.equals(categoryType);
                     if (equals) {

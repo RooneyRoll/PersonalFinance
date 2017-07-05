@@ -14,14 +14,23 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author mihail
  */
 public class RecurringBudgetPaymentAddModel {
+    public int recurringPaymentRecurringType;
+    public int recurringPaymentPeriodsMiss;
+    public int recurringPaymentPeriodsCount;
     public String recurringPaymentName;
+    public String recurringPaymentDescription;
     public double recurringPaymentAmount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date recurringPaymentPeriodStart;
-    public int recurringPaymentPeriodsCount;
-    public String recurringPaymentDescription;
     public UUID recurringPaymentCategory;
-    public int recurringPaymentRecurringType;
+    
+    public int getRecurringPaymentPeriodsMiss() {
+        return recurringPaymentPeriodsMiss;
+    }
+
+    public void setRecurringPaymentPeriodsMiss(int recurringPaymentPeriodsMiss) {
+        this.recurringPaymentPeriodsMiss = recurringPaymentPeriodsMiss;
+    }
 
     public String getRecurringPaymentName() {
         return recurringPaymentName;

@@ -98,7 +98,15 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
     
     @Override
     public RecurringBudgetPayment GetById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<RecurringBudgetPayment> paymentTypes;
+        try (Session session = this.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query q = session.createQuery("From RecurringBudgetPayments WHERE rbpId = :id");
+            q.setParameter("id", id);
+            List<RecurringBudgetPayments> resultList = q.list();
+            paymentTypes = convertEntititiesToDtoArray(resultList);
+        }
+        return paymentTypes.get(0);
     }
     
     @Override

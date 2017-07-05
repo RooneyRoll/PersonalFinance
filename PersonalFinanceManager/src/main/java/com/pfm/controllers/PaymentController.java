@@ -139,7 +139,7 @@ public class PaymentController {
     public ModelAndView editIndex(ModelMap map, HttpServletRequest request,
             @PathVariable("paymentId") UUID paymentId,
             HttpServletResponse response,
-            @RequestParam(value = "error", required = false) String error) throws BasicException, PageNotFoundException {
+            @RequestParam(value = "error", required = false) String error) throws PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context

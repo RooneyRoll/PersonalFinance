@@ -1,10 +1,11 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script>
     $(document).ready(function () {
-        $("#recurring-payment-add-form").validate({
+        $("#recurring-payment-edit-form").validate({
             rules: {
                 recurringPaymentAmount: {"required": true, "number": true, "min": 1},
                 recurringPaymentPeriodsCount: {"required": true, "number": true, "min": 1},
@@ -27,11 +28,11 @@
             }
         });
         $("#categories-select,#recurring-types-select").select2({"theme": "classic"});
-        $('#recurringPaymentStartDate').flatpickr({
+        $('#paymentDate').flatpickr({
             'locale': 'bg',
             'mode': 'single',
             'enableTime': true,
-            'defaultDate': 'today',
+            'defaultDate':'today', 
             'dateFormat': "Y-m-d",
             onChange: function (rawdate, altdate, FPOBJ) {
                 FPOBJ.close();
@@ -40,9 +41,9 @@
     });
 </script>
 <div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="recurringPaymentAddError" /></c:if>
+    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
         <div class="form-content">
-            <form id="recurring-payment-add-form" method="post">
+            <form id="recurring-payment-edit-form" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -51,7 +52,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="recurringPaymentName" placeholder="Име"/>
+                    <input type="text" name="recurringPaymentName" placeholder="Име" value = "${recPayment.getName()}"/>
                 </div>
             </div><div class="input-container size-2 side-padding-right">
                 <div class="input-title-holder no-select">
@@ -60,7 +61,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="recurringPaymentAmount" placeholder="Сума"/>
+                    <input type="text" name="recurringPaymentAmount" placeholder="Сума" value = "${recPayment.getAmount()}"/>
                 </div>
             </div><div class="input-container size-2 side-padding-left">
                 <div class="input-title-holder no-select">
@@ -69,7 +70,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="recurringPaymentPeriodsMiss" value="0" placeholder="Пропускане през"/>
+                    <input type="text" name="recurringPaymentPeriodsMiss" value="0" placeholder="Пропускане през" value = "${recPayment.getMissPerPeriods()}"/>
                 </div>
             </div><div class="input-container size-2 side-padding-right">
                 <div class="input-title-holder no-select">
@@ -80,7 +81,7 @@
                 <div class="input-holder">
                     <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
                     <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                    <input type="text" readonly name="recurringPaymentPeriodStart" id="recurringPaymentStartDate" placeholder="Началена дата на повтарящо плащане" value="${date}"/>
+                    <input type="text" readonly name="recurringPaymentPeriodStart" id="recurringPaymentStartDate" placeholder="Начална дата на повтарящо плащане" value="${recPayment.getStartDate()}"/>
                 </div>
             </div><div class="input-container size-2 side-padding-left">
                 <div class="input-title-holder no-select">
@@ -89,7 +90,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <input type="text" name="recurringPaymentPeriodsCount" value="1" placeholder="Брой периоди"/>
+                    <input type="text" name="recurringPaymentPeriodsCount" value="1" placeholder="Брой периоди" value = "${recPayment.getPeriods()}"/>
                 </div>
             </div>
             <div class="input-container size-1">
@@ -99,7 +100,7 @@
                     </span>
                 </div>
                 <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="recurringPaymentDescription"></textarea>
+                    <textarea resize="false" placeholder="Описание" name="recurringPaymentDescription" value = "${recPayment.getDescription()}"></textarea>
                 </div>
             </div><div class="input-container size-1">
                 <div class="input-title-holder no-select">
@@ -110,7 +111,7 @@
                 <div class="input-holder">
                     <select id="categories-select" name="recurringPaymentCategory">
                         <c:forEach items="${categories}" var="element">
-                            <option value="${element.getId()}">${element.getName()}</option>
+                            <option <c:if test = "${element.getId() == recPayment.getPamyntCategoryId()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
                     </select>
                     <spring:url var = "categoriesAdd" value='/categories/add' />
@@ -127,7 +128,7 @@
                 <div class="input-holder">
                     <select id="recurring-types-select" name="recurringPaymentRecurringType">
                         <c:forEach items="${recTypes}" var="element">
-                            <option value="${element.getId()}">${element.getName()}</option>
+                            <option <c:if test = "${element.getId() == recPayment.getRecurringType()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>

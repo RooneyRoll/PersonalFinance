@@ -11,17 +11,20 @@ import com.pfm.data.data.RecurringBudgetPaymentData;
 import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
+import com.pfm.data.entities.RecurringBudgetPayment;
 import com.pfm.data.entities.RecurringType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
+import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
-import com.pfm.models.payment.PaymentAddModel;
 import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -29,6 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -143,7 +147,7 @@ public class userBudgetController {
     }
 
     @RequestMapping(value = "/userBudget/recurring/add", method = RequestMethod.GET)
-    public ModelAndView recurringPayments(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addRecurringPayment(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         IpfmContext context = pfmContext.getInstance();
         User user = context
@@ -162,7 +166,7 @@ public class userBudgetController {
     }
 
     @RequestMapping(value = "/userBudget/recurring/add", method = RequestMethod.POST)
-    public ModelAndView recurringPayments(ModelMap map,
+    public ModelAndView addRecurringPayment(ModelMap map,
             HttpServletRequest request,
             HttpServletResponse response,
             @ModelAttribute RecurringBudgetPaymentAddModel params) throws BasicException {
@@ -192,9 +196,9 @@ public class userBudgetController {
             data.setRecurringType(params.getRecurringPaymentRecurringType());
             data.setStartDate(params.getRecurringPaymentPeriodStart());
             data.setTitle(params.getRecurringPaymentName());
+            data.setMissPerPeriods(params.getRecurringPaymentPeriodsMiss());
             data.setUserId(user.getId());
-            UUID id = context
-                    .getRecurringBudgetPaymentSet()
+            UUID id = context.getRecurringBudgetPaymentSet()
                     .Add(data);
             ModelAndView view = null;
             String buttonSubmitted = request.getParameter("submit-button");
@@ -203,7 +207,7 @@ public class userBudgetController {
                     view = new ModelAndView("redirect:/userBudget/recurring/add");
                     break;
                 case "2":
-                    view = new ModelAndView("redirect:/userBudget/recurring/add");
+                    view = new ModelAndView("redirect:/userBudget/recurring/edit/" + id.toString());
                     break;
                 case "3":
                     view = new ModelAndView("redirect:/userBudget/recurring/add");
@@ -215,5 +219,36 @@ public class userBudgetController {
             ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
             return view;
         }
+    }
+
+    @RequestMapping(value = "/userBudget/recurring/edit/{recPaymentId}", method = RequestMethod.GET)
+    public ModelAndView editRecurringPayment(ModelMap map, HttpServletRequest request,
+            HttpServletResponse response,
+            @PathVariable("recPaymentId") UUID recPaymentId) throws PageNotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(recPaymentId);
+        IpfmContext context = pfmContext.getInstance();
+        User user = context
+                .getUserSet()
+                .GetByUserName(auth.getName());
+        RecurringBudgetPayment recurringPayment;
+        List<RecurringType> recurringTypes = new ArrayList<>();
+        try {
+            recurringPayment = context
+                    .getRecurringBudgetPaymentSet()
+                    .GetById(recPaymentId);
+            recurringTypes = context
+                    .getRecurringTypeSet()
+                    .GetAll();
+            if (!recurringPayment.getUserId().equals(user.getId())) {
+                throw new PageNotFoundException("recurring payment with id:" + recPaymentId + " for user:" + user.getUserName() + " does not exists.");
+            }
+        } catch (EntityNotFoundException exc) {
+            throw new PageNotFoundException("recurring payment with id:" + recPaymentId + " for user:" + user.getUserName() + " does not exists.");
+        }
+        ModelAndView view = new ModelAndView("user-budget-recurring-payment-edit");
+        view.addObject("recPayment", recurringPayment);
+        view.addObject("recTypes", recurringTypes);
+        return view;
     }
 }

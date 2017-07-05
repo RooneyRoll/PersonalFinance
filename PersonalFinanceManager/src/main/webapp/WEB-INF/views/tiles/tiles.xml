@@ -100,8 +100,14 @@
     <definition name="user-budget-recurring-payment-add" extends="base-definition">  
         <put-attribute name="navigation" value="Добавяне на повтарящо се плащане"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />
-        <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/recurringPaymentAddError.jsp"  cascade="true" />  
+        <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-recurring-payment-add.jsp" />  
+    </definition>
+    <definition name="user-budget-recurring-payment-edit" extends="base-definition">  
+        <put-attribute name="navigation" value="Редакция на повтарящо се плащане"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="categoryAddError" value="/WEB-INF/views/pages/errors/basic-error.jsp"  cascade="true" />  
+        <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-recurring-payment-edit.jsp" />  
     </definition>
     <definition name="404" extends="base-definition">
         <put-attribute name="navigation" value="Грешка"  cascade="true"/>   
