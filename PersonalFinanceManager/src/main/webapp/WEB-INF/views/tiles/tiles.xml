@@ -97,6 +97,11 @@
         <put-attribute name="title" value="Personal finance manager" />
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-categories-status.jsp" />  
     </definition>
+    <definition name="user-budget-recurring-payments-manage" extends="base-definition">  
+         <put-attribute name="navigation" value="Периодични плащания"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-recurring-payments-manage.jsp" />  
+    </definition>
     <definition name="user-budget-recurring-payment-add" extends="base-definition">  
         <put-attribute name="navigation" value="Добавяне на повтарящо се плащане"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />

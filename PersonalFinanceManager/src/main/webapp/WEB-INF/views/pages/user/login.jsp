@@ -22,65 +22,39 @@
                 $(element).removeClass("error");
             }
         });
-
-        $('#remember-me').each(function () {
-            var self = $(this),
-                    label = self.next(),
-                    label_text = label.text();
-
-            label.remove();
-            $("#remember-me").iCheck({
-                checkboxClass: 'icheckbox_line-green checkbox-green',
-                radioClass: 'iradio_line-green checkbox-green',
-                insert: '<div class="icheck_line-icon"></div>' + label_text
-            });
-        });
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="loginError" /></c:if>
-        <div class="form-content">
-            <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
-            <div class="partial-contentainer size-2 side-padding">
-                <div class="input-container with-icon">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                            Потребителско име
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <div class="input-icon">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                        </div><input class="input-style-4" type="text" name="username" placeholder="Потребителско име" id="username"/>
-                    </div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">Вход в системата</div>
+    <div class="panel-body">
+        <form id="login-form" name="f" name="loginForm" action="auth/login_check?targetUrl=${targetUrl}" method="post">
+            <div class="form-group ">
+                <label for="exampleFormControlInput1">Потребителско име</label>
+                <div class="input-group col-lg-6 col-md-12 col-sm-12">
+                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input name="username" type="text" class="form-control" placeholder="Потребителско име" aria-describedby="basic-addon1">
                 </div>
-                <div class="input-container with-icon">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                            Парола
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <div class="input-icon">
-                            <i class="fa fa-lock" aria-hidden="true"></i>
-                        </div><input type="password" name="password" placeholder="Парола" id="password"/>
-                    </div>
+            </div>
+            <div class="form-group  ">
+                <label for="exampleFormControlInput1">Парола</label>
+                <div class="input-group col-lg-6 col-md-12 col-sm-12">
+                    <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-lock" aria-hidden="true"></i></span>
+                    <input type="password" name="password" class="form-control" placeholder="Парола" aria-describedby="basic-addon1">
                 </div>
-                <div class="input-container">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <input type="checkbox" id="remember-me" name="remember-me" /><label for="remember-me">Запомни ме</label>
-                    </div>
-                </div>
-                <div class="buttons-container">
-                    <button type="submit" class="button animation">Вход</button>
-                    <button type="reset" class="button animation">Изчистване на форма</button>
-                </div>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me" />
+                    Запомни ме
+                </label>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-success">Вход</button>
+                <button type="reset" class="btn btn-success">Изчистване на форма</button>
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </div>
 </div>

@@ -8,9 +8,9 @@
         var sumTotal = 0;
         function getInitialSumOfInputVals(chart) {
             var sum = [];
-            $(".input-group").each(function (key, val) {
+            $(".budget-inputs").each(function (key, val) {
                 var value = 0;
-                var name = $(val).find(".input-group-title-holder span").text();
+                var name = $(val).find(".panel-heading").text();
                 var inputs = $(val).find("input");
                 $(inputs).each(function (k, v) {
                     if ($(v).val() !== "") {
@@ -49,17 +49,17 @@
                     $(data).each(function (key, val) {
                         var id = val.categoryId;
                         var amount = val.amount;
-                        var input = $(".category-input[name='category_" + id + "']");
+                        var input = $("[name='category_" + id + "']");
                         input.val(amount);
                     });
-                    $(".category-input").each(function (key, value) {
+                    $("input[type='text']").each(function (key, value) {
                         var val = $(value).val();
                         if (val === "") {
                             $(this).val(0);
                         }
                     });
                 } else {
-                    $(".category-input").each(function (key, value) {
+                    $("input[type='text']").each(function (key, value) {
                         $(value).val(0);
                     });
                 }
@@ -113,7 +113,7 @@
                     input.rules("add", {
                         required: true,
                         number: true,
-                        min:0,
+                        min: 0,
                         messages: {
                             number: true
                         }
@@ -176,7 +176,7 @@
                         }]
                 });
 
-                $(".input-group input").each(function () {
+                $(".panel input").each(function () {
                     $(this).keyup(function () {
                         getInitialSumOfInputVals(chart);
                     });
@@ -207,67 +207,92 @@
         });
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-        <div class="form-content">
-            <form id="budget-manage-form" method="post">
-                <div class="partial-contentainer size-2 side-padding">
-                    <div class="tabs-container">
-                        <div data-pws-tab="anynameyouwant1" data-pws-tab-name="<i class='fa fa-calendar' aria-hidden='true'></i>&nbsp  Бюджет за месец">
-                            <div class="input-container size-1">
-                                <div class="input-title-holder no-select">
-                                    <span> 
-                                        Бюджет за месец
-                                    </span>
-                                </div>
-                                <div class="input-holder">
-                                    <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
-                                </div>
-                            </div>
-                        </div><div data-pws-tab="anynameyouwant2" data-pws-tab-name="<i class='fa fa-files-o' aria-hidden='true'></i>&nbsp Копиране от месец">
-                            <div class="input-container size-1">
-                                <div class="input-title-holder no-select">
-                                    <span> 
-                                        Копиране от месец
-                                    </span>
-                                </div>
-                                <div class="input-holder">
-                                    <input data-toggle="datepicker" type="hidden" name="budgetCopyDate" id="copyBudgetMonthPicker">
+<form id="budget-manage-form" method="post">
+    <div class="row">
+        <div class="col-4 col-md-4">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <div class="tabs-container">
+                                <div data-pws-tab="anynameyouwant1" data-pws-tab-name="<i class='fa fa-calendar' aria-hidden='true'></i>&nbsp  Бюджет за месец">
+                                    <div class="input-container size-1">
+                                        <div class="input-title-holder no-select">
+                                            <span> 
+                                                Бюджет за месец
+                                            </span>
+                                        </div>
+                                        <div class="input-holder">
+                                            <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
+                                        </div>
+                                    </div>
+                                </div><div data-pws-tab="anynameyouwant2" data-pws-tab-name="<i class='fa fa-files-o' aria-hidden='true'></i>&nbsp Копиране от месец">
+                                    <div class="input-container size-1">
+                                        <div class="input-title-holder no-select">
+                                            <span> 
+                                                Копиране от месец
+                                            </span>
+                                        </div>
+                                        <div class="input-holder">
+                                            <input data-toggle="datepicker" type="hidden" name="budgetCopyDate" id="copyBudgetMonthPicker">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="input-container size-1">
-                        <div class="input-title-holder no-select">
-                            <span> 
-                            </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-md-4">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-primary">
+                        <div class='panel-heading'>
+                            Бюджет
                         </div>
-                        <div class="input-holder">
+                        <div class="panel-body">
                             <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
                         </div>
                     </div>
-                </div><div class="partial-contentainer size-2 side-padding">
-                <c:forEach items="${paymentTypes}" var="type">
-                    <div class = "input-group" id='group_${type.getId()}'>
-                        <div class="input-group-title-holder">
-                            <span> 
-                                ${type.getName()}
-                            </span>
-                        </div>
-                        <c:forEach items="${categories}" var="category"><c:if test="${type.getId() == category.getType()}"><div class="input-container size-1 side-padding">
-                                    <div class="input-title-holder no-select">
-                                        <span>${category.getName()}:</span>
-                                    </div>
-                                    <div class="input-holder">
-                                        <input type="text" name="category_${category.getId()}" class="category-input" placeholder="Въведете стойност"/>
-                                    </div>
-                                </div></c:if></c:forEach>
-                            </div>
-                </c:forEach></div>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="buttons-container size-1 side-padding">
-                <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
+                </div>
             </div>
-        </form>
+        </div>
+        <div class="col-4 col-md-4">
+            <c:forEach items="${paymentTypes}" var="type">
+                <c:if test="${type.getId() == 1}">
+                    <spring:url var = "panelType" value='success' />
+                    <spring:url var = "icon" value='<i class="fa fa-plus" aria-hidden="true"></i>' />
+                </c:if>
+                <c:if test="${type.getId() == 2}">
+                    <spring:url var = "panelType" value='warning' />
+                    <spring:url var = "icon" value='<i class="fa fa-minus" aria-hidden="true"></i>' />
+                </c:if>
+                <div class="row">
+                    <div class="col-12 col-md-12">
+                        <div class="panel panel-${panelType} budget-inputs">
+                            <div class='panel-heading'>${type.getName()}</div>
+                            <div class="panel-body">
+                                <c:forEach items="${categories}" var="category">
+                                    <c:if test="${type.getId() == category.getType()}">
+                                        <div class="form-group ">
+                                            <label for="exampleFormControlInput1">${category.getName()}:</label>
+                                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                                <span class="input-group-addon" id="basic-addon1">${icon}</span>
+                                                <input name="category_${category.getId()}" type="text" class="form-control" placeholder="Въведете стойност" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
     </div>
-</div>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Запазване</button>
+    </div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
