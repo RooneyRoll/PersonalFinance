@@ -85,6 +85,13 @@
                                     <input name="recurringPaymentPeriodsCount" type="text" value="0" class="form-control" placeholder="Брой периоди" aria-describedby="basic-addon1">
                                 </div>
                             </div>
+                                <div class="form-group ">
+                                <label for="exampleFormControlInput1">Описание</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <textarea class="form-control"  resize="false" placeholder="Описание" name="recurringPaymentDescription" aria-describedby="basic-addon1"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,14 +104,7 @@
                         <div class='panel-heading'>Настройки на плащане</div>
                         <div class="panel-body">
                             <div class="form-group ">
-                                <label for="exampleFormControlInput1">Описание</label>
-                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                                    <textarea class="form-control"  resize="false" placeholder="Описание" name="recurringPaymentDescription" aria-describedby="basic-addon1"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="exampleFormControlInput1">Описание</label>
+                                <label for="exampleFormControlInput1">Категория</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
                                     <select id="categories-select" name="recurringPaymentCategory">
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="form-group ">
-                                <label for="exampleFormControlInput1">Описание</label>
+                                <label for="exampleFormControlInput1">Плащането е</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
                                     <select id="recurring-types-select" name="recurringPaymentRecurringType">

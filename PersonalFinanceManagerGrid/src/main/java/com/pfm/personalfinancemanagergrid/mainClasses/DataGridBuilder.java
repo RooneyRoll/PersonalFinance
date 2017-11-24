@@ -112,7 +112,7 @@ public class DataGridBuilder {
                 + "		'<option value=\"st\">Започва с</option>'+\n"
                 + "		'<option value=\"en\">Завършва с</option>'\n"
                 + "         }\n"
-                + "         if(type == 'int'){\n"
+                + "         if(type == 'int' || type == 'double'){\n"
                 + "		options = '<option value=\"eq\" >Равно на</option>'+\n"
                 + "		'<option value=\"lt\">По-малко от</option>'+\n"
                 + "		'<option value=\"gt\">По-голямо от</option>'\n"
@@ -141,11 +141,11 @@ public class DataGridBuilder {
                 + "         'footer': true,\n"
                 + "         'paging': true,\n"
                 + "         'select': false,\n"
-                + "         'lengthMenu': [ 5, 10, 15],\n"
+                + "         'lengthMenu': [15],\n"
                 + "         'searching': true,\n"
                 + "         'bLengthChange': false,\n"
                 + "         'columns': [\n"
-                +               columnsDeclaration + "\n"
+                + columnsDeclaration + "\n"
                 + "          ],\n"
                 + "         'language':{\n"
                 + "             'sProcessing':   'Обработка на резултатите...',\n"
@@ -422,9 +422,11 @@ public class DataGridBuilder {
             case "Date":
                 type = "date";
                 break;
-            case "Integer":
-            case "double":
+            case "int":
                 type = "int";
+                break;
+            case "double":
+                type = "double";
                 break;
             case "boolean":
                 type = "bool";

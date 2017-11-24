@@ -17,7 +17,6 @@ import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
 import com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
@@ -48,6 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class RecurringPaymentController {
+
     @RequestMapping(value = "/recurringPayments", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
@@ -60,10 +60,16 @@ public class RecurringPaymentController {
         List<ColumnSettingsObject> columnsList = new ArrayList<>();
         List<TableWhereObject> whereList = new ArrayList<>();
         List<ColumnOption> options = new ArrayList<>();
-        columnsList.add(new ColumnSettingsObject("rbpTitle", "string", "int", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpTitle", "Име", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpRecType.rtName", "Тип на период", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpPeriods", "Периоди", "int", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpAmount", "Сума за период", "double", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpCategory.pcatName", "Категория", "string", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpDateStart", "Начална дата", "Date", true, true));
+        columnsList.add(new ColumnSettingsObject("rbpId", "", "UUID", false, false));
         whereList.add(new TableWhereObject("rbpCategory.pcatUser.userUserid", "eq", user.getId().toString(), "uuid"));
-        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "3", "payments/preview/{3}"));
-        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "3", "payments/edit/{3}"));
+        options.add(new ColumnOption("<i class=\"fa fa-eye\" aria-hidden=\"true\"></i>", "6", "recurringPayments/preview/{6}"));
+        options.add(new ColumnOption("<i class=\"fa fa-pencil-square\" aria-hidden=\"true\"></i>", "6", "recurringPayments/edit/{6}"));
         ColumnOptionsObject columnOptions = new ColumnOptionsObject("Действия", options);
         TableSettingsObject tableSettings = new TableSettingsObject(whereList, columnOptions);
         GridCacheProvider cacheProvider = new GridCacheProvider(request.getServletContext());
@@ -73,7 +79,7 @@ public class RecurringPaymentController {
         view.addObject("grid", gridHtml);
         return view;
     }
-    
+
     @RequestMapping(value = "/recurringPayments/add", method = RequestMethod.GET)
     public ModelAndView addRecurringPayment(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

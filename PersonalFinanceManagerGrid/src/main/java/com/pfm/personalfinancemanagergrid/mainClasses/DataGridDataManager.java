@@ -157,8 +157,10 @@ public class DataGridDataManager {
     private String buildWhereStatement(GridParamObject params, char firstLetter) {
         Integer iterate = 0;
         String statement = "";
+        boolean addWhere = false;
         for (GridCacheTableWhereObject where : cache.getWheres()) {
-            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal(), "w_");
+            statement = buildWhereStatementPart(statement, iterate, firstLetter, where.getColumnName(), where.getWhereType(), where.getColumnType(), where.getWhereVal(), "w_",addWhere);
+            addWhere = true;
             iterate++;
         }
         Integer iter = 0;
@@ -170,7 +172,7 @@ public class DataGridDataManager {
                     String columnType = cachedColumn.getType();
                     String whereCompareType = column.getFilter().getValue();
                     String whereValue = column.getSearch().getValue();
-                    statement = buildWhereStatementPart(statement, iter, firstLetter, columnName, whereCompareType, columnType, whereValue, "s_");
+                    statement = buildWhereStatementPart(statement, iter, firstLetter, columnName, whereCompareType, columnType, whereValue, "s_",addWhere);
                 }
                 iter++;
             }
@@ -204,6 +206,7 @@ public class DataGridDataManager {
                 }
                 break;
             case "int":
+            case "double":
                 switch (whereType) {
                     case "st":
                     case "en":
@@ -225,9 +228,9 @@ public class DataGridDataManager {
         return sign;
     }
 
-    private String buildWhereStatementPart(String statement, Integer iteration, char firstLetter, String column, String compareType, String columnType, String whereVal, String prefix) {
+    private String buildWhereStatementPart(String statement, Integer iteration, char firstLetter, String column, String compareType, String columnType, String whereVal, String prefix, boolean addWhere) {
         if (!"".equals(whereVal)) {
-            if (iteration > 0) {
+            if (addWhere) {
                 statement += " and ";
             }
             String sign = determineParamCompareSign(compareType, columnType);
@@ -241,6 +244,9 @@ public class DataGridDataManager {
                 statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
             if ("int".equals(columnType)) {
+                statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
+            }
+            if ("double".equals(columnType)) {
                 statement += firstLetter + "." + column + " " + sign + " :" + prefix + iteration.toString();
             }
             if ("date".equals(columnType)) {
@@ -268,6 +274,13 @@ public class DataGridDataManager {
             if (!"".equals(searchVal)) {
                 UUID param = determineQueryParamString(paramType, compareType, searchVal);
                 q.setParameter(paramName, param);
+            }
+        }
+        if ("double".equals(paramType)) {
+            if (!"".equals(searchVal)) {
+                String param = determineQueryParamString(paramType, compareType, searchVal);
+                double paramInt = Double.parseDouble(param);
+                q.setParameter(paramName, paramInt);
             }
         }
         if ("int".equals(paramType)) {
@@ -328,7 +341,7 @@ public class DataGridDataManager {
             }
             return (T) val;
         }
-        if ("int".equals(columnType)) {
+        if ("int".equals(columnType) || "double".equals(columnType)) {
             String val = (String) searchVal;
             switch (compareType) {
                 case "lt":

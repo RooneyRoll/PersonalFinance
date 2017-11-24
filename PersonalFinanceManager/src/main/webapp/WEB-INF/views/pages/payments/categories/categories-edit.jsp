@@ -41,62 +41,75 @@
         $("#types-select").select2({"theme": "classic"});
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-        <div class="form-content">
-            <form id="payment-category-edit-form" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-2 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Име на категория<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <input type="text" name="categoryName" placeholder="Име" id="password" value="${category.getName()}"/>
-                </div>
-            </div><div class="input-container size-2 side-padding-left">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Активност
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <input  type="radio" <c:if test="${category.isActive()}">checked="checked"</c:if>
-                            name="categoryActive" value="1"/><label
-                        class="visible">Категорията е активна</label><input type="radio" <c:if test="${category.isActive() == false}">checked="checked"</c:if>
-                           name="categoryActive" value="2"/><label>
-                        Категорията не е активна</label>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Описание на категория
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="categoryDescription">${category.getDescription()}</textarea>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Тип на Категория<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <select id="types-select" name="categoryType">
-                        <c:forEach items="${types}" var="element">
-                              <option <c:if test = "${element.getId() == category.getType()}">selected</c:if> value="${element.getId()}">${element.getName()}</option>
-                        </c:forEach>
-                    </select>
+<c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
+    <form id="payment-category-edit-form" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="row">
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-success">
+                        <div class='panel-heading'>Данни за категория</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Име на Категория</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <input name="categoryName" type="text" class="form-control" placeholder="Име на плащане" value="${category.getName()}" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Описание на категория</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <textarea class="form-control"  resize="false" placeholder="Описание" name="categoryDescription" aria-describedby="basic-addon1">${category.getDescription()}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="buttons-container size-1">
-                <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
-                <button name="submit-button" type="submit" value="2" class="button animation">Запази и редактирай</button>
-                <button name="submit-button" type="submit" value="3" class="button animation">Запази и Нов</button>
-                <button type="reset" class="button animation">Изчистване на форма</button>
+        </div>
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-info">
+                        <div class='panel-heading'>Настройки на категория</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Категорията е</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <div class="btn-group input-group" data-toggle="buttons">
+                                        <label class="btn btn-primary <c:if test="${category.isActive()}">active</c:if>">
+                                            <input type="radio" value="1" name="categoryActive" id="option-active" <c:if test="${category.isActive()}">checked="checked"</c:if> />Активна</label>
+                                        <label class="btn btn-primary <c:if test="${category.isActive() == false}">active</c:if>">
+                                            <input type="radio" value="2" name="categoryActive" id="option-not-active" <c:if test="${category.isActive() == false}">checked="checked"</c:if> />Неактивна</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="exampleFormControlInput1">Тип на категория</label>
+                                    <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                        <select id="types-select" name="categoryType">
+                                        <c:forEach items="${types}" var="element">
+                                            <option value="${element.getId()}">${element.getName()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="btn-group">
+        <button name="submit-button" class="btn btn-primary" type="submit" value="1">Запази</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="2">Запази и редактирай</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="3">Запази и Нов</button>
+        <button type="reset" class="btn btn-primary">Изчистване на форма</button>
+    </div>
+</form>

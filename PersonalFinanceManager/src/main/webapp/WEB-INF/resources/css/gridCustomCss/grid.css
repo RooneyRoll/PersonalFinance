@@ -2,6 +2,7 @@ table.dataTable .select2-container--classic .select2-selection--single{
     border-radius:0;
     background:none;
     border-color:#ddd;
+    border-left:0;
 }
 
 table.dataTable .select2-container--classic .select2-selection--single .select2-selection__arrow{
@@ -72,6 +73,8 @@ table.dataTable thead .filter-input .flatpickr a{
     height:30px;
     border-top:1px solid #ddd;
     border-left:1px solid #ddd;
+    vertical-align:top;
+    padding-top: 8px;
 }
 table.dataTable thead .filter-input .flatpickr .toggle-button{
     color:#6DB33F;
@@ -86,8 +89,8 @@ table.dataTable.no-footer {
 table.dataTable thead th{
     border-top:1px solid #aaa;
 }
-table.dataTable thead th, 
-table.dataTable thead td {
+.table.dataTable > thead > tr > th, 
+.table.dataTable > thead > tr > td{
     padding:0;
     padding-top:5px;
     vertical-align: middle;

@@ -120,8 +120,6 @@
                                 </li>
                                 <ul class="sub-menu collapse" id="budget">
                                     <li class="active"><a href="${categoryBudget}">Управление</a></li>
-                                    <li><a href="${budgetRecPayments}">Периодични плащания</a></li>
-                                    <li><a href="${budgetRecPaymentsAdd}">Добавяне на периодично плащане</a></li>
                                 </ul>
                                 <li  data-toggle="collapse" data-target="#categories" class="collapsed">
                                     <a href="#"><i class="fa fa-tasks fa-lg"></i> Категории <span class="arrow"></span></a>
@@ -135,7 +133,14 @@
                                 </li>
                                 <ul class="sub-menu collapse" id="payments">
                                     <li><a href="${paymentAdd}">Ново плащане</a></li>
-                                    <li><a href="${payments}">Преглед</a></li>
+                                    <li><a href="${payments}">Управление</a></li>
+                                </ul>
+                                <li  data-toggle="collapse" data-target="#rec-payments" class="collapsed">
+                                    <a href="#"><i class="fa fa fa-clock-o fa-lg"></i> Периодични плащания <span class="arrow"></span></a>
+                                </li>
+                                <ul class="sub-menu collapse" id="rec-payments">
+                                    <li><a href="${budgetRecPaymentsAdd}">Ново плащане</a></li>
+                                    <li><a href="${budgetRecPayments}">Управление</a></li>
                                 </ul>
                                 <li  data-toggle="collapse" data-target="#statistics" class="collapsed">
                                     <a href="#"><i class="fa fa-table fa-lg"></i> Справки <span class="arrow"></span></a>
@@ -145,6 +150,9 @@
                                     <li><a href="${categoryCoverage}">Покритие</a></li>
                                     <li><a href="${paymentsStatus}">Приходи към разходи</a></li>
                                 </ul>
+                                <li  data-toggle="collapse" data-target="#rec-payments" class="collapsed">
+                                    <a href="#"><i class="fa fa fa-clock-o fa-lg"></i> Предстоящи плащания <span class="arrow"></span></a>
+                                </li>
                             </c:if>
                         </ul>
                     </div>
