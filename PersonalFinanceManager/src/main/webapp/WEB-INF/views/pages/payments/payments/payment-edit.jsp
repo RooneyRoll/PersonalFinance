@@ -7,7 +7,7 @@
     $(document).ready(function () {
         $("#payment-type-edit-form").validate({
             rules: {
-                paymentAmount: {"required": true, "number": true,"min":0}
+                paymentAmount: {"required": true, "number": true, "min": 0}
             },
             messages: {
                 paymentAmount: "Моля, въведете име на категория"
@@ -52,73 +52,95 @@
         });
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-        <div class="form-content">
-            <form id="payment-type-edit-form" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Сума<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <input type="text" name="paymentAmount" placeholder="сума" id="password" value="${payment.getAmount()}"/>
-                </div>
-            </div><div class="input-container size-2 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Дата на плащане<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
-                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                    <input type="text" readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
-                </div>
-            </div><div class="input-container size-2 side-padding-left">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Активност
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <input  type="radio" <c:if test="${payment.isActive()}">checked="checked"</c:if>
-                            name="paymentActive" value="1"/><label
-                            class="visible">Плащането е активно</label><input type="radio" <c:if test="${payment.isActive() == false}">checked="checked"</c:if>
-                            name="paymentActive" value="2"/><label>
-                            Плащането не е активно</label>
+<c:if test="${errorMessage != null}">
+    <tiles:insertAttribute name="categoryAddError" />
+</c:if>
+<form id="payment-type-edit-form" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="row">
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-success">
+                        <div class='panel-heading'>Данни за плащане</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Сума</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <input name="paymentAmount" placeholder="Сума" type="text" class="form-control" value="${payment.getAmount()}" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Описание на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <textarea class="form-control"  resize="false" placeholder="Описание" name="paymentDescription" aria-describedby="basic-addon1">${payment.getDescription()}</textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div><div class="input-container size-1">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                            Описание на плащане
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <textarea resize="false" placeholder="Описание" name="paymentDescription">${payment.getDescription()}</textarea>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Категория на плащане<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <select id="categories-select" name="paymentCategory">
-                        <c:forEach items="${categories}" var="element">
-                            <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
-                        </c:forEach>
-                    </select>
                 </div>
             </div>
-            <div class="buttons-container size-1">
-                <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
-                <button name="submit-button" type="submit" value="2" class="button animation">Запази и редактирай</button>
-                <button name="submit-button" type="submit" value="3" class="button animation">Запази и Нов</button>
-                <button type="reset" class="button animation">Изчистване на форма</button>
+        </div>
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-info">
+                        <div class='panel-heading'>Настройки на плащане</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Дата на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                                        <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                                    <input readonly class="form-control" name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Категорията е</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <div class="btn-group input-group" data-toggle="buttons">
+                                        <label class="btn btn-primary 
+                                               <c:if test='${payment.isActive()}'>
+                                                   active
+                                               </c:if>">
+                                            <input type="radio" value="1" name="paymentActive" id="option-active" 
+                                                   <c:if test='${payment.isActive()}'>
+                                                       checked="checked"
+                                                   </c:if> />Активнo</label>
+                                        <label class="btn btn-primary <c:if test='${payment.isActive() == false}'>active</c:if>">
+                                            <input type="radio" value="2" name="paymentActive" id="option-not-active" <c:if test='${payment.isActive() == false}'>checked="checked"</c:if> />Неактивнo</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="exampleFormControlInput1">Категория</label>
+                                    <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                        <select id="categories-select" name="paymentCategory">
+                                        <c:forEach items="${categories}" var="element">
+                                            <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <spring:url var = "categoriesAdd" value='/categories/add' />
+                                    <div class="input-add-button">
+                                        <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="btn-group">
+        <button name="submit-button" class="btn btn-primary" type="submit" value="1">Запази</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="2">Запази и редактирай</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="3">Запази и Нов</button>
+        <button type="reset" class="btn btn-primary">Изчистване на форма</button>
+    </div>
+</form>

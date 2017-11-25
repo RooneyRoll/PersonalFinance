@@ -37,6 +37,9 @@
                     <i class="fa fa-user fa-1x" aria-hidden="true"></i>
                 </div>
                 <div class="header-button toggle-menu">
+                    <i class="fa fa-comments fa-1x" aria-hidden="true"></i>
+                </div>
+                <div class="header-button toggle-menu">
                     <i class="fa fa-bars fa-1x" aria-hidden="true"></i>
                 </div>
                 <a class="animation" href="javascript:formSubmit()">

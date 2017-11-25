@@ -7,7 +7,7 @@
     $(document).ready(function () {
         $("#payment-add-form").validate({
             rules: {
-                paymentAmount: {"required": true, "number": true,"min":0}
+                paymentAmount: {"required": true, "number": true, "min": 0}
             },
             messages: {
                 paymentAmount: "Моля въведете сума.",
@@ -28,7 +28,7 @@
             'mode': 'single',
             'enableTime': true,
             'enableTime': true,
-            'defaultDate':'today', 
+            'defaultDate': 'today',
             'dateFormat': "Y-m-d",
             onChange: function (rawdate, altdate, FPOBJ) {
                 FPOBJ.close();
@@ -36,64 +36,77 @@
         });
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-        <div class="form-content">
-            <form id="payment-add-form" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Сума<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <input type="text" name="paymentAmount" placeholder="Сума"/>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Описание на плащане
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <textarea resize="false" placeholder="Описание" name="paymentDescription"></textarea>
-                </div>
-            </div><div class="input-container size-1 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Дата на плащане<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
-                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                    <input type="text" readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
-                </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Категория на плащане<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <select id="categories-select" name="paymentCategory">
-                        <c:forEach items="${categories}" var="element">
-                            <option value="${element.getId()}">${element.getName()}</option>
-                        </c:forEach>
-                    </select>
-                    <spring:url var = "categoriesAdd" value='/categories/add' />
-                    <div class="input-add-button">
-                        <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+<c:if test="${errorMessage != null}">
+    <tiles:insertAttribute name="categoryAddError" />
+</c:if>
+<form id="payment-add-form" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="row">
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-success">
+                        <div class='panel-heading'>Данни за плащане</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Сума</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <input name="paymentAmount" placeholder="Сума" type="text" class="form-control" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Описание на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                    <textarea class="form-control"  resize="false" placeholder="Описание" name="paymentDescription" aria-describedby="basic-addon1"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="buttons-container size-1">
-                <button name="submit-button" type="submit" value="1" class="button animation">Запази</button>
-                <button name="submit-button" type="submit" value="2" class="button animation">Запази и редактирай</button>
-                <button name="submit-button" type="submit" value="3" class="button animation">Запази и Нов</button>
-                <button type="reset" class="button animation">Изчистване на форма</button>
+        </div>
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-info">
+                        <div class='panel-heading'>Настройки на плащане</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Дата на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                        <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                                        <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                                    <input readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}" class="form-control" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Категория</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                    <select id="categories-select" name="paymentCategory">
+                                        <c:forEach items="${categories}" var="element">
+                                            <option value="${element.getId()}">${element.getName()}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <spring:url var = "categoriesAdd" value='/categories/add' />
+                                    <div class="input-add-button">
+                                        <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="btn-group">
+        <button name="submit-button" class="btn btn-primary" type="submit" value="1">Запази</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="2">Запази и редактирай</button>
+        <button name="submit-button" class="btn btn-primary" type="submit" value="3">Запази и Нов</button>
+        <button type="reset" class="btn btn-primary">Изчистване на форма</button>
+    </div>
+</form>

@@ -136,14 +136,14 @@
                                     <li><a href="${payments}">Управление</a></li>
                                 </ul>
                                 <li  data-toggle="collapse" data-target="#rec-payments" class="collapsed">
-                                    <a href="#"><i class="fa fa fa-clock-o fa-lg"></i> Периодични плащания <span class="arrow"></span></a>
+                                    <a href="#"><i class="fa fa-calendar fa-lg"></i> Периодични плащания <span class="arrow"></span></a>
                                 </li>
                                 <ul class="sub-menu collapse" id="rec-payments">
                                     <li><a href="${budgetRecPaymentsAdd}">Ново плащане</a></li>
                                     <li><a href="${budgetRecPayments}">Управление</a></li>
                                 </ul>
                                 <li  data-toggle="collapse" data-target="#statistics" class="collapsed">
-                                    <a href="#"><i class="fa fa-table fa-lg"></i> Справки <span class="arrow"></span></a>
+                                    <a href="#"><i class="fa fa-bar-chart fa-lg"></i> Справки <span class="arrow"></span></a>
                                 </li>
                                 <ul class="sub-menu collapse" id="statistics">
                                     <li><a href="${userBudgetStatus}">Планирано/действително</a></li>

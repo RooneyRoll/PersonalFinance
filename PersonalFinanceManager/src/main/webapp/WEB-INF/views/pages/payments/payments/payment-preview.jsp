@@ -3,6 +3,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<spring:url var = "paymentEdit" value='/payments/edit/${payment.getId()}' />
 <script>
     $(document).ready(function () {
         $('.site-content .form-container input[type="checkbox"],.site-content .form-container input[type="radio"]').each(function (key, val) {
@@ -25,67 +26,96 @@
         $("#categories-select").select2({"theme": "classic", disabled: true, minimumResultsForSearch: Infinity});
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-        <div class="form-content">
-            <input type="hidden" readonly name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <div class="input-container size-1">
-            <div class="input-title-holder no-select">
-                <span> 
-                    Сума<span class="required-tip">&nbsp;*</span>
-                </span>
-            </div>
-            <div class="input-holder">
-                <input type="text" readonly name="paymentAmount" placeholder="сума" id="password" value="${payment.getAmount()}"/>
-            </div>
-        </div><div class="input-container size-2 side-padding-right">
-            <div class="input-title-holder no-select">
-                <span> 
-                    Дата на плащане<span class="required-tip">&nbsp;*</span>
-                </span>
-            </div>
-            <div class="input-holder">
-                <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
-                <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                <input type="text" readonly name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}"/>
-            </div>
-        </div><div class="input-container size-2 side-padding-left">
-            <div class="input-title-holder no-select">
-                <span> 
-                    Активност
-                </span>
-            </div>
-            <div class="input-holder">
-                <input  disabled readonly type="checkbox" <c:if test="${payment.isActive()}">checked="checked"</c:if>
-                        name="paymentActive"/><label
-                        class="visible">Плащането е активно</label>
+<div class="row">
+    <div class="col-6 col-md-6">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <div class="panel panel-success">
+                    <div class='panel-heading'>Данни за плащане</div>
+                    <div class="panel-body">
+                        <div class="form-group ">
+                            <label for="exampleFormControlInput1">Сума</label>
+                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                <input readonly type="text" class="form-control" placeholder="сума" id="password" value="${payment.getAmount()}"/aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="exampleFormControlInput1">Описание на плащане</label>
+                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                <textarea class="form-control" readonly placeholder="Описание" aria-describedby="basic-addon1">${payment.getDescription()}</textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div><div class="input-container size-1">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Описание на плащане
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <textarea resize="false" readonly placeholder="Описание" name="paymentDescription">${payment.getDescription()}</textarea>
-            </div>
-        </div><div class="input-container size-1">
-            <div class="input-title-holder no-select">
-                <span> 
-                    Категория на плащане<span class="required-tip">&nbsp;*</span>
-                </span>
-            </div>
-            <div class="input-holder">
-                <select id="categories-select" name="paymentCategory">
-                    <c:forEach items="${categories}" var="element">
-                        <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
-                    </c:forEach>
-                </select>
             </div>
         </div>
-        <spring:url var = "paymentEdit" value='/payments/edit/${payment.getId()}' />
-        <div class="buttons-container size-1">
-            <a href = "${paymentEdit}" name="submit-button" type="submit" value="1" class="button animation">Редакция</a>
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="row">
+            <div class="col-12 col-md-12">    
+                <div class="panel panel-info">
+                    <div class='panel-heading'>
+                        Настройки на категория
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group ">
+                            <label for="exampleFormControlInput1">Дата на плащане</label>
+                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                                <input readonly class="form-control" name="paymentDate" id="paymentDate" placeholder="Дата на плащане" value="${date}" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="exampleFormControlInput1">Категорията е</label>
+                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                <div class="btn-group">
+                                    <button disabled class="btn btn-primary 
+                                            <c:if test='${payment.isActive()}'>
+                                                active
+                                            </c:if>" type="button" value="1">
+                                        Активно
+                                    </button>
+                                    <button disabled class="btn btn-primary 
+                                            <c:if test='${payment.isActive() == false}'>
+                                                active
+                                            </c:if>" type="button" value="2">
+                                        Неактивно
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="exampleFormControlInput1">Категория</label>
+                            <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                <select id="categories-select" name="paymentCategory">
+                                    <c:forEach items="${categories}" var="element">
+                                        <option <c:if test = "${element.getId() == payment.getCategory()}">selected</c:if>  value="${element.getId()}">${element.getName()}</option>
+                                    </c:forEach>
+                                </select>
+                                <spring:url var = "categoriesAdd" value='/categories/add' />
+                                <div class="input-add-button">
+                                    <a href="${categoriesAdd}" target="_blank"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-12">
+        <div class="row">
+            <div class="col-12 col-md-12">    
+                <div class="btn-group">
+                    <a href = "${paymentEdit}"><button type="submit" class="btn btn-primary">Редакция</button></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
