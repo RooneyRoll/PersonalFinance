@@ -72,7 +72,7 @@ public class PaymentsRestController {
                 budgetForMonthObject.setPaymentType(type.getName());
                 List<Payment> payments = context
                         .getPaymentSet()
-                        .getAllActivePaymentsForUserByPaymentTypeAndMonth(user.getId(),type.getId(), date);
+                        .getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndMonth(user.getId(),type.getId(), date);
                 List<PaymentCategory> categories = context
                         .getPaymentCategorySet()
                         .GetAllActiveCategoriesForUserByPaymentTypeId(user.getId(), type.getId());

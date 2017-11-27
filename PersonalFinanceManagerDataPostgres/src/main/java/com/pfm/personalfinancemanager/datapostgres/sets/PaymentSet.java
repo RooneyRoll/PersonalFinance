@@ -144,14 +144,14 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     }
 
     @Override
-    public List<Payment> getAllActivePaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date) {
+    public List<Payment> getAllActiveAndConfirmedPaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date) {
         List<Payment> payments;
         try (Session session = this.getSessionFactory().openSession()) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH) + 1;
-            Query q = session.createQuery("From Payments p where p.pActive = :isActive and p.pCategory.pcatId = :category and MONTH(p.pDate) = :month and YEAR(p.pDate) = :year order by p.pDate asc")
+            Query q = session.createQuery("From Payments p where p.pActive = :isActive and pConfirmed = true and p.pCategory.pcatId = :category and MONTH(p.pDate) = :month and YEAR(p.pDate) = :year order by p.pDate asc")
                     .setParameter("isActive", true)
                     .setParameter("category", paymentCategoryId)
                     .setParameter("month", month)
@@ -163,7 +163,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     }
 
     @Override
-    public List<Payment> getAllActivePaymentsForUserByPaymentTypeAndMonth(UUID userId,int paymentType, Date date) {
+    public List<Payment> getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndMonth(UUID userId,int paymentType, Date date) {
         List<Payment> payments;
         try (Session session = this.getSessionFactory().openSession()) {
             Calendar cal = Calendar.getInstance();
@@ -171,7 +171,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH) + 1;
             Query q = session.createQuery("From Payments"
-                    + " where pCategory.pcatType.ptypeId = :paymentType and pActive = :isActive and MONTH(pDate) = :month "
+                    + " where pCategory.pcatType.ptypeId = :paymentType and pActive = :isActive and pConfirmed = true and MONTH(pDate) = :month "
                     + "and YEAR(pDate) = :year "
                     + "and pCategory.pcatUser.userUserid = :userId order by pDate asc")
                     .setParameter("isActive", true)
