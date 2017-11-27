@@ -41,6 +41,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDate(Entity.getPDate());
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
+        paymentObject.setConfirmed(Entity.getPConfirmed());
         if (Entity.getPCoveredRecurringPeriods() != null && Entity.getPRecurringBudgetPayment() != null) {
             paymentObject.setCoveredRecurringPeriods(Entity.getPCoveredRecurringPeriods());
             paymentObject.setBudgetRecurringPayment(Entity.getPRecurringBudgetPayment().getRbpId());
@@ -74,6 +75,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             payment.setPCategory(categoriesList.get(0));
             payment.setPDate(DtoData.getDate());
             payment.setPDescription(DtoData.getDescription());
+            payment.setPConfirmed(DtoData.isConfirmed());
             return payment;
         }
     }
@@ -179,6 +181,27 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
                     .setParameter("userId",userId)
                     .setParameter("month", month)
                     .setParameter("year", year);
+            List<Payments> resultList = q.list();
+            payments = convertEntititiesToDtoArray(resultList);
+        }
+        return payments;
+    }
+    
+    @Override
+    public List<Payment> getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndInterval(UUID userId,int paymentType, Date start,Date end) {
+        List<Payment> payments;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Query q = session.createQuery("From Payments"
+                    + " where pCategory.pcatType.ptypeId = :paymentType "
+                    + "and pDate BETWEEN :start and :stop "
+                    + "and pActive = :isActive and pConfirmed = true "
+                    + "and pCategory.pcatUser.userUserid = :userId "
+                    + "order by pDate asc")
+                    .setParameter("isActive", true)
+                    .setParameter("paymentType", paymentType)
+                    .setParameter("userId",userId)
+                    .setParameter("start", start)
+                    .setParameter("stop", end);
             List<Payments> resultList = q.list();
             payments = convertEntititiesToDtoArray(resultList);
         }

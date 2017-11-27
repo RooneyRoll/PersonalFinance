@@ -20,9 +20,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
@@ -41,7 +48,19 @@ public class PaymentsRestController {
 
     @RequestMapping(value = "/getPayments", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String payments(HttpServletRequest request, @RequestBody PaymentRestParamObject params) {
-        Gson gson = new Gson();
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date start;
+        Date end;
+        try {
+            start = format.parse("2017/11/01");
+            end = format.parse("2017/11/29");
+            this.buildStatsJsonForInterval(start, end);
+        } catch (ParseException ex) {
+            //
+        }
+        return "";
+
+        /*Gson gson = new Gson();
         List<PaymentsForMonthResultObject> result = new ArrayList<>();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -68,11 +87,12 @@ public class PaymentsRestController {
                 PaymentsForMonthResultObject resultObject = new PaymentsForMonthResultObject(maxDay);
                 PaymentsForMonthResultObject budgetForMonthObject = new PaymentsForMonthResultObject(maxDay);
                 resultObject.setPaymentType(type.getName());
+
                 budgetForMonthObject.setBudget(true);
                 budgetForMonthObject.setPaymentType(type.getName());
                 List<Payment> payments = context
                         .getPaymentSet()
-                        .getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndMonth(user.getId(),type.getId(), date);
+                        .getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndMonth(user.getId(), type.getId(), date);
                 List<PaymentCategory> categories = context
                         .getPaymentCategorySet()
                         .GetAllActiveCategoriesForUserByPaymentTypeId(user.getId(), type.getId());
@@ -101,6 +121,99 @@ public class PaymentsRestController {
         } catch (ParseException ex) {
             String json = gson.toJson(result);
             return json;
+        }*/
+    }
+
+    private void buildStatsJsonForInterval(Date start, Date end) {
+        int daysBetween = getDaysBetweenDates(start, end);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        IpfmContext context = pfmContext.getInstance();
+        User user = context.getUserSet().GetByUserName(auth.getName());
+        List<PaymentType> types = context.getPaymentTypeSet().GetAll();
+        for (PaymentType type : types) {
+            List<PaymentCategory> categories = context.getPaymentCategorySet().GetAllActiveCategoriesForUserByPaymentTypeId(user.getId(), type.getId());
+            for (PaymentCategory category : categories) {
+                List<Payment> payments = context.getPaymentSet().getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndInterval(user.getId(), type.getId(), start, end);
+                buildValuesStructure(payments);
+            }
         }
+    }
+
+    private void buildValuesStructure(List<Payment> payments) {
+        HashMap<String, Double[]> map = new HashMap<String, Double[]>();
+        Date prevDate = new Date();
+        Double total = 0.0;
+        for (Payment payment : payments) {
+            int month = determineMonthByDate(payment.getDate());
+            int year = determineYearByDate(payment.getDate());
+            String key = year + "|" + month;
+            if (map.get(key) == null) {
+                int length = determineRemainingDaysToMonth(payment.getDate());
+                Double amount = payment.getAmount();
+                total = amount;
+                Double[] values = new Double[length];
+                Arrays.fill(values, 0.0);
+                values[0] = total;
+                map.put(key, values);
+                prevDate = payment.getDate();
+            } else {
+                int length = determineRemainingDaysToMonth(payment.getDate());
+                int currentIndex = getDaysBetweenDates(prevDate, payment.getDate());
+                Double amount = payment.getAmount();
+                total = total + amount;
+                Double[] values = map.get(key);
+                values[currentIndex] = total;
+                map.put(key, values);
+                prevDate = payment.getDate();
+            }
+        }
+        for (Map.Entry<String, Double[]> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Double[] value = entry.getValue();
+            for (Double dbl : value) {
+                System.out.println(dbl);
+
+            }
+            // do what you have to do here
+            // In your case, another loop.
+        }
+    }
+
+    private int determineMonthByDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int month = cal.get(Calendar.MONTH) + 1;
+        return month;
+    }
+
+    private int determineYearByDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        return year;
+    }
+
+    private int determineDayByDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return day;
+    }
+
+    private int determineRemainingDaysToMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int max = cal.getMaximum(Calendar.DAY_OF_MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH) + 1;
+        return max - day;
+    }
+
+    private int getDaysBetweenDates(Date start, Date end) {
+        Calendar cal1 = new GregorianCalendar();
+        Calendar cal2 = new GregorianCalendar();
+        cal1.setTime(start);
+        cal2.setTime(end);
+        int daysBetween = cal2.get(Calendar.DAY_OF_YEAR) - cal1.get(Calendar.DAY_OF_YEAR);
+        return daysBetween;
     }
 }
