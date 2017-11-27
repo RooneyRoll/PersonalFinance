@@ -57,9 +57,27 @@
             <div class="col-12 col-md-12">    
                 <div class="panel panel-info">
                     <div class='panel-heading'>
-                        Настройки на категория
+                        Настройки на плащане
                     </div>
+                    <c:choose>
+                        <c:when test="${payment.isConfirmed()}">
+                            <c:set var = "panelType" scope = "session" value = "success"/>
+                            <c:set var = "confirmedPhrase" scope = "session" value = "<i class='fa fa-check' aria-hidden='true'></i> Изпълнено "/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var = "panelType" scope = "session" value = "warning"/>
+                            <c:set var = "confirmedPhrase" scope = "session" value = "<i class='fa fa-clock-o' aria-hidden='true'></i> Предстоящо "/>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="panel-body">
+                        <div class="form-group ">
+                            <div class="alert alert-${panelType}" role="alert">
+                                <!--Плащането е: -->
+                                <strong>
+                                    ${confirmedPhrase}
+                                </strong> 
+                            </div>
+                        </div>
                         <div class="form-group ">
                             <label for="exampleFormControlInput1">Дата на плащане</label>
                             <div class="input-group col-lg-12 col-md-12 col-sm-12">

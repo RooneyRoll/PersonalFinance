@@ -9,6 +9,7 @@
         function getInitialSumOfInputVals(chart) {
             var sum = [];
             $(".budget-inputs").each(function (key, val) {
+                var panelType = key;
                 var value = 0;
                 var name = $(val).find(".panel-heading").text();
                 var inputs = $(val).find("input");
@@ -19,12 +20,16 @@
                         value = value + 0;
                     }
                 });
-                var color = "#7CB5EC";
-                if (key !== 0)
-                    color = "#E74C3C";
+                var color;
+                if (panelType === 0)
+                    color = "#43AC6A";
+                if (panelType === 1)
+                    color = "#E99002";
+                if (panelType === 2)
+                    color = "#008CBA";
                 sum.push({y: value, color: color, name: name});
             });
-            sumTotal = parseInt(sum[0].y) - parseInt(sum[1].y);
+            sumTotal = parseInt(sum[0].y) - parseInt(sum[1].y) - parseInt(sum[2].y);
             if (typeof (chart.series) !== 'undefined') {
                 chart.series[0].setData(sum, true);
                 chart.setTitle(null, {text: 'Крайно: ' + sumTotal});
@@ -267,6 +272,10 @@
                 <c:if test="${type.getId() == 2}">
                     <spring:url var = "panelType" value='warning' />
                     <spring:url var = "icon" value='<i class="fa fa-minus" aria-hidden="true"></i>' />
+                </c:if>
+                <c:if test="${type.getId() == 3}">
+                    <spring:url var = "panelType" value='primary' />
+                    <spring:url var = "icon" value='<i class="fa fa-suitcase" aria-hidden="true"></i>' />
                 </c:if>
                 <div class="row">
                     <div class="col-12 col-md-12">

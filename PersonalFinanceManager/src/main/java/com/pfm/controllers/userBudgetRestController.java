@@ -105,7 +105,7 @@ public class userBudgetRestController {
                         Date date = format.parse(params.getMonth() + "/" + params.getYear());
                         List<Payment> payments = context.
                                 getPaymentSet().
-                                getAllActivePaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
+                                getAllActiveAndConfirmedPaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
                         for (Payment payment : payments) {
                             spent = spent + payment.getAmount();
                         }
@@ -163,7 +163,7 @@ public class userBudgetRestController {
                         Date date = format.parse(params.getMonth() + "/" + params.getYear());
                         List<Payment> payments = context.
                                 getPaymentSet().
-                                getAllActivePaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
+                                getAllActiveAndConfirmedPaymentsByPaymentCategoryAndMonth(categoryBudget.getCategoryId(), date);
                         for (Payment payment : payments) {
                             spent = spent + payment.getAmount();
                         }

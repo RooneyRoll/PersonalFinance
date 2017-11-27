@@ -24,7 +24,10 @@ import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
 import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
@@ -103,10 +106,16 @@ public class PaymentController {
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
+
             PaymentData PaymentObject = new PaymentData();
             PaymentObject.setActive(true);
             PaymentObject.setDescription(params.getPaymentDescription());
             PaymentObject.setCategory(params.getPaymentCategory());
+            try{
+            PaymentObject.setConfirmed(this.isPaymentConfirmedByDates(params.getPaymentDate()));
+            }catch(ParseException e){
+                //TODO handle exception;
+            }
             double amount = params.getPaymentAmount();
             if (amount < 0) {
                 amount = 0;
@@ -192,6 +201,11 @@ public class PaymentController {
             paymentDataObject.setCategory(params.getPaymentCategory());
             paymentDataObject.setDate(params.getPaymentDate());
             paymentDataObject.setDescription(params.getPaymentDescription());
+            try{
+            paymentDataObject.setConfirmed(this.isPaymentConfirmedByDates(params.getPaymentDate()));
+            }catch(ParseException e){
+                //TODO handle exception;
+            }
             context.getPaymentSet()
                     .Edit(paymentId, paymentDataObject);
             String buttonSubmitted = request.getParameter("submit-button");
@@ -256,5 +270,15 @@ public class PaymentController {
 
         ModelAndView view = new ModelAndView("payments-status");
         return view;
+    }
+
+    private boolean isPaymentConfirmedByDates(Date paymentDate) throws ParseException {
+        boolean confirmed = false;
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = sdf.parse(sdf.format(now));
+        Date pDate = sdf.parse(sdf.format(paymentDate));
+        confirmed = currentDate.compareTo(pDate) >= 0;
+        return confirmed;
     }
 }

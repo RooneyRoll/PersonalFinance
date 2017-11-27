@@ -30,13 +30,16 @@
                 }
             }).done(function (data) {
                 $(data).each(function (key, val) {
+                    var color;
+                    if (key === 0 || key === 1)
+                        color = "#43AC6A";
+                    if (key === 2 || key === 3)
+                        color = "#E99002";
+                    if (key === 4 || key === 5)
+                        color = "#008CBA";
                     var name = val.paymentType;
-                    var color = "#7CB5EC";
                     var opacity = 1;
                     var dashStyle = "Solid";
-                    if (name !== "Приходи") {
-                        color = "#E74C3C";
-                    }
                     if (val.budget) {
                         opacity = 0;
                         name = name + " - план";
@@ -106,7 +109,7 @@
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}',
-                split:true
+                split: true
             },
             plotOptions: {
                 area: {
@@ -127,6 +130,56 @@
         });
     })
 </script>
+<div class="row">
+    <div class="col-12 col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-7 col-md-7">
+                        <span class="heading-centered">Приходи спрямо разходи</span>
+                    </div>
+                    <div class="col-5 col-md-5">
+                        <div class="btn-group no-padding col-12 col-md-12" data-toggle="buttons">
+                            <label class="btn btn-default col-2 col-md-2">
+                                <input name="options" id="option1" checked="" type="radio"> Месец
+                            </label>
+                            <label class="btn btn-default col-3 col-md-3 active">
+                                <input name="options" id="option2" type="radio"> Седмично
+                            </label>
+                            <label class="btn btn-default col-2 col-md-2">
+                                <input name="options" id="option3" type="radio"> 24ч
+                            </label>
+                            <div class="form-group col-5 col-md-5 no-padding no-margin">
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="От" name="start" type="text">
+                                    <span class="input-group-addon"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                    </span>
+                                    <input class="form-control" placeholder="До" name="end" type="text">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+            </div>
+            <div class="panel-heading">
+                <div class="btn-group">
+                    <a href = "${add}"><button type="submit" class="btn btn-primary">Ново плащане</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 <div class="form-container">
     <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
     <div class="form-content">

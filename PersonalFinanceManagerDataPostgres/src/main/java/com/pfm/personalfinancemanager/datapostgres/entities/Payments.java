@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Payments.findByPCoveredRecurringPeriods", query = "SELECT p FROM Payments p WHERE p.pCoveredRecurringPeriods = :pCoveredRecurringPeriods")})
 public class Payments implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "p_confirmed")
+    private boolean pConfirmed;
+
     @JoinColumn(name = "p_category", referencedColumnName = "pcat_id")
     @ManyToOne(optional = false)
     private PaymentCategories pCategory;
@@ -167,6 +171,14 @@ public class Payments implements Serializable {
 
     public void setPRecurringBudgetPayment(RecurringBudgetPayments pRecurringBudgetPayment) {
         this.pRecurringBudgetPayment = pRecurringBudgetPayment;
+    }
+
+    public boolean getPConfirmed() {
+        return pConfirmed;
+    }
+
+    public void setPConfirmed(boolean pConfirmed) {
+        this.pConfirmed = pConfirmed;
     }
     
 }

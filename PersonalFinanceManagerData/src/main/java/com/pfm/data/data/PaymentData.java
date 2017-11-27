@@ -20,6 +20,7 @@ public class PaymentData {
     private UUID category;
     private UUID budgetRecurringPayment;
     private Integer coveredRecurringPeriods;
+    private boolean confirmed;
 
     public Integer getCoveredRecurringPeriods() {
         return coveredRecurringPeriods;
@@ -76,4 +77,13 @@ public class PaymentData {
     public void setCategory(UUID category) {
         this.category = category;
     }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+    
 }
