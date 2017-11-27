@@ -10,7 +10,7 @@ package com.pfm.enums;
  * @author mihail
  */
 public enum PaymentTypes {
-    Income(1), Spendings(2);
+    Income(1), Spendings(2), Savings(3);
     
     private final Integer value;
     

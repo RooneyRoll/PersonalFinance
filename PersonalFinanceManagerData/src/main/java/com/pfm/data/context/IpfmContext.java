@@ -22,20 +22,12 @@ import com.pfm.data.sets.IUserBudgetSet;
 public interface IpfmContext {
 
     public IUserSet getUserSet();
-
     public IUserRoleSet getUserRoleSet();
-
     public IPaymentCategorySet getPaymentCategorySet();
-
     public IPaymentTypeSet getPaymentTypeSet();
-
     public IPaymentSet getPaymentSet();
-
     public ICategoryBudgetSet getCategoryDetailSet();
-
     public IUserBudgetSet getUserBudgetSet();
-    
     public IRecurringTypeSet getRecurringTypeSet();
-
     public IRecurringBudgetPaymentSet getRecurringBudgetPaymentSet();
 }

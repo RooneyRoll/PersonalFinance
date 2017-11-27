@@ -42,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- *
  * @author Misho
  */
 @Controller
@@ -138,13 +137,13 @@ public class RecurringPaymentController {
             String buttonSubmitted = request.getParameter("submit-button");
             switch (buttonSubmitted) {
                 case "1":
-                    view = new ModelAndView("redirect:/userBudget/recurring/add");
+                    view = new ModelAndView("redirect:/recurringPayments");
                     break;
                 case "2":
-                    view = new ModelAndView("redirect:/userBudget/recurring/edit/" + id.toString());
+                    view = new ModelAndView("redirect:/recurringPayments/edit/" + id.toString());
                     break;
                 case "3":
-                    view = new ModelAndView("redirect:/userBudget/recurring/add");
+                    view = new ModelAndView("redirect:/recurringPayments/add");
                     break;
             }
             return view;

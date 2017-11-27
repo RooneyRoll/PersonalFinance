@@ -5,45 +5,26 @@
  */
 package com.pfm.controllers;
 
-import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.data.CategoryBudgetData;
-import com.pfm.data.data.RecurringBudgetPaymentData;
 import com.pfm.data.data.UserBudgetData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
-import com.pfm.data.entities.RecurringBudgetPayment;
-import com.pfm.data.entities.RecurringType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
-import com.pfm.exceptions.PageNotFoundException;
-import com.pfm.exceptions.ValidationException;
-import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
-import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
-import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
-import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
-import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOptionsObject;
-import com.pfm.personalfinancemanagergrid.settingsObject.ColumnSettingsObject;
-import com.pfm.personalfinancemanagergrid.settingsObject.TableSettingsObject;
-import com.pfm.personalfinancemanagergrid.settingsObject.TableWhereObject;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**

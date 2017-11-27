@@ -37,7 +37,7 @@
                                 <label for="exampleFormControlInput1">Име на Категория</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                                    <input name="categoryName" type="text" class="form-control" placeholder="Име на плащане" aria-describedby="basic-addon1">
+                                    <input name="categoryName" type="text" class="form-control" placeholder="Име на категория" aria-describedby="basic-addon1">
                                 </div>
                             </div>
                         </div>

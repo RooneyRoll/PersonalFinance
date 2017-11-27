@@ -38,86 +38,66 @@
         })
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="registerError" /></c:if>
-        <div class="form-content">
-            <form id="register-form" th:action="@{/register}" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="input-container with-icon size-2 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Потребителско име<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                    </div><input class="input-style-4" type="text" name="username" placeholder="Потребителско име" id="username"/>
-                </div>
-            </div><div class="input-container with-icon size-2 side-padding-left">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Парола<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-lock" aria-hidden="true"></i>
-                    </div><input type="password" name="password" placeholder="Парола" id="password"/>
-                </div>
-            </div><div class="input-container with-icon size-2 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        е-mail<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </div><input type="text" name="email" placeholder="e-mail" id="email"/>
-                </div>
-            </div><div class="input-container with-icon size-2 side-padding-left">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Име<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="firstname" placeholder="Име" id="firstnamr"/>
-                </div>
-            </div><div class="input-container with-icon size-2 side-padding-right">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Презиме<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="middlename" placeholder="Презиме" id="middlename"/>
-                </div>
-            </div><div class="input-container with-icon size-2 side-padding-left">
-                <div class="input-title-holder no-select">
-                    <span> 
-                        Фамилия<span class="required-tip">&nbsp;*</span>
-                    </span>
-                </div>
-                <div class="input-holder">
-                    <div class="input-icon">
-                        <i class="fa fa-id-card-o" aria-hidden="true"></i>
-                    </div><input type="text" name="lastname" placeholder="Фамилия" id="lastname"/>
+<c:if test="${errorMessage != null}"><tiles:insertAttribute name="registerError" /></c:if>
+<form id="register-form" th:action="@{/register}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="row">
+        <div class="col-6 col-md-6">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="panel panel-success">
+                        <div class='panel-heading'>Регистрация</div>
+                        <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Потребителско име</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="username" placeholder="Потребителско име" id="username" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Парола</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                                    <input class="form-control" type="password" name="password" placeholder="Парола" id="password" value="" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Електронна поща</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                    <input class="form-control" type="text" name="email" placeholder="e-mail" id="email" value="" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Име</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                                    <input class="form-control" type="text"  name="firstname" placeholder="Име" id="firstnamr" value="" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Презиме</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                                    <input class="form-control" type="text" name="middlename" placeholder="Презиме" id="middlename" value="" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Фамилия</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
+                                    <input class="form-control" type="text" name="lastname" placeholder="Фамилия" id="lastname" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="buttons-container size-2">
-                <button type="submit" class="button animation">
-                    Регистрация
-                </button>
-                <button type="reset" class="button animation">
-                    Изчистване на форма
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="btn-group">
+        <button name="submit-button" class="btn btn-primary" type="submit">Регистрация</button>
+        <button type="reset" class="btn btn-primary">Изчистване на форма</button>
+    </div>
+</form>

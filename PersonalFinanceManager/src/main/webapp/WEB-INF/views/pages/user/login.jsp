@@ -24,7 +24,7 @@
         });
     });
 </script>
-
+<c:if test="${errorMessage != null}"><tiles:insertAttribute name="loginError" /></c:if>
 <div class="panel panel-success">
     <div class="panel-heading">Вход в системата</div>
     <div class="panel-body">
