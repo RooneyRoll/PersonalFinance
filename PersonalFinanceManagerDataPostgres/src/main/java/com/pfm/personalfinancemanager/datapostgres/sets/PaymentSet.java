@@ -196,7 +196,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
                     + "and pDate BETWEEN :start and :stop "
                     + "and pActive = :isActive and pConfirmed = true "
                     + "and pCategory.pcatUser.userUserid = :userId "
-                    + "order by pDate asc")
+                    + "order by pDate desc")
                     .setParameter("isActive", true)
                     .setParameter("paymentType", paymentType)
                     .setParameter("userId",userId)

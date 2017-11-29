@@ -14,6 +14,38 @@
             language: "bg-BG"
         });
     <spring:url var = "serviceUrl" value ="/getPayments"/>
+        function generateAmountsArray(amounts) {
+            var result = [];
+            
+            $.each(amounts, function (date, amount) {
+                var amountArr = [];
+                var dateNumber = parseInt(date);
+                var dateObj = new Date(dateNumber);
+                var date_utc = Date.UTC(dateObj.getFullYear(),dateObj.getMonth(),dateObj.getDate());
+                console.log(date_utc);
+                console.log(parseInt(date));
+                console.log("----")
+                amountArr.push(date_utc);
+                amountArr.push(amount);
+                result.push(amountArr);
+            });
+            return result;
+        }
+        function determineColor(paymentTypeId) {
+            color = "";
+            switch (paymentTypeId) {
+                case 1:
+                    color = "#43AC6A";
+                    break;
+                case 2:
+                    color = "#E99002";
+                    break;
+                case 3:
+                    color = "#008CBA";
+                    break;
+            }
+            return color;
+        }
         function getPaymentsStatus(month, year, chart) {
             var series = [];
             var data = JSON.stringify({"month": month, "year": year});
@@ -30,33 +62,21 @@
                 }
             }).done(function (data) {
                 $(data).each(function (key, val) {
-                    var color;
-                    if (key === 0 || key === 1)
-                        color = "#43AC6A";
-                    if (key === 2 || key === 3)
-                        color = "#E99002";
-                    if (key === 4 || key === 5)
-                        color = "#008CBA";
+                    var seriesData = generateAmountsArray(val.amounts);
+                    var color = determineColor(val.paymentTypeId);
                     var name = val.paymentType;
-                    var opacity = 1;
                     var dashStyle = "Solid";
-                    if (val.budget) {
-                        opacity = 0;
-                        name = name + " - план";
-                        dashStyle = "DashDot";
-                    } else {
-                        opacity = 0.3;
-                    }
+                    opacity = 0.3;
                     var serie = {
                         name: name,
-                        data: val.amounts,
+                        pointInterval: 24 * 3600 * 1000,
+                        data: seriesData,
                         fillOpacity: opacity,
                         color: color,
                         dashStyle: dashStyle
                     };
                     series.push(serie);
                     sumTotal = 0;
-
                 });
                 if (typeof (chart.series) !== 'undefined') {
                     $(series).each(function (key, serie) {
@@ -79,6 +99,7 @@
         var year = inputs[0];
         var month = inputs[1];
         var chart = new Highcharts.chart('container', {
+            scaleOverride: true,
             chart: {
                 type: 'area'
             },
@@ -91,9 +112,20 @@
             },
             xAxis: {
                 allowDecimals: false,
+                type: "datetime",
+                dateTimeLabelFormats: {
+                    millisecond: '%H:%M:%S.%L',
+                    second: '%H:%M:%S',
+                    minute: '%H:%M',
+                    hour: '%H:%M',
+                    day: '%e. %b',
+                    week: '%e. %b',
+                    month: '%b \'%y',
+                    year: '%Y'
+                },
                 labels: {
                     formatter: function () {
-                        return this.value; //
+                        return Highcharts.dateFormat('%d %b', this.value);
                     }
                 }
             },
@@ -108,7 +140,7 @@
                 }
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x}',
+                pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/> за ден {point.x:%e. %b}',
                 split: true
             },
             plotOptions: {
