@@ -2,29 +2,25 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<spring:url var = "serviceUrl" value ="/getPayments"/>
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
-        var parent = $("#paymentsMonthPicker").parent();
-        var datepicker = $('#paymentsMonthPicker').datepicker({
-            inline: true,
-            format: "yyyy/mm",
-            container: parent,
-            autoPick: true,
-            language: "bg-BG"
-        });
-    <spring:url var = "serviceUrl" value ="/getPayments"/>
+        function updateSeries(chart, series) {
+            if (typeof (chart.series) !== 'undefined') {
+                $(series).each(function (key, serie) {
+                    chart.series[key].update(serie);
+                });
+            }
+        }
+
         function generateAmountsArray(amounts) {
             var result = [];
-            
             $.each(amounts, function (date, amount) {
                 var amountArr = [];
                 var dateNumber = parseInt(date);
                 var dateObj = new Date(dateNumber);
-                var date_utc = Date.UTC(dateObj.getFullYear(),dateObj.getMonth(),dateObj.getDate());
-                console.log(date_utc);
-                console.log(parseInt(date));
-                console.log("----")
+                var date_utc = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
                 amountArr.push(date_utc);
                 amountArr.push(amount);
                 result.push(amountArr);
@@ -46,9 +42,48 @@
             }
             return color;
         }
-        function getPaymentsStatus(month, year, chart) {
+        function setCalendars(from, to) {
+            var type = $(".btn-group label.active").attr("data-type");
+            switch (type) {
+                case "month":
+                    from.setDate(moment().startOf('month').format('YYYY-MM-DD'));
+                    to.setDate(moment().endOf('month').format('YYYY-MM-DD'));
+                    break;
+                case "week":
+                    from.setDate(moment().subtract(6, 'days').format("YYYY-MM-DD"));
+                    to.setDate(moment().format('YYYY-MM-DD'));
+                    break;
+                case "day":
+                    from.setDate(moment().format('YYYY-MM-DD'));
+                    to.setDate(moment().format('YYYY-MM-DD'));
+                    break;
+            }
+        }
+        var calendarFrom = $('#date-from').flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            'enableTime': false,
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                FPOBJ.close();
+            }
+        });
+        var calendarTo = $('#date-to').flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            'enableTime': false,
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                FPOBJ.close();
+            }
+        });
+        setCalendars(calendarFrom, calendarTo);
+
+        function getSeries() {
             var series = [];
-            var data = JSON.stringify({"month": month, "year": year});
+            var from = $("#date-from").val();
+            var to = $("#date-to").val();
+            var data = JSON.stringify({"from": from, "to": to});
             $.ajax({
                 type: "POST",
                 url: "${serviceUrl}",
@@ -73,42 +108,23 @@
                         data: seriesData,
                         fillOpacity: opacity,
                         color: color,
-                        dashStyle: dashStyle
+                        dashStyle: dashStyle,
+                        animation:1000
                     };
                     series.push(serie);
                     sumTotal = 0;
                 });
-                if (typeof (chart.series) !== 'undefined') {
-                    $(series).each(function (key, serie) {
-                        chart.series[key].setData(serie.data, true);
-                    });
-                }
             });
             return series;
         }
-        $('#paymentsMonthPicker').change(function () {
-            var date = $(this).val();
-            var inputs = date.split("/");
-            var year = inputs[0];
-            var month = inputs[1];
-            datepicker.datepicker("update");
-            var data = getPaymentsStatus(month, year, chart);
-        });
-        var date = $("#paymentsMonthPicker").val();
-        var inputs = date.split("/");
-        var year = inputs[0];
-        var month = inputs[1];
         var chart = new Highcharts.chart('container', {
             scaleOverride: true,
             chart: {
-                type: 'area'
+                type: 'area',
+                zoomType: 'x'
             },
             title: {
                 text: 'Приходи и разходи за месец'
-            },
-            subtitle: {
-                //text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                //        'thebulletin.metapress.com</a>'
             },
             xAxis: {
                 allowDecimals: false,
@@ -158,39 +174,48 @@
                     }
                 }
             },
-            series: getPaymentsStatus(month, year, this)
+            series: getSeries()
         });
-    })
+        $("#filter-button").click(function () {
+            var series = getSeries();
+            updateSeries(chart, series);
+        });
+        $("label").change(function () {
+            setCalendars(calendarFrom, calendarTo);
+        });
+    });
 </script>
 <div class="row">
     <div class="col-12 col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-7 col-md-7">
+                    <div class="col-5 col-md-5">
                         <span class="heading-centered">Приходи спрямо разходи</span>
                     </div>
-                    <div class="col-5 col-md-5">
+                    <div class="col-7 col-md-7">
                         <div class="btn-group no-padding col-12 col-md-12" data-toggle="buttons">
-                            <label class="btn btn-default col-2 col-md-2">
-                                <input name="options" id="option1" checked="" type="radio"> Месец
+                            <label class="btn btn-default col-2 col-md-2 " data-type="month">
+                                <input name="options" id="option-month" checked="" type="radio"> Месец
                             </label>
-                            <label class="btn btn-default col-3 col-md-3 active">
-                                <input name="options" id="option2" type="radio"> Седмично
+                            <label class="btn btn-default col-2 col-md-2 active" data-type="week">
+                                <input name="options" id="option-week" type="radio"> Седмично
                             </label>
-                            <label class="btn btn-default col-2 col-md-2">
-                                <input name="options" id="option3" type="radio"> 24ч
+                            <label class="btn btn-default col-2 col-md-2" data-type="day">
+                                <input name="options" id="option-day" type="radio"> 24ч
                             </label>
-                            <div class="form-group col-5 col-md-5 no-padding no-margin">
+                            <div class="form-group col-4 col-md-4 no-padding no-margin">
                                 <div class="input-group">
-                                    <input class="form-control" placeholder="От" name="start" type="text">
+                                    <input class="form-control" id ="date-from" placeholder="От" name="start" type="text">
                                     <span class="input-group-addon"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                                     </span>
-                                    <input class="form-control" placeholder="До" name="end" type="text">
+                                    <input class="form-control" id ="date-to" placeholder="До" name="end" type="text">
                                 </div>
                             </div>
+                            <button type="button" id="filter-button" class="btn btn-success col-2 col-md-2">
+                                <i class="fa fa-check" aria-hidden="true"></i> Филтриране
+                            </button>
                         </div>
-
 
                     </div>
                 </div>
@@ -198,46 +223,6 @@
             <div class="panel-body">
                 <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
             </div>
-            <div class="panel-heading">
-                <div class="btn-group">
-                    <a href = "${add}"><button type="submit" class="btn btn-primary">Ново плащане</button></a>
-                </div>
-            </div>
         </div>
-    </div>
-</div>
-
-
-
-
-
-
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-    <div class="form-content">
-        <form id="budget-manage-form" method="post">
-            <div class="partial-contentainer size-2 side-padding">
-                <div class="input-container size-1">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                            приходи и разходи за месец:
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <input data-toggle="datepicker" type="hidden" name="budgetDate" id="paymentsMonthPicker">
-                    </div>
-                </div>
-            </div><div class="partial-contentainer size-2 side-padding">
-                <div class="input-container size-1">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 </div>

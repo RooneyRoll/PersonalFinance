@@ -316,7 +316,6 @@ public class DataGridBuilder {
         Integer num = 0;
         boolean added = false;
         for (GridCacheColumnObject column : cache.getColumns()) {
-
             String search = "false";
             if (column.isAllowed()) {
                 if (column.isSearchableColumn()) {

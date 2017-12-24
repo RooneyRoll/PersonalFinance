@@ -8,7 +8,6 @@ package com.pfm.controllers;
 import com.google.gson.Gson;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.Payment;
-import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.models.payment.PaymentRestParamObject;
@@ -20,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,15 +36,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class PaymentsRestController {
-
     @RequestMapping(value = "/getPayments", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String payments(HttpServletRequest request, @RequestBody PaymentRestParamObject params) {
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date start;
         Date end;
         try {
-            start = format.parse("2017/11/01");
-            end = format.parse("2017/11/30");
+            start = format.parse(params.getFrom());
+            end = format.parse(params.getTo());
+            System.out.println(start);
+            System.out.println(end);
             String json = this.buildStatsJsonForInterval(start, end);
             return json;
         } catch (ParseException ex) {
@@ -101,7 +100,6 @@ public class PaymentsRestController {
                 }
             }
             Long dateRepresent = key.getTime();
-            System.out.println(dateRepresent);
             map.put(dateRepresent, total);
             startCalender.add(Calendar.DATE, 1);
         }

@@ -10,23 +10,23 @@ package com.pfm.models.payment;
  * @author Misho
  */
 public class PaymentRestParamObject {
-    int month;
-    int year;
+    String from;
+    String to;
 
-    public int getMonth() {
-        return month;
+    public String getFrom() {
+        return from;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public int getYear() {
-        return year;
+    public String getTo() {
+        return to;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setTo(String to) {
+        this.to = to;
     }
-    
+
 }
