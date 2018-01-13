@@ -27,6 +27,7 @@
             });
             return result;
         }
+        
         function determineColor(paymentTypeId) {
             color = "";
             switch (paymentTypeId) {
@@ -42,6 +43,7 @@
             }
             return color;
         }
+        
         function setCalendars(from, to) {
             var type = $(".btn-group label.active").attr("data-type");
             switch (type) {
@@ -59,6 +61,7 @@
                     break;
             }
         }
+        
         var calendarFrom = $('#date-from').flatpickr({
             'locale': 'bg',
             'mode': 'single',
@@ -68,6 +71,7 @@
                 FPOBJ.close();
             }
         });
+        
         var calendarTo = $('#date-to').flatpickr({
             'locale': 'bg',
             'mode': 'single',
@@ -77,6 +81,7 @@
                 FPOBJ.close();
             }
         });
+        
         setCalendars(calendarFrom, calendarTo);
 
         function getSeries() {

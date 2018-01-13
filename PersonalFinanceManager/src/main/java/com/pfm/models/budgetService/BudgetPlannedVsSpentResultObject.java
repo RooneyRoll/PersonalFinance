@@ -10,15 +10,25 @@ package com.pfm.models.budgetService;
  * @author Misho
  */
 public class BudgetPlannedVsSpentResultObject {
-    private String paymentType;
+
+    private String paymentTypeName;
+    private Integer paymentType;
     private double planned;
     private double actual;
 
-    public String getPaymentType() {
+    public String getPaymentTypeName() {
+        return paymentTypeName;
+    }
+
+    public void setPaymentTypeName(String paymentTypeName) {
+        this.paymentTypeName = paymentTypeName;
+    }
+    
+    public Integer getPaymentType() {
         return paymentType;
     }
 
-    public void setPaymentType(String paymentType) {
+    public void setPaymentType(Integer paymentType) {
         this.paymentType = paymentType;
     }
 
@@ -37,6 +47,5 @@ public class BudgetPlannedVsSpentResultObject {
     public void setActual(double spent) {
         this.actual = spent;
     }
-    
-    
+
 }

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<spring:url var = "serviceUrl" value ="/budget/plannedVsSpent"/>
 <script src="<c:url value='/resources/js/Highcharts-5.0.12/code/highcharts.js' />"></script>
 <script>
     $(document).ready(function () {
@@ -13,10 +14,25 @@
             autoPick: true,
             language: "bg-BG"
         });
-        <spring:url var = "serviceUrl" value ="/budget/plannedVsSpent"/>
-        function getBudgetStatus(month, year, chart) {
+
+        function updateSeries(chart, seriesResult) {
+            var subTitleText = seriesResult.subTitle;
+            var series = seriesResult.series;
+            if (typeof (chart.series) !== 'undefined') {
+                chart.series[0].setData(series, true);
+                chart.setTitle(null, {text: subTitleText});
+            }
+        }
+
+        function getSeries() {
+            var date = $("#budgetMonthPicker").val();
+            var inputs = date.split("/");
+            var year = inputs[0];
+            var month = inputs[1];
             var data = JSON.stringify({"month": month, "year": year});
-            var sum = [];
+            var series = [];
+            var subTitle = "";
+            var result = {};
             $.ajax({
                 type: "POST",
                 url: "${serviceUrl}",
@@ -29,54 +45,42 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', token);
                 }
             }).done(function (data) {
-                var sumTotal = sumTotal = 0;
-                var subTitleText = "";
                 $(data).each(function (key, val) {
-                    sumTotal = 0;
-                    var color = "#7CB5EC";
-                    if (key !== 0)
-                        color = "#E74C3C";
-                    sum.push({y: val.planned, color: color, name: "Планирани " + val.paymentType});
-                    sum.push({y: val.actual, color: color, name: "Действителни " + val.paymentType});
-                    sumTotal = parseInt(val.planned) - (val.actual);
-                    subTitleText += "Оставащи " + val.paymentType + " до план: " + sumTotal + "<br>";
+                    var sumTotal = parseInt(val.planned) - (val.actual);
+                    var color;
+                    switch (val.paymentType) {
+                        case 1:
+                            color = "#43AC6A";
+                            break;
+                        case 2:
+                            color = "#E99002";
+                            break;
+                        case 3:
+                            color = "#008CBA";
+                            break;
+                    }
+                    series.push({y: val.planned, color: color, name: "Планирани " + val.paymentTypeName});
+                    series.push({y: val.actual, color: color, name: "Действителни " + val.paymentTypeName});
+                    subTitle += "Оставащи " + val.paymentTypeName + " до план: " + sumTotal + "<br>";
                 });
-                if (typeof (chart.series) !== 'undefined') {
-                    chart.series[0].setData(sum, true);
-                    chart.setTitle(null, {text: subTitleText});
-                }
             });
-            return sum;
+            result.series = series;
+            result.subTitle = subTitle;
+            return result;
         }
-        $('#budgetMonthPicker').change(function () {
-            var date = $(this).val();
-            var inputs = date.split("/");
-            var year = inputs[0];
-            var month = inputs[1];
-            datepicker.datepicker("update");
-            var data = getBudgetStatus(month, year, chart);
-        });
 
-        var date = $("#budgetMonthPicker").val();
-        var inputs = date.split("/");
-        var year = inputs[0];
-        var month = inputs[1];
+        var series = getSeries().series;
+        var subTitle = getSeries().subTitle;
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
-                type: 'column',
-                events: {
-                    load: function (event) {
-                        var date = $("#budgetMonthPicker").val();
-                        var inputs = date.split("/");
-                        var year = inputs[0];
-                        var month = inputs[1];
-                        var data = getBudgetStatus(month, year, this);
-                    }
-                }
+                type: 'column'
             },
             title: {
                 text: 'Планирани и действителни приходи/разходи'
+            },
+            subtitle: {
+                text: subTitle
             },
             xAxis: {
                 type: 'category',
@@ -102,7 +106,7 @@
             series: [{
                     animation: false,
                     name: "",
-                    data: getBudgetStatus(month, year, this),
+                    data: series,
                     dataLabels: {
                         enabled: true,
                         rotation: 0,
@@ -116,35 +120,40 @@
                     }
                 }]
         });
-
+        $('#budgetMonthPicker').change(function () {
+            datepicker.datepicker("update");
+            var data = getSeries();
+            updateSeries(chart, data);
+        });
     });
 </script>
-<div class="form-container">
-    <c:if test="${errorMessage != null}"><tiles:insertAttribute name="categoryAddError" /></c:if>
-    <div class="form-content">
-        <form id="budget-manage-form" method="post">
-            <div class="partial-contentainer size-2 side-padding">
-                <div class="input-container size-1">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                            Планирано/изхарчено за месец
-                        </span>
+<div class="row">
+    <div class="col-8 col-md-8">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <div class="panel panel-primary">
+                    <div class='panel-heading'>
+                        Данни
                     </div>
-                    <div class="input-holder">
-                        <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
-                    </div>
-                </div>
-            </div><div class="partial-contentainer size-2 side-padding">
-                <div class="input-container size-1">
-                    <div class="input-title-holder no-select">
-                        <span> 
-                        </span>
-                    </div>
-                    <div class="input-holder">
-                        <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                    <div class="panel-body">
+                        <div id="container" style="min-width: 300px; height: 700px; margin: 0 auto"></div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+    </div>
+    <div class="col-4 col-md-4">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Бюджет за месец
+                    </div>
+                    <div class="panel-body">
+                        <input data-toggle="datepicker" type="hidden" name="budgetDate" id="budgetMonthPicker">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

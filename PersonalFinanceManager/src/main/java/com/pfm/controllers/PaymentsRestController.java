@@ -44,8 +44,6 @@ public class PaymentsRestController {
         try {
             start = format.parse(params.getFrom());
             end = format.parse(params.getTo());
-            System.out.println(start);
-            System.out.println(end);
             String json = this.buildStatsJsonForInterval(start, end);
             return json;
         } catch (ParseException ex) {
@@ -60,7 +58,6 @@ public class PaymentsRestController {
         User user = context.getUserSet().GetByUserName(auth.getName());
         List<PaymentType> types = context.getPaymentTypeSet().GetAll();
         for (PaymentType type : types) {
-            //List< PaymentCategory> categories = context.getPaymentCategorySet().GetAllActiveCategoriesForUserByPaymentTypeId(user.getId(), type.getId());
             List<Payment> payments = context.getPaymentSet().getAllActiveAndConfirmedPaymentsForUserByPaymentTypeAndInterval(user.getId(), type.getId(), start, end);
             PaymentStatisticsResultObject object = buildValuesStructure(payments, type, start, end);
             result.add(object);

@@ -426,3 +426,7 @@ html body{
 .heading-centered{
     line-height: 39px;
 }
+
+.progress {
+    height: 27px;
+}
