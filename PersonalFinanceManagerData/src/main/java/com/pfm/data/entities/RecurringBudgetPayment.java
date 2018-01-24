@@ -26,47 +26,9 @@ public class RecurringBudgetPayment {
     private String description;
     private String title;
     private boolean finished;
-    private Date finishedDate;
-
-    public int getMissPerPeriods() {
-        return missPerPeriods;
-    }
-
-    public void setMissPerPeriods(int missPerPeriods) {
-        this.missPerPeriods = missPerPeriods;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public Date getFinishedDate() {
-        return finishedDate;
-    }
-
-    public void setFinishedDate(Date finishedDate) {
-        this.finishedDate = finishedDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private Date finishDate;
+    private double finalAmount;
+    private double initialAmount;
 
     public UUID getId() {
         return id;
@@ -90,6 +52,14 @@ public class RecurringBudgetPayment {
 
     public void setPeriods(int periods) {
         this.periods = periods;
+    }
+
+    public int getMissPerPeriods() {
+        return missPerPeriods;
+    }
+
+    public void setMissPerPeriods(int missPerPeriods) {
+        this.missPerPeriods = missPerPeriods;
     }
 
     public boolean isActive() {
@@ -131,4 +101,53 @@ public class RecurringBudgetPayment {
     public void setPaymentCategoryId(UUID paymentCategoryId) {
         this.paymentCategoryId = paymentCategoryId;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public Date getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public double getFinalAmount() {
+        return finalAmount;
+    }
+
+    public void setFinalAmount(double finalAmount) {
+        this.finalAmount = finalAmount;
+    }
+
+    public double getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(double initialAmount) {
+        this.initialAmount = initialAmount;
+    }
+    
 }

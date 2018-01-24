@@ -57,7 +57,7 @@
         <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/i18n/datepicker.bg-BG.js' />"></script>
-        <script src="<c:url value='/resources/js/moment/moment.js' />"></script>
+        <script src="<c:url value='/resources/js/moment/moment.min.js' />"></script>
         <script src="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.js' />"></script>
         <script src="<c:url value='/resources/css/bootstrap-3.3.7/js/bootstrap.min.js' />"></script>
         <script>

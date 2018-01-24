@@ -71,12 +71,6 @@ public class RecurringBudgetPayments implements Serializable {
     @JoinColumn(name = "rbp_user", referencedColumnName = "user_userid")
     @ManyToOne(optional = false)
     private Users rbpUser;
-    @Basic(optional = false)
-    @Column(name = "rbv_finished")
-    private boolean rbvFinished;
-    @Column(name = "rbp_finished_date")
-    @Temporal(TemporalType.TIME)
-    private Date rbpFinishedDate;
     @Column(name = "rbp_title")
     private String rbpTitle;
     @Column(name = "rbp_description")
@@ -84,8 +78,19 @@ public class RecurringBudgetPayments implements Serializable {
     @Basic(optional = false)
     @Column(name = "rbp_miss_per_periods")
     private int rbpMissPerPeriods;
-
-    
+    @Basic(optional = false)
+    @Column(name = "rbp_finished")
+    private boolean rbpFinished;
+    @Basic(optional = false)
+    @Column(name = "rbp_date_finish")
+    @Temporal(TemporalType.TIME)
+    private Date rbpDateFinish;
+    @Basic(optional = false)
+    @Column(name = "rbp_final_amount")
+    private double rbpFinalAmount;
+    @Basic(optional = false)
+    @Column(name = "rbp_initial_amount")
+    private double rbpInitialAmount;
     
     public RecurringBudgetPayments() {
     }
@@ -217,22 +222,6 @@ public class RecurringBudgetPayments implements Serializable {
         return "com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments[ rbpId=" + rbpId + " ]";
     }
 
-    public boolean getRbvFinished() {
-        return rbvFinished;
-    }
-
-    public void setRbvFinished(boolean rbvFinished) {
-        this.rbvFinished = rbvFinished;
-    }
-
-    public Date getRbpFinishedDate() {
-        return rbpFinishedDate;
-    }
-
-    public void setRbpFinishedDate(Date rbpFinishedDate) {
-        this.rbpFinishedDate = rbpFinishedDate;
-    }
-
     public int getRbpMissPerPeriods() {
         return rbpMissPerPeriods;
     }
@@ -240,4 +229,36 @@ public class RecurringBudgetPayments implements Serializable {
     public void setRbpMissPerPeriods(int rbpMissPerPeriods) {
         this.rbpMissPerPeriods = rbpMissPerPeriods;
     }   
+
+    public boolean getRbpFinished() {
+        return rbpFinished;
+    }
+
+    public void setRbpFinished(boolean rbpFinished) {
+        this.rbpFinished = rbpFinished;
+    }
+
+    public Date getRbpDateFinish() {
+        return rbpDateFinish;
+    }
+
+    public void setRbpDateFinish(Date rbpDateFinish) {
+        this.rbpDateFinish = rbpDateFinish;
+    }
+
+    public double getRbpFinalAmount() {
+        return rbpFinalAmount;
+    }
+
+    public void setRbpFinalAmount(double rbpFinalAmount) {
+        this.rbpFinalAmount = rbpFinalAmount;
+    }
+
+    public double getRbpInitialAmount() {
+        return rbpInitialAmount;
+    }
+
+    public void setRbpInitialAmount(double rbpInitialAmount) {
+        this.rbpInitialAmount = rbpInitialAmount;
+    }
 }

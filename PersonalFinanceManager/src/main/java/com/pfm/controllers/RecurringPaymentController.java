@@ -98,7 +98,7 @@ public class RecurringPaymentController {
         return view;
     }
 
-    @RequestMapping(value = "/recurringPayments/add", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/recurringPayments/add", method = RequestMethod.POST)
     public ModelAndView addRecurringPayment(ModelMap map,
             HttpServletRequest request,
             HttpServletResponse response,
@@ -152,7 +152,7 @@ public class RecurringPaymentController {
             ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
             return view;
         }
-    }
+    }*/
 
     @RequestMapping(value = "/recurringPayments/edit/{recPaymentId}", method = RequestMethod.GET)
     public ModelAndView editRecurringPayment(ModelMap map, HttpServletRequest request,

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.pfm.enums.RecurringTypes" %>
 <script>
     $(document).ready(function () {
         $("#recurring-payment-add-form").validate({
@@ -34,10 +35,24 @@
             'defaultDate': 'today',
             'dateFormat': "Y-m-d",
             onChange: function (rawdate, altdate, FPOBJ) {
+                updateInputValues();
+                FPOBJ.close();
+            }
+        });
+
+        $('#reccuringPaymentEndDate').flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            'enableTime': true,
+            'defaultDate': 'today',
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                updateInputValues();
                 FPOBJ.close();
             }
         });
     });
+
 </script>
 <form id="recurring-payment-add-form" method="post">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -56,36 +71,27 @@
                                 </div>
                             </div>
                             <div class="form-group ">
+                                <label for="exampleFormControlInput1">Желана крайна сума</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-usd" aria-hidden="true"></i></span>
+                                    <input name="recurringPaymentFinalAmount" id="finalAmount" value="0" type="text" class="form-control" placeholder="Сума за период" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Начална сума</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-usd" aria-hidden="true"></i></span>
+                                    <input name="recurringPaymentInitialAmount" id="initialAmount" value="0" type="text" class="form-control" placeholder="Сума за период" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
                                 <label for="exampleFormControlInput1">Сума за период</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                    <input name="recurringPaymentAmount" value="0" type="text" class="form-control" placeholder="Сума за период" aria-describedby="basic-addon1">
+                                    <input name="recurringPaymentAmount" value="0" id="periodAmount" type="text" class="form-control" placeholder="Сума за период" aria-describedby="basic-addon1">
                                 </div>
                             </div>
                             <div class="form-group ">
-                                <label for="exampleFormControlInput1">Пропускане през брой периоди</label>
-                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-sort" aria-hidden="true"></i></span>
-                                    <input name="recurringPaymentPeriodsMiss" type="text" value="0" class="form-control" placeholder="Пропускане през" aria-describedby="basic-addon1">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="exampleFormControlInput1">Начална дата на плащане</label>
-                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
-                                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
-                                    <input readonly name="recurringPaymentPeriodStart" id="recurringPaymentStartDate" placeholder="Начална дата на повтарящо плащане" value="${date}" class="form-control" aria-describedby="basic-addon1">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="exampleFormControlInput1">Брой периоди</label>
-                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
-                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-sort" aria-hidden="true"></i></span>
-                                    <input name="recurringPaymentPeriodsCount" type="text" value="0" class="form-control" placeholder="Брой периоди" aria-describedby="basic-addon1">
-                                </div>
-                            </div>
-                                <div class="form-group ">
                                 <label for="exampleFormControlInput1">Описание</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil" aria-hidden="true"></i></span>
@@ -103,6 +109,38 @@
                     <div class="panel panel-info">
                         <div class='panel-heading'>Настройки на плащане</div>
                         <div class="panel-body">
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Начална дата на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                                    <input readonly name="recurringPaymentPeriodStart" id="recurringPaymentStartDate" placeholder="Начална дата на повтарящо плащане" value="${date}" class="form-control" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Крайна дата на плащане</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                    <fmt:parseDate pattern="yyyy-MM-dd" value="${payment.getDate()}" var="parsedDate" />
+                                    <fmt:formatDate value="${parsedDate}" var="date" pattern="yyyy-MM-dd" />
+                                    <input readonly name="recurringPaymentPeriodEnd" id="reccuringPaymentEndDate" placeholder="Крайна дата на повтарящо плащане" value="${date}" class="form-control" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Брой периоди</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                                    <input name="recurringPaymentPeriodsCount" id = "periodsCount" type="text" value="1" class="form-control" placeholder="Брой периоди" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="exampleFormControlInput1">Пропускане през брой периоди</label>
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                                    <input name="recurringPaymentPeriodsMiss" id = "periodsMiss" type="text" value="0" class="form-control" placeholder="Пропускане през" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
                             <div class="form-group ">
                                 <label for="exampleFormControlInput1">Категория</label>
                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">

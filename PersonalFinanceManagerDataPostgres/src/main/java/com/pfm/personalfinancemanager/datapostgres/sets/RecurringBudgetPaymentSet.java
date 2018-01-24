@@ -45,8 +45,10 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         paymentObject.setUserId(Entity.getRbpUser().getUserUserid());
         paymentObject.setDescription(Entity.getRbpDescription());
         paymentObject.setTitle(Entity.getRbpTitle());
-        paymentObject.setFinished(Entity.getRbvFinished());
-        paymentObject.setFinishedDate(Entity.getRbpFinishedDate());
+        paymentObject.setFinished(Entity.getRbpFinished());
+        paymentObject.setFinishDate(Entity.getRbpDateFinish());
+        paymentObject.setFinalAmount(Entity.getRbpFinalAmount());
+        paymentObject.setInitialAmount(Entity.getRbpInitialAmount());
         paymentObject.setMissPerPeriods(Entity.getRbpMissPerPeriods());
         return paymentObject;
     }
@@ -84,9 +86,11 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             entity.setRbpUser(userList.get(0));
             entity.setRbpDescription(DtoData.getDescription());
             entity.setRbpTitle(DtoData.getTitle());
-            entity.setRbvFinished(DtoData.isFinished());
-            entity.setRbpFinishedDate(DtoData.getFinishedDate());
+            entity.setRbpFinished(DtoData.isFinished());
+            entity.setRbpDateFinish(DtoData.getFinishDate());
             entity.setRbpMissPerPeriods(DtoData.getMissPerPeriods());
+            entity.setRbpFinalAmount(DtoData.getFinalAmount());
+            entity.setRbpInitialAmount(DtoData.getInitialAmount());
             return entity;
         }
     }
