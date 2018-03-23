@@ -22,6 +22,8 @@ public class RecurringBudgetPaymentAddModel {
     public double recurringPaymentAmount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date recurringPaymentPeriodStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date recurringPaymentPeriodFinish;
     public UUID recurringPaymentCategory;
     
     public int getRecurringPaymentPeriodsMiss() {

@@ -42,9 +42,12 @@
         <link href='<c:url value='/resources/js/slider-pro/dist/css/slider-pro.min.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/sideBar/css/simple-sidebar.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/css/footer/footer-distributed-with-address-and-phones.css' />' rel='stylesheet' type='text/css' />
+        <link href='<c:url value='/resources/js/smartwizard/css/smart_wizard.min.css' />' rel='stylesheet' type='text/css' />
+        <link href='<c:url value='/resources/js/smartwizard/css/smart_wizard_theme_circles.min.css' />' rel='stylesheet' type='text/css' />
         <link href="<c:url value='/resources/css/bootstrap-3.3.7/bootstrapThemes/yeti/bootstrap.min.css'/>" rel="stylesheet" ></link>
         <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
         <script src="<c:url value='/resources/js/jquery/jquery.js' />"></script>
+        <script src="<c:url value='/resources/js/smartwizard/js/jquery.smartWizard.min.js' />"></script>
         <script src="<c:url value='/resources/js/smartmenus/jquery.smartmenus.min.js' />" type="text/javascript"></script>
         <script src="<c:url value='/resources/js/icheck-1.x/icheck.min.js' />"></script>
         <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
