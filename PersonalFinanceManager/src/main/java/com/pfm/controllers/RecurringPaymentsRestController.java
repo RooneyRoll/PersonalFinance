@@ -5,11 +5,7 @@
  */
 package com.pfm.controllers;
 
-import com.google.gson.Gson;
-import com.pfm.data.entities.CategoryBudget;
-import com.pfm.models.budgetService.BudgetParamObject;
-import java.util.ArrayList;
-import java.util.List;
+import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class RecurringPaymentsRestController {
-    @RequestMapping(value = "/recPreview", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public String budgetData(HttpServletRequest request, @RequestBody BudgetParamObject params) {
-        List<CategoryBudget> categories = new ArrayList<>();
-        
-        Gson gson = new Gson();
-        String json = gson.toJson(categories);
-        return json;
+    @RequestMapping(value = "/recPaymentGetOverview", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public String recPaymentPreview(HttpServletRequest request, @RequestBody RecurringBudgetPaymentAddModel recuringPaymentData) {
+        System.out.println(recuringPaymentData.getPaymentName());
+        //Gson gson = new Gson();
+        //String json = gson.toJson(categories);
+        //return json;
+        return "";
     }
 }

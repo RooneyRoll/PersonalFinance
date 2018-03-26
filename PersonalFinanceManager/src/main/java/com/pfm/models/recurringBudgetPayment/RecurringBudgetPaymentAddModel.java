@@ -6,7 +6,6 @@
 package com.pfm.models.recurringBudgetPayment;
 
 import java.util.Date;
-import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -14,79 +13,91 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author mihail
  */
 public class RecurringBudgetPaymentAddModel {
-    public int recurringPaymentRecurringType;
-    public int recurringPaymentPeriodsMiss;
-    public int recurringPaymentPeriodsCount;
-    public String recurringPaymentName;
-    public String recurringPaymentDescription;
-    public double recurringPaymentAmount;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date recurringPaymentPeriodStart;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date recurringPaymentPeriodFinish;
-    public UUID recurringPaymentCategory;
     
-    public int getRecurringPaymentPeriodsMiss() {
-        return recurringPaymentPeriodsMiss;
+    public Integer missPerPeriods;
+    public Integer periodsCount;
+    public String paymentName;
+    public String paymentDescription;
+    public Double paymentFinalAmount;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date paymentStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date paymentFinishDate;
+    public Integer paymentCategory;
+    public Integer paymentRecuringType;
+
+    public Integer getMissPerPeriods() {
+        return missPerPeriods;
     }
 
-    public void setRecurringPaymentPeriodsMiss(int recurringPaymentPeriodsMiss) {
-        this.recurringPaymentPeriodsMiss = recurringPaymentPeriodsMiss;
+    public void setMissPerPeriods(Integer missPerPeriods) {
+        this.missPerPeriods = missPerPeriods;
     }
 
-    public String getRecurringPaymentName() {
-        return recurringPaymentName;
+    public Integer getPeriodsCount() {
+        return periodsCount;
     }
 
-    public void setRecurringPaymentName(String recurringPaymentName) {
-        this.recurringPaymentName = recurringPaymentName;
+    public void setPeriodsCount(Integer periodsCount) {
+        this.periodsCount = periodsCount;
     }
 
-    public double getRecurringPaymentAmount() {
-        return recurringPaymentAmount;
+    public String getPaymentName() {
+        return paymentName;
     }
 
-    public void setRecurringPaymentAmount(double recurringPaymentAmount) {
-        this.recurringPaymentAmount = recurringPaymentAmount;
+    public void setPaymentName(String paymentName) {
+        this.paymentName = paymentName;
     }
 
-    public Date getRecurringPaymentPeriodStart() {
-        return recurringPaymentPeriodStart;
+    public String getPaymentDescription() {
+        return paymentDescription;
     }
 
-    public void setRecurringPaymentPeriodStart(Date recurringPaymentPeriodStart) {
-        this.recurringPaymentPeriodStart = recurringPaymentPeriodStart;
+    public void setPaymentDescription(String paymentDescription) {
+        this.paymentDescription = paymentDescription;
     }
 
-    public int getRecurringPaymentPeriodsCount() {
-        return recurringPaymentPeriodsCount;
+    public Double getPaymentFinalAmount() {
+        return paymentFinalAmount;
     }
 
-    public void setRecurringPaymentPeriodsCount(int recurringPaymentPeriodsCount) {
-        this.recurringPaymentPeriodsCount = recurringPaymentPeriodsCount;
+    public void setPaymentFinalAmount(Double paymentFinalAmount) {
+        this.paymentFinalAmount = paymentFinalAmount;
     }
 
-    public String getRecurringPaymentDescription() {
-        return recurringPaymentDescription;
+    public Date getPaymentStartDate() {
+        return paymentStartDate;
     }
 
-    public void setRecurringPaymentDescription(String recurringPaymentDescription) {
-        this.recurringPaymentDescription = recurringPaymentDescription;
+    public void setPaymentStartDate(Date paymentStartDate) {
+        this.paymentStartDate = paymentStartDate;
     }
 
-    public UUID getRecurringPaymentCategory() {
-        return recurringPaymentCategory;
+    public Date getPaymentFinishDate() {
+        return paymentFinishDate;
     }
 
-    public void setRecurringPaymentCategory(UUID recurringPaymentCategory) {
-        this.recurringPaymentCategory = recurringPaymentCategory;
+    public void setPaymentFinishDate(Date paymentFinishDate) {
+        this.paymentFinishDate = paymentFinishDate;
     }
 
-    public int getRecurringPaymentRecurringType() {
-        return recurringPaymentRecurringType;
+    public Integer getPaymentCategory() {
+        return paymentCategory;
     }
 
-    public void setRecurringPaymentRecurringType(int recurringPaymentRecurringType) {
-        this.recurringPaymentRecurringType = recurringPaymentRecurringType;
+    public void setPaymentCategory(Integer paymentCategory) {
+        this.paymentCategory = paymentCategory;
     }
+
+    public Integer getPaymentRecuringType() {
+        return paymentRecuringType;
+    }
+
+    public void setPaymentRecuringType(Integer paymentRecuringType) {
+        this.paymentRecuringType = paymentRecuringType;
+    }
+    
+    
+    
 }
