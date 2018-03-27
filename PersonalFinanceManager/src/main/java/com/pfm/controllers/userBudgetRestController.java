@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Misho
  */
 @RestController
-public class userBudgetRestController {
+public class UserBudgetRestController {
 
     @RequestMapping(value = "/budget", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String budgetData(HttpServletRequest request, @RequestBody BudgetParamObject params) {
