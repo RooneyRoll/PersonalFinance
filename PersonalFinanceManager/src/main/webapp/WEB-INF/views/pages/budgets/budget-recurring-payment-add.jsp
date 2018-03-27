@@ -3,16 +3,19 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.pfm.enums.RecurringTypes" %>
-<spring:url var = "serviceUrl" value ="/getPayments"/>
+<spring:url var = "serviceUrlByAmount" value ="/recBySumOverview"/>
+<spring:url var = "serviceUrlByPeriod" value ="/recByPeriodOverview"/>
 <script src="<c:url value='/resources/js/basic/recurringPaymentUtils.js' />"></script>
 <script>
     $(document).ready(function () {
         $("#by-amount-category,#by-amount-rec-type,#by-period-category,#by-period-rec-type").select2({"theme": "classic"});
-        var overviewUrl = "${serviceUrl}";
-        var utils = new recurringPaymentUtils(overviewUrl);
+        var overviewUrls = {
+            byAmount:"${serviceUrlByAmount}",
+            byPeriod:"${serviceUrlByPeriod}"
+        };
+        var utils = new recurringPaymentUtils(overviewUrls);
         utils.initialize();
     });
-
 </script>
 <div class="row">
     <div class="col-12 col-md-12">

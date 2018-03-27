@@ -12,17 +12,16 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  * @author mihail
  */
-public class RecurringBudgetPaymentAddModel {
+public class RecuringOverviewByAmountModel {
     
     public Integer missPerPeriods;
     public Integer periodsCount;
     public String paymentName;
     public String paymentDescription;
     public Double paymentFinalAmount;
+    public Double paymentInitialAmount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date paymentStartDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentFinishDate;
     public Integer paymentCategory;
     public Integer paymentRecuringType;
 
@@ -74,14 +73,14 @@ public class RecurringBudgetPaymentAddModel {
         this.paymentStartDate = paymentStartDate;
     }
 
-    public Date getPaymentFinishDate() {
-        return paymentFinishDate;
+    public Double getPaymentInitialAmount() {
+        return paymentInitialAmount;
     }
 
-    public void setPaymentFinishDate(Date paymentFinishDate) {
-        this.paymentFinishDate = paymentFinishDate;
+    public void setPaymentInitialAmount(Double paymentInitialAmount) {
+        this.paymentInitialAmount = paymentInitialAmount;
     }
-
+    
     public Integer getPaymentCategory() {
         return paymentCategory;
     }
@@ -97,7 +96,4 @@ public class RecurringBudgetPaymentAddModel {
     public void setPaymentRecuringType(Integer paymentRecuringType) {
         this.paymentRecuringType = paymentRecuringType;
     }
-    
-    
-    
 }

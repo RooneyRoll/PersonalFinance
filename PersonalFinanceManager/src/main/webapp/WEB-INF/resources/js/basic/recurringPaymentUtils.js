@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var recurringPaymentUtils = function (overviewUrl) {
-
-    var overviewTypes = {
-        dateFirst: "date",
-        amountFirst: "amount",
-        calendar: "calendar"
-    };
-
+var recurringPaymentUtils = function (overviewUrls) {
     this.initialize = function () {
         this.initTabs();
         this.initStepWizards();
+    };
+
+    var isDefined = function (variable) {
+        return typeof variable !== "undefined";
     };
 
     var buildDataForRequest = function (parent) {
@@ -23,29 +20,57 @@ var recurringPaymentUtils = function (overviewUrl) {
         var paymentName = parent.find("input[name='payment-name']").val();
         var paymentDescription = parent.find("textarea[name='payment-description']").val();
         var paymentFinalAmount = parent.find("input[name='payment-final-amount']").val();
+        var paymentInitialAmount = parent.find("input[name='payment-initial-amount']").val();
+        var paymentSinglePeriodAmount = parent.find("input[name='payment-period-amount']").val();
         var paymentStartDate = parent.find("input[name='payment-start-date']").val();
         var paymentFinishDate = parent.find("input[name='payment-finish-date']").val();
         var paymentCategory = parent.find("select[name='payment-category']:selected").val();
         var recuringType = parent.find("select[name='payment-recuring-type']:selected").val();
-        if (typeof missPerPeriods !== "undefined")
+        if (isDefined(missPerPeriods))
             requestData.missPerPeriods = missPerPeriods;
-        if (typeof periodsCount !== "undefined")
+        if (isDefined(periodsCount))
             requestData.periodsCount = periodsCount;
-        if (typeof paymentName !== "undefined")
+        if (isDefined(paymentName))
             requestData.paymentName = paymentName;
-        if (typeof paymentDescription !== "undefined")
+        if (isDefined(paymentDescription))
             requestData.paymentDescription = paymentDescription;
-        if (typeof paymentFinalAmount !== "undefined")
+        if (isDefined(paymentFinalAmount))
             requestData.paymentFinalAmount = paymentFinalAmount;
-        if (typeof paymentStartDate !== "undefined")
+        if (isDefined(paymentStartDate))
             requestData.paymentStartDate = paymentStartDate;
-        if (typeof paymentFinishDate !== "undefined")
+        if (isDefined(paymentFinishDate))
             requestData.paymentFinishDate = paymentFinishDate;
-        if (typeof paymentCategory !== "undefined")
+        if (isDefined(paymentCategory))
             requestData.paymentCategory = paymentCategory;
-        if (typeof recuringType !== "undefined")
+        if (isDefined(recuringType))
             requestData.recuringType = recuringType;
+        if (isDefined(paymentInitialAmount))
+            requestData.paymentInitialAmount = paymentInitialAmount;
+        if (isDefined(paymentSinglePeriodAmount))
+            requestData.paymentSinglePeriodAmount = paymentSinglePeriodAmount;
         return requestData;
+    };
+
+    var createOverviewRequest = function (data) {
+        var token = $('meta[name=\"_csrf\"]').attr('content');
+        var header = $('meta[name=\"_csrf_header\"]').attr('content');
+        var url;
+        if (isDefined(data.paymentFinalAmount)) {
+            url = overviewUrls.byAmount;
+        } else {
+            url = overviewUrls.byPeriod;
+        }
+        $.ajax({
+            url: url,
+            type: 'POST',
+            async: true,
+            method: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader(header, token);
+            }
+        });
     };
 
     this.initTabs = function () {
@@ -100,25 +125,13 @@ var recurringPaymentUtils = function (overviewUrl) {
             transitionSpeed: '400'
         }).on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
             if (stepNumber === 1 && stepDirection === "forward") {
-                data = JSON.stringify(buildDataForRequest($(this)));
-                var token = $('meta[name=\"_csrf\"]').attr('content');
-                var header = $('meta[name=\"_csrf_header\"]').attr('content');
-                $.ajax({
-                    url: overviewUrl,
-                    type: 'POST',
-                    async: true,
-                    method: 'post',
-                    contentType: 'application/json',
-                    data:data,
-                    beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                    
-                });
+                data = buildDataForRequest($(this));
+                createOverviewRequest(data);
             }
             ;
         });
     };
+
     $('#by-amount-start-date,#by-period-start-date,#by-period-finish-date').flatpickr({
         'locale': 'bg',
         'mode': 'single',
