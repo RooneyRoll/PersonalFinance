@@ -32,7 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Misho
  */
 @Controller
-public class UserBudgetController {
+public class UserBudgetControllerr {
 
     @RequestMapping(value = "/userBudget", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
