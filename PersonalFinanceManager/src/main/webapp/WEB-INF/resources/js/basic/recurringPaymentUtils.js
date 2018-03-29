@@ -24,8 +24,9 @@ var recurringPaymentUtils = function (overviewUrls) {
         var paymentSinglePeriodAmount = parent.find("input[name='payment-period-amount']").val();
         var paymentStartDate = parent.find("input[name='payment-start-date']").val();
         var paymentFinishDate = parent.find("input[name='payment-finish-date']").val();
-        var paymentCategory = parent.find("select[name='payment-category']:selected").val();
-        var recuringType = parent.find("select[name='payment-recuring-type']:selected").val();
+        var paymentCategory = parent.find("select[name='payment-category'] option:selected").val();
+        var recuringType = parent.find("select[name='payment-recuring-type'] option:selected").val();
+        console.log(paymentCategory);
         if (isDefined(missPerPeriods))
             requestData.missPerPeriods = missPerPeriods;
         if (isDefined(periodsCount))

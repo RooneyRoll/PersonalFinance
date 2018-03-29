@@ -6,6 +6,7 @@
 package com.pfm.models.recurringBudgetPayment;
 
 import java.util.Date;
+import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -14,23 +15,15 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class RecuringOverviewByPeriodModel {
     
-    public Integer missPerPeriods;
     public String paymentName;
+    public Double paymentSinglePeriodAmount;
     public String paymentDescription;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date paymentStartDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date paymentFinishDate;
-    public Integer paymentCategory;
+    public UUID paymentCategory;
     public Integer paymentRecuringType;
-
-    public Integer getMissPerPeriods() {
-        return missPerPeriods;
-    }
-
-    public void setMissPerPeriods(Integer missPerPeriods) {
-        this.missPerPeriods = missPerPeriods;
-    }
 
     public String getPaymentName() {
         return paymentName;
@@ -56,11 +49,11 @@ public class RecuringOverviewByPeriodModel {
         this.paymentStartDate = paymentStartDate;
     }
     
-    public Integer getPaymentCategory() {
+    public UUID getPaymentCategory() {
         return paymentCategory;
     }
 
-    public void setPaymentCategory(Integer paymentCategory) {
+    public void setPaymentCategory(UUID paymentCategory) {
         this.paymentCategory = paymentCategory;
     }
 
@@ -78,5 +71,13 @@ public class RecuringOverviewByPeriodModel {
 
     public void setPaymentFinishDate(Date paymentFinishDate) {
         this.paymentFinishDate = paymentFinishDate;
+    }
+
+    public Double getPaymentSinglePeriodAmount() {
+        return paymentSinglePeriodAmount;
+    }
+
+    public void setPaymentSinglePeriodAmount(Double paymentSinglePeriodAmount) {
+        this.paymentSinglePeriodAmount = paymentSinglePeriodAmount;
     }
 }

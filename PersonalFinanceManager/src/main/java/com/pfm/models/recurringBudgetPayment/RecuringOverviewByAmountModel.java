@@ -6,6 +6,7 @@
 package com.pfm.models.recurringBudgetPayment;
 
 import java.util.Date;
+import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -22,7 +23,7 @@ public class RecuringOverviewByAmountModel {
     public Double paymentInitialAmount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date paymentStartDate;
-    public Integer paymentCategory;
+    public UUID paymentCategory;
     public Integer paymentRecuringType;
 
     public Integer getMissPerPeriods() {
@@ -81,11 +82,11 @@ public class RecuringOverviewByAmountModel {
         this.paymentInitialAmount = paymentInitialAmount;
     }
     
-    public Integer getPaymentCategory() {
+    public UUID getPaymentCategory() {
         return paymentCategory;
     }
 
-    public void setPaymentCategory(Integer paymentCategory) {
+    public void setPaymentCategory(UUID paymentCategory) {
         this.paymentCategory = paymentCategory;
     }
 
