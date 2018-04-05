@@ -8,12 +8,17 @@
 <script src="<c:url value='/resources/js/basic/recurringPaymentUtils.js' />"></script>
 <script>
     $(document).ready(function () {
-        $("#by-amount-category,#by-amount-rec-type,#by-period-category,#by-period-rec-type").select2({"theme": "classic"});
         var overviewUrls = {
             byAmount:"${serviceUrlByAmount}",
             byPeriod:"${serviceUrlByPeriod}"
         };
-        var utils = new recurringPaymentUtils(overviewUrls);
+        var recuringTypes = {
+            daily:"${daily}",
+            weekly:"${weekly}",
+            monthly:"${monthly}",
+            yearly:"${yearly}"
+        };
+        var utils = new recurringPaymentUtils(overviewUrls,recuringTypes);
         utils.initialize();
     });
 </script>

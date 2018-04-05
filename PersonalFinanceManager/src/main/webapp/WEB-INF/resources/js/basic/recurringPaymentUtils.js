@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var recurringPaymentUtils = function (overviewUrls) {
-    this.initialize = function () {
-        this.initTabs();
-        this.initStepWizards();
-    };
+/* global moment */
+
+var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
+    this.currentStartDate = new Date();
+    this.finalDateCalendar;
+    var instance = this;
 
     var isDefined = function (variable) {
         return typeof variable !== "undefined";
@@ -26,7 +27,6 @@ var recurringPaymentUtils = function (overviewUrls) {
         var paymentFinishDate = parent.find("input[name='payment-finish-date']").val();
         var paymentCategory = parent.find("select[name='payment-category'] option:selected").val();
         var recuringType = parent.find("select[name='payment-recuring-type'] option:selected").val();
-        console.log(paymentCategory);
         if (isDefined(missPerPeriods))
             requestData.missPerPeriods = missPerPeriods;
         if (isDefined(periodsCount))
@@ -44,7 +44,7 @@ var recurringPaymentUtils = function (overviewUrls) {
         if (isDefined(paymentCategory))
             requestData.paymentCategory = paymentCategory;
         if (isDefined(recuringType))
-            requestData.recuringType = recuringType;
+            requestData.paymentRecuringType = recuringType;
         if (isDefined(paymentInitialAmount))
             requestData.paymentInitialAmount = paymentInitialAmount;
         if (isDefined(paymentSinglePeriodAmount))
@@ -74,7 +74,7 @@ var recurringPaymentUtils = function (overviewUrls) {
         });
     };
 
-    this.initTabs = function () {
+    var initTabs = function () {
         $('.tabs-container').pwstabs({
             effect: 'scale',
             defaultTab: 1,
@@ -94,7 +94,62 @@ var recurringPaymentUtils = function (overviewUrls) {
         });
     };
 
-    this.initStepWizards = function () {
+    var initDatePicker = function (selector) {
+        return $(selector).flatpickr({
+            'locale': 'bg',
+            'mode': 'single',
+            "minDate": 'today',
+            'enableTime': false,
+            'defaultDate': 'today',
+            'dateFormat': "Y-m-d",
+            onChange: function (rawdate, altdate, FPOBJ) {
+                if (selector === "#by-period-start-date") {
+                    instance.currentStartDate = rawdate[0];
+                    syncCalendars();
+                }
+                FPOBJ.close();
+            }
+        });
+    };
+
+    var addDaysToDatepicker = function (datePicker, days) {
+        var newDate = moment(instance.currentStartDate, "DD-MM-YYYY");
+        newDate.add('days', days);
+        var date = newDate.toDate();
+        instance.finalDateCalendar.set("minDate", date);
+        instance.finalDateCalendar.setDate(date);
+    };
+
+    var syncCalendars = function () {
+        var selectedVal = $("#by-period-rec-type").find("option:selected").val();
+        switch (selectedVal) {
+            case recuringTypes.daily:
+                addDaysToDatepicker(instance.finalDateCalendar, 1);
+                break;
+            case recuringTypes.weekly:
+                addDaysToDatepicker(instance.finalDateCalendar, 7);
+                break;
+            case recuringTypes.monthly:
+                var now = moment();
+                var days = moment(now).daysInMonth();
+                addDaysToDatepicker(instance.finalDateCalendar, days);
+                break;
+            case recuringTypes.yearly:
+                addDaysToDatepicker(instance.finalDateCalendar, 365);
+                break;
+        }
+    };
+
+    var initSelect2 = function (selector) {
+        $(selector).select2({"theme": "classic"});
+        if (selector === "#by-period-rec-type") {
+            $(selector).on("select2:select", function (e) {
+                syncCalendars();
+            });
+        }
+    };
+
+    var initStepWizards = function () {
         $('#smartwizard-period-first,#smartwizard-amount-first').smartWizard({
             selected: 0,
             keyNavigation: true,
@@ -129,20 +184,20 @@ var recurringPaymentUtils = function (overviewUrls) {
                 data = buildDataForRequest($(this));
                 createOverviewRequest(data);
             }
-            ;
         });
     };
 
-    $('#by-amount-start-date,#by-period-start-date,#by-period-finish-date').flatpickr({
-        'locale': 'bg',
-        'mode': 'single',
-        'enableTime': false,
-        'defaultDate': 'today',
-        'dateFormat': "Y-m-d",
-        onChange: function (rawdate, altdate, FPOBJ) {
-            FPOBJ.close();
-        }
-    });
+    this.initialize = function () {
+        initTabs();
+        initStepWizards();
+        this.finalDateCalendar = initDatePicker("#by-period-finish-date");
+        initDatePicker("#by-period-start-date");
+        initDatePicker("#by-amount-start-date");
+        initSelect2("#by-period-rec-type");
+        initSelect2("#by-amount-category");
+        initSelect2("#by-period-category");
+        initSelect2("#by-amount-rec-type");
+    };
 };
 
 

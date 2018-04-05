@@ -11,6 +11,7 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.RecurringBudgetPayment;
 import com.pfm.data.entities.RecurringType;
 import com.pfm.data.entities.User;
+import com.pfm.enums.RecurringTypes;
 import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments;
@@ -90,6 +91,10 @@ public class RecurringPaymentController {
         ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
         view.addObject("recTypes", recurringTypes);
         view.addObject("categories", caregories);
+        view.addObject("daily",RecurringTypes.Daily.getValue());
+        view.addObject("weekly",RecurringTypes.Weekly.getValue());
+        view.addObject("monthly",RecurringTypes.Monthly.getValue());
+        view.addObject("yearly",RecurringTypes.Yearly.getValue());
         return view;
     }
 

@@ -5,6 +5,7 @@
  */
 package com.pfm.models.recurringBudgetPayment;
 
+import com.pfm.enums.RecurringTypes;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
