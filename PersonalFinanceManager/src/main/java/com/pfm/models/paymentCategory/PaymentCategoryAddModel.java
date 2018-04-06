@@ -6,7 +6,6 @@
 package com.pfm.models.paymentCategory;
 
 import com.pfm.exceptions.ValidationException;
-import java.util.UUID;
 
 /**
  *
@@ -14,16 +13,12 @@ import java.util.UUID;
  */
 public class PaymentCategoryAddModel {
 
-    public String categoryName;
-    public String categoryDescription;
-    public Integer categoryType;
+    private String categoryName;
+    private String categoryDescription;
+    private Integer categoryType;
 
     public Integer getCategoryType() {
         return categoryType;
-    }
-
-    public void setCategoryType(Integer categoryType) {
-        this.categoryType = categoryType;
     }
 
     public String getCategoryName() throws ValidationException {
@@ -33,15 +28,20 @@ public class PaymentCategoryAddModel {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
     public String getCategoryDescription() {
         return categoryDescription;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
     }
+
+    public void setCategoryType(Integer categoryType) {
+        this.categoryType = categoryType;
+    }
+    
 }

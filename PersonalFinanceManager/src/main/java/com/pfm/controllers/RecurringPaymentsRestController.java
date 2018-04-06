@@ -56,7 +56,8 @@ public class RecurringPaymentsRestController {
         Double singlePeriodAmount = data.getPaymentSinglePeriodAmount();
         Integer recuringType = data.getPaymentRecuringType();
         Integer periods = this.getPeriodsInInterval(recuringType, startPaymentDate, lastPaymentDate);
-        String response = this.buildPaymentsOverviewResponse(recuringType, 0, periods, startPaymentDate, singlePeriodAmount);
+        Integer missPerPeriods = data.getMissPerPeriods();
+        String response = this.buildPaymentsOverviewResponse(recuringType, missPerPeriods, periods, startPaymentDate, singlePeriodAmount);
         return response;
     }
 
@@ -73,7 +74,7 @@ public class RecurringPaymentsRestController {
         String response;
         List<RecuringOverviewResultModel> paymentsList = new ArrayList<>();
         paymentsList.add(this.buildSinglePaymentModel(startPaymentDate, singlePeriodAmount));
-        for (int i = 1; i < periods; i++) {
+        for (int i = 1; i <= periods; i++) {
             startPaymentDate = this.getNextPaymentDate(recuringType, missPerPeriods, startPaymentDate);
             paymentsList.add(this.buildSinglePaymentModel(startPaymentDate, singlePeriodAmount));
         }

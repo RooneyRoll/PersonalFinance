@@ -10,7 +10,7 @@
                 paymentAmount: {"required": true, "number": true, "min": 0}
             },
             messages: {
-                paymentAmount: "Моля въведете сума.",
+                paymentAmount: "Моля въведете сума."
             },
             errorPlacement: function (error, element) {
 
@@ -26,8 +26,7 @@
         $('#paymentDate').flatpickr({
             'locale': 'bg',
             'mode': 'single',
-            'enableTime': true,
-            'enableTime': true,
+            'enableTime': false,
             'defaultDate': 'today',
             'dateFormat': "Y-m-d",
             onChange: function (rawdate, altdate, FPOBJ) {

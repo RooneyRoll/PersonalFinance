@@ -83,7 +83,9 @@ public class PaymentCategoriesController {
     }
 
     @RequestMapping(value = "/categories/add", method = RequestMethod.GET)
-    public ModelAndView addIndex(ModelMap map, HttpServletRequest request,
+    public ModelAndView addIndex(
+            ModelMap map,
+            HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
         IpfmContext context = pfmContext.getInstance();
@@ -95,7 +97,9 @@ public class PaymentCategoriesController {
     }
 
     @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
-    public ModelAndView add(ModelMap map, HttpServletRequest request,
+    public ModelAndView add(
+            ModelMap map,
+            HttpServletRequest request,
             HttpServletResponse response,
             @ModelAttribute PaymentCategoryAddModel params) throws PaymentCategoryAddException {
         try {

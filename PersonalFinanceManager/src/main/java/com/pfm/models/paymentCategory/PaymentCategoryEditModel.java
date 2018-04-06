@@ -6,7 +6,7 @@
 package com.pfm.models.paymentCategory;
 
 import com.pfm.exceptions.ValidationException;
-import java.util.UUID;
+
 
 /**
  *
@@ -14,26 +14,10 @@ import java.util.UUID;
  */
 public class PaymentCategoryEditModel {
 
-    public String categoryName;
-    public String categoryDescription;
-    public String categoryActive;
-    public Integer categoryType;
-
-    public Integer getCategoryType() {
-        return categoryType;
-    }
-
-    public void setCategoryType(Integer categoryType) {
-        this.categoryType = categoryType;
-    }
-
-    public String getCategoryActive() {
-        return categoryActive;
-    }
-
-    public void setCategoryActive(String categoryActive) {
-        this.categoryActive = categoryActive;
-    }
+    private String categoryName;
+    private String categoryDescription;
+    private String categoryActive;
+    private Integer categoryType;
 
     public String getCategoryName() throws ValidationException {
         if ("".equals(categoryName)) {
@@ -42,15 +26,32 @@ public class PaymentCategoryEditModel {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
     public String getCategoryDescription() {
         return categoryDescription;
+    }
+
+    public String getCategoryActive() {
+        return categoryActive;
+    }
+
+    public Integer getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
     }
+
+    public void setCategoryActive(String categoryActive) {
+        this.categoryActive = categoryActive;
+    }
+
+    public void setCategoryType(Integer categoryType) {
+        this.categoryType = categoryType;
+    }
+    
 }

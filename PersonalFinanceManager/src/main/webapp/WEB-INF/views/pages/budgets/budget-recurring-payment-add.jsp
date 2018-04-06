@@ -6,19 +6,21 @@
 <spring:url var = "serviceUrlByAmount" value ="/recBySumOverview"/>
 <spring:url var = "serviceUrlByPeriod" value ="/recByPeriodOverview"/>
 <script src="<c:url value='/resources/js/basic/recurringPaymentUtils.js' />"></script>
+<script src="<c:url value='/resources/js/fullcalendar-3.9.0/fullcalendar.min.js' />"></script>
+<script src="<c:url value='/resources/js/bootstrap-year-calendar-1.1.0/js/bootstrap-year-calendar.min.js' />"></script>
 <script>
     $(document).ready(function () {
         var overviewUrls = {
-            byAmount:"${serviceUrlByAmount}",
-            byPeriod:"${serviceUrlByPeriod}"
+            byAmount: "${serviceUrlByAmount}",
+            byPeriod: "${serviceUrlByPeriod}"
         };
         var recuringTypes = {
-            daily:"${daily}",
-            weekly:"${weekly}",
-            monthly:"${monthly}",
-            yearly:"${yearly}"
+            daily: "${daily}",
+            weekly: "${weekly}",
+            monthly: "${monthly}",
+            yearly: "${yearly}"
         };
-        var utils = new recurringPaymentUtils(overviewUrls,recuringTypes);
+        var utils = new recurringPaymentUtils(overviewUrls, recuringTypes);
         utils.initialize();
     });
 </script>
@@ -128,7 +130,7 @@
                             </div>
                         </div>
                         <div id="step-amount-2" class="">
-                            Step Content
+                            <div id = "payments-calendar-amount"></div>
                         </div>
                     </div>
                 </div>
@@ -193,6 +195,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-group ">
+                                                <label for="exampleFormControlInput1">Пропускане през брой периоди</label>
+                                                <div class="input-group col-lg-12 col-md-12 col-sm-12">
+                                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-sort" aria-hidden="true"></i></span>
+                                                    <input name="payment-miss-periods" type="text" value="0" class="form-control" placeholder="Пропускане през" aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
                                                 <label for="exampleFormControlInput1">Категория</label>
                                                 <div class="input-group col-lg-12 col-md-12 col-sm-12">
                                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -224,7 +233,7 @@
                             </div>
                         </div>
                         <div id="step-period-2" class="">
-                            Step Content
+                            <div id = "payments-calendar-period"></div>
                         </div>
                     </div>
                 </div>

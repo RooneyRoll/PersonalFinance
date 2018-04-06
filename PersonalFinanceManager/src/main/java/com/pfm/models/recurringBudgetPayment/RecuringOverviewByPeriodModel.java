@@ -15,69 +15,48 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class RecuringOverviewByPeriodModel {
     
-    public String paymentName;
-    public Double paymentSinglePeriodAmount;
-    public String paymentDescription;
+    private String paymentName;
+    private Double paymentSinglePeriodAmount;
+    private String paymentDescription;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentStartDate;
+    private Date paymentStartDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentFinishDate;
-    public UUID paymentCategory;
-    public Integer paymentRecuringType;
+    private Date paymentFinishDate;
+    private UUID paymentCategory;
+    private Integer paymentRecuringType;
+    private Integer missPerPeriods;
 
     public String getPaymentName() {
         return paymentName;
-    }
-
-    public void setPaymentName(String paymentName) {
-        this.paymentName = paymentName;
-    }
-
-    public String getPaymentDescription() {
-        return paymentDescription;
-    }
-
-    public void setPaymentDescription(String paymentDescription) {
-        this.paymentDescription = paymentDescription;
-    }
-
-    public Date getPaymentStartDate() {
-        return paymentStartDate;
-    }
-
-    public void setPaymentStartDate(Date paymentStartDate) {
-        this.paymentStartDate = paymentStartDate;
-    }
-    
-    public UUID getPaymentCategory() {
-        return paymentCategory;
-    }
-
-    public void setPaymentCategory(UUID paymentCategory) {
-        this.paymentCategory = paymentCategory;
-    }
-
-    public Integer getPaymentRecuringType() {
-        return paymentRecuringType;
-    }
-
-    public void setPaymentRecuringType(Integer paymentRecuringType) {
-        this.paymentRecuringType = paymentRecuringType;
-    }
-
-    public Date getPaymentFinishDate() {
-        return paymentFinishDate;
-    }
-
-    public void setPaymentFinishDate(Date paymentFinishDate) {
-        this.paymentFinishDate = paymentFinishDate;
     }
 
     public Double getPaymentSinglePeriodAmount() {
         return paymentSinglePeriodAmount;
     }
 
-    public void setPaymentSinglePeriodAmount(Double paymentSinglePeriodAmount) {
-        this.paymentSinglePeriodAmount = paymentSinglePeriodAmount;
+    public String getPaymentDescription() {
+        return paymentDescription;
     }
+
+    public Date getPaymentStartDate() {
+        return paymentStartDate;
+    }
+
+    public Date getPaymentFinishDate() {
+        return paymentFinishDate;
+    }
+
+    public UUID getPaymentCategory() {
+        return paymentCategory;
+    }
+
+    public Integer getPaymentRecuringType() {
+        return paymentRecuringType;
+    }
+
+    public Integer getMissPerPeriods() {
+        return missPerPeriods;
+    }
+
+    
 }

@@ -8,6 +8,13 @@
 var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
     this.currentStartDate = new Date();
     this.finalDateCalendar;
+    this.yearCalendarByAmount;
+    this.yearCalendarByPeriod;
+    this.requestTypes = {
+        byAmount: 1,
+        byPeriod: 2
+    };
+
     var instance = this;
 
     var isDefined = function (variable) {
@@ -52,14 +59,34 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
         return requestData;
     };
 
+    var processOverviewResponse = function (data, name, description) {
+        var calendarData = [];
+        $.each(data, function (key, paymentInfo) {
+            var dateNumber = parseInt(paymentInfo.dateRepresent);
+            var date = new Date(dateNumber);
+            var currentPaymentData = {
+                id: 0,
+                name: name,
+                location: description,
+                startDate: date,
+                endDate: date,
+                color:"#6db33f"
+            };
+            calendarData[key] = currentPaymentData;
+        });
+        return calendarData;
+    };
+
     var createOverviewRequest = function (data) {
         var token = $('meta[name=\"_csrf\"]').attr('content');
         var header = $('meta[name=\"_csrf_header\"]').attr('content');
+        var requestType = instance.requestTypes.byAmount;
         var url;
         if (isDefined(data.paymentFinalAmount)) {
             url = overviewUrls.byAmount;
         } else {
             url = overviewUrls.byPeriod;
+            requestType = instance.requestTypes.byPeriod;
         }
         $.ajax({
             url: url,
@@ -71,6 +98,15 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
             beforeSend: function (xhr, settings) {
                 xhr.setRequestHeader(header, token);
             }
+        }).done(function (response) {
+            var name = data.paymentName;
+            var description = data.paymentDescription;
+            var dataSource = processOverviewResponse(response, name, description);
+            if (requestType === instance.requestTypes.byAmount)
+                instance.yearCalendarByAmount.setDataSource(dataSource);
+            if (requestType === instance.requestTypes.byPeriod)
+                instance.yearCalendarByPeriod.setDataSource(dataSource);
+
         });
     };
 
@@ -187,10 +223,63 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
         });
     };
 
+    var initPaymentsOverviewCalendar = function (selector) {
+        var currentYear = new Date().getFullYear();
+        var yearCalendar = $(selector).calendar({
+            enableContextMenu: true,
+            enableRangeSelection: true,
+            contextMenuItems: [
+                {
+                    text: 'Update'
+                },
+                {
+                    text: 'Delete'
+                }
+            ],
+            selectRange: function (e) {
+            },
+            mouseOnDay: function (e) {
+                if (e.events.length > 0) {
+                    var content = '';
+
+                    for (var i in e.events) {
+                        content += '<div class="event-tooltip-content">'
+                                + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                + '<div class="event-location">' + e.events[i].location + '</div>'
+                                + '</div>';
+                    }
+
+                    $(e.element).popover({
+                        trigger: 'manual',
+                        container: 'body',
+                        html: true,
+                        content: content
+                    });
+
+                    $(e.element).popover('show');
+                }
+            },
+            mouseOutDay: function (e) {
+                if (e.events.length > 0) {
+                    $(e.element).popover('hide');
+                }
+            },
+            dayContextMenu: function (e) {
+                $(e.element).popover('hide');
+            },
+            dataSource: [
+            ]
+        });
+        return yearCalendar;
+    };
+
     this.initialize = function () {
         initTabs();
         initStepWizards();
         this.finalDateCalendar = initDatePicker("#by-period-finish-date");
+        this.yearCalendarByAmount = initPaymentsOverviewCalendar("#payments-calendar-amount");
+        this.yearCalendarByPeriod = initPaymentsOverviewCalendar("#payments-calendar-period");
+        addDaysToDatepicker(this.finalDateCalendar, 1);
         initDatePicker("#by-period-start-date");
         initDatePicker("#by-amount-start-date");
         initSelect2("#by-period-rec-type");

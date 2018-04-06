@@ -11,8 +11,8 @@ package com.pfm.models.recurringBudgetPayment;
  * @author mihail
  */
 public class RecuringOverviewResultModel {
-    private Long dateRepresent;
-    private Double amount;
+    private final Long dateRepresent;
+    private final Double amount;
 
     public RecuringOverviewResultModel(Long dateRepresent, Double amount) {
         this.dateRepresent = dateRepresent;
@@ -23,15 +23,7 @@ public class RecuringOverviewResultModel {
         return dateRepresent;
     }
 
-    public void setDateRepresent(Long dateRepresent) {
-        this.dateRepresent = dateRepresent;
-    }
-
     public Double getAmount() {
         return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
     }
 }

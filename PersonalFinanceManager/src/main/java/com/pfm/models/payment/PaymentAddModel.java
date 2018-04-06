@@ -15,41 +15,43 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class PaymentAddModel {
 
-    public double paymentAmount;
-    public String paymentDescription;
-    public UUID paymentCategory;
+    private double paymentAmount;
+    private String paymentDescription;
+    private UUID paymentCategory;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentDate;
-
-    public Date getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
+    private Date paymentDate;
 
     public double getPaymentAmount() {
         return paymentAmount;
-    }
-
-    public void setPaymentAmount(double paymentAmount) {
-        this.paymentAmount = paymentAmount;
     }
 
     public String getPaymentDescription() {
         return paymentDescription;
     }
 
-    public void setPaymentDescription(String paymentDescription) {
-        this.paymentDescription = paymentDescription;
-    }
-
     public UUID getPaymentCategory() {
         return paymentCategory;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentAmount(double paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public void setPaymentDescription(String paymentDescription) {
+        this.paymentDescription = paymentDescription;
     }
 
     public void setPaymentCategory(UUID paymentCategory) {
         this.paymentCategory = paymentCategory;
     }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+    
+    
 }

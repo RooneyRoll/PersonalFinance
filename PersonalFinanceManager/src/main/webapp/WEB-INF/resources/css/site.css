@@ -435,3 +435,10 @@ html body{
 .sw-main .sw-toolbar-bottom{
     background-color:#fff;
 }
+
+.loading{
+    display:inline-block;
+    width:100%;
+    text-align:center;
+    padding-top:30px;
+}

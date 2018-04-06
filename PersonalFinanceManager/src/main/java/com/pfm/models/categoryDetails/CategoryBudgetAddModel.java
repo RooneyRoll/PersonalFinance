@@ -22,35 +22,37 @@ public class CategoryBudgetAddModel {
     private Date toDate;
     private UUID categoryId;
 
-    public UUID getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public String getAmount() {
         return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
     public Date getToDate() {
         return toDate;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
+    }
+    
+    
 }

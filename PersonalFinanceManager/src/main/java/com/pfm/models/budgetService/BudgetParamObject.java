@@ -11,8 +11,8 @@ package com.pfm.models.budgetService;
  */
 public class BudgetParamObject {
 
-    int month;
-    int year;
+    private int month;
+    private int year;
 
     public int getMonth() {
         return month;

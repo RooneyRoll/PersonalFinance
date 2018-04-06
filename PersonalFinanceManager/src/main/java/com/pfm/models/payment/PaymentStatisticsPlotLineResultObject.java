@@ -10,7 +10,8 @@ package com.pfm.models.payment;
  * @author Misho
  */
 public class PaymentStatisticsPlotLineResultObject {
-    Long date;
+
+    private Long date;
 
     public Long getDate() {
         return date;

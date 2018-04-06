@@ -5,7 +5,6 @@
  */
 package com.pfm.models.recurringBudgetPayment;
 
-import com.pfm.enums.RecurringTypes;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,86 +15,51 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class RecuringOverviewByAmountModel {
     
-    public Integer missPerPeriods;
-    public Integer periodsCount;
-    public String paymentName;
-    public String paymentDescription;
-    public Double paymentFinalAmount;
-    public Double paymentInitialAmount;
+    private Integer missPerPeriods;
+    private Integer periodsCount;
+    private String paymentName;
+    private String paymentDescription;
+    private Double paymentFinalAmount;
+    private Double paymentInitialAmount;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentStartDate;
-    public UUID paymentCategory;
-    public Integer paymentRecuringType;
+    private Date paymentStartDate;
+    private UUID paymentCategory;
+    private Integer paymentRecuringType;
 
     public Integer getMissPerPeriods() {
         return missPerPeriods;
-    }
-
-    public void setMissPerPeriods(Integer missPerPeriods) {
-        this.missPerPeriods = missPerPeriods;
     }
 
     public Integer getPeriodsCount() {
         return periodsCount;
     }
 
-    public void setPeriodsCount(Integer periodsCount) {
-        this.periodsCount = periodsCount;
-    }
-
     public String getPaymentName() {
         return paymentName;
-    }
-
-    public void setPaymentName(String paymentName) {
-        this.paymentName = paymentName;
     }
 
     public String getPaymentDescription() {
         return paymentDescription;
     }
 
-    public void setPaymentDescription(String paymentDescription) {
-        this.paymentDescription = paymentDescription;
-    }
-
     public Double getPaymentFinalAmount() {
         return paymentFinalAmount;
-    }
-
-    public void setPaymentFinalAmount(Double paymentFinalAmount) {
-        this.paymentFinalAmount = paymentFinalAmount;
-    }
-
-    public Date getPaymentStartDate() {
-        return paymentStartDate;
-    }
-
-    public void setPaymentStartDate(Date paymentStartDate) {
-        this.paymentStartDate = paymentStartDate;
     }
 
     public Double getPaymentInitialAmount() {
         return paymentInitialAmount;
     }
 
-    public void setPaymentInitialAmount(Double paymentInitialAmount) {
-        this.paymentInitialAmount = paymentInitialAmount;
-    }
-    
-    public UUID getPaymentCategory() {
-        return paymentCategory;
+    public Date getPaymentStartDate() {
+        return paymentStartDate;
     }
 
-    public void setPaymentCategory(UUID paymentCategory) {
-        this.paymentCategory = paymentCategory;
+    public UUID getPaymentCategory() {
+        return paymentCategory;
     }
 
     public Integer getPaymentRecuringType() {
         return paymentRecuringType;
     }
-
-    public void setPaymentRecuringType(Integer paymentRecuringType) {
-        this.paymentRecuringType = paymentRecuringType;
-    }
+    
 }

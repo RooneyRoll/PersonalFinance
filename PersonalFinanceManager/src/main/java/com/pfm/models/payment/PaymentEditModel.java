@@ -5,7 +5,6 @@
  */
 package com.pfm.models.payment;
 
-import com.pfm.exceptions.ValidationException;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,50 +14,52 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author mihail
  */
 public class PaymentEditModel {
-    public double paymentAmount;
-    public String paymentDescription;
-    public UUID paymentCategory;
-    public String paymentActive;
+
+    private double paymentAmount;
+    private String paymentDescription;
+    private UUID paymentCategory;
+    private String paymentActive;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date paymentDate; 
+    private Date paymentDate;
 
     public double getPaymentAmount() {
         return paymentAmount;
-    }
-
-    public void setPaymentAmount(double paymentAmount) {
-        this.paymentAmount = paymentAmount;
     }
 
     public String getPaymentDescription() {
         return paymentDescription;
     }
 
-    public void setPaymentDescription(String paymentDescription) {
-        this.paymentDescription = paymentDescription;
-    }
-
     public UUID getPaymentCategory() {
         return paymentCategory;
-    }
-
-    public void setPaymentCategory(UUID paymentCategory) {
-        this.paymentCategory = paymentCategory;
     }
 
     public String isPaymentActive() {
         return paymentActive;
     }
 
-    public void setPaymentActive(String paymentActive) {
-        this.paymentActive = paymentActive;
-    }
-
     public Date getPaymentDate() {
         return paymentDate;
+    }
+
+    public void setPaymentAmount(double paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public void setPaymentDescription(String paymentDescription) {
+        this.paymentDescription = paymentDescription;
+    }
+
+    public void setPaymentCategory(UUID paymentCategory) {
+        this.paymentCategory = paymentCategory;
+    }
+
+    public void setPaymentActive(String paymentActive) {
+        this.paymentActive = paymentActive;
     }
 
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
+    
 }
