@@ -5,19 +5,21 @@
     $(document).ready(function () {
         $("#payment-category-add-form").validate({
             rules: {
-                categoryName: "required",
+                categoryName: "required"
             },
             messages: {
-                categoryName: "Моля, въведете име на категория",
+                categoryName: "Моля, въведете име на категория"
             },
+            errorClass: "error",
+            validClass: "valid",
             errorPlacement: function (error, element) {
-
+                error.insertAfter(element.parent());
             },
             highlight: function (element, errorClass, validClass) {
-                $(element).addClass("error");
+                $(element).addClass(errorClass);
             },
             unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass("error");
+                $(element).removeClass(errorClass);
             }
         });
         $("#types-select").select2({"theme": "classic"});

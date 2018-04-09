@@ -5,8 +5,9 @@
  */
 /* global moment */
 
-var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
+var recurringPaymentUtils = function (urls, recuringTypes, formToSubmit) {
     this.currentStartDate = new Date();
+    this.draftData;
     this.finalDateCalendar;
     this.yearCalendarByAmount;
     this.yearCalendarByPeriod;
@@ -61,7 +62,7 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
 
     var processOverviewResponse = function (data, name, description) {
         var calendarData = [];
-        $.each(data, function (key, paymentInfo) {
+        $.each(data.payments, function (key, paymentInfo) {
             var dateNumber = parseInt(paymentInfo.dateRepresent);
             var date = new Date(dateNumber);
             var currentPaymentData = {
@@ -70,11 +71,86 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
                 location: description,
                 startDate: date,
                 endDate: date,
-                color:"#6db33f"
+                color: "#6db33f"
             };
             calendarData[key] = currentPaymentData;
         });
         return calendarData;
+    };
+
+    var fillDraftData = function (data) {
+        var clone = Object.assign({}, data);
+        delete clone.payments;
+        var startDate = new Date(data.paymentStartDate);
+        var finishDate = new Date(data.paymentFinishDate);
+        clone.paymentStartDate = moment(startDate).format("YYYY-MM-DD");
+        clone.paymentFinishDate = moment(finishDate).format("YYYY-MM-DD");
+        instance.draftData = clone;
+    };
+
+    var createSaveRequest = function (data) {
+        var token = $('meta[name=\"_csrf\"]').attr('content');
+        formToSubmit.html("");
+        var input = $("<input type='hidden' name = '_csrf'  value = '" + token + "'/>");
+        formToSubmit.append(input);
+        $.each(data, function (key, val) {
+            var input = $("<input type='hidden' name = '" + key + "'  value = '" + val + "'/>");
+            formToSubmit.append(input);
+        });
+        formToSubmit.submit();
+    };
+
+    var initValidation = function () {
+        $("#form-amount").validate({
+            rules: {
+                "payment-name": {"required": true},
+                "payment-final-amount": {"required": true, "number": true, "min": 1},
+                "payment-periods-count": {"required": true, "number": true, "min": 1},
+                "payment-miss-periods": {"required": true, "number": true, "min": 0},
+                "payment-initial-amount": {"required": true, "number": true, "min": 0}
+            },
+            messages: {
+                "payment-name": "Моля въведете име на плащане.",
+                "payment-final-amount": "Моля въведете крайна сума за плащане.",
+                "payment-periods-count": "Моля въведете брой периоди свързани с плащане.",
+                "payment-miss-periods": "Моля въведете стойност за пропускане между периодите.",
+                "payment-initial-amount": "Моля въведете начално състояние на плащането."
+            },
+            errorClass: "error",
+            validClass: "valid",
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass(errorClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass(errorClass);
+            }
+        });
+        $("#form-period").validate({
+            rules: {
+                "payment-name": {"required": true},
+                "payment-miss-periods": {"required": true, "number": true, "min": 0},
+                "payment-period-amount": {"required": true, "number": true, "min": 1}
+            },
+            messages: {
+                "payment-name": "Моля въведете име на плащане.",
+                "payment-miss-periods": "Моля въведете стойност за пропускане между периодите.",
+                "payment-period-amount": "Моля въведете начално състояние на плащането."
+            },
+            errorClass: "error",
+            validClass: "valid",
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass(errorClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass(errorClass);
+            }
+        });
     };
 
     var createOverviewRequest = function (data) {
@@ -83,15 +159,15 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
         var requestType = instance.requestTypes.byAmount;
         var url;
         if (isDefined(data.paymentFinalAmount)) {
-            url = overviewUrls.byAmount;
+            url = urls.byAmount;
         } else {
-            url = overviewUrls.byPeriod;
+            url = urls.byPeriod;
             requestType = instance.requestTypes.byPeriod;
         }
         $.ajax({
             url: url,
             type: 'POST',
-            async: true,
+            async: false,
             method: 'post',
             contentType: 'application/json',
             data: JSON.stringify(data),
@@ -99,6 +175,7 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
                 xhr.setRequestHeader(header, token);
             }
         }).done(function (response) {
+            fillDraftData(response);
             var name = data.paymentName;
             var description = data.paymentDescription;
             var dataSource = processOverviewResponse(response, name, description);
@@ -106,7 +183,6 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
                 instance.yearCalendarByAmount.setDataSource(dataSource);
             if (requestType === instance.requestTypes.byPeriod)
                 instance.yearCalendarByPeriod.setDataSource(dataSource);
-
         });
     };
 
@@ -194,14 +270,22 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
             backButtonSupport: true,
             useURLhash: true,
             lang: {
-                next: 'Напред',
+                next: ' Напред',
                 previous: 'Назад'
             },
             toolbarSettings: {
                 toolbarPosition: 'bottom',
                 toolbarButtonPosition: 'right',
                 showNextButton: true,
-                showPreviousButton: true
+                showPreviousButton: true,
+                toolbarExtraButtons: [
+                    $('<button class="finish-button"></button>').html('Запазване &nbsp; <i class="fa fa-file-text" aria-hidden="true"></i>')
+                            .addClass('btn btn-success')
+                            .css("display", "none")
+                            .on('click', function () {
+                                createSaveRequest(instance.draftData);
+                            })
+                ]
             },
             anchorSettings: {
                 anchorClickable: true,
@@ -215,33 +299,36 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
             theme: 'default',
             transitionEffect: 'fade',
             transitionSpeed: '400'
-        }).on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
-            if (stepNumber === 1 && stepDirection === "forward") {
-                data = buildDataForRequest($(this));
-                createOverviewRequest(data);
+        }).on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
+            var form = $(this).find("form");
+            if (form.valid()) {
+                if (stepNumber === 0 && stepDirection === "forward") {
+                    $(this).find(".finish-button").show();
+                    data = buildDataForRequest($(this));
+                    createOverviewRequest(data);
+                } else {
+                    $(this).find(".finish-button").hide();
+                }
+            } else {
+                return false;
             }
         });
     };
 
     var initPaymentsOverviewCalendar = function (selector) {
-        var currentYear = new Date().getFullYear();
         var yearCalendar = $(selector).calendar({
+            language: "bg",
             enableContextMenu: true,
             enableRangeSelection: true,
+            dataSource: [
+            ],
             contextMenuItems: [
-                {
-                    text: 'Update'
-                },
-                {
-                    text: 'Delete'
-                }
             ],
             selectRange: function (e) {
             },
             mouseOnDay: function (e) {
                 if (e.events.length > 0) {
                     var content = '';
-
                     for (var i in e.events) {
                         content += '<div class="event-tooltip-content">'
                                 + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
@@ -266,9 +353,7 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
             },
             dayContextMenu: function (e) {
                 $(e.element).popover('hide');
-            },
-            dataSource: [
-            ]
+            }
         });
         return yearCalendar;
     };
@@ -276,6 +361,7 @@ var recurringPaymentUtils = function (overviewUrls, recuringTypes) {
     this.initialize = function () {
         initTabs();
         initStepWizards();
+        initValidation();
         this.finalDateCalendar = initDatePicker("#by-period-finish-date");
         this.yearCalendarByAmount = initPaymentsOverviewCalendar("#payments-calendar-amount");
         this.yearCalendarByPeriod = initPaymentsOverviewCalendar("#payments-calendar-period");

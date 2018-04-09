@@ -442,3 +442,11 @@ html body{
     text-align:center;
     padding-top:30px;
 }
+
+.error{
+    border-color:#F04124;
+    color:#F04124;
+}
+label.error{
+    padding:5px 0;
+}

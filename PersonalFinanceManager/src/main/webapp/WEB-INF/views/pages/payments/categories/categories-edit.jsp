@@ -10,14 +10,16 @@
             messages: {
                 categoryName: "Моля, въведете име на категория",
             },
+            errorClass: "error",
+            validClass: "valid",
             errorPlacement: function (error, element) {
-
+                error.insertAfter(element.parent());
             },
             highlight: function (element, errorClass, validClass) {
-                $(element).addClass("error");
+                $(element).addClass(errorClass);
             },
             unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass("error");
+                $(element).removeClass(errorClass);
             }
         });
         $('.site-content .form-container input[type="checkbox"],.site-content .form-container input[type="radio"]').each(function (key, val) {

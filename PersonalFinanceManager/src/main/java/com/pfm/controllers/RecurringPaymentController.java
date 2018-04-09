@@ -7,12 +7,16 @@ package com.pfm.controllers;
 
 import com.pfm.cache.GridCacheProvider;
 import com.pfm.data.context.IpfmContext;
+import com.pfm.data.data.RecurringBudgetPaymentData;
 import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.RecurringBudgetPayment;
 import com.pfm.data.entities.RecurringType;
 import com.pfm.data.entities.User;
+import com.pfm.data.exceptions.BasicException;
 import com.pfm.enums.RecurringTypes;
 import com.pfm.exceptions.PageNotFoundException;
+import com.pfm.exceptions.ValidationException;
+import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
@@ -31,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,68 +96,54 @@ public class RecurringPaymentController {
         ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
         view.addObject("recTypes", recurringTypes);
         view.addObject("categories", caregories);
-        view.addObject("daily",RecurringTypes.Daily.getValue());
-        view.addObject("weekly",RecurringTypes.Weekly.getValue());
-        view.addObject("monthly",RecurringTypes.Monthly.getValue());
-        view.addObject("yearly",RecurringTypes.Yearly.getValue());
+        view.addObject("daily", RecurringTypes.Daily.getValue());
+        view.addObject("weekly", RecurringTypes.Weekly.getValue());
+        view.addObject("monthly", RecurringTypes.Monthly.getValue());
+        view.addObject("yearly", RecurringTypes.Yearly.getValue());
         return view;
     }
 
-    /*@RequestMapping(value = "/recurringPayments/add", method = RequestMethod.POST)
-    public ModelAndView addRecurringPayment(ModelMap map,
+    @RequestMapping(value = "/recurringPayments/add", method = RequestMethod.POST)
+    public ModelAndView addRecurringPayment(
+            ModelMap map,
             HttpServletRequest request,
             HttpServletResponse response,
             @ModelAttribute RecurringBudgetPaymentAddModel params) throws BasicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
-            if (params.getRecurringPaymentCategory() == null) {
+            if (params.getPaymentCategory() == null) {
                 throw new ValidationException("Recurring payment add error: required fields not filled.");
-            }
-            if (params.getRecurringPaymentAmount() < 0) {
-                params.setRecurringPaymentAmount(0);
-            }
-            if (params.getRecurringPaymentPeriodsCount() < 1) {
-                params.setRecurringPaymentAmount(1);
             }
             IpfmContext context = pfmContext.getInstance();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
+
             RecurringBudgetPaymentData data = new RecurringBudgetPaymentData();
             data.setActive(true);
-            data.setAmount(params.getRecurringPaymentAmount());
-            data.setDescription(params.getRecurringPaymentDescription());
             data.setFinished(false);
-            data.setFinishedDate(null);
-            data.setPaymentCategoryId(params.getRecurringPaymentCategory());
-            data.setPeriods(params.getRecurringPaymentPeriodsCount());
-            data.setRecurringType(params.getRecurringPaymentRecurringType());
-            data.setStartDate(params.getRecurringPaymentPeriodStart());
-            data.setTitle(params.getRecurringPaymentName());
-            data.setMissPerPeriods(params.getRecurringPaymentPeriodsMiss());
+            data.setAmount(params.getPaymentSinglePeriodAmount());
+            data.setDescription(params.getPaymentDescription());
+            data.setFinalAmount(params.getPaymentFinalAmount());
+            data.setFinishDate(params.getPaymentFinishDate());
+            data.setInitialAmount(params.getPaymentInitialAmount());
+            data.setMissPerPeriods(params.getMissPerPeriods());
+            data.setPaymentCategoryId(params.getPaymentCategory());
+            data.setPeriods(params.getPeriodsCount());
+            data.setRecurringType(params.getPaymentRecuringType());
+            data.setStartDate(params.getPaymentStartDate());
+            data.setTitle(params.getPaymentName());
             data.setUserId(user.getId());
             UUID id = context.getRecurringBudgetPaymentSet()
                     .Add(data);
-            ModelAndView view = null;
-            String buttonSubmitted = request.getParameter("submit-button");
-            switch (buttonSubmitted) {
-                case "1":
-                    view = new ModelAndView("redirect:/recurringPayments");
-                    break;
-                case "2":
-                    view = new ModelAndView("redirect:/recurringPayments/edit/" + id.toString());
-                    break;
-                case "3":
-                    view = new ModelAndView("redirect:/recurringPayments/add");
-                    break;
-            }
+            ModelAndView view = new ModelAndView("recurringPayments");
             return view;
         } catch (ValidationException ex) {
             map.put("errorMessage", "Моля въведете всички задължителни полета.");
             ModelAndView view = new ModelAndView("user-budget-recurring-payment-add");
             return view;
         }
-    }*/
+    }
 
     @RequestMapping(value = "/recurringPayments/edit/{recPaymentId}", method = RequestMethod.GET)
     public ModelAndView editRecurringPayment(ModelMap map, HttpServletRequest request,
