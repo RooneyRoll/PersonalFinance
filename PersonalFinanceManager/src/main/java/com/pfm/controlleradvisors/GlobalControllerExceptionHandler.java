@@ -5,6 +5,7 @@
  */
 package com.pfm.controlleradvisors;
 
+import com.pfm.controllers.BaseController;
 import com.pfm.data.context.IpfmContext;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
@@ -27,7 +28,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  * @author Misho
  */
 @ControllerAdvice
-class GlobalControllerExceptionHandler {
+class GlobalControllerExceptionHandler extends BaseController{
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(
@@ -51,7 +52,7 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(PaymentCategoryAddException.class)
     public ModelAndView handlePaymentCategoryAdd(PaymentCategoryAddException ex) {
         ModelAndView mav = new ModelAndView();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         List<PaymentType> types = context
                 .getPaymentTypeSet().GetAll();
         mav.addObject("errorMessage", "Вече съществува категория с това име.");
@@ -63,7 +64,7 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(PaymentCategoryEditException.class)
     public ModelAndView PaymentCategoryEditException(PaymentCategoryEditException ex) {
         ModelAndView mav = new ModelAndView();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         List<PaymentType> types = context
                 .getPaymentTypeSet().GetAll();
         //PaymentCategory category = context.getPaymentCategorySet().GetById(categoryId);

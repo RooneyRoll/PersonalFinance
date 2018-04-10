@@ -33,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Misho
  */
 @Controller
-public class RegisterController {
+public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
@@ -81,7 +81,7 @@ public class RegisterController {
             UserRoleData userRoleObject = new UserRoleData();
             userRoleObject.setUserName(username);
             userRoleObject.setUserRole("ROLE_USER");
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             Serializable id = context.getUserSet()
                     .Add(userObject);
             UUID userId = UUID.fromString(id.toString());
@@ -110,7 +110,7 @@ public class RegisterController {
             catData.setName(name);
             catData.setType(type);
             catData.setUserId(userId);
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             context.getPaymentCategorySet().Add(catData);
         } catch (PaymentCategoryAddException ex) {
             System.out.println("Could not add default payment category for user with id: "+userId.toString());

@@ -38,14 +38,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Misho
  */
 @RestController
-public class UserBudgetRestController {
+public class UserBudgetRestController extends BaseController  {
 
     @RequestMapping(value = "/budget", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String budgetData(HttpServletRequest request, @RequestBody BudgetParamObject params) {
         List<CategoryBudget> categories = new ArrayList<>();
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
@@ -116,7 +116,7 @@ public class UserBudgetRestController {
     
     private List<BudgetPlannedVsSpentResultObject> appendPlannedVsSpentResult(Date budgetDate, List<BudgetPlannedVsSpentResultObject> result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -154,7 +154,7 @@ public class UserBudgetRestController {
     }
 
     private List<BudgetPlannedVsSpentResultObject> appendEmptyPlannedVsSpentResult(List<BudgetPlannedVsSpentResultObject> result) {
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         List<PaymentType> types = context.getPaymentTypeSet().GetAll();
         for (PaymentType type : types) {
             BudgetPlannedVsSpentResultObject resultObject = new BudgetPlannedVsSpentResultObject();
@@ -169,7 +169,7 @@ public class UserBudgetRestController {
 
     private List<BudgetCategoriesPlannedVsSpentResult> appendEmptyCategoryPlannedVsSpentResult(List<BudgetCategoriesPlannedVsSpentResult> result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -191,7 +191,7 @@ public class UserBudgetRestController {
 
     private List<BudgetCategoriesPlannedVsSpentResult> appendCategoryPlannedVsSpentResult(Date budgetDate, List<BudgetCategoriesPlannedVsSpentResult> result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());

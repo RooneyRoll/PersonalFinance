@@ -3,17 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pfm.utils;
+package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 
 /**
  *
- * @author Misho
+ * @author mihail
  */
-public class DatabaseConstructor {
-    public static IpfmContext getNewContext(){
-        return pfmContext.getInstance();
+
+public class BaseController  {
+    private final IpfmContext pfmContext;
+
+    public BaseController() {
+        this.pfmContext = new pfmContext();
     }
+
+    public IpfmContext getPfmContext() {
+        return pfmContext;
+    }  
 }

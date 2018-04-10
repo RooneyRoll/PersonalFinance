@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -34,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
-        driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/PersonalFinanceManager");
+        driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/pfm");
         driverManagerDataSource.setUsername("postgres");
         driverManagerDataSource.setPassword("_mk123_");
         return driverManagerDataSource;

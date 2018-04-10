@@ -50,14 +50,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Misho
  */
 @Controller
-public class PaymentCategoriesController {
+public class PaymentCategoriesController extends BaseController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -88,7 +88,7 @@ public class PaymentCategoriesController {
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException {
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         ModelAndView view = new ModelAndView("categories-add");
         List<PaymentType> types = context
                 .getPaymentTypeSet().GetAll();
@@ -104,7 +104,7 @@ public class PaymentCategoriesController {
             @ModelAttribute PaymentCategoryAddModel params) throws PaymentCategoryAddException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
@@ -154,7 +154,7 @@ public class PaymentCategoriesController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException, PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         PaymentCategory category;
         List<PaymentType> types = new ArrayList<>();
         try {
@@ -186,7 +186,7 @@ public class PaymentCategoriesController {
             @ModelAttribute PaymentCategoryEditModel params) throws PaymentCategoryEditException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
@@ -225,7 +225,7 @@ public class PaymentCategoriesController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PaymentCategoryAddException, PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());

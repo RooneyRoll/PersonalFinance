@@ -32,12 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Misho
  */
 @Controller
-public class UserBudgetController {
+public class UserBudgetController extends BaseController  {
 
     @RequestMapping(value = "/userBudget", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -56,7 +56,7 @@ public class UserBudgetController {
     @RequestMapping(value = "/userBudget", method = RequestMethod.POST)
     public ModelAndView saveBudget(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -120,7 +120,7 @@ public class UserBudgetController {
     @RequestMapping(value = "/userBudget/categoriesStatus", method = RequestMethod.GET)
     public ModelAndView budgetCategoriesStatus(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());

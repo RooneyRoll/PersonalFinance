@@ -50,14 +50,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Misho
  */
 @Controller
-public class PaymentController {
+public class PaymentController extends BaseController  {
 
     @RequestMapping(value = "/payments", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -87,7 +87,7 @@ public class PaymentController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -102,7 +102,7 @@ public class PaymentController {
             HttpServletResponse response,
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
         try {
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
@@ -150,7 +150,7 @@ public class PaymentController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -184,7 +184,7 @@ public class PaymentController {
             RedirectAttributes redirectAttributes) throws BasicException {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
@@ -235,7 +235,7 @@ public class PaymentController {
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws BasicException, PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Misho
  */
 @RestController
-public class PaymentsRestController {
+public class PaymentsRestController extends BaseController  {
     @RequestMapping(value = "/getPayments", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String payments(HttpServletRequest request, @RequestBody PaymentRestParamObject params) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -53,7 +53,7 @@ public class PaymentsRestController {
     private String buildStatsJsonForInterval(Date start, Date end) {
         List<PaymentStatisticsResultObject> result = new ArrayList<>();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context.getUserSet().GetByUserName(auth.getName());
         List<PaymentType> types = context.getPaymentTypeSet().GetAll();
         for (PaymentType type : types) {

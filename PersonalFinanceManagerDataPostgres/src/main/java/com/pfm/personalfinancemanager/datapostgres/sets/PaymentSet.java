@@ -65,7 +65,6 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     @Override
     protected Payments convertDtoDataToEntity(PaymentData DtoData) {
         try (Session session = this.getSessionFactory().openSession()) {
-            session.beginTransaction();
             Query q = session.createQuery("From PaymentCategories where pcatId = :catId");
             q.setParameter("catId", DtoData.getCategory());
             List<PaymentCategories> categoriesList = q.list();

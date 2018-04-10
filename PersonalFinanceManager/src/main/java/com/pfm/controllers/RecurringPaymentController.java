@@ -46,14 +46,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Misho
  */
 @Controller
-public class RecurringPaymentController {
+public class RecurringPaymentController extends BaseController  {
 
     @RequestMapping(value = "/recurringPayments", method = RequestMethod.GET)
     public ModelAndView index(ModelMap map, HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "error", required = false) String error) throws ClassNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -83,7 +83,7 @@ public class RecurringPaymentController {
     @RequestMapping(value = "/recurringPayments/add", method = RequestMethod.GET)
     public ModelAndView addRecurringPayment(ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());
@@ -114,7 +114,7 @@ public class RecurringPaymentController {
             if (params.getPaymentCategory() == null) {
                 throw new ValidationException("Recurring payment add error: required fields not filled.");
             }
-            IpfmContext context = pfmContext.getInstance();
+            IpfmContext context = this.getPfmContext();
             User user = context
                     .getUserSet()
                     .GetByUserName(auth.getName());
@@ -151,7 +151,7 @@ public class RecurringPaymentController {
             @PathVariable("recPaymentId") UUID recPaymentId) throws PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(recPaymentId);
-        IpfmContext context = pfmContext.getInstance();
+        IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()
                 .GetByUserName(auth.getName());

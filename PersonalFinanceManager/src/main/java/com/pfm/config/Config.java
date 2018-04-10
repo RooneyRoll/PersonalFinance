@@ -20,16 +20,6 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @Import({ SecurityConfig.class })
 public class Config extends WebMvcConfigurerAdapter {
 
-    /*@Bean  
-    public UrlBasedViewResolver setupViewResolver() {  
-        UrlBasedViewResolver resolver = new UrlBasedViewResolver();  
-        resolver.setPrefix("/WEB-INF/jsp/");  
-        resolver.setSuffix(".jsp");  
-        resolver.setViewClass(JstlView.class);  
-        return resolver;  
-    }  
-     */
-
     @Bean
     public TilesConfigurer tilesConfigurer() {
         TilesConfigurer tilesConfigurer = new TilesConfigurer();

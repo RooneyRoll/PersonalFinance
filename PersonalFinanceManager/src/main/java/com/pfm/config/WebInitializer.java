@@ -20,6 +20,7 @@ public class WebInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.addListener(ContextFinishListener.class);
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
         ctx.register(Config.class);
         ctx.setServletContext(servletContext);

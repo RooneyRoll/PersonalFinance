@@ -43,17 +43,13 @@ public class pfmContext implements IpfmContext {
     private final IUserBudgetSet userBudgetSet;
     private final IRecurringBudgetPaymentSet recurringBudgetPaymentSet;
     private final IRecurringTypeSet recurringTypeSet;
-    private static pfmContext instance;
+    //private static pfmContext instance;
 
-    public static IpfmContext getInstance() {
-        if (instance == null) {
-            instance = new pfmContext();
-        }
-
-        return instance;
-    }
-
-    private pfmContext() {
+    /**
+     * public static IpfmContext getInstance() { if (instance == null) {
+     * instance = new pfmContext(); } return instance; }
+     */
+    public pfmContext() {
         this.manager = ConfigurationHelper.getSessionFactory();
         this.UserSet = new UserSet(this.manager);
         this.UserRoleSet = new UserRoleSet(this.manager);
