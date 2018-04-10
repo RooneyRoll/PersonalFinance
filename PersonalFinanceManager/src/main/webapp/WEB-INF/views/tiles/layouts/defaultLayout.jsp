@@ -33,6 +33,7 @@
         <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link>
         <link href="<c:url value='/resources/js/select2-4.0.3/dist/css/select2.min.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.css' />" rel="stylesheet" ></link> 
+        <link href="<c:url value='/resources/js/datePicker/datepicker.min.css' />" rel="stylesheet" type="text/css"></link> 
         <link href="<c:url value='/resources/css/gridCustomCss/grid.css' />" rel="stylesheet" ></link> 
         <link href='<c:url value='/resources/js/smartmenus/css/sm-core-css.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartmenus/css/sm-mint/sm-mint.css' />' rel='stylesheet' type='text/css' />
@@ -56,6 +57,8 @@
         <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
+        <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
+        <script src="<c:url value='/resources/js/datePicker/i18n/datepicker.bg-BG.js' />"></script>
         <script src="<c:url value='/resources/js/moment/moment.min.js' />"></script>
         <script src="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.js' />"></script>
         <script src="<c:url value='/resources/css/bootstrap-3.3.7/js/bootstrap.min.js' />"></script>
