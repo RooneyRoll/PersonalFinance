@@ -1,22 +1,49 @@
-/* Indonesian locals for flatpickr */
-var Flatpickr = Flatpickr || { l10ns: {} };
-Flatpickr.l10ns.id = {};
-
-Flatpickr.l10ns.id.weekdays = {
-	shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-	longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+"use strict";
+exports.__esModule = true;
+var fp = typeof window !== "undefined" && window.flatpickr !== undefined
+    ? window.flatpickr
+    : {
+        l10ns: {}
+    };
+exports.Indonesian = {
+    weekdays: {
+        shorthand: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+        longhand: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+    },
+    months: {
+        shorthand: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "Mei",
+            "Jun",
+            "Jul",
+            "Agu",
+            "Sep",
+            "Okt",
+            "Nov",
+            "Des",
+        ],
+        longhand: [
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
+        ]
+    },
+    firstDayOfWeek: 1,
+    ordinal: function () {
+        return "";
+    }
 };
-
-Flatpickr.l10ns.id.months = {
-	shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-	longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-};
-
-Flatpickr.l10ns.id.firstDayOfWeek = 1;
-
-Flatpickr.l10ns.id.ordinal = function () {
-	return "";
-};
-if (typeof module !== "undefined") {
-	module.exports = Flatpickr.l10ns;
-}
+fp.l10ns.id = exports.Indonesian;
+exports["default"] = fp.l10ns;

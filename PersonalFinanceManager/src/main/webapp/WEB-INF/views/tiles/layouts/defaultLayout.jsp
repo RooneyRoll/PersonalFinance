@@ -27,22 +27,19 @@
         <title><tiles:getAsString name="title" /></title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> </link>
         <link href="<c:url value='/resources/css/font-awesome-4.7.0/css/font-awesome.css'/>" rel="stylesheet"  type="text/css" />
-        <link href="<c:url value='/resources/js/DataTables-1.10.13/media/css/dataTables.bootstrap.min.css'/>" rel="stylesheet" ></link> 
-        <link href="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css' />" rel="stylesheet" ></link>
+        <link href="<c:url value='/resources/js/DataTables/datatables.min.css'/>" rel="stylesheet" ></link>
         <link href="<c:url value='/resources/js/flatpickr/flatpickr.min.css' />" rel="stylesheet" type="text/css"></link>
         <link href="<c:url value='/resources/js/flatpickr/themes/material_green.css' />" rel="stylesheet" type="text/css"></link>
-        <link href="<c:url value='/resources/js/select2-4.0.3/dist/css/select2.min.css' />" rel="stylesheet" ></link> 
-        <link href="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.css' />" rel="stylesheet" ></link> 
+        <link href="<c:url value='/resources/js/select2/css/select2.min.css' />" rel="stylesheet" ></link> 
+        <link href="<c:url value='/resources/js/pwsTabs/jquery.pwstabs.min.css' />" rel="stylesheet" ></link> 
         <link href="<c:url value='/resources/js/datePicker/datepicker.min.css' />" rel="stylesheet" type="text/css"></link> 
         <link href="<c:url value='/resources/css/gridCustomCss/grid.css' />" rel="stylesheet" ></link> 
         <link href='<c:url value='/resources/js/smartmenus/css/sm-core-css.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartmenus/css/sm-mint/sm-mint.css' />' rel='stylesheet' type='text/css' />
-        <link href='<c:url value='/resources/js/slider-pro/dist/css/slider-pro.min.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/sideBar/css/simple-sidebar.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/css/footer/footer-distributed-with-address-and-phones.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartwizard/css/smart_wizard.min.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/smartwizard/css/smart_wizard_theme_circles.min.css' />' rel='stylesheet' type='text/css' />
-        <link href='<c:url value='/resources/js/fullcalendar-3.9.0/fullcalendar.min.css' />' rel='stylesheet' type='text/css' />
         <link href='<c:url value='/resources/js/bootstrap-year-calendar-1.1.0/css/bootstrap-year-calendar.min.css' />' rel='stylesheet' type='text/css' />
         <link href="<c:url value='/resources/css/bootstrap-3.3.7/bootstrapThemes/yeti/bootstrap.min.css'/>" rel="stylesheet" ></link>
         <link href="<c:url value='/resources/css/site.css' />" rel="stylesheet"></link>
@@ -50,21 +47,17 @@
         <script src="<c:url value='/resources/js/smartwizard/js/jquery.smartWizard.min.js' />"></script>
         <script src="<c:url value='/resources/js/smartmenus/jquery.smartmenus.min.js' />" type="text/javascript"></script>
         <script src="<c:url value='/resources/js/jquery/jquery.validate.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/jquery.dataTables.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/media/js/dataTables.bootstrap4.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.min.js' />"></script>
-        <script src="<c:url value='/resources/js/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js' />"></script>
-        <script src="<c:url value='/resources/js/select2-4.0.3/dist/js/select2.min.js' />"></script>
+        <script src="<c:url value='/resources/js/DataTables/datatables.min.js' />"></script>
+        <script src="<c:url value='/resources/js/select2/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.js' />"></script>
-        <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/i18n/datepicker.bg-BG.js' />"></script>
         <script src="<c:url value='/resources/js/moment/moment.min.js' />"></script>
-        <script src="<c:url value='/resources/js/pwstabs/jquery.pwstabs.min.js' />"></script>
+        <script src="<c:url value='/resources/js/pwsTabs/jquery.pwstabs.min.js' />"></script>
         <script src="<c:url value='/resources/css/bootstrap-3.3.7/js/bootstrap.min.js' />"></script>
         <script>
             $(document).ready(function () {
-                $(".top-menu-container").smartmenus({
+                /*$(".top-menu-container").smartmenus({
                     hideTimeout: 0,
                     markCurrentItem: true,
                     showTimeout: 0,
@@ -92,7 +85,7 @@
                             $mainMenuState[0].click();
                         }
                     });
-                }
+                }*/
 
                 $(".toggle-menu").click(function () {
                     $(".header").toggleClass("toggled");

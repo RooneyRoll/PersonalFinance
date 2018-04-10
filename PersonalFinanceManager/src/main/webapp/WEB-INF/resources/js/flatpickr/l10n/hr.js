@@ -1,19 +1,54 @@
-/* Croatian locals for flatpickr */
-var Flatpickr = Flatpickr || { l10ns: {} };
-Flatpickr.l10ns.hr = {};
-
-Flatpickr.l10ns.hr.firstDayOfWeek = 1;
-
-Flatpickr.l10ns.hr.weekdays = {
-	shorthand: ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'],
-	longhand: ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota']
+"use strict";
+exports.__esModule = true;
+var fp = typeof window !== "undefined" && window.flatpickr !== undefined
+    ? window.flatpickr
+    : {
+        l10ns: {}
+    };
+exports.Croatian = {
+    firstDayOfWeek: 1,
+    weekdays: {
+        shorthand: ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"],
+        longhand: [
+            "Nedjelja",
+            "Ponedjeljak",
+            "Utorak",
+            "Srijeda",
+            "Četvrtak",
+            "Petak",
+            "Subota",
+        ]
+    },
+    months: {
+        shorthand: [
+            "Sij",
+            "Velj",
+            "Ožu",
+            "Tra",
+            "Svi",
+            "Lip",
+            "Srp",
+            "Kol",
+            "Ruj",
+            "Lis",
+            "Stu",
+            "Pro",
+        ],
+        longhand: [
+            "Siječanj",
+            "Veljača",
+            "Ožujak",
+            "Travanj",
+            "Svibanj",
+            "Lipanj",
+            "Srpanj",
+            "Kolovoz",
+            "Rujan",
+            "Listopad",
+            "Studeni",
+            "Prosinac",
+        ]
+    }
 };
-
-Flatpickr.l10ns.hr.months = {
-	shorthand: ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'],
-	longhand: ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac']
-};
-
-if (typeof module !== "undefined") {
-	module.exports = Flatpickr.l10ns;
-}
+fp.l10ns.hr = exports.Croatian;
+exports["default"] = fp.l10ns;

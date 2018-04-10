@@ -1,23 +1,57 @@
-/* Romanian locals for flatpickr */
-var Flatpickr = Flatpickr || { l10ns: {} };
-Flatpickr.l10ns.ro = {};
-
-Flatpickr.l10ns.ro.weekdays = {
-	shorthand: ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sam'],
-	longhand: ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă']
+"use strict";
+exports.__esModule = true;
+var fp = typeof window !== "undefined" && window.flatpickr !== undefined
+    ? window.flatpickr
+    : {
+        l10ns: {}
+    };
+exports.Romanian = {
+    weekdays: {
+        shorthand: ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sam"],
+        longhand: [
+            "Duminică",
+            "Luni",
+            "Marți",
+            "Miercuri",
+            "Joi",
+            "Vineri",
+            "Sâmbătă",
+        ]
+    },
+    months: {
+        shorthand: [
+            "Ian",
+            "Feb",
+            "Mar",
+            "Apr",
+            "Mai",
+            "Iun",
+            "Iul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Noi",
+            "Dec",
+        ],
+        longhand: [
+            "Ianuarie",
+            "Februarie",
+            "Martie",
+            "Aprilie",
+            "Mai",
+            "Iunie",
+            "Iulie",
+            "August",
+            "Septembrie",
+            "Octombrie",
+            "Noiembrie",
+            "Decembrie",
+        ]
+    },
+    firstDayOfWeek: 1,
+    ordinal: function () {
+        return "";
+    }
 };
-
-Flatpickr.l10ns.ro.months = {
-	shorthand: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Noi', 'Dec'],
-	longhand: ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
-};
-
-Flatpickr.l10ns.ro.firstDayOfWeek = 1;
-
-Flatpickr.l10ns.ro.ordinal = function () {
-	return "";
-};
-
-if (typeof module !== "undefined") {
-	module.exports = Flatpickr.l10ns;
-}
+fp.l10ns.ro = exports.Romanian;
+exports["default"] = fp.l10ns;

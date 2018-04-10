@@ -71,7 +71,6 @@
                 getInitialSumOfInputVals(chart);
             });
         }
-
         $('.tabs-container').pwstabs({
             effect: 'scale',
             defaultTab: 1,
