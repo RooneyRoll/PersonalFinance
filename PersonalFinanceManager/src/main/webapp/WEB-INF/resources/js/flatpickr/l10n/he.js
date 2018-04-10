@@ -1,45 +1,16 @@
-"use strict";
-exports.__esModule = true;
-var fp = typeof window !== "undefined" && window.flatpickr !== undefined
-    ? window.flatpickr
-    : {
-        l10ns: {}
-    };
-exports.Hebrew = {
-    weekdays: {
-        shorthand: ["א", "ב", "ג", "ד", "ה", "ו", "ז"],
-        longhand: ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
-    },
-    months: {
-        shorthand: [
-            "ינו׳",
-            "פבר׳",
-            "מרץ",
-            "אפר׳",
-            "מאי",
-            "יוני",
-            "יולי",
-            "אוג׳",
-            "ספט׳",
-            "אוק׳",
-            "נוב׳",
-            "דצמ׳",
-        ],
-        longhand: [
-            "ינואר",
-            "פברואר",
-            "מרץ",
-            "אפריל",
-            "מאי",
-            "יוני",
-            "יולי",
-            "אוגוסט",
-            "ספטמבר",
-            "אוקטובר",
-            "נובמבר",
-            "דצמבר",
-        ]
-    }
+/* Hebrew locals for flatpickr */
+var Flatpickr = Flatpickr || { l10ns: {} };
+Flatpickr.l10ns.he = {};
+
+Flatpickr.l10ns.he.weekdays = {
+	shorthand: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז'],
+	longhand: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת']
 };
-fp.l10ns.he = exports.Hebrew;
-exports["default"] = fp.l10ns;
+
+Flatpickr.l10ns.he.months = {
+	shorthand: ['ינו׳', 'פבר׳', 'מרץ', 'אפר׳', 'מאי', 'יוני', 'יולי', 'אוג׳', 'ספט׳', 'אוק׳', 'נוב׳', 'דצמ׳'],
+	longhand: ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"]
+};
+if (typeof module !== "undefined") {
+	module.exports = Flatpickr.l10ns;
+}

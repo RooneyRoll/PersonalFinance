@@ -1,59 +1,20 @@
-"use strict";
-exports.__esModule = true;
-var fp = typeof window !== "undefined" && window.flatpickr !== undefined
-    ? window.flatpickr
-    : {
-        l10ns: {}
-    };
-exports.Danish = {
-    weekdays: {
-        shorthand: ["søn", "man", "tir", "ons", "tors", "fre", "lør"],
-        longhand: [
-            "søndag",
-            "mandag",
-            "tirsdag",
-            "onsdag",
-            "torsdag",
-            "fredag",
-            "lørdag",
-        ]
-    },
-    months: {
-        shorthand: [
-            "jan",
-            "feb",
-            "mar",
-            "apr",
-            "maj",
-            "jun",
-            "jul",
-            "aug",
-            "sep",
-            "okt",
-            "nov",
-            "dec",
-        ],
-        longhand: [
-            "januar",
-            "februar",
-            "marts",
-            "april",
-            "maj",
-            "juni",
-            "juli",
-            "august",
-            "september",
-            "oktober",
-            "november",
-            "december",
-        ]
-    },
-    ordinal: function () {
-        return ".";
-    },
-    firstDayOfWeek: 1,
-    rangeSeparator: " til ",
-    weekAbbreviation: "uge"
+/* Danish locals for flatpickr */
+var Flatpickr = Flatpickr || { l10ns: {} };
+Flatpickr.l10ns.da = {};
+
+Flatpickr.l10ns.da.weekdays = {
+	shorthand: ['Søn', 'Man', 'Tir', 'Ons', 'Tors', 'Fre', 'Lør'],
+	longhand: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag']
 };
-fp.l10ns.da = exports.Danish;
-exports["default"] = fp.l10ns;
+
+Flatpickr.l10ns.da.months = {
+	shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+	longhand: ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December']
+};
+
+Flatpickr.l10ns.da.ordinal = function () {
+	return ".";
+};
+if (typeof module !== "undefined") {
+	module.exports = Flatpickr.l10ns;
+}

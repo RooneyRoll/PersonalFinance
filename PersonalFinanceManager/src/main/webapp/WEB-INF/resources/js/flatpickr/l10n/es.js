@@ -1,57 +1,22 @@
-"use strict";
-exports.__esModule = true;
-var fp = typeof window !== "undefined" && window.flatpickr !== undefined
-    ? window.flatpickr
-    : {
-        l10ns: {}
-    };
-exports.Spanish = {
-    weekdays: {
-        shorthand: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-        longhand: [
-            "Domingo",
-            "Lunes",
-            "Martes",
-            "Miércoles",
-            "Jueves",
-            "Viernes",
-            "Sábado",
-        ]
-    },
-    months: {
-        shorthand: [
-            "Ene",
-            "Feb",
-            "Mar",
-            "Abr",
-            "May",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dic",
-        ],
-        longhand: [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre",
-        ]
-    },
-    ordinal: function () {
-        return "º";
-    },
-    firstDayOfWeek: 1
+/* Spanish locals for flatpickr */
+var Flatpickr = Flatpickr || { l10ns: {} };
+Flatpickr.l10ns.es = {};
+
+Flatpickr.l10ns.es.weekdays = {
+	shorthand: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+	longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 };
-fp.l10ns.es = exports.Spanish;
-exports["default"] = fp.l10ns;
+
+Flatpickr.l10ns.es.months = {
+	shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+	longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+};
+
+Flatpickr.l10ns.es.ordinal = function () {
+	return "º";
+};
+
+Flatpickr.l10ns.es.firstDayOfWeek = 1;
+if (typeof module !== "undefined") {
+	module.exports = Flatpickr.l10ns;
+}

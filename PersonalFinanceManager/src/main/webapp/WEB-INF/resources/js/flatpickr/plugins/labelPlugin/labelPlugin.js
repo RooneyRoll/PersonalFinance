@@ -1,16 +1,15 @@
-"use strict";
-exports.__esModule = true;
 function labelPlugin() {
-    return function (fp) {
-        return {
-            onReady: function () {
-                var id = fp.input.id;
-                if (fp.altInput && id) {
-                    fp.input.removeAttribute("id");
-                    fp.altInput.id = id;
-                }
-            }
-        };
-    };
+	return function (fp) {
+		return {
+			onReady: function onReady() {
+				var id = fp.input.id;
+				if (fp.config.altInput && id) {
+					fp.input.removeAttribute("id");
+					fp.altInput.id = id;
+				}
+			}
+		};
+	};
 }
-exports["default"] = labelPlugin;
+
+if (typeof module !== "undefined") module.exports = labelPlugin;

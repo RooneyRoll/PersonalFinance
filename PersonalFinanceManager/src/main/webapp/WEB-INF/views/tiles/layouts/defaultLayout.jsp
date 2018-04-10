@@ -50,50 +50,51 @@
         <script src="<c:url value='/resources/js/DataTables/datatables.min.js' />"></script>
         <script src="<c:url value='/resources/js/select2/js/select2.min.js' />"></script>
         <script src="<c:url value='/resources/js/flatpickr/flatpickr.js' />"></script>
+        <script src="<c:url value='/resources/js/flatpickr/l10n/bg.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/datepicker.min.js' />"></script>
         <script src="<c:url value='/resources/js/datePicker/i18n/datepicker.bg-BG.js' />"></script>
         <script src="<c:url value='/resources/js/moment/moment.min.js' />"></script>
         <script src="<c:url value='/resources/js/pwsTabs/jquery.pwstabs.min.js' />"></script>
         <script src="<c:url value='/resources/css/bootstrap-3.3.7/js/bootstrap.min.js' />"></script>
         <script>
-            $(document).ready(function () {
-                /*$(".top-menu-container").smartmenus({
-                    hideTimeout: 0,
-                    markCurrentItem: true,
-                    showTimeout: 0,
-                    subMenusSubOffsetX: 0,
-                    subMenusSubOffsetY: -1,
-                    mainMenuSubOffsetX: 1
-                });
+    $(document).ready(function () {
+        /*$(".top-menu-container").smartmenus({
+         hideTimeout: 0,
+         markCurrentItem: true,
+         showTimeout: 0,
+         subMenusSubOffsetX: 0,
+         subMenusSubOffsetY: -1,
+         mainMenuSubOffsetX: 1
+         });
+         
+         var $mainMenuState = $('#main-menu-state');
+         if ($mainMenuState.length) {
+         $mainMenuState.change(function (e) {
+         var $menu = $('#main-menu');
+         if (this.checked) {
+         $menu.hide().slideDown(250, function () {
+         $menu.css('display', '');
+         });
+         } else {
+         $menu.show().slideUp(250, function () {
+         $menu.css('display', '');
+         });
+         }
+         });
+         $(window).bind('beforeunload unload', function () {
+         if ($mainMenuState[0].checked) {
+         $mainMenuState[0].click();
+         }
+         });
+         }*/
 
-                var $mainMenuState = $('#main-menu-state');
-                if ($mainMenuState.length) {
-                    $mainMenuState.change(function (e) {
-                        var $menu = $('#main-menu');
-                        if (this.checked) {
-                            $menu.hide().slideDown(250, function () {
-                                $menu.css('display', '');
-                            });
-                        } else {
-                            $menu.show().slideUp(250, function () {
-                                $menu.css('display', '');
-                            });
-                        }
-                    });
-                    $(window).bind('beforeunload unload', function () {
-                        if ($mainMenuState[0].checked) {
-                            $mainMenuState[0].click();
-                        }
-                    });
-                }*/
-
-                $(".toggle-menu").click(function () {
-                    $(".header").toggleClass("toggled");
-                    $("#wrapper").toggleClass("toggled");
-                    $(this).toggleClass("toggled");
-                    $("#menu").slideToggle();
-                });
-            });
+        $(".toggle-menu").click(function () {
+            $(".header").toggleClass("toggled");
+            $("#wrapper").toggleClass("toggled");
+            $(this).toggleClass("toggled");
+            $("#menu").slideToggle();
+        });
+    });
         </script>
     </head>
     <body>
