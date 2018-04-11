@@ -144,24 +144,21 @@
                             <cssSourceDir>WEB-INF/resources/</cssSourceDir>
                             <cssSourceFiles>
                                 <cssSourceFile>css/site.css</cssSourceFile>
-                                <cssSourceFile>css/bootstrap-3.3.7/bootstrapThemes/yeti/bootstrap.min.css</cssSourceFile>
-                                <cssSourceFile>js/bootstrap-year-calendar-1.1.0/css/bootstrap-year-calendar.min.css</cssSourceFile>
-                                <cssSourceFile>js/fullcalendar-3.9.0/fullcalendar.min.css</cssSourceFile>
-                                <cssSourceFile>js/smartwizard/css/smart_wizard_theme_circles.min.css</cssSourceFile>
-                                <cssSourceFile>js/smartwizard/css/smart_wizard.min.css</cssSourceFile>
-                                <cssSourceFile>css/footer/footer-distributed-with-address-and-phones.css</cssSourceFile>
-                                <cssSourceFile>js/sideBar/css/simple-sidebar.css</cssSourceFile>
-                                <cssSourceFile>js/slider-pro/dist/css/slider-pro.min.css</cssSourceFile>
-                                <cssSourceFile>js/smartmenus/css/sm-mint/sm-mint.css</cssSourceFile>
-                                <cssSourceFile>js/smartmenus/css/sm-core-css.css</cssSourceFile>
-                                <cssSourceFile>css/gridCustomCss/grid.css</cssSourceFile>
-                                <cssSourceFile>js/datePicker/datepicker.min.css</cssSourceFile>
-                                <cssSourceFile>js/pwstabs/jquery.pwstabs.min.css</cssSourceFile>
-                                <cssSourceFile>js/flatpickr/themes/material_green.css</cssSourceFile>
+                                <cssSourceFile>js/DataTables/datatables.min.css</cssSourceFile>
                                 <cssSourceFile>js/flatpickr/flatpickr.min.css</cssSourceFile>
-                                <cssSourceFile>js/DataTables-1.10.13/extensions/Responsive/css/responsive.dataTables.css</cssSourceFile>
-                                <cssSourceFile>js/DataTables-1.10.13/media/css/dataTables.bootstrap.min.css</cssSourceFile>
-                                <cssSourceFile>css/font-awesome-4.7.0/css/font-awesome.css</cssSourceFile>
+                                <cssSourceFile>js/flatpickr/themes/material_green.css</cssSourceFile>
+                                <cssSourceFile>js/select2/css/select2.min.css</cssSourceFile>
+                                <cssSourceFile>js/pwsTabs/jquery.pwstabs.min.css</cssSourceFile>
+                                <cssSourceFile>js/datePicker/datepicker.min.css</cssSourceFile>
+                                <cssSourceFile>css/gridCustomCss/grid.css</cssSourceFile>
+                                <cssSourceFile>js/smartmenus/css/sm-core-css.css</cssSourceFile>
+                                <cssSourceFile>js/smartmenus/css/sm-mint/sm-mint.css</cssSourceFile>
+                                <cssSourceFile>js/sideBar/css/simple-sidebar.css</cssSourceFile>
+                                <cssSourceFile>css/footer/footer-distributed-with-address-and-phones.css</cssSourceFile>
+                                <cssSourceFile>js/smartwizard/css/smart_wizard.min.css</cssSourceFile>
+                                <cssSourceFile>js/smartwizard/css/smart_wizard_theme_circles.min.css</cssSourceFile>
+                                <cssSourceFile>js/bootstrap-year-calendar-1.1.0/css/bootstrap-year-calendar.min.css</cssSourceFile>
+                                <cssSourceFile>css/bootstrap-3.3.7/bootstrapThemes/yeti/bootstrap.min.css</cssSourceFile>
                             </cssSourceFiles>
                             <cssFinalFile>css/core/core.css</cssFinalFile>
                             <jsSourceDir>WEB-INF/resources/</jsSourceDir>
@@ -170,17 +167,14 @@
                                 <jsSourceFile>js/smartwizard/js/jquery.smartWizard.min.js</jsSourceFile>
                                 <jsSourceFile>js/smartmenus/jquery.smartmenus.min.js</jsSourceFile>
                                 <jsSourceFile>js/jquery/jquery.validate.min.js</jsSourceFile>
-                                <jsSourceFile>js/DataTables-1.10.13/media/js/jquery.dataTables.min.js</jsSourceFile>
-                                <jsSourceFile>js/DataTables-1.10.13/media/js/dataTables.bootstrap4.min.js</jsSourceFile>
-                                <jsSourceFile>js/DataTables-1.10.13/extensions/Responsive/js/dataTables.responsive.min.js</jsSourceFile>
-                                <jsSourceFile>js/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js</jsSourceFile>
-                                <jsSourceFile>js/select2-4.0.3/dist/js/select2.min.js</jsSourceFile>
+                                <jsSourceFile>js/DataTables/datatables.min.js</jsSourceFile>
+                                <jsSourceFile>js/select2/js/select2.min.js</jsSourceFile>
                                 <jsSourceFile>js/flatpickr/flatpickr.js</jsSourceFile>
                                 <jsSourceFile>js/flatpickr/l10n/bg.js</jsSourceFile>
                                 <jsSourceFile>js/datePicker/datepicker.min.js</jsSourceFile>
                                 <jsSourceFile>js/datePicker/i18n/datepicker.bg-BG.js</jsSourceFile>
                                 <jsSourceFile>js/moment/moment.min.js</jsSourceFile>
-                                <jsSourceFile>js/pwstabs/jquery.pwstabs.min.js</jsSourceFile>
+                                <jsSourceFile>js/pwsTabs/jquery.pwstabs.min.js</jsSourceFile>
                                 <jsSourceFile>css/bootstrap-3.3.7/js/bootstrap.min.js</jsSourceFile>
                             </jsSourceFiles>
                             <jsFinalFile>js/core/core.js</jsFinalFile>

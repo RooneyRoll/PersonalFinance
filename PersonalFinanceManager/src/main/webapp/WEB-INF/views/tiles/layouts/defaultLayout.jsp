@@ -56,6 +56,8 @@
         <script src="<c:url value='/resources/js/moment/moment.min.js' />"></script>
         <script src="<c:url value='/resources/js/pwsTabs/jquery.pwstabs.min.js' />"></script>
         <script src="<c:url value='/resources/css/bootstrap-3.3.7/js/bootstrap.min.js' />"></script>
+        <!--<link href="<c:url value='/resources/css/core/core.min.css' />" rel="stylesheet"></link>
+        <script src="<c:url value='/resources/js/core/core.min.js' />"></script>-->
         <script>
     $(document).ready(function () {
         /*$(".top-menu-container").smartmenus({
