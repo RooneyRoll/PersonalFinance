@@ -73,250 +73,81 @@
             <ul class="sidebar-menu">
                 <li class="sidebar-header">MAIN NAVIGATION</li>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                        <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-files-o"></i>
-                        <span>Layout Options</span>
-                        <span class="label label-primary pull-right">4</span>
-                    </a>
-                    <ul class="sidebar-submenu" style="display: none;">
-                        <li><a href="top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                        <li><a href="boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                        <li><a href="fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                        <li class=""><a href="collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="../widgets.html">
-                        <i class="fa fa-th"></i> <span>Widgets</span>
-                        <small class="label pull-right label-info">new</small>
+                    <a href="${home}">
+                        <i class="fa fa-home"></i> <span> Начало</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>Charts</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                        <li><a href="../charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                        <li><a href="../charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-                        <li><a href="../charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-laptop"></i>
-                        <span>UI Elements</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-                        <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-                        <li><a href="../UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-                        <li><a href="../UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-                        <li><a href="../UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-                        <li><a href="../UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-edit"></i> <span>Forms</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
-                        <li><a href="../forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-                        <li><a href="../forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-table"></i> <span>Tables</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-                        <li><a href="../tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="../calendar.html">
-                        <i class="fa fa-calendar"></i> <span>Calendar</span>
-                        <small class="label pull-right label-danger">3</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="../mailbox/mailbox.html">
-                        <i class="fa fa-envelope"></i> <span>Mailbox</span>
-                        <small class="label pull-right label-warning">12</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-folder"></i> <span>Examples</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="../examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-                        <li><a href="../examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
-                        <li><a href="../examples/login.html"><i class="fa fa-circle-o"></i> Login</a></li>
-                        <li><a href="../examples/register.html"><i class="fa fa-circle-o"></i> Register</a></li>
-                        <li><a href="../examples/lockscreen.html"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-                        <li><a href="../examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-                        <li><a href="../examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-                        <li><a href="../examples/blank.html"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-                        <li><a href="../examples/pace.html"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-share"></i> <span>Multilevel</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                        <li>
-                            <a href="#"><i class="fa fa-circle-o"></i> Level One <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="sidebar-submenu">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                                <li>
-                                    <a href="#"><i class="fa fa-circle-o"></i> Level Two <i class="fa fa-angle-left pull-right"></i></a>
-                                    <ul class="sidebar-submenu">
-                                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                    </ul>
-                </li>
-                <li><a href="../../documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-                <li class="sidebar-header">LABELS</li>
-                <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-                <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-                <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+                <c:if test="${pageContext.request.userPrincipal.name == null}">
+                    <li>
+                        <a href="${register}">
+                            <i class="fa fa-pencil-square-o"></i> <span> Регистрация</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${login}">
+                            <i class="fa fa-sign-in"></i> <span> Вход</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                    </li>
+
+                </c:if>
+                <c:if test="${pageContext.request.userPrincipal.name != null}">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-book"></i> <span> Бюджет</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="${categoryBudget}"><i class="fa fa-circle-o"></i> Управление</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-tasks"></i> <span> Категории</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="${categoriesАdd}"><i class="fa fa-circle-o"></i> Нова категория</a></li>
+                            <li><a href="${categories}"><i class="fa fa-circle-o"></i> Управление</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-gift"></i> <span> Плащания</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="${paymentAdd}"><i class="fa fa-circle-o"></i> Ново плащане</a></li>
+                            <li><a href="${payments}"><i class="fa fa-circle-o"></i> Управление</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calendar"></i> <span> Периодични плащания</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="${budgetRecPaymentsAdd}"><i class="fa fa-circle-o"></i> Ново плащане</a></li>
+                            <li><a href="${budgetRecPayments}"><i class="fa fa-circle-o"></i> Управление</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-bar-chart"></i> <span> Справки</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="${userBudgetStatus}"><i class="fa fa-circle-o"></i> Планирано/действително</a></li>
+                            <li><a href="${categoryCoverage}"><i class="fa fa-circle-o"></i> Покритие</a></li>
+                            <li><a href="${paymentsStatus}"><i class="fa fa-circle-o"></i> Приходи към разходи</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-clock-o"></i> <span> Предстоящи плащания</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                    </li>
+                </c:if>
             </ul>
             <script>
                 $.sidebarMenu($('.sidebar-menu'));
             </script>
-
-
-
-
-
-
-            <ul class="nav">
-                <li><a href="home"><i class="fa fa-home" aria-hidden="true"></i>Начало</a></li>
-                    <c:if test="${pageContext.request.userPrincipal.name == null}">
-                    <li><a href="${register}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Регистрация</a></li>
-                    <li><a href="${login}"><i class="fa fa-sign-in" aria-hidden="true"></i>Вход</a></li>
-                    </c:if>
-                    <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <li><a href="#"><i class="fa fa-book fa-lg"></i> Бюджет</a>
-                        <ul>
-                            <li><a href="${categoryBudget}">Управление</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-tasks fa-lg"></i> Категории</a>
-                        <ul>
-                            <li><a href="${categoriesАdd}">Нова категория</a></li>
-                            <li><a href="${categories}">Управление</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gift fa-lg"></i>Плащания</a>
-                        <ul>
-                            <li><a href="${paymentAdd}">Ново плащане</a></li>
-                            <li><a href="${payments}">Управление</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-calendar fa-lg"></i>Периодични плащания</a>
-                        <ul>
-                            <li><a href="${budgetRecPaymentsAdd}">Ново плащане</a></li>
-                            <li><a href="${budgetRecPayments}">Управление</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-bar-chart fa-lg"></i>Справки</a>
-                        <ul>
-                            <li><a href="${userBudgetStatus}">Планирано/действително</a></li>
-                            <li><a href="${categoryCoverage}">Покритие</a></li>
-                            <li><a href="${paymentsStatus}">Приходи към разходи</a></li>
-
-                        </ul>
-                    </li>
-                </c:if>
-            </ul>
         </nav>
-
         <main id="panel">
-            <!--<div id="sidebar-wrapper">
-                <div class="nav-side-menu">
-                    <div class="brand"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i> Меню</div>
-                    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-                    <div class="menu-list">
-                        <ul id="menu-content" class="menu-content collapse out">
-            <c:if test="${pageContext.request.userPrincipal.name == null}">
-                <li><a href="home"><i class="fa fa-home" aria-hidden="true"></i>Начало</a></li>
-                <li><a href="${register}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Регистрация</a></li>
-                <li><a href="${login}"><i class="fa fa-sign-in" aria-hidden="true"></i>Вход</a></li>
-            </c:if>
-            <c:if test="${pageContext.request.userPrincipal.name != null}">
-            <li><a href="home"><i class="fa fa-home" aria-hidden="true"></i>Начало</a></li>
-            <li  data-toggle="collapse" data-target="#budget" class="collapsed active">
-                <a href="#"><i class="fa fa-book fa-lg"></i> Бюджет <span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse" id="budget">
-                <li class="active"><a href="${categoryBudget}">Управление</a></li>
-            </ul>
-            <li  data-toggle="collapse" data-target="#categories" class="collapsed">
-                <a href="#"><i class="fa fa-tasks fa-lg"></i> Категории <span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse" id="categories">
-                <li><a href="${categoriesАdd}">Нова категория</a></li>
-                <li><a href="${categories}">Управление</a></li>
-            </ul>
-            <li  data-toggle="collapse" data-target="#payments" class="collapsed">
-                <a href="#"><i class="fa fa-gift fa-lg"></i> Плащания <span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse" id="payments">
-                <li><a href="${paymentAdd}">Ново плащане</a></li>
-                <li><a href="${payments}">Управление</a></li>
-            </ul>
-            <li  data-toggle="collapse" data-target="#rec-payments" class="collapsed">
-                <a href="#"><i class="fa fa-calendar fa-lg"></i> Периодични плащания <span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse" id="rec-payments">
-                <li><a href="${budgetRecPaymentsAdd}">Ново плащане</a></li>
-                <li><a href="${budgetRecPayments}">Управление</a></li>
-            </ul>
-            <li  data-toggle="collapse" data-target="#statistics" class="collapsed">
-                <a href="#"><i class="fa fa-bar-chart fa-lg"></i> Справки <span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse" id="statistics">
-                <li><a href="${userBudgetStatus}">Планирано/действително</a></li>
-                <li><a href="${categoryCoverage}">Покритие</a></li>
-                <li><a href="${paymentsStatus}">Приходи към разходи</a></li>
-            </ul>
-            <li  data-toggle="collapse" data-target="#rec-payments" class="collapsed">
-                <a href="#"><i class="fa fa fa-clock-o fa-lg"></i> Предстоящи плащания <span class="arrow"></span></a>
-            </li>
-            </c:if>
-        </ul>
-    </div>
-    </div>
-    </div>-->
-
             <div>
                 <header id="header">
                     <tiles:insertAttribute name="header" />

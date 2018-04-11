@@ -10,12 +10,6 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.activation.DataSource;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -40,7 +34,6 @@ public class ContextFinishListener implements ServletContextListener {
             try {
                 driver = drivers.nextElement();
                 DriverManager.deregisterDriver(driver);
-
             } catch (SQLException ex) {
                 // deregistration failed, might want to do something, log at the very least
             }

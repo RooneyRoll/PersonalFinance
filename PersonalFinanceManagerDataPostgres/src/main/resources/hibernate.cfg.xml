@@ -8,7 +8,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">_mk123_</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pfm</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/PersonalFinanceManager</property>
         <property name="connection_pool_size">10</property>
         <property name="hbm2ddl.auto">validate</property>
         <property name="show_sql">false</property>
