@@ -82,6 +82,11 @@
         <put-attribute name="title" value="Personal finance manager" />
         <put-attribute name="body" value="/WEB-INF/views/pages/payments/payments/payments-status.jsp" />  
     </definition>
+    <definition name="payments-upcoming" extends="base-definition">  
+        <put-attribute name="navigation" value="Предстоящи плащания"  cascade="true"/> 
+        <put-attribute name="title" value="Personal finance manager" />
+        <put-attribute name="body" value="/WEB-INF/views/pages/payments/payments/payments-upcoming.jsp" />  
+    </definition>
     <definition name="user-budget" extends="base-definition">  
         <put-attribute name="navigation" value="Бюджет"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />
@@ -98,7 +103,7 @@
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-categories-status.jsp" />  
     </definition>
     <definition name="user-budget-recurring-payments-manage" extends="base-definition">  
-         <put-attribute name="navigation" value="Периодични плащания"  cascade="true"/> 
+        <put-attribute name="navigation" value="Периодични плащания"  cascade="true"/> 
         <put-attribute name="title" value="Personal finance manager" />
         <put-attribute name="body" value="/WEB-INF/views/pages/budgets/budget-recurring-payments-manage.jsp" />  
     </definition>

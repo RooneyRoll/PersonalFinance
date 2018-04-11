@@ -16,7 +16,6 @@ import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.models.payment.PaymentAddModel;
 import com.pfm.models.payment.PaymentEditModel;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;

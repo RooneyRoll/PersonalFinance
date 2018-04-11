@@ -17,7 +17,6 @@ import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryAddException;
 import com.pfm.data.exceptions.PaymentCategory.PaymentCategoryEditException;
 import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.models.paymentCategory.PaymentCategoryAddModel;
 import com.pfm.models.paymentCategory.PaymentCategoryEditModel;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;

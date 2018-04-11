@@ -12,7 +12,6 @@ import com.pfm.data.entities.PaymentCategory;
 import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.data.exceptions.BasicException;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
