@@ -56,21 +56,22 @@ html body{
     cursor:default;
     vertical-align: middle;
 }
-.header .header-content .header-content-left{
+.header .header-content .header-content-right{
     width:calc(100% - 250px);
+    text-align:right;
+}
+.header .header-content .header-content-left{
+    width:250px;;
+    
 }
 
-.header .header-content .header-content-left a{
+.header .header-content .header-content-right a{
     color:#fff;
     cursor: pointer;
     text-decoration: none;
 }
 
-.header .header-content .header-content-right{
-    width:250px;;
-}
-
-.header .header-content .header-content-left .header-text{
+.header .header-content .header-content-right .header-text{
     font-size:22px;
     font-weight:bold;
 }
@@ -79,16 +80,12 @@ html body{
     font-size:16px;
 }
 
-.header .header-content .header-content-right{
-    text-align:right;
-}
-
-.header .header-content .header-content-right .header-right-buttons{
+.header .header-content .header-content-left .header-left-buttons{
     width:100%;
     display:inline-block
 }
 
-.header .header-content .header-content-right .header-right-buttons .header-button{
+.header .header-content .header-content-left .header-left-buttons .header-button{
     display:inline-block;
     padding:10px 15px;
     cursor:pointer;
@@ -96,7 +93,7 @@ html body{
     text-decoration: none;
 }
 
-.header .header-content .header-content-right .header-right-buttons .header-button:hover{
+.header .header-content .header-content-left .header-left-buttons .header-button:hover{
     background-color:#6DB33F;
 }
 

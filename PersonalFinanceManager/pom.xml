@@ -132,7 +132,7 @@
     </dependencies>
     <build>
         <plugins>
-            <!--<plugin>
+            <plugin>
                 <groupId>com.samaxes.maven</groupId>
                 <artifactId>minify-maven-plugin</artifactId>
                 <version>1.7.6</version>
@@ -157,6 +157,7 @@
                                 <cssSourceFile>css/footer/footer-distributed-with-address-and-phones.css</cssSourceFile>
                                 <cssSourceFile>js/smartwizard/css/smart_wizard.min.css</cssSourceFile>
                                 <cssSourceFile>js/smartwizard/css/smart_wizard_theme_circles.min.css</cssSourceFile>
+                                <cssSourceFile>js/slideout/slideout.css</cssSourceFile>
                                 <cssSourceFile>js/bootstrap-year-calendar-1.1.0/css/bootstrap-year-calendar.min.css</cssSourceFile>
                                 <cssSourceFile>css/bootstrap-3.3.7/bootstrapThemes/yeti/bootstrap.min.css</cssSourceFile>
                             </cssSourceFiles>
@@ -174,6 +175,7 @@
                                 <jsSourceFile>js/datePicker/datepicker.min.js</jsSourceFile>
                                 <jsSourceFile>js/datePicker/i18n/datepicker.bg-BG.js</jsSourceFile>
                                 <jsSourceFile>js/moment/moment.min.js</jsSourceFile>
+                                <jsSourceFile>js/slideout/slideout.min.js</jsSourceFile>
                                 <jsSourceFile>js/pwsTabs/jquery.pwstabs.min.js</jsSourceFile>
                                 <jsSourceFile>css/bootstrap-3.3.7/js/bootstrap.min.js</jsSourceFile>
                             </jsSourceFiles>
@@ -185,7 +187,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

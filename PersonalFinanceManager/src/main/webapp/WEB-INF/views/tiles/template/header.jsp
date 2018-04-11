@@ -18,28 +18,15 @@
 <spring:url var = "budgetRecPayments" value ="/userBudget/recurring/add"/>
 <div class="header">
     <div class="header-content">
-        <div class="header-content-left">
-            <a href="${home}">
-                <div class="header-logo">
-                    <img/>
-                </div><div class="header-text no-select">
-                    <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                    Personal Finance Manager
-                    <div class="header-sub-text no-select">
-                        Application for managing personal finances 
-                    </div>
-
-                </div>
-            </a>
-        </div><div class="header-content-right ">
-            <div class="header-right-buttons">
+        <div class="header-content-left ">
+            <div class="header-left-buttons">
                 <div class="header-button">
                     <i class="fa fa-user fa-1x" aria-hidden="true"></i>
                 </div>
-                <div class="header-button toggle-menu">
+                <div class="header-button">
                     <i class="fa fa-comments fa-1x" aria-hidden="true"></i>
                 </div>
-                <div class="header-button toggle-menu">
+                <div class="header-button toggle-button">
                     <i class="fa fa-bars fa-1x" aria-hidden="true"></i>
                 </div>
                 <a class="animation" href="javascript:formSubmit()">
@@ -60,6 +47,19 @@
                     }
                 </script>
             </div>
+        </div><div class="header-content-right">
+            <a href="${home}">
+                <div class="header-logo">
+                    <img/>
+                </div><div class="header-text no-select">
+                    <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                    Personal Finance Manager
+                    <div class="header-sub-text no-select">
+                        Application for managing personal finances 
+                    </div>
+
+                </div>
+            </a>
         </div>
     </div>
 </div>
