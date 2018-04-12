@@ -50,6 +50,7 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         paymentObject.setFinalAmount(Entity.getRbpFinalAmount());
         paymentObject.setInitialAmount(Entity.getRbpInitialAmount());
         paymentObject.setMissPerPeriods(Entity.getRbpMissPerPeriods());
+        paymentObject.setFinishedDate(Entity.getRbpDateFinished());
         return paymentObject;
     }
     
@@ -91,6 +92,7 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             entity.setRbpMissPerPeriods(DtoData.getMissPerPeriods());
             entity.setRbpFinalAmount(DtoData.getFinalAmount());
             entity.setRbpInitialAmount(DtoData.getInitialAmount());
+            entity.setRbpDateFinished(DtoData.getFinishedDate());
             return entity;
         }
     }

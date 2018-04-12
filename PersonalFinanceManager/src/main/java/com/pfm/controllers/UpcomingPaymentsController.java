@@ -40,9 +40,4 @@ public class UpcomingPaymentsController extends BaseController {
         ModelAndView view = new ModelAndView("payments-upcoming");
         return view;
     }
-
-    private void generateUpcomingPaymentsForUser(UUID userId,IpfmContext context) {
-        List<PaymentCategory> userCategories = context.getPaymentCategorySet().GetAllActiveCategoriesForUser(userId);
-        
-    }
 }

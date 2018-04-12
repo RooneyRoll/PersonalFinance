@@ -11,6 +11,7 @@ import com.pfm.data.exceptions.BasicException;
 import com.pfm.data.sets.IPaymentSet;
 import com.pfm.personalfinancemanager.datapostgres.entities.PaymentCategories;
 import com.pfm.personalfinancemanager.datapostgres.entities.Payments;
+import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
         paymentObject.setDescription(Entity.getPDescription());
         paymentObject.setId(Entity.getPId());
         paymentObject.setConfirmed(Entity.getPConfirmed());
+        paymentObject.setUserId(Entity.getPUser().getUserUserid());
         if (Entity.getPCoveredRecurringPeriods() != null && Entity.getPRecurringBudgetPayment() != null) {
             paymentObject.setCoveredRecurringPeriods(Entity.getPCoveredRecurringPeriods());
             paymentObject.setBudgetRecurringPayment(Entity.getPRecurringBudgetPayment().getRbpId());
@@ -68,6 +70,9 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             Query q = session.createQuery("From PaymentCategories where pcatId = :catId");
             q.setParameter("catId", DtoData.getCategory());
             List<PaymentCategories> categoriesList = q.list();
+            Query q1 = session.createQuery("From Users where userUserid = :userId");
+            q1.setParameter("userId", DtoData.getUserId());
+            List<Users> usersList = q.list();
             Payments payment = new Payments();
             payment.setPActive(DtoData.isActive());
             payment.setPAmount(DtoData.getAmount());
@@ -75,6 +80,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             payment.setPDate(DtoData.getDate());
             payment.setPDescription(DtoData.getDescription());
             payment.setPConfirmed(DtoData.isConfirmed());
+            payment.setPUser(usersList.get(0));
             return payment;
         }
     }

@@ -83,8 +83,11 @@ public class RecurringBudgetPayments implements Serializable {
     private boolean rbpFinished;
     @Basic(optional = false)
     @Column(name = "rbp_date_finish")
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date rbpDateFinish;
+    @Column(name = "rbp_finished_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date rbpDateFinished;
     @Basic(optional = false)
     @Column(name = "rbp_final_amount")
     private double rbpFinalAmount;
@@ -139,6 +142,14 @@ public class RecurringBudgetPayments implements Serializable {
         this.rbpDateStart = rbpDateStart;
     }
 
+    public Date getRbpDateFinished() {
+        return rbpDateFinished;
+    }
+
+    public void setRbpDateFinished(Date rbpDateFinished) {
+        this.rbpDateFinished = rbpDateFinished;
+    }
+    
     public double getRbpAmount() {
         return rbpAmount;
     }

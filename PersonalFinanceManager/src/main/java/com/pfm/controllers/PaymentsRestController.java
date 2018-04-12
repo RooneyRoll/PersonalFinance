@@ -12,7 +12,6 @@ import com.pfm.data.entities.PaymentType;
 import com.pfm.data.entities.User;
 import com.pfm.models.payment.PaymentRestParamObject;
 import com.pfm.models.payment.PaymentStatisticsResultObject;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

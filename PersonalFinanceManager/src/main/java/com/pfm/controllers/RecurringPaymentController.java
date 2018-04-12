@@ -17,7 +17,6 @@ import com.pfm.enums.RecurringTypes;
 import com.pfm.exceptions.PageNotFoundException;
 import com.pfm.exceptions.ValidationException;
 import com.pfm.models.recurringBudgetPayment.RecurringBudgetPaymentAddModel;
-import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 import com.pfm.personalfinancemanager.datapostgres.entities.RecurringBudgetPayments;
 import com.pfm.personalfinancemanagergrid.mainClasses.DataGridBuilder;
 import com.pfm.personalfinancemanagergrid.settingsObject.ColumnOption;
@@ -150,7 +149,6 @@ public class RecurringPaymentController extends BaseController  {
             HttpServletResponse response,
             @PathVariable("recPaymentId") UUID recPaymentId) throws PageNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(recPaymentId);
         IpfmContext context = this.getPfmContext();
         User user = context
                 .getUserSet()

@@ -18,6 +18,7 @@ public class PaymentData {
     private String description;
     private boolean active;
     private UUID category;
+    private UUID userId;
     private UUID budgetRecurringPayment;
     private Integer coveredRecurringPeriods;
     private boolean confirmed;
@@ -85,5 +86,12 @@ public class PaymentData {
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
-    
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 }

@@ -27,6 +27,7 @@ public class RecurringBudgetPayment {
     private String title;
     private boolean finished;
     private Date finishDate;
+    private Date finishedDate;
     private double finalAmount;
     private double initialAmount;
 
@@ -149,5 +150,12 @@ public class RecurringBudgetPayment {
     public void setInitialAmount(double initialAmount) {
         this.initialAmount = initialAmount;
     }
-    
+
+    public Date getFinishedDate() {
+        return finishedDate;
+    }
+
+    public void setFinishedDate(Date finishedDate) {
+        this.finishedDate = finishedDate;
+    }
 }

@@ -25,8 +25,6 @@ import org.joda.time.Days;
 import org.joda.time.Months;
 import org.joda.time.Weeks;
 import org.joda.time.Years;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +46,7 @@ public class RecurringPaymentsRestController {
         Double target = data.getPaymentFinalAmount();
         Double singlePeriodAmount = this.calculateSinglePeriodAmount(initial, target, periods);
         Integer missPerPeriods = data.getMissPerPeriods();
-        List<RecuringOverviewResultPaymentModel> payments = this.buildPaymentsOverviewResponse(recuringType, missPerPeriods, periods - 1, startPaymentDate, singlePeriodAmount,null);
+        List<RecuringOverviewResultPaymentModel> payments = this.buildPaymentsOverviewResponse(recuringType, missPerPeriods, periods - 1, startPaymentDate, singlePeriodAmount, null);
         Long finishDate = payments.get(payments.size() - 1).getDateRepresent();
         RecuringOverviewResultModel overviewResponceObject = new RecuringOverviewResultModel(
                 missPerPeriods,
@@ -78,7 +76,7 @@ public class RecurringPaymentsRestController {
         Integer periods = this.getPeriodsInInterval(recuringType, startPaymentDate, lastPaymentDate);
         Integer missPerPeriods = data.getMissPerPeriods();
         Double totalAmount = (periods + 1) * singlePeriodAmount;
-        List<RecuringOverviewResultPaymentModel> payments = this.buildPaymentsOverviewResponse(recuringType, missPerPeriods, periods, startPaymentDate, singlePeriodAmount,lastPaymentDate);
+        List<RecuringOverviewResultPaymentModel> payments = this.buildPaymentsOverviewResponse(recuringType, missPerPeriods, periods, startPaymentDate, singlePeriodAmount, lastPaymentDate);
         RecuringOverviewResultModel overviewResponceObject = new RecuringOverviewResultModel(
                 missPerPeriods,
                 periods,
@@ -145,15 +143,19 @@ public class RecurringPaymentsRestController {
         if (Objects.equals(recuringType, RecurringTypes.Daily.getValue())) {
             periods = Days.daysBetween(start, end).getDays();
         }
+
         if (Objects.equals(recuringType, RecurringTypes.Weekly.getValue())) {
             periods = Weeks.weeksBetween(start, end).getWeeks();
         }
+
         if (Objects.equals(recuringType, RecurringTypes.Monthly.getValue())) {
             periods = Months.monthsBetween(start, end).getMonths();
         }
+
         if (Objects.equals(recuringType, RecurringTypes.Yearly.getValue())) {
             periods = Years.yearsBetween(start, end).getYears();
         }
+
         return periods;
     }
 

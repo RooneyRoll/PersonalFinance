@@ -69,6 +69,9 @@ public class Payments implements Serializable {
     private boolean pActive;
     @Column(name = "p_covered_recurring_periods")
     private Integer pCoveredRecurringPeriods;
+    @JoinColumn(name = "p_user", referencedColumnName = "user_userid")
+    @ManyToOne(optional = false)
+    private Users pUser;
 
     public Payments() {
     }
@@ -132,6 +135,14 @@ public class Payments implements Serializable {
         this.pCoveredRecurringPeriods = pCoveredRecurringPeriods;
     }
 
+    public Users getPUser() {
+        return pUser;
+    }
+
+    public void setPUser(Users pUser) {
+        this.pUser = pUser;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -180,5 +191,5 @@ public class Payments implements Serializable {
     public void setPConfirmed(boolean pConfirmed) {
         this.pConfirmed = pConfirmed;
     }
-    
+
 }
