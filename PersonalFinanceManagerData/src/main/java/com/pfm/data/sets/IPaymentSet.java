@@ -19,6 +19,8 @@ import java.util.UUID;
  */
 public interface IPaymentSet extends IViewable<Payment, UUID>, IManagable<PaymentData, UUID> {
 
+    public List<Payment> getAllByUserIdAndDate(UUID userId, Date date);
+    
     public List<Payment> getAllActivePaymentsByPaymentCategory(UUID paymentCategoryId);
 
     public List<Payment> getAllActiveAndConfirmedPaymentsByPaymentCategoryAndMonth(UUID paymentCategoryId, Date date);
