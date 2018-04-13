@@ -10,20 +10,14 @@ package com.pfm.models.upcomingPayments;
  * @author mihail
  */
 public class UpcomingPaymentResultModel {
-    private final String title;
     private final String description;
     private final Double amount;
     private final boolean recuring;
 
-    public UpcomingPaymentResultModel(String title, String description, Double amount, boolean recuring) {
-        this.title = title;
+    public UpcomingPaymentResultModel(String description, Double amount, boolean recuring) {
         this.description = description;
         this.amount = amount;
         this.recuring = recuring;
-    }
-    
-    public String getTitle() {
-        return title;
     }
 
     public String getDescription() {

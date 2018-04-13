@@ -151,7 +151,7 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
     }
     
     @Override
-    public List<Payment> getAllByUserIdAndDate(UUID userId, Date date) {
+    public List<Payment> getAllNotConfirmedAndActiveByCategoryAndDate(UUID categoryId, Date date) {
         List<Payment> payments;
         try (Session session = this.getSessionFactory().openSession()) {
             Calendar cal = Calendar.getInstance();
@@ -161,12 +161,14 @@ public class PaymentSet extends BaseSet<Payments, Payment, PaymentData> implemen
             int day = cal.get(Calendar.DATE);
             Query q = session.createQuery("From Payments p where "
                     + "p.pActive = :isActive and "
-                    + "p.pUser.userUserid = :userId and "
+                    + "p.pCategory.pcatId = :category and "
+                    + "pConfirmed = :confirmed and "
                     + "MONTH(p.pDate) = :month and "
                     + "YEAR(p.pDate) = :year and "
                     + "DAY(p.pDate) = :day")
                     .setParameter("isActive", true)
-                    .setParameter("userId",userId)
+                    .setParameter("confirmed", false)
+                    .setParameter("category",categoryId)
                     .setParameter("month",month)
                     .setParameter("year", year)
                     .setParameter("day",day);

@@ -15,7 +15,7 @@ import java.util.List;
 public class UpcomingPaymentsResultModel {
 
     private final Long dateRepresent;
-    private final List<UpcomingPaymentResultModel> payments = new ArrayList<>();
+    private final List<UpcomingPaymentCategoryResultModel> categories = new ArrayList<>();
 
     public UpcomingPaymentsResultModel(Long dateRepresent) {
         this.dateRepresent = dateRepresent;
@@ -25,11 +25,12 @@ public class UpcomingPaymentsResultModel {
         return dateRepresent;
     }
 
-    public List<UpcomingPaymentResultModel> getPayments() {
-        return payments;
+    public List<UpcomingPaymentCategoryResultModel> getCategories() {
+        return categories;
     }
-    
-    public void addPayment(UpcomingPaymentResultModel payment){
-        this.payments.add(payment);
+
+    public void addCategory(UpcomingPaymentCategoryResultModel payment) {
+        this.categories.add(payment);
     }
+
 }

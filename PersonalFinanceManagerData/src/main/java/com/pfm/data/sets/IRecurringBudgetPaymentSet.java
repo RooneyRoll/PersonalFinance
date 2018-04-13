@@ -9,6 +9,8 @@ import com.pfm.data.data.RecurringBudgetPaymentData;
 import com.pfm.data.entities.RecurringBudgetPayment;
 import com.pfm.data.sets.base.IManagable;
 import com.pfm.data.sets.base.IViewable;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,5 +18,6 @@ import java.util.UUID;
  * @author mihail
  */
 public interface IRecurringBudgetPaymentSet extends IViewable<RecurringBudgetPayment, UUID>, IManagable<RecurringBudgetPaymentData, UUID> {
+    public List<RecurringBudgetPayment> getAllStartedAndNotFinishedAndActiveByCategoryIdAndDate(UUID categoryId,Date date);
     
 }

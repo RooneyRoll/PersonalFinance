@@ -16,6 +16,7 @@ import com.pfm.personalfinancemanager.datapostgres.entities.Users;
 import com.pfm.personalfinancemanager.datapostgres.sets.base.BaseSet;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.hibernate.Session;
@@ -51,6 +52,7 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
         paymentObject.setInitialAmount(Entity.getRbpInitialAmount());
         paymentObject.setMissPerPeriods(Entity.getRbpMissPerPeriods());
         paymentObject.setFinishedDate(Entity.getRbpDateFinished());
+        paymentObject.setCoveredPeriods(Entity.getRbpCoveredPeriods());
         return paymentObject;
     }
     
@@ -93,8 +95,30 @@ public class RecurringBudgetPaymentSet extends BaseSet<RecurringBudgetPayments, 
             entity.setRbpFinalAmount(DtoData.getFinalAmount());
             entity.setRbpInitialAmount(DtoData.getInitialAmount());
             entity.setRbpDateFinished(DtoData.getFinishedDate());
+            entity.setRbpCoveredPeriods(DtoData.getCoveredPeriods());
             return entity;
         }
+    }
+    
+    @Override
+    public List<RecurringBudgetPayment> getAllStartedAndNotFinishedAndActiveByCategoryIdAndDate(UUID categoryId,Date date) {
+        List<RecurringBudgetPayment> recuringRules;
+        try (Session session = this.getSessionFactory().openSession()) {
+            Query q = session.createQuery("From RecurringBudgetPayments "
+                    + "where "
+                    + "rbpCategory.pcat_id = :category and "
+                    + "rbpActive = :isActive and "
+                    + "rbpFinished = :finished and "
+                    + "rbpDateStart <= :currentDate and "
+                    + "rbpDateFinish >= :currentDate")
+                    .setParameter("category",categoryId)
+                    .setParameter("isActive", true)
+                    .setParameter("finished", false)
+                    .setParameter("currentDate",date);
+            List<RecurringBudgetPayments> resultList = q.list();
+            recuringRules = convertEntititiesToDtoArray(resultList);
+        }
+        return recuringRules;
     }
     
     @Override

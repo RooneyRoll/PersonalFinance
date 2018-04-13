@@ -30,6 +30,7 @@ public class RecurringBudgetPayment {
     private Date finishedDate;
     private double finalAmount;
     private double initialAmount;
+    private Integer coveredPeriods;
 
     public UUID getId() {
         return id;
@@ -39,6 +40,14 @@ public class RecurringBudgetPayment {
         this.id = id;
     }
 
+     public Integer getCoveredPeriods() {
+        return coveredPeriods;
+    }
+
+    public void setCoveredPeriods(Integer coveredPeriods) {
+        this.coveredPeriods = coveredPeriods;
+    }
+    
     public int getRecurringType() {
         return recurringType;
     }

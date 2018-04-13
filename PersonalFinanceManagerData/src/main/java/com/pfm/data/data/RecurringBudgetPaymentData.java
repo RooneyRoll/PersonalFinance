@@ -28,6 +28,15 @@ public class RecurringBudgetPaymentData {
     private Date finishedDate;
     private double finalAmount;
     private double initialAmount;
+    private Integer coveredPeriods;
+
+    public Integer getCoveredPeriods() {
+        return coveredPeriods;
+    }
+
+    public void setCoveredPeriods(Integer coveredPeriods) {
+        this.coveredPeriods = coveredPeriods;
+    }
 
     public int getRecurringType() {
         return recurringType;

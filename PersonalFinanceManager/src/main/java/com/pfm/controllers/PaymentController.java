@@ -102,6 +102,7 @@ public class PaymentController extends BaseController  {
             @ModelAttribute PaymentAddModel params) throws ClassNotFoundException, BasicException {
         try {
             IpfmContext context = this.getPfmContext();
+            User user = context.getUserSet().GetByUserName(this.getAuth().getName());
             if (params.getPaymentCategory() == null || "".equals(params.getPaymentAmount())) {
                 throw new ValidationException("Payment edit error: required fields not filled.");
             }
@@ -121,6 +122,7 @@ public class PaymentController extends BaseController  {
             }
             PaymentObject.setAmount(amount);
             PaymentObject.setDate(params.getPaymentDate());
+            PaymentObject.setUserId(user.getId());
             UUID id = context.getPaymentSet().Add(PaymentObject);
             String buttonSubmitted = request.getParameter("submit-button");
             ModelAndView view = null;
@@ -200,6 +202,7 @@ public class PaymentController extends BaseController  {
             paymentDataObject.setCategory(params.getPaymentCategory());
             paymentDataObject.setDate(params.getPaymentDate());
             paymentDataObject.setDescription(params.getPaymentDescription());
+            paymentDataObject.setUserId(user.getId());
             try{
             paymentDataObject.setConfirmed(this.isPaymentConfirmedByDates(params.getPaymentDate()));
             }catch(ParseException e){

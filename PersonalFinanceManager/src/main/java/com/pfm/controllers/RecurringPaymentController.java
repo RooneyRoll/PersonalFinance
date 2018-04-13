@@ -133,6 +133,7 @@ public class RecurringPaymentController extends BaseController  {
             data.setStartDate(params.getPaymentStartDate());
             data.setTitle(params.getPaymentName());
             data.setUserId(user.getId());
+            data.setCoveredPeriods(0);
             UUID id = context.getRecurringBudgetPaymentSet()
                     .Add(data);
             ModelAndView view = new ModelAndView("recurringPayments");

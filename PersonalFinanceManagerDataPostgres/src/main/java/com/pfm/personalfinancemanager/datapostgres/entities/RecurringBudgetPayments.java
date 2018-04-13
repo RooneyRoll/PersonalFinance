@@ -94,6 +94,9 @@ public class RecurringBudgetPayments implements Serializable {
     @Basic(optional = false)
     @Column(name = "rbp_initial_amount")
     private double rbpInitialAmount;
+    @Basic(optional = false)
+    @Column(name = "rbp_covered_periods")
+    private int rbpCoveredPeriods;
     
     public RecurringBudgetPayments() {
     }
@@ -241,6 +244,14 @@ public class RecurringBudgetPayments implements Serializable {
         this.rbpMissPerPeriods = rbpMissPerPeriods;
     }   
 
+    public int getRbpCoveredPeriods() {
+        return rbpCoveredPeriods;
+    }
+
+    public void setRbpCoveredPeriods(int rbpCoveredPeriods) {
+        this.rbpCoveredPeriods = rbpCoveredPeriods;
+    }
+    
     public boolean getRbpFinished() {
         return rbpFinished;
     }

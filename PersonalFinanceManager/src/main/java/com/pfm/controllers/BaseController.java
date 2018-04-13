@@ -7,6 +7,8 @@ package com.pfm.controllers;
 
 import com.pfm.data.context.IpfmContext;
 import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -15,12 +17,18 @@ import com.pfm.personalfinancemanager.datapostgres.context.pfmContext;
 
 public class BaseController  {
     private final IpfmContext pfmContext;
+    private final Authentication auth;
 
     public BaseController() {
         this.pfmContext = new pfmContext();
+        this.auth = SecurityContextHolder.getContext().getAuthentication();
     }
 
     public IpfmContext getPfmContext() {
         return pfmContext;
     }  
+
+    public Authentication getAuth() {
+        return auth;
+    }
 }
