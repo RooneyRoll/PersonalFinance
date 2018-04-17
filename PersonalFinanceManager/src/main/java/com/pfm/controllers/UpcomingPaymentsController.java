@@ -5,15 +5,8 @@
  */
 package com.pfm.controllers;
 
-import com.pfm.data.context.IpfmContext;
-import com.pfm.data.entities.PaymentCategory;
-import com.pfm.data.entities.User;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +25,6 @@ public class UpcomingPaymentsController extends BaseController {
             ModelMap map,
             HttpServletRequest request,
             HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        IpfmContext context = this.getPfmContext();
-        User user = context
-                .getUserSet()
-                .GetByUserName(auth.getName());
         ModelAndView view = new ModelAndView("payments-upcoming");
         return view;
     }
